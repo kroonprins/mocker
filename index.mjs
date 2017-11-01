@@ -7,7 +7,3 @@ mockServer.start();
 
 const administrationServer = new AdministrationServer(3001);
 administrationServer.start();
-
-setInterval(() => {
-    logger.debug("Test");
-}, 5000);

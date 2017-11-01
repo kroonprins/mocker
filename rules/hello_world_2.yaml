@@ -3,6 +3,7 @@ request:
   path: /hello2/:id
   method: get
 response:
+  templatingEngine: nunjucks
   contentType: application/json
   statusCode: "{% if req.params.id > 5 %}400{% else %}200{% endif %}"
   headers:
