@@ -1,0 +1,27 @@
+---
+request:
+  path: /hello2/:id
+  method: get
+response:
+  contentType: application/json
+  statusCode: "{% if req.params.id > 5 %}400{% else %}200{% endif %}"
+  headers:
+    - name: X-tobias
+      value: jawohl
+    - name: X-leroy
+      value: klahr
+    - name: X-yup
+      value: "{{req.query.q}}"
+  cookies:
+    - name: koekske
+      value: jummie
+      properties:
+        secure: true
+    - name: only
+      value: http
+      properties:
+        httpOnly: true
+  body: |
+    {
+      "respo": "Donder op, man! {{req.query.q}} / {{req.params.id}}"
+    }
