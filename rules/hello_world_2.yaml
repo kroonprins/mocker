@@ -1,4 +1,5 @@
 ---
+name: Hello World 2
 request:
   path: /hello2/:id
   method: get
@@ -7,9 +8,9 @@ response:
   contentType: application/json
   statusCode: "{% if req.params.id > 5 %}400{% else %}200{% endif %}"
   headers:
-    - name: X-tobias
+    - name: X-positivo
       value: jawohl
-    - name: X-leroy
+    - name: X-zeker
       value: klahr
     - name: X-yup
       value: "{{req.query.q}}"

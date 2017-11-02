@@ -1,16 +1,22 @@
 {
   "name": "mocker",
   "version": "1.0.0",
+  "repository": "https://github.com/kroonprins/mocker",
   "description": "Mock server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "//": "Use extremly basic runner for tests until one of the frameworks supports mjs...",
+    "test": "export MOCKER_PROJECT=x && node --experimental-modules test/runner.mjs",
     "postinstall": "mkdir -p lib && ln -f ./node_modules/serializr/lib/es/serializr.js lib/serializr-es6-module-loader.mjs"
   },
-  "author": "",
+  "author": "kroonprins",
   "license": "ISC",
   "devDependencies": {
-    "npm-check-updates": "^2.13.0"
+    "axios": "^0.17.0",
+    "chai": "^4.1.2",
+    "chai-string": "^1.4.0",
+    "npm-check-updates": "^2.13.0",
+    "portastic": "^1.0.1"
   },
   "dependencies": {
     "body-parser": "^1.18.2",

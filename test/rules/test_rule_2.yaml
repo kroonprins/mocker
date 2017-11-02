@@ -1,0 +1,13 @@
+---
+name: testRule2
+request:
+  path: /hello2
+  method: put
+response:
+  templatingEngine: nunjucks
+  contentType: application/json
+  statusCode: "200"
+  body: |
+    {
+      "respo": "Test rule 2: {{req.body.input}}"
+    }

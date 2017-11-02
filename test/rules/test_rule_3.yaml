@@ -1,0 +1,16 @@
+---
+name: testRule3
+request:
+  path: /hello3/:id
+  method: get
+response:
+  templatingEngine: none
+  contentType: application/json
+  statusCode: "200"
+  headers:
+    - name: X-yup
+      value: "{{req.query.q}}"
+  body: |
+    {
+      "respo": "Test rule 3: {{req.query.q}} / {{req.params.id}}"
+    }
