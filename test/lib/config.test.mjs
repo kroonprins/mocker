@@ -5,6 +5,8 @@ import { config } from './../../lib/config';
 
 expect(config.mockServerPort).to.equal(3000);
 expect(config.administrationServerPort).to.equal(3001);
+expect(config.learningModeReverseProxyServerPort).to.equal(3002);
+expect(config.learningModeForwardProxyServerPort).to.equal(3003);
 expect(config.project).to.equal("x");
 expect(config.projectsFileLocation).to.equal("./projects/projects.yaml");
 expect(config.startupLogLevel).to.equal("info");

@@ -24,10 +24,13 @@
     "express": "^4.16.2",
     "express-async-errors": "^2.1.0",
     "glob": "^7.1.2",
+    "http-proxy-middleware": "^0.17.4",
     "js-yaml": "^3.10.0",
     "mem": "^3.0.0",
+    "nedb": "^1.8.0",
     "nunjucks": "^3.0.1",
     "pino": "^4.8.2",
-    "serializr": "^1.1.14"
+    "serializr": "^1.1.14",
+    "tough-cookie": "^2.3.3"
   }
 }
