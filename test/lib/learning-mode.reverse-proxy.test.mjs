@@ -56,6 +56,7 @@ const result = (async () => {
         const recorded = checkRequestRecorded[0];
         expect(recorded.id).is.not.empty;
         expect(recorded.project).to.be.equal("reverseProxyTestProject");
+        expect(recorded.timestamp).to.be.a("date");
         expect(recorded.request.method).to.be.equal("GET");
         expect(recorded.request.path).to.be.equal("/test1");
         expect(recorded.request.fullPath).to.be.equal("/test1");

@@ -49,7 +49,7 @@ import './lib/mock-server.test'; count++;
 import './lib/learning-mode.db.service.test'; count++;
 import './lib/learning-mode.service.test'; count++;
 import './lib/learning-mode.reverse-proxy.test'; count++;
-
+import './lib/api-server.test'; count++;
 
 (async () => {
     const tests = await _findTests();
