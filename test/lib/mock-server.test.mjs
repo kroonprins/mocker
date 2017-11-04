@@ -1,7 +1,7 @@
 import chai from 'chai';
-import chai_string from 'chai-string';
+import chaiString from 'chai-string';
 const expect = chai.expect;
-chai.use(chai_string);
+chai.use(chaiString);
 
 import portastic from 'portastic';
 import axios from 'axios';
@@ -84,5 +84,5 @@ const result = (async () => {
 
     } finally {
         mockServer.stop();
-    }    
+    }
 })();

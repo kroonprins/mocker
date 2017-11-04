@@ -10,6 +10,7 @@ expect(config.learningModeForwardProxyServerPort).to.equal(3003);
 expect(config.project).to.equal("x");
 expect(config.projectsFileLocation).to.equal("./projects/projects.yaml");
 expect(config.startupLogLevel).to.equal("info");
+expect(config.learningModeDb).to.equal("./test/tmp/test.db");
 
 config.projectsFileLocation = './test/projects/test.yaml';
 expect(config.projectsFileLocation).to.equal("./test/projects/test.yaml");

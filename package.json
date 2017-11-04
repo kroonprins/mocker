@@ -6,14 +6,16 @@
   "main": "index.js",
   "scripts": {
     "//": "Use extremly basic runner for tests until one of the frameworks supports mjs...",
-    "test": "export MOCKER_PROJECT=x && node --experimental-modules test/runner.mjs",
-    "postinstall": "mkdir -p lib && ln -f ./node_modules/serializr/lib/es/serializr.js lib/serializr-es6-module-loader.mjs"
+    "test": "export MOCKER_PROJECT=x && export MOCKER_LEARNING_MODE_DB=./test/tmp/test.db && node --experimental-modules test/runner.mjs; rm -fr ./test/tmp",
+    "postinstall": "mkdir -p lib && ln -f ./node_modules/serializr/lib/es/serializr.js lib/serializr-es6-module-loader.mjs",
+    "version-check": "./node_modules/npm-check-updates/bin/npm-check-updates"
   },
   "author": "kroonprins",
   "license": "ISC",
   "devDependencies": {
     "axios": "^0.17.0",
     "chai": "^4.1.2",
+    "chai-exclude": "^1.0.2",
     "chai-string": "^1.4.0",
     "npm-check-updates": "^2.13.0",
     "portastic": "^1.0.1"
@@ -22,14 +24,14 @@
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
-    "express-async-errors": "^2.1.0",
+    "express-async-errors": "^2.1.1",
     "glob": "^7.1.2",
     "http-proxy-middleware": "^0.17.4",
     "js-yaml": "^3.10.0",
     "mem": "^3.0.0",
     "nedb": "^1.8.0",
     "nunjucks": "^3.0.1",
-    "pino": "^4.8.2",
+    "pino": "^4.9.0",
     "serializr": "^1.1.14",
     "tough-cookie": "^2.3.3"
   }

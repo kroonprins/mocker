@@ -46,7 +46,9 @@ import './lib/rule-service.test'; count++;
 import './lib/templating-service.test'; count++;
 import './lib/administration-server.test'; count++;
 import './lib/mock-server.test'; count++;
-
+import './lib/learning-mode.db.service.test'; count++;
+import './lib/learning-mode.service.test'; count++;
+import './lib/learning-mode.reverse-proxy.test'; count++;
 
 
 (async () => {

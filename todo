@@ -7,5 +7,6 @@
 * make path and method in request of a rule arrays?
 * travis + publish to npm
 * make it possible to bind all servers to an ip instead of localhost
-* review how services are now made singletons => there should be a better pattern
+* review how services are now made singletons => there should be a better pattern (di container?)
 * serializr also has callback functions => check if promisify
+* make start/stop of all servers return a promise (cfr test-server.mjs) (+ update test mock-server.test.mjs to wait for server start instead of the pinging)
