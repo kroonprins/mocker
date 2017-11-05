@@ -1,7 +1,7 @@
 * model validator (maybe https://www.npmjs.com/package/class-validator ?)
 * allow latency / throttling simulation
 * make it possible to make response in a rule conditional (=> avoid having to put the condition in several fields (e.g. statusCode and body are different depending some condition))
-* add linting
+* eslint => config in yaml instead of json?
 * file download/upload mocking?
 * investigate pouchdb as alternative to nedb (because last commit for nedb more than 2 years ago). Related to it: investigate if none of the bigger odm frameworks (e.g. mongoose / waterline) support an embedded db.
 * make path and method in request of a rule arrays?

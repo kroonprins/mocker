@@ -1,16 +1,16 @@
-import chai from 'chai';
-const expect = chai.expect;
+import chai from 'chai'
+import { config } from './../../lib/config'
 
-import { config } from './../../lib/config';
+const expect = chai.expect
 
-expect(config.mockServerPort).to.equal(3000);
-expect(config.administrationServerPort).to.equal(3001);
-expect(config.learningModeReverseProxyServerPort).to.equal(3002);
-expect(config.learningModeForwardProxyServerPort).to.equal(3003);
-expect(config.project).to.equal("x");
-expect(config.projectsFileLocation).to.equal("./projects/projects.yaml");
-expect(config.startupLogLevel).to.equal("info");
-expect(config.learningModeDb).to.equal("./test/tmp/test.db");
+expect(config.mockServerPort).to.equal(3000)
+expect(config.administrationServerPort).to.equal(3001)
+expect(config.learningModeReverseProxyServerPort).to.equal(3002)
+expect(config.learningModeForwardProxyServerPort).to.equal(3003)
+expect(config.project).to.equal('x')
+expect(config.projectsFileLocation).to.equal('./projects/projects.yaml')
+expect(config.startupLogLevel).to.equal('info')
+expect(config.learningModeDb).to.equal('./test/tmp/test.db')
 
-config.projectsFileLocation = './test/projects/test.yaml';
-expect(config.projectsFileLocation).to.equal("./test/projects/test.yaml");
+config.projectsFileLocation = './test/projects/test.yaml'
+expect(config.projectsFileLocation).to.equal('./test/projects/test.yaml')

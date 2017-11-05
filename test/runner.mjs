@@ -40,6 +40,7 @@ const _runTests = async () => {
 // horrid workaround upon the workaround :)
 let count = 0;
 import './lib/config.test'; count++;
+import './lib/util.test'; count++;
 import './lib/logging.test'; count++;
 import './lib/project-service.test'; count++;
 import './lib/rule-service.test'; count++;
