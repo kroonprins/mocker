@@ -9,8 +9,8 @@
     "test": "export MOCKER_PROJECT=x && export MOCKER_LEARNING_MODE_DB=./test/tmp/test.db && node --experimental-modules test/runner.mjs; rm -fr ./test/tmp",
     "postinstall": "mkdir -p ./lib/mjs_workaround && ln -f ./node_modules/serializr/lib/es/serializr.js lib/mjs_workaround/serializr-es6-module-loader.mjs",
     "version-check": "./node_modules/npm-check-updates/bin/npm-check-updates",
-    "lint-check": "eslint index.mjs lib/*.mjs test/**/*.mjs",
-    "lint-fix": "eslint index.mjs lib/*.mjs test/**/*.mjs --fix"
+    "lint-check": "eslint index.mjs lib/*.mjs test/**.mjs",
+    "lint-fix": "eslint index.mjs lib/*.mjs test/**.mjs --fix"
   },
   "author": "kroonprins",
   "license": "MIT",
@@ -41,6 +41,7 @@
     "nedb": "^1.8.0",
     "nunjucks": "^3.0.1",
     "pino": "^4.9.0",
+    "rimraf": "^2.6.2",
     "serializr": "^1.1.14",
     "tough-cookie": "^2.3.3"
   }

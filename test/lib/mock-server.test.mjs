@@ -4,6 +4,7 @@ import portastic from 'portastic'
 import axios from 'axios'
 import { config } from './../../lib/config'
 import { MockServer } from './../../lib/mock-server'
+import { ProjectService } from './../../lib/project-service'
 
 const expect = chai.expect
 chai.use(chaiString)
@@ -18,7 +19,7 @@ const test = async () => {
 
   const mockServer = new MockServer(availablePort, 'test_glob')
   try {
-    config.projectsFileLocation = './test/projects/tests.yaml'
+    ProjectService.updateProjectsFileLocation('./test/projects/tests.yaml')
 
     mockServer.start()
 

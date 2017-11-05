@@ -1,5 +1,5 @@
 import chai from 'chai'
-import { overwriteFile, readFileAsync } from './../../lib/util'
+import { overwriteFile, readFileAsync, rimrafAsync } from './../../lib/util'
 
 const expect = chai.expect
 
@@ -17,6 +17,9 @@ const test = async () => {
 
   const overwrittenTestFile1content = await readFileAsync(testFile1)
   expect(overwrittenTestFile1content.toString()).to.be.equal('test')
+
+  // cleanup
+  await rimrafAsync(tempDir)
 }
 
 test()

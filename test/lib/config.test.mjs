@@ -12,5 +12,5 @@ expect(config.projectsFileLocation).to.equal('./projects/projects.yaml')
 expect(config.startupLogLevel).to.equal('info')
 expect(config.learningModeDb).to.equal('./test/tmp/test.db')
 
-config.projectsFileLocation = './test/projects/test.yaml'
-expect(config.projectsFileLocation).to.equal('./test/projects/test.yaml')
+config.projectsFileLocation = './test/projects/tests.yaml'
+expect(config.projectsFileLocation).to.equal('./test/projects/tests.yaml')

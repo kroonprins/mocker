@@ -1,0 +1,7 @@
+projects:
+  - name: createdProject1
+    rules: []
+  - name: createdProject2
+    rules:
+      - a
+      - b
