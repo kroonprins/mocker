@@ -3,4 +3,10 @@ import { logger } from './../../lib/logging'
 
 const expect = chai.expect
 
-expect(logger.getLevel()).to.equal('info')
+const test = () => {
+  expect(logger.getLevel()).to.equal('info')
+}
+
+export {
+  test
+}

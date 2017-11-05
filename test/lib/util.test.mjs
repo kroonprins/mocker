@@ -22,4 +22,6 @@ const test = async () => {
   await rimrafAsync(tempDir)
 }
 
-test()
+export {
+  test
+}

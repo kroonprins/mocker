@@ -26,4 +26,6 @@ const test = async () => {
   expect(resultForNunjucks).to.be.equal('Hello world')
 }
 
-test()
+export {
+  test
+}

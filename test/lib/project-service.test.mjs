@@ -5,8 +5,8 @@ const expect = chai.expect
 
 // could split this up so that not all test run synchronously
 const test = async () => {
-
   ProjectService.updateProjectsFileLocation('./test/projects/tests.yaml')
+
   const allProjects = await ProjectService.listAllProjects()
   expect(allProjects.length).to.be.equal(7)
   expect(allProjects).to.deep.equal([
@@ -46,7 +46,7 @@ const test = async () => {
   try {
     await ProjectService.listRules('testx1')
   } catch (e) {
-    expect(e.message).to.be.equal('The project with name testx1 is not found')
+    expect(e.message).to.be.equal('The project with name testx1 does not exist')
     exceptionThrown = true
   }
   expect(exceptionThrown).to.be.equal(true)
@@ -131,10 +131,39 @@ const test = async () => {
     }
   })
 
-  // const crudProjectTestFile = './test/projects/crud_test.yaml'
-  // await ProjectService.createProject('createdProject1', undefined, crudProjectTestFile)
-  // await ProjectService.createProject('createdProject2', [ 'a', 'b' ], crudProjectTestFile)
+  const crudProjectTestFile = './test/projects/crud_test.yaml'
+  ProjectService.updateProjectsFileLocation(crudProjectTestFile)
+  await Promise.all([
+    ProjectService.createProject('createdProject1'),
+    ProjectService.createProject('createdProject2'),
+    ProjectService.createProject('createdProject3')
+  ])
 
+  let exceptionThrownForAlreadyCreatedProject = false
+  try {
+    await ProjectService.createProject('createdProject1')
+  } catch (e) {
+    expect(e.message).to.be.equal('The project with name createdProject1 already exists')
+    exceptionThrownForAlreadyCreatedProject = true
+  }
+  expect(exceptionThrownForAlreadyCreatedProject).to.be.equal(true)
+
+  let exceptionThrownForDeletingProjectThatDoesNotExist = false
+  try {
+    await ProjectService.removeProject('createdProject4')
+  } catch (e) {
+    expect(e.message).to.be.equal('The project with name createdProject4 does not exist')
+    exceptionThrownForDeletingProjectThatDoesNotExist = true
+  }
+  expect(exceptionThrownForDeletingProjectThatDoesNotExist).to.be.equal(true)
+
+  await Promise.all([
+    ProjectService.removeProject('createdProject1'),
+    ProjectService.removeProject('createdProject2'),
+    ProjectService.removeProject('createdProject3')
+  ])
 }
 
-test()
+export {
+  test
+}

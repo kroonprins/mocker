@@ -114,4 +114,6 @@ const test = async () => {
   }
 }
 
-test()
+export {
+  test
+}

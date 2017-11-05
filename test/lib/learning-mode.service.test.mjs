@@ -38,4 +38,6 @@ const test = async () => {
   await LearningModeService.removeAll('project_learningModeService')
 }
 
-test()
+export {
+  test
+}

@@ -30,4 +30,6 @@ const test = async () => {
   expect(rule.response.templatingEngine).to.be.equal('nunjucks')
 }
 
-test()
+export {
+  test
+}

@@ -45,4 +45,6 @@ const test = async () => {
   expect(exceptionThrown).to.be.equal(true)
 }
 
-test()
+export {
+  test
+}
