@@ -70,7 +70,7 @@ const runTest = (testFn) => {
 
   const tests = await _findTests()
   if (tests.length !== count) {
-    // throw new Error(`It seems some of the test have not been added in the runner: ${tests.length} <=> ${count}`)
+    throw new Error(`It seems some of the test have not been added in the runner: ${tests.length} <=> ${count}`)
   }
 })().catch((e) => {
   console.error(e)

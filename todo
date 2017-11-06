@@ -11,3 +11,6 @@
 * serializr also has callback functions => check if promisify
 * make start/stop of all servers return a promise (cfr test-server.mjs) (+ update test mock-server.test.mjs to wait for server start instead of the pinging)
 * maybe add watch on yaml files to refresh project memory model when file system changes
+* make clustering of mock server possible
+* some pretty horrifying object cloning going on => investigate immutable structures (at first sight not straightforward with classes)
+* check out chai-as-promised (mainly to see if we can't improve the tests where we check on an expected exception to be thrown for async function (see https://github.com/chaijs/chai/issues/415))
