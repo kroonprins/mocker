@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+npm run lint-check
+if [ "$?" != "0" ]; then
+  echo
+  echo
+  echo "Fix linting issues before trying to commit again."
+  exit 1
+fi
+
+npm test
+if [ "$?" != "0" ]; then
+  echo
+  echo
+  echo "There are unit tests that failed. Fix them before trying to commit again."
+  exit 2
+fi
+
