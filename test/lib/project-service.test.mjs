@@ -2,6 +2,7 @@ import chai from 'chai'
 import { Project, ProjectRule } from './../../lib/project-model'
 import { Rule, Request, Response } from './../../lib/rule-model'
 import { ProjectService } from './../../lib/project-service'
+import { readFileAsync } from './../../lib/util'
 
 const expect = chai.expect
 
@@ -134,6 +135,7 @@ const test = async () => {
   })
 
   const crudProjectTestFile = './test/projects/crud_test.yaml'
+
   ProjectService.updateProjectsFileLocation(crudProjectTestFile)
   await Promise.all([
     ProjectService.createProject('createdProject1'),
@@ -275,6 +277,15 @@ const test = async () => {
   await ProjectService.updateProjectRule('createdProject1', newRule.rule.name, newRule)
 
   await ProjectService.removeProjectRule('createdProject1', 'test_rule 1')
+
+  await ProjectService.createProjectRule('createdProject3', newRule)
+  await ProjectService.createProjectRule('updatedProject2', newRule)
+
+  await ProjectService.removeProjectRule('createdProject3', newRule.rule.name)
+
+  newRule.location = './test/tmp_rules/test_rule_for_created_project_3.yaml'
+  newRule.rule.name = 'test_rule 3'
+  await ProjectService.updateProjectRule('createdProject1', 'test_rule 2', newRule)
 
   await Promise.all([
     ProjectService.removeProject('createdProject1'),
