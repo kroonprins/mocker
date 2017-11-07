@@ -1,9 +1,7 @@
 import chai from 'chai'
 import { Project, ProjectRule } from './../../lib/project-model'
-import { Rule, Request, Response } from './../../lib/rule-model'
+import { Rule, Request, Response, Header, Cookie } from './../../lib/rule-model'
 import { ProjectService } from './../../lib/project-service'
-import { readFileAsync } from './../../lib/util'
-
 const expect = chai.expect
 
 // could split this up so that not all test run synchronously
@@ -11,8 +9,8 @@ const test = async () => {
   ProjectService.updateProjectsFileLocation('./test/projects/tests.yaml')
 
   const allProjects = await ProjectService.listProjects()
-  expect(allProjects.length).to.be.equal(7)
-  expect(allProjects).to.deep.equal([
+  expect(Object.keys(allProjects).length).to.be.equal(7)
+  expect(Object.keys(allProjects)).to.deep.equal([
     'test_one_file',
     'test_glob',
     'test_multiple_files',
@@ -20,30 +18,76 @@ const test = async () => {
     'test_glob_no_match',
     'test_file_does_not_exist',
     'test_one_file_does_not_exist'])
+  expect(allProjects['test_glob'].rules.length).to.be.equal(3)
+  expect(allProjects['test_glob'].rules[1]).to.deep.equal(new ProjectRule(
+    './test/rules/test_rule_2.yaml', new Rule(
+      'testRule2',
+      new Request('/hello2', 'put'),
+      new Response(
+        'nunjucks',
+        'application/json',
+        '200',
+        [],
+        [],
+        '{\n  "respo": "Test rule 2: {{req.body.input}}"\n}\n'
+      )
+    )
+  ))
 
   const listProjectRules = await ProjectService.listProjectRules('test_glob', true)
   expect(listProjectRules.length).to.be.equal(3)
-  expect(listProjectRules).to.deep.equal([{
-    location: './test/rules/test_rule_1.yaml',
-    rule: {
-      name: 'testRule1',
-      request: { path: '/hello1/:id', method: 'get' }
-    }
-  },
-  {
-    location: './test/rules/test_rule_2.yaml',
-    rule: {
-      name: 'testRule2',
-      request: { path: '/hello2', method: 'put' }
-    }
-  },
-  {
-    location: './test/rules/test_rule_3.yaml',
-    rule: {
-      name: 'testRule3',
-      request: { path: '/hello3/:id', method: 'get' }
-    }
-  }])
+  expect(listProjectRules[0]).to.deep.equal(new ProjectRule(
+    './test/rules/test_rule_1.yaml', new Rule(
+      'testRule1',
+      new Request('/hello1/:id', 'get'),
+      new Response(
+        'nunjucks',
+        'application/json',
+        '{% if req.params.id > 5 %}400{% else %}200{% endif %}',
+        [
+          new Header('X-Powered-By', 'mocker'),
+          new Header('X-positivo', 'jawohl'),
+          new Header('X-zeker', 'klahr'),
+          new Header('X-yup', '{{req.query.q}}')
+        ],
+        [
+          new Cookie('koekske', 'jummie', { secure: true }),
+          new Cookie('only', 'http', { httpOnly: true })
+        ],
+        '{\n  "respo": "Test rule 1: {{req.query.q}} / {{req.params.id}}"\n}\n'
+      )
+    )
+  ))
+  expect(listProjectRules[1]).to.deep.equal(new ProjectRule(
+    './test/rules/test_rule_2.yaml', new Rule(
+      'testRule2',
+      new Request('/hello2', 'put'),
+      new Response(
+        'nunjucks',
+        'application/json',
+        '200',
+        [],
+        [],
+        '{\n  "respo": "Test rule 2: {{req.body.input}}"\n}\n'
+      )
+    )
+  ))
+  expect(listProjectRules[2]).to.deep.equal(new ProjectRule(
+    './test/rules/test_rule_3.yaml', new Rule(
+      'testRule3',
+      new Request('/hello3/:id', 'get'),
+      new Response(
+        'none',
+        'application/json',
+        '200',
+        [
+          new Header('X-yup', '{{req.query.q}}')
+        ],
+        [],
+        '{\n  "respo": "Test rule 3: {{req.query.q}} / {{req.params.id}}"\n}\n'
+      )
+    )
+  ))
 
   let exceptionThrown = false
   try {
@@ -137,11 +181,14 @@ const test = async () => {
   const crudProjectTestFile = './test/projects/crud_test.yaml'
 
   ProjectService.updateProjectsFileLocation(crudProjectTestFile)
-  await Promise.all([
+  const createdProjects = await Promise.all([
     ProjectService.createProject('createdProject1'),
     ProjectService.createProject('createdProject2'),
     ProjectService.createProject('createdProject3')
   ])
+  expect(createdProjects[0].name).to.be.equal('createdProject1')
+  expect(createdProjects[1].name).to.be.equal('createdProject2')
+  expect(createdProjects[2].name).to.be.equal('createdProject3')
 
   let exceptionThrownForAlreadyCreatedProject = false
   try {
@@ -286,6 +333,8 @@ const test = async () => {
   newRule.location = './test/tmp_rules/test_rule_for_created_project_3.yaml'
   newRule.rule.name = 'test_rule 3'
   await ProjectService.updateProjectRule('createdProject1', 'test_rule 2', newRule)
+
+  // TODO is there a way that can actually be checked that the file content is correct (considering that the writes to the file are async)?
 
   await Promise.all([
     ProjectService.removeProject('createdProject1'),

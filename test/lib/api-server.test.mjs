@@ -30,9 +30,48 @@ const test = async () => {
       'test_multiple_glob',
       'test_glob_no_match',
       'test_file_does_not_exist',
-      'test_one_file_does_not_exist'])
+      'test_one_file_does_not_exist'
+    ])
 
-    const rules = await axios.get(`http://localhost:${availablePort}/api/rules/test_glob`)
+    const createdProject = await axios.post(`http://localhost:${availablePort}/api/projects`, {
+      name: 'newProject'
+    })
+    expect(createdProject.status).to.be.equal(201)
+    expect(createdProject.data).to.deep.equal({
+      name: 'newProject'
+    })
+    expect(createdProject.headers['location']).to.be.equal('/api/projects/newProject/rules')
+
+    const listProjectsAfterNewProject = await axios.get(`http://localhost:${availablePort}/api/projects`)
+    expect(listProjectsAfterNewProject.status).to.be.equal(200)
+    expect(listProjectsAfterNewProject.data).to.deep.equal([
+      'test_one_file',
+      'test_glob',
+      'test_multiple_files',
+      'test_multiple_glob',
+      'test_glob_no_match',
+      'test_file_does_not_exist',
+      'test_one_file_does_not_exist',
+      'newProject'
+    ])
+
+    const removedProject = await axios.delete(`http://localhost:${availablePort}/api/projects/newProject`)
+    expect(removedProject.status).to.be.equal(204)
+    expect(removedProject.data).to.deep.equal('')
+
+    const listProjectsAfterRemovedProject = await axios.get(`http://localhost:${availablePort}/api/projects`)
+    expect(listProjectsAfterRemovedProject.status).to.be.equal(200)
+    expect(listProjectsAfterRemovedProject.data).to.deep.equal([
+      'test_one_file',
+      'test_glob',
+      'test_multiple_files',
+      'test_multiple_glob',
+      'test_glob_no_match',
+      'test_file_does_not_exist',
+      'test_one_file_does_not_exist'
+    ])
+
+    const rules = await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules`)
     expect(rules.status).to.be.equal(200)
     expect(rules.data).to.deep.equal([{
       location: './test/rules/test_rule_1.yaml',
@@ -56,7 +95,7 @@ const test = async () => {
       }
     }])
 
-    const rule = await axios.get(`http://localhost:${availablePort}/api/rules/test_glob/testRule1`)
+    const rule = await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules/testRule1`)
     expect(rule.status).to.be.equal(200)
     expect(rule.data).to.deep.equal({
       location: './test/rules/test_rule_1.yaml',
