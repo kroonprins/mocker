@@ -1,7 +1,6 @@
 import chai from 'chai'
 import portastic from 'portastic'
 import axios from 'axios'
-import { config } from './../../lib/config'
 import { ApiServer } from './../../lib/api-server'
 import { ProjectService } from './../../lib/project-service'
 
@@ -371,7 +370,6 @@ const test = async () => {
         request: { path: '/hello3/:id', method: 'get' }
       }
     }])
-
   } finally {
     apiServer.stop()
   }

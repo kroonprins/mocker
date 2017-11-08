@@ -2,7 +2,6 @@ import chai from 'chai'
 import chaiString from 'chai-string'
 import portastic from 'portastic'
 import axios from 'axios'
-import { config } from './../../lib/config'
 import { MockServer } from './../../lib/mock-server'
 import { ProjectService } from './../../lib/project-service'
 
