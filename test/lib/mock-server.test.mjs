@@ -23,7 +23,7 @@ const test = async () => {
 
     mockServer.start()
 
-    // Wait for server to be completely up
+    // Test the health check
     const MAX_TRIES = 10
     let numberOfTries = 0
     while (true) {

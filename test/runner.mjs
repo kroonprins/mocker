@@ -1,6 +1,6 @@
 // Temporary workaround because it does not seem possible to use test frameworks like mocha/ava/... with modules
 
-import { globAsync } from './../lib/util'
+import { globAsync } from './../lib/fs-util'
 
 const _findTests = async () => {
   return globAsync('./**/*.test.mjs')

@@ -45,8 +45,7 @@ const test = async () => {
     expect(proxiedRequestToBeEqualToTestServerResponse.status).to.be.equal(testServerResponse.status)
     expect(proxiedRequestToBeEqualToTestServerResponse.data).to.be.equal(testServerResponse.data)
 
-    // TODO hoping for https://github.com/mesaugat/chai-exclude/pull/5/files
-    // expect(proxiedRequestToBeEqualToTestServerResponse.headers).excluding('date').to.deep.equal(testServerResponse.headers);
+    expect(proxiedRequestToBeEqualToTestServerResponse.headers).excluding('date').to.deep.equal(testServerResponse.headers)
 
     const checkRequestRecorded = await LearningModeService.findRecordedRequests('reverseProxyTestProject')
     expect(checkRequestRecorded.length).to.be.equal(1)

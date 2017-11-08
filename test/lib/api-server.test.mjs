@@ -55,7 +55,28 @@ const test = async () => {
       'newProject'
     ])
 
-    const removedProject = await axios.delete(`http://localhost:${availablePort}/api/projects/newProject`)
+    const updatedProject = await axios.put(`http://localhost:${availablePort}/api/projects/newProject`, {
+      name: 'updatedProject'
+    })
+    expect(updatedProject.status).to.be.equal(200)
+    expect(updatedProject.data).to.deep.equal({
+      name: 'updatedProject'
+    })
+
+    const listProjectsAfterUpdateProject = await axios.get(`http://localhost:${availablePort}/api/projects`)
+    expect(listProjectsAfterUpdateProject.status).to.be.equal(200)
+    expect(listProjectsAfterUpdateProject.data).to.deep.equal([
+      'test_one_file',
+      'test_glob',
+      'test_multiple_files',
+      'test_multiple_glob',
+      'test_glob_no_match',
+      'test_file_does_not_exist',
+      'test_one_file_does_not_exist',
+      'updatedProject'
+    ])
+
+    const removedProject = await axios.delete(`http://localhost:${availablePort}/api/projects/updatedProject`)
     expect(removedProject.status).to.be.equal(204)
     expect(removedProject.data).to.deep.equal('')
 
@@ -145,6 +166,212 @@ const test = async () => {
         }
       }
     })
+
+    const createdRule = await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/rules`, {
+      location: './test/rules/created_test_rule.yaml',
+      rule: {
+        name: 'createdTestRule',
+        request: { path: '/helloTest', method: 'get' },
+        response:
+        {
+          templatingEngine: 'nunjucks',
+          contentType: 'text/plain',
+          statusCode: 400,
+          headers: [
+            {
+              name: 'X-one',
+              value: 'one'
+            },
+            {
+              name: 'X-two',
+              value: 'two'
+            }
+          ],
+          cookies: [
+            {
+              name: 'cookie',
+              value: 'monster',
+              properties: {
+                httpOnly: true,
+                path: '/helloTest'
+              }
+            }
+          ],
+          body: 'Rule created'
+        }
+      }
+    })
+    expect(createdRule.status).to.be.equal(201)
+    expect(createdRule.data).to.deep.equal({
+      location: './test/rules/created_test_rule.yaml',
+      rule: {
+        name: 'createdTestRule',
+        request: { path: '/helloTest', method: 'get' },
+        response:
+        {
+          templatingEngine: 'nunjucks',
+          contentType: 'text/plain',
+          statusCode: 400,
+          headers: [
+            {
+              name: 'X-one',
+              value: 'one'
+            },
+            {
+              name: 'X-two',
+              value: 'two'
+            }
+          ],
+          cookies: [
+            {
+              name: 'cookie',
+              value: 'monster',
+              properties: {
+                httpOnly: true,
+                path: '/helloTest'
+              }
+            }
+          ],
+          body: 'Rule created'
+        }
+      }
+    })
+    expect(createdRule.headers['location']).to.be.equal('/api/projects/test_glob/rules/createdTestRule')
+
+    const rulesAfterNewRule = await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules`)
+    expect(rulesAfterNewRule.status).to.be.equal(200)
+    expect(rulesAfterNewRule.data).to.deep.equal([{
+      location: './test/rules/test_rule_1.yaml',
+      rule: {
+        name: 'testRule1',
+        request: { path: '/hello1/:id', method: 'get' }
+      }
+    },
+    {
+      location: './test/rules/test_rule_2.yaml',
+      rule: {
+        name: 'testRule2',
+        request: { path: '/hello2', method: 'put' }
+      }
+    },
+    {
+      location: './test/rules/test_rule_3.yaml',
+      rule: {
+        name: 'testRule3',
+        request: { path: '/hello3/:id', method: 'get' }
+      }
+    },
+    {
+      location: './test/rules/created_test_rule.yaml',
+      rule: {
+        name: 'createdTestRule',
+        request: { path: '/helloTest', method: 'get' }
+      }
+    }])
+
+    const updatedRule = await axios.put(`http://localhost:${availablePort}/api/projects/test_glob/rules/createdTestRule`, {
+      location: './test/rules/updated_test_rule.yaml',
+      rule: {
+        name: 'updatedTestRule',
+        request: { path: '/helloTestUpdate', method: 'get' },
+        response:
+        {
+          templatingEngine: 'none',
+          contentType: 'text/plain',
+          statusCode: 400,
+          headers: [
+            {
+              name: 'X-one',
+              value: 'one'
+            }
+          ],
+          cookies: [],
+          body: 'Rule updated'
+        }
+      }
+    })
+    expect(updatedRule.status).to.be.equal(200)
+    expect(updatedRule.data).to.deep.equal({
+      location: './test/rules/updated_test_rule.yaml',
+      rule: {
+        name: 'updatedTestRule',
+        request: { path: '/helloTestUpdate', method: 'get' },
+        response:
+        {
+          templatingEngine: 'none',
+          contentType: 'text/plain',
+          statusCode: 400,
+          headers: [
+            {
+              name: 'X-one',
+              value: 'one'
+            }
+          ],
+          cookies: [],
+          body: 'Rule updated'
+        }
+      }
+    })
+
+    const rulesAfterUpdatedRule = await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules`)
+    expect(rulesAfterUpdatedRule.status).to.be.equal(200)
+    expect(rulesAfterUpdatedRule.data).to.deep.equal([{
+      location: './test/rules/test_rule_1.yaml',
+      rule: {
+        name: 'testRule1',
+        request: { path: '/hello1/:id', method: 'get' }
+      }
+    },
+    {
+      location: './test/rules/test_rule_2.yaml',
+      rule: {
+        name: 'testRule2',
+        request: { path: '/hello2', method: 'put' }
+      }
+    },
+    {
+      location: './test/rules/test_rule_3.yaml',
+      rule: {
+        name: 'testRule3',
+        request: { path: '/hello3/:id', method: 'get' }
+      }
+    },
+    {
+      location: './test/rules/updated_test_rule.yaml',
+      rule: {
+        name: 'updatedTestRule',
+        request: { path: '/helloTestUpdate', method: 'get' }
+      }
+    }])
+
+    const removedRule = await axios.delete(`http://localhost:${availablePort}/api/projects/test_glob/rules/updatedTestRule`)
+    expect(removedRule.status).to.be.equal(204)
+    expect(removedRule.data).to.deep.equal('')
+
+    const rulesAfterRemovedRule = await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules`)
+    expect(rulesAfterRemovedRule.status).to.be.equal(200)
+    expect(rulesAfterRemovedRule.data).to.deep.equal([{
+      location: './test/rules/test_rule_1.yaml',
+      rule: {
+        name: 'testRule1',
+        request: { path: '/hello1/:id', method: 'get' }
+      }
+    },
+    {
+      location: './test/rules/test_rule_2.yaml',
+      rule: {
+        name: 'testRule2',
+        request: { path: '/hello2', method: 'put' }
+      }
+    },
+    {
+      location: './test/rules/test_rule_3.yaml',
+      rule: {
+        name: 'testRule3',
+        request: { path: '/hello3/:id', method: 'get' }
+      }
+    }])
+
   } finally {
     apiServer.stop()
   }
