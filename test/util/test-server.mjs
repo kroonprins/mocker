@@ -2,16 +2,17 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import 'express-async-errors'
 
-import { logger } from './../../lib/logging'
+import { PinoLogger } from './../../lib/logging'
 
 class TestServer {
   constructor (port) {
     this.port = port
     this.server = null
+    this.logger = new PinoLogger({ level: 'debug' })
   }
 
   start () {
-    logger.debug('Starting test server on port %s', this.port)
+    this.logger.debug('Starting test server on port %s', this.port)
 
     const app = express()
     app.use(cookieParser())
@@ -24,18 +25,18 @@ class TestServer {
 
     return new Promise((resolve, reject) => {
       this.server = app.listen(this.port, () => {
-        logger.info('Test server started on port %d', this.port)
+        this.logger.info('Test server started on port %d', this.port)
         resolve()
       })
     })
   }
   stop () {
-    logger.debug('Request to stop the test server')
+    this.logger.debug('Request to stop the test server')
     if (this.server != null) {
-      logger.info('Stopping the test server')
+      this.logger.info('Stopping the test server')
       return new Promise((resolve, reject) => {
         this.server.close(() => {
-          logger.info('Stopped the test server')
+          this.logger.info('Stopped the test server')
           resolve()
         })
       })

@@ -36,7 +36,7 @@ const _findTests = async () => {
 // horrid workaround upon the workaround :)
 let count = 0
 /* eslint-disable */
-import { test as testConfig } from './lib/config.test'
+import { test as testAppConfig } from './lib/app-config.test'
 import { test as testUtil } from './lib/util.test'
 import { test as testLogging } from './lib/logging.test';
 import { test as testProjectService } from './lib/project-service.test'
@@ -55,7 +55,7 @@ const runTest = (testFn) => {
 }
 
 (async () => {
-  await runTest(testConfig)
+  await runTest(testAppConfig)
   await runTest(testUtil)
   await runTest(testLogging)
   await runTest(testProjectService)

@@ -1,26 +1,24 @@
----
 projects:
   - name: test_one_file
     rules:
       - ./test/rules/test_rule_2.yaml
   - name: test_glob
     rules:
-      - ./test/rules/*.yaml
+      - ./test/rules/test_rule_1.yaml
+      - ./test/rules/test_rule_2.yaml
+      - ./test/rules/test_rule_3.yaml
   - name: test_multiple_files
     rules:
       - ./test/rules/test_rule_2.yaml
       - ./test/rules/test_rule_1.yaml
   - name: test_multiple_glob
     rules:
-      - ./test/rules/test_rule_1*
-      - ./test/rules/test_rule_2*
+      - ./test/rules/test_rule_1.yaml
+      - ./test/rules/test_rule_2.yaml
   - name: test_glob_no_match
-    rules:
-      - ./test/rules/nope*
+    rules: []
   - name: test_file_does_not_exist
-    rules:
-      - ./test/rules/nope.yaml
+    rules: []
   - name: test_one_file_does_not_exist
     rules:
-      - ./test/rules/nope.yaml
-      - ./test/rules/test_rule_2.yaml                 
+      - ./test/rules/test_rule_2.yaml

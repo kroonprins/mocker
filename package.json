@@ -6,7 +6,7 @@
   "main": "index.mjs",
   "scripts": {
     "//": "Use extremly basic runner for tests until one of the frameworks supports mjs...",
-    "test": "export MOCKER_PROJECT=x && export MOCKER_LEARNING_MODE_DB=./test/tmp/test.db && node --experimental-modules test/runner.mjs; rm -fr ./test/tmp",
+    "test": "node --experimental-modules test/runner.mjs; rm -fr ./test/tmp",
     "postinstall": "rm -fr .git/hooks && ln -fs ../.githooks/ .git/hooks; mkdir -p ./lib/mjs_workaround && ln -f ./node_modules/serializr/lib/es/serializr.js lib/mjs_workaround/serializr-es6-module-loader.mjs",
     "version-check": "npm-check-updates",
     "lint-check": "eslint index.mjs lib/*.mjs test/**/*.mjs",
@@ -19,7 +19,7 @@
     "chai": "^4.1.2",
     "chai-exclude": "^1.0.3",
     "chai-string": "^1.4.0",
-    "eslint": "^4.10.0",
+    "eslint": "^4.11.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^5.2.1",

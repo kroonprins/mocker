@@ -6,11 +6,10 @@
 * investigate pouchdb as alternative to nedb (because last commit for nedb more than 2 years ago). Related to it: investigate if none of the bigger odm frameworks (e.g. mongoose / waterline) support an embedded db.
 * make path and method in request of a rule arrays?
 * travis + publish to npm
-* make it possible to bind all servers to an ip instead of localhost
-* review how services are now made singletons => there should be a better pattern (di container?)
 * serializr also has callback functions => check if promisify
 * maybe add watch on yaml files to refresh project memory model when file system changes
 * make clustering of mock server possible
 * some pretty horrifying object cloning going on => investigate immutable structures (at first sight not straightforward with classes)
 * check out chai-as-promised (mainly to see if we can't improve the tests where we check on an expected exception to be thrown for async function (see https://github.com/chaijs/chai/issues/415))
 * jsdoc
+* specific exceptions (Fatal => 500, TechnicalValidation => 400, FunctionalValidation => 200)
