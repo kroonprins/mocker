@@ -17,7 +17,7 @@ const test = async () => {
     config.registerType(Logger, PinoLogger)
     let projectService = new ProjectService(
       new InMemoryProjectStore(
-        './test/projects/tests.yaml',
+        './test/projects/tests_update.yaml',
         new RuleService()
       ))
 
