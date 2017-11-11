@@ -1,4 +1,5 @@
 import chai from 'chai'
+import chaiExclude from 'chai-exclude'
 import portastic from 'portastic'
 import axios from 'axios'
 import { Logger, PinoLogger } from './../../lib/logging'
@@ -6,6 +7,7 @@ import { config } from './../../lib/config'
 import { AdministrationServer } from './../../lib/administration-server'
 
 const expect = chai.expect
+chai.use(chaiExclude)
 
 // could split this up so that not all test run synchronously
 const test = async () => {
@@ -43,6 +45,16 @@ const test = async () => {
       expect(testLogger.getLevel()).to.equal('debug')
       await new Promise(resolve => setTimeout(resolve, 1000))
       expect(testLogger.getLevel()).to.equal(initialLogLevel)
+
+      // Test incorrect level
+      const responseUpdateWithIncorrectLoglevel = await axios.put(`http://localhost:${availablePort}/administration/loglevel`, {
+        level: 'nope'
+      })
+      expect(responseUpdateWithIncorrectLoglevel.status).to.be.equal(200)
+      expect(responseUpdateWithIncorrectLoglevel.data).excluding('uuid').to.deep.equal({
+        error: true,
+        msg: 'The given level nope is not valid. It should be one of [error,warn,info,debug,trace]'
+      })
     } finally {
       administrationServer.stop()
     }

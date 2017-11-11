@@ -6,11 +6,12 @@
   "main": "index.mjs",
   "scripts": {
     "//": "Use extremly basic runner for tests until one of the frameworks supports mjs...",
-    "test": "node --experimental-modules test/runner.mjs; rm -fr ./test/tmp",
+    "test": "node --experimental-modules test/runner.mjs; rc=$?; rm -fr ./test/tmp; exit $rc",
     "postinstall": "rm -fr .git/hooks && ln -fs ../.githooks/ .git/hooks; mkdir -p ./lib/mjs_workaround && ln -f ./node_modules/serializr/lib/es/serializr.js lib/mjs_workaround/serializr-es6-module-loader.mjs",
     "version-check": "npm-check-updates",
     "lint-check": "eslint index.mjs lib/*.mjs test/**/*.mjs",
-    "lint-fix": "eslint index.mjs lib/*.mjs test/**/*.mjs --fix"
+    "lint-fix": "eslint index.mjs lib/*.mjs test/**/*.mjs --fix",
+    "doc": "jsdoc -c jsdoc-conf.json"
   },
   "author": "kroonprins",
   "license": "MIT",
@@ -25,6 +26,7 @@
     "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
+    "jsdoc": "^3.5.5",
     "npm-check-updates": "^2.13.0",
     "portastic": "^1.0.1"
   },
@@ -43,6 +45,7 @@
     "pino": "^4.10.0",
     "rimraf": "^2.6.2",
     "serializr": "^1.1.14",
-    "tough-cookie": "^2.3.3"
+    "tough-cookie": "^2.3.3",
+    "uuid": "^3.1.0"
   }
 }

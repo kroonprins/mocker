@@ -1,4 +1,5 @@
 node_modules/
+generated-jsdoc/
 lib/serializr-es6-module-loader.mjs
 data/
 tmp/

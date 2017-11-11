@@ -1,0 +1,10 @@
+{
+  "recurseDepth": 2,
+  "source": {
+      "include": "lib/",
+      "includePattern": ".+\\.mjs?$"
+  },
+  "opts": {
+    "destination": "generated-jsdoc/"
+  }
+}

@@ -34,7 +34,14 @@ const _findTests = async () => {
 
 // -------------------
 // horrid workaround upon the workaround :)
-let count = 0
+
+class TestFailuresError extends Error {
+  constructor (message, failures = []) {
+    super(message)
+    this.failures = failures
+  }
+}
+
 /* eslint-disable */
 import { test as testAppConfig } from './lib/app-config.test'
 import { test as testUtil } from './lib/util.test'
@@ -42,6 +49,7 @@ import { test as testLogging } from './lib/logging.test';
 import { test as testProjectService } from './lib/project-service.test'
 import { test as testRuleService } from './lib/rule-service.test'
 import { test as testTemplatingService } from './lib/templating-service.test'
+import { test as testServerJsonErrorHandling } from './lib/express-error-handling-middleware.json.test'
 import { test as testAdminstrationServer } from './lib/administration-server.test'
 import { test as testMockServer } from './lib/mock-server.test'
 import { test as testLearningModeDbService } from './lib/learning-mode.db.service.test'
@@ -49,9 +57,17 @@ import { test as testLearningModeService } from './lib/learning-mode.service.tes
 import { test as testLearningModeReverseProxy } from'./lib/learning-mode.reverse-proxy.test'
 import { test as testApiServer } from './lib/api-server.test'
 /* eslint-enable */
-const runTest = (testFn) => {
-  count++
-  return testFn()
+
+let countTotal = 0
+let failures = []
+
+const runTest = async (testFn) => {
+  countTotal++
+  try {
+    return await testFn()
+  } catch (e) {
+    failures.push(e)
+  }
 }
 
 (async () => {
@@ -61,6 +77,7 @@ const runTest = (testFn) => {
   await runTest(testProjectService)
   await runTest(testRuleService)
   await runTest(testTemplatingService)
+  await runTest(testServerJsonErrorHandling)
   await runTest(testAdminstrationServer)
   await runTest(testMockServer)
   await runTest(testLearningModeDbService)
@@ -69,11 +86,22 @@ const runTest = (testFn) => {
   await runTest(testApiServer)
 
   const tests = await _findTests()
-  if (tests.length !== count) {
-    throw new Error(`It seems some of the test have not been added in the runner: ${tests.length} <=> ${count}`)
+  if (tests.length !== countTotal) {
+    throw new Error(`It seems some of the test have not been added in the runner: ${tests.length} <=> ${countTotal}`)
+  }
+  if (failures.length > 0) {
+    throw new TestFailuresError(`Some tests failed (${failures.length}/${countTotal})`, failures)
   }
 })().catch((e) => {
-  console.error(e)
+  console.error()
+  console.error(e.message)
+  console.error()
+  if (e instanceof TestFailuresError) {
+    for (let failure of e.failures) {
+      console.error(failure.stack)
+      console.error()
+    }
+  }
   process.exit(1)
 })
 
@@ -85,6 +113,6 @@ process.on('unhandledRejection', error => {
 process.on('exit', (code) => {
   if (code === 0) {
     console.log()
-    console.log(`All tests passed (${count})`)
+    console.log(`All tests passed (${countTotal})`)
   }
 })
