@@ -24,13 +24,13 @@ class ErrorTestServer {
     const app = express()
 
     app.get('/functional-validation-error', async (req, res) => {
-      throw new FunctionalValidationError('functional validation error message')
+      throw new FunctionalValidationError('functional validation error message', 'functional validation error code', { extra: 'extra functional validation data' })
     })
     app.get('/technical-validation-error', async (req, res) => {
-      throw new TechnicalValidationError('technical validation error message')
+      throw new TechnicalValidationError('technical validation error message', 'technical validation error code', { extra: 'extra technical validation data' })
     })
     app.get('/technical-error', async (req, res) => {
-      throw new TechnicalError('technical error message')
+      throw new TechnicalError('technical error message', 'technical error code', { extra: 'extra technical data' })
     })
     app.get('/unexpected-error', async (req, res) => {
       throw new Error('unexpected error message')
@@ -82,7 +82,11 @@ const test = async () => {
     expect(functionalErrorResponse.status).to.be.equal(200)
     expect(functionalErrorResponse.data).excluding('uuid').to.deep.equal({
       error: true,
-      msg: 'functional validation error message'
+      msg: 'functional validation error message',
+      code: 'functional validation error code',
+      data: {
+        extra: 'extra functional validation data'
+      }
     })
     expect(functionalErrorResponse.data.uuid.length).is.not.equal(0)
 
@@ -93,7 +97,11 @@ const test = async () => {
     } catch (e) {
       expect(e.response.status).to.be.equal(400)
       expect(e.response.data).excluding('uuid').to.deep.equal({
-        msg: 'technical validation error message'
+        msg: 'technical validation error message',
+        code: 'technical validation error code',
+        data: {
+          extra: 'extra technical validation data'
+        }
       })
       expect(e.response.data.uuid.length).is.not.equal(0)
       exceptionThrownForTechnicalValidationError = true
@@ -107,7 +115,11 @@ const test = async () => {
     } catch (e) {
       expect(e.response.status).to.be.equal(500)
       expect(e.response.data).excluding('uuid').to.deep.equal({
-        msg: 'technical error message'
+        msg: 'technical error message',
+        code: 'technical error code',
+        data: {
+          extra: 'extra technical data'
+        }
       })
       expect(e.response.data.uuid.length).is.not.equal(0)
       exceptionThrownForTechnicalError = true
@@ -121,7 +133,8 @@ const test = async () => {
     } catch (e) {
       expect(e.response.status).to.be.equal(500)
       expect(e.response.data).excluding('uuid').to.deep.equal({
-        msg: 'An unexpected error occurred'
+        msg: 'An unexpected error occurred',
+        code: 'unexpected error'
       })
       expect(e.response.data.uuid.length).is.not.equal(0)
       exceptionThrownForUnexpectedError = true

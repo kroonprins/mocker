@@ -53,7 +53,12 @@ const test = async () => {
       expect(responseUpdateWithIncorrectLoglevel.status).to.be.equal(200)
       expect(responseUpdateWithIncorrectLoglevel.data).excluding('uuid').to.deep.equal({
         error: true,
-        msg: 'The given level nope is not valid. It should be one of [error,warn,info,debug,trace]'
+        msg: 'The given level nope is not valid. It should be one of [error,warn,info,debug,trace]',
+        code: 'invalid log level',
+        data: {
+          level: 'nope',
+          supportedLevels: [ 'error', 'warn', 'info', 'debug', 'trace' ]
+        }
       })
     } finally {
       administrationServer.stop()
