@@ -9,9 +9,11 @@ const expect = chai.expect
 // could split this up so that not all test run synchronously
 const test = async () => {
   try {
-    config.registerProperty('logging.level.startup', 'debug')
-    config.registerType(Logger, PinoLogger)
-    config.registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
+    config
+      .registerProperty('logging.level.startup', 'debug')
+      .registerType(Logger, PinoLogger)
+      .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
+
     let templatingService = new TemplatingService()
 
     const templatingEngines = await templatingService.listEngines()

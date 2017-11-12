@@ -17,9 +17,11 @@ chai.use(chaiString)
 // could split this up so that not all test run synchronously
 const test = async () => {
   try {
-    config.registerProperty('logging.level.startup', 'debug')
-    config.registerType(Logger, PinoLogger)
-    config.registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
+    config
+      .registerProperty('logging.level.startup', 'debug')
+      .registerType(Logger, PinoLogger)
+      .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
+
     const templatingService = new TemplatingService()
     const projectService = new ProjectService(
       new InMemoryProjectStore(

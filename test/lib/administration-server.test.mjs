@@ -12,8 +12,10 @@ chai.use(chaiExclude)
 // could split this up so that not all test run synchronously
 const test = async () => {
   try {
-    config.registerProperty('logging.level.startup', 'info')
-    config.registerType(Logger, PinoLogger)
+    config
+      .registerProperty('logging.level.startup', 'info')
+      .registerType(Logger, PinoLogger)
+
     const testLogger = config.getClassInstance(Logger, { id: 'test-logger' })
 
     const availablePort = (await portastic.find({

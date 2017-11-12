@@ -8,8 +8,10 @@ const expect = chai.expect
 // could split this up so that not all test run synchronously
 const test = async () => {
   try {
-    config.registerProperty('logging.level.startup', 'debug')
-    config.registerType(Logger, PinoLogger)
+    config
+      .registerProperty('logging.level.startup', 'debug')
+      .registerType(Logger, PinoLogger)
+
     let ruleService = new RuleService()
 
     let exceptionThrownBecauseFileDoesNotExist = false

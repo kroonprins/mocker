@@ -7,8 +7,9 @@ const expect = chai.expect
 
 const test = () => {
   try {
-    config.registerProperty('logging.level.startup', 'warn')
-    config.registerType(Logger, PinoLogger)
+    config
+      .registerProperty('logging.level.startup', 'warn')
+      .registerType(Logger, PinoLogger)
 
     // create parent logger with default level
     const baseLogger = config.getClassInstance(Logger)
