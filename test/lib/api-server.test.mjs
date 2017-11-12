@@ -1,4 +1,5 @@
 import chai from 'chai'
+import chaiExclude from 'chai-exclude'
 import portastic from 'portastic'
 import axios from 'axios'
 import { ApiServer } from './../../lib/api-server'
@@ -9,6 +10,7 @@ import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 
 const expect = chai.expect
+chai.use(chaiExclude)
 
 // could split this up so that not all test run synchronously
 const test = async () => {
@@ -53,6 +55,20 @@ const test = async () => {
         name: 'newProject'
       })
       expect(createdProject.headers['location']).to.be.equal('/api/projects/newProject/rules')
+
+      const alreadyCreatedProject = await axios.post(`http://localhost:${availablePort}/api/projects`, {
+        name: 'newProject'
+      })
+      expect(alreadyCreatedProject.status).to.be.equal(200)
+      expect(alreadyCreatedProject.data).excluding('uuid').to.deep.equal({
+        error: true,
+        msg: 'The project with name newProject already exists',
+        code: 'project exists',
+        data: {
+          project: 'newProject'
+        }
+      })
+      expect(alreadyCreatedProject.data.uuid.length).is.not.equal(0)
 
       const listProjectsAfterNewProject = await axios.get(`http://localhost:${availablePort}/api/projects`)
       expect(listProjectsAfterNewProject.status).to.be.equal(200)
@@ -104,6 +120,23 @@ const test = async () => {
         'test_one_file_does_not_exist'
       ])
 
+      let exceptionThrownBecauseProjectNotFound = false
+      try {
+        await axios.get(`http://localhost:${availablePort}/api/projects/test_nope/rules`)
+      } catch (e) {
+        expect(e.response.status).to.be.equal(400)
+        expect(e.response.data).excluding('uuid').to.deep.equal({
+          msg: 'The project with name test_nope does not exist',
+          code: 'project not found',
+          data: {
+            project: 'test_nope'
+          }
+        })
+        expect(e.response.data.uuid.length).is.not.equal(0)
+        exceptionThrownBecauseProjectNotFound = true
+      }
+      expect(exceptionThrownBecauseProjectNotFound).to.be.equal(true)
+
       const rules = await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules`)
       expect(rules.status).to.be.equal(200)
       expect(rules.data).to.deep.equal([{
@@ -127,6 +160,24 @@ const test = async () => {
           request: { path: '/hello3/:id', method: 'get' }
         }
       }])
+
+      let exceptionThrownBecauseRuleNotFound = false
+      try {
+        await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules/testRuleNope`)
+      } catch (e) {
+        expect(e.response.status).to.be.equal(400)
+        expect(e.response.data).excluding('uuid').to.deep.equal({
+          msg: 'A rule with name \'testRuleNope\' does not exist for the project with name test_glob',
+          code: 'rule not found',
+          data: {
+            rule: 'testRuleNope',
+            project: 'test_glob'
+          }
+        })
+        expect(e.response.data.uuid.length).is.not.equal(0)
+        exceptionThrownBecauseRuleNotFound = true
+      }
+      expect(exceptionThrownBecauseRuleNotFound).to.be.equal(true)
 
       const rule = await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules/testRule1`)
       expect(rule.status).to.be.equal(200)
@@ -281,6 +332,67 @@ const test = async () => {
         }
       }])
 
+      const alreadyCreatedRuleWithGivenName = await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/rules`, {
+        location: './test/rules/created_test_rule_new_path.yaml',
+        rule: {
+          name: 'createdTestRule',
+          request: { },
+          response: { }
+        }
+      })
+      expect(alreadyCreatedRuleWithGivenName.status).to.be.equal(200)
+      expect(alreadyCreatedRuleWithGivenName.data).excluding('uuid').to.deep.equal({
+        error: true,
+        msg: 'A rule with name \'createdTestRule\' already exists for the project with name test_glob',
+        code: 'rule exists for given name',
+        data: {
+          project: 'test_glob',
+          rule: 'createdTestRule'
+        }
+      })
+      expect(alreadyCreatedRuleWithGivenName.data.uuid.length).is.not.equal(0)
+
+      const alreadyCreatedRuleWithGivenLocation = await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/rules`, {
+        location: './test/rules/created_test_rule.yaml',
+        rule: {
+          name: 'newCreatedTestRuleWithExistingLoction',
+          request: { },
+          response: { }
+        }
+      })
+      expect(alreadyCreatedRuleWithGivenLocation.status).to.be.equal(200)
+      expect(alreadyCreatedRuleWithGivenLocation.data).excluding('uuid').to.deep.equal({
+        error: true,
+        msg: 'A rule with location \'./test/rules/created_test_rule.yaml\' already exists for the project with name test_glob',
+        code: 'rule exists for given location',
+        data: {
+          project: 'test_glob',
+          location: './test/rules/created_test_rule.yaml'
+        }
+      })
+      expect(alreadyCreatedRuleWithGivenLocation.data.uuid.length).is.not.equal(0)
+
+      const alreadyCreatedRuleWithGivenMethodAndPath = await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/rules`, {
+        location: './test/rules/created_test_rule_new_path.yaml',
+        rule: {
+          name: 'newCreatedTestRuleWithExistingLoction',
+          request: { path: '/helloTest', method: 'get' },
+          response: { }
+        }
+      })
+      expect(alreadyCreatedRuleWithGivenMethodAndPath.status).to.be.equal(200)
+      expect(alreadyCreatedRuleWithGivenMethodAndPath.data).excluding('uuid').to.deep.equal({
+        error: true,
+        msg: 'A rule with path \'/helloTest\' and method \'get\' already exists for the project with name test_glob',
+        code: 'rule exists for given method and path',
+        data: {
+          project: 'test_glob',
+          method: 'get',
+          path: '/helloTest'
+        }
+      })
+      expect(alreadyCreatedRuleWithGivenMethodAndPath.data.uuid.length).is.not.equal(0)
+
       const updatedRule = await axios.put(`http://localhost:${availablePort}/api/projects/test_glob/rules/createdTestRule`, {
         location: './test/rules/updated_test_rule.yaml',
         rule: {
@@ -356,6 +468,24 @@ const test = async () => {
         }
       }])
 
+      let exceptionThrownForUpdateBecauseRuleNotFound = false
+      try {
+        await axios.put(`http://localhost:${availablePort}/api/projects/test_glob/rules/testRuleNope`, {})
+      } catch (e) {
+        expect(e.response.status).to.be.equal(400)
+        expect(e.response.data).excluding('uuid').to.deep.equal({
+          msg: 'A rule with name \'testRuleNope\' does not exist for the project with name test_glob',
+          code: 'rule not found',
+          data: {
+            rule: 'testRuleNope',
+            project: 'test_glob'
+          }
+        })
+        expect(e.response.data.uuid.length).is.not.equal(0)
+        exceptionThrownForUpdateBecauseRuleNotFound = true
+      }
+      expect(exceptionThrownForUpdateBecauseRuleNotFound).to.be.equal(true)
+
       const removedRule = await axios.delete(`http://localhost:${availablePort}/api/projects/test_glob/rules/updatedTestRule`)
       expect(removedRule.status).to.be.equal(204)
       expect(removedRule.data).to.deep.equal('')
@@ -383,6 +513,24 @@ const test = async () => {
           request: { path: '/hello3/:id', method: 'get' }
         }
       }])
+
+      let exceptionThrownForDeleteBecauseRuleNotFound = false
+      try {
+        await axios.delete(`http://localhost:${availablePort}/api/projects/test_glob/rules/testRuleNope`)
+      } catch (e) {
+        expect(e.response.status).to.be.equal(400)
+        expect(e.response.data).excluding('uuid').to.deep.equal({
+          msg: 'A rule with name \'testRuleNope\' does not exist for the project with name test_glob',
+          code: 'rule not found',
+          data: {
+            rule: 'testRuleNope',
+            project: 'test_glob'
+          }
+        })
+        expect(e.response.data.uuid.length).is.not.equal(0)
+        exceptionThrownForDeleteBecauseRuleNotFound = true
+      }
+      expect(exceptionThrownForDeleteBecauseRuleNotFound).to.be.equal(true)
     } finally {
       apiServer.stop()
     }

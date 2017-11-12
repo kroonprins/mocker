@@ -191,6 +191,15 @@ const test = async () => {
       }
     })
 
+    let exceptionThrownForNonExistingRule = false
+    try {
+      await projectService.retrieveProjectRule('test_glob', 'testRuleNope')
+    } catch (e) {
+      expect(e.message).to.be.equal('A rule with name \'testRuleNope\' does not exist for the project with name test_glob')
+      exceptionThrownForNonExistingRule = true
+    }
+    expect(exceptionThrownForNonExistingRule).to.be.equal(true)
+
     const crudProjectTestFile = './test/projects/crud_test.yaml'
     projectService = new ProjectService(
       new InMemoryProjectStore(
@@ -305,6 +314,15 @@ const test = async () => {
     }
     expect(exceptionThrownForUpdatingRuleForNonExistingProject).to.be.equal(true)
 
+    let exceptionThrownForUpdatingNonExistingRule = false
+    try {
+      await projectService.updateProjectRule('createdProject1', 'testRuleNope', newRule)
+    } catch (e) {
+      expect(e.message).to.be.equal('A rule with name \'testRuleNope\' does not exist for the project with name createdProject1')
+      exceptionThrownForUpdatingNonExistingRule = true
+    }
+    expect(exceptionThrownForUpdatingNonExistingRule).to.be.equal(true)
+
     newRule.rule.name = 'test_rule 1'
     let exceptionThrownForUpdatingRuleToAlreadyExistsWithGivenName = false
     try {
@@ -350,6 +368,15 @@ const test = async () => {
     newRule.location = './test/tmp_rules/test_rule_for_created_project_3.yaml'
     newRule.rule.name = 'test_rule 3'
     await projectService.updateProjectRule('createdProject1', 'test_rule 2', newRule)
+
+    let exceptionThrownForDeletingNonExistingRule = false
+    try {
+      await projectService.removeProjectRule('createdProject1', 'testRuleNope', newRule)
+    } catch (e) {
+      expect(e.message).to.be.equal('A rule with name \'testRuleNope\' does not exist for the project with name createdProject1')
+      exceptionThrownForDeletingNonExistingRule = true
+    }
+    expect(exceptionThrownForDeletingNonExistingRule).to.be.equal(true)
 
     // TODO is there a way that can actually be checked that the file content is correct (considering that the writes to the file are async)?
 
