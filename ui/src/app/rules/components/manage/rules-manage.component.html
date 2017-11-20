@@ -1,0 +1,71 @@
+<div *ngIf='projectRule'>
+  <form #manageRule="ngForm">
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label for="name" class="label">Name</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <input type="text" id="ruleName" required [(ngModel)]="projectRule.rule.name" name="name" class="input" [readonly]="isConsult()">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label for="location" class="label">Location</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <input type="text" id="location" required [(ngModel)]="projectRule.location" name="location" class="input" [readonly]="isConsult()">
+          </div>
+        </div>
+      </div>
+    </div>
+    <fieldset>
+      <legend class="label ">Request</legend>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="method" class="label">Method</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" id="ruleRequestMethod" required [(ngModel)]="projectRule.rule.request.method" name="method" class="input"
+                [readonly]="isConsult()">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="path" class="label">Path</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" id="ruleRequestPath" required [(ngModel)]="projectRule.rule.request.path" name="path" class="input" [readonly]="isConsult()">
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="field is-horizontal">
+      <div class="field-label"></div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <button type="button" (click)="removeProjectRule()" class="button is-primary" *ngIf="isConsult()">Remove</button>
+            <button type="button" (click)="startUpdateProjectRule()" class="button is-primary" *ngIf="isConsult()">Update</button>
+            <button type="button" (click)="createProjectRule()" class="button is-primary" *ngIf="isCreate()">Create</button>
+            <button type="button" (click)="updateProjectRule()" class="button is-primary" *ngIf="isUpdate()">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>

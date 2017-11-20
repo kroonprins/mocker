@@ -1,0 +1,24 @@
+<nav class="navbar is-primary">
+  <div class="navbar-brand">
+    <div class="navbar-item">
+      Mocker
+    </div>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start">
+      <div class="navbar-item">
+        <a routerLink="/projects" routerLinkActive="active">Home</a>
+      </div>
+      <div class="navbar-item">
+        <a [routerLink]="getRulesRouterLink()" routerLinkActive="active" [hidden]="!(activeProject && activeProject.name)">Rules</a>
+      </div>
+    </div>
+    <div class="navbar-end">
+      <div *ngIf="activeProject && activeProject.name" class="navbar-item">Active project {{activeProject.name}}</div>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+  <router-outlet></router-outlet>
+</main>

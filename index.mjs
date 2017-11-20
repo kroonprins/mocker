@@ -13,6 +13,8 @@ import { AdministrationServer } from './lib/administration-server'
 import { LearningModeDbService } from './lib/learning-mode.db.service'
 import { LearningModeService } from './lib/learning-mode.service'
 import { LearningModeReverseProxyServer } from './lib/learning-mode.reverse-proxy'
+import { ApiServer } from './lib/api-server.mjs'
+import { UiServer } from './lib/ui-server.mjs'
 
 const ENV = process.env
 
@@ -32,6 +34,9 @@ config
   .registerProperty('learning-mode.db.location', ENV.MOCKER_LEARNING_MODE_DB_LOCATION || './data/learning_mode.db')
   .registerProperty('api-server.port', ENV.MOCKER_API_SERVER_PORT || 3004)
   .registerProperty('api-server.bind-address', ENV.MOCKER_API_SERVER_BIND_ADDRESS || 'localhost')
+  .registerProperty('ui-server.port', ENV.MOCKER_UI_SERVER_PORT || 3005)
+  .registerProperty('ui-server.bind-address', ENV.MOCKER_UI_SERVER_BIND_ADDRESS || 'localhost')
+  .registerProperty('ui-server.statics-location', ENV.MOCKER_UI_SERVER_STATICS_LOCATION || './ui/dist')
   .registerType(Logger, PinoLogger)
   .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
   .registerInstance(TemplatingService, new TemplatingService())
@@ -43,6 +48,8 @@ config
   .registerInstance(MockServer, new MockServer())
   .registerInstance(AdministrationServer, new AdministrationServer())
   .registerInstance(LearningModeReverseProxyServer, new LearningModeReverseProxyServer())
+  .registerInstance(ApiServer, new ApiServer())
+  .registerInstance(UiServer, new UiServer())
 
 const mockServer = config.getInstance(MockServer)
 mockServer.start()
@@ -52,3 +59,9 @@ administrationServer.start()
 
 const learningModeReverseProxyServer = config.getInstance(LearningModeReverseProxyServer)
 learningModeReverseProxyServer.start()
+
+const apiServer = config.getInstance(ApiServer)
+apiServer.start()
+
+const uiServer = config.getInstance(UiServer)
+uiServer.start()

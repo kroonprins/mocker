@@ -1,0 +1,10 @@
+<div class="columns">
+  <section class="column is-5">
+    <app-rules-list [projectName]="projectName" [selectedProjectRuleName]="selectedRuleName" [refresh]="refresh" (onProjectRuleSelected)="onProjectRuleSelected($event)"></app-rules-list>
+    <button type="button" (click)="createProjectRule()">Create new rule</button>
+  </section>
+
+  <section class="column">
+    <app-rules-manage [actionType]="selectedRuleAction" [projectName]="projectName" [ruleName]="selectedRuleName" (onRuleActionCompleted)="onRuleActionCompleted($event)"></app-rules-manage>
+  </section>
+</div>

@@ -1,0 +1,5 @@
+<ul>
+  <li *ngFor='let projectRule of projectRules'>
+    <div (click)="selectProjectRule(projectRule)">Name: {{projectRule.rule.name}}, Method: {{projectRule.rule.request.method}}, Path: {{projectRule.rule.request.path}}</div>
+  </li>
+</ul>

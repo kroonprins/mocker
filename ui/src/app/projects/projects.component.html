@@ -1,0 +1,28 @@
+<ul>
+  <li *ngFor='let project of projects'>
+    <div *ngIf="!project.updateOngoing">
+      <span (click)="selectProject(project)">{{project.name}}</span>
+      <button type="button" (click)="removeProject(project)">Remove</button>
+      <button type="button" (click)="startProjectUpdate(project)">Update</button>
+    </div>
+    <div *ngIf="project.updateOngoing">
+      <form #updateProjectForm="ngForm">
+        <div>
+          <label for="name"></label>
+          <input type="text" id="projectName" required [(ngModel)]="updatedProject.name" name="name">
+          <button type="button" (click)="updateProject(project)">Update</button>
+          <button type="button" (click)="cancelProjectUpdate(project)">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </li>
+  <li>
+    <form #newProjectForm="ngForm">
+      <div>
+        <label for="name"></label>
+        <input type="text" id="projectName" required [(ngModel)]="newProject.name" name="name">
+        <button type="button" (click)="createNewProject()">Create</button>
+      </div>
+    </form>
+  </li>
+</ul>

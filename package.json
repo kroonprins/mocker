@@ -16,7 +16,7 @@
   "author": "kroonprins",
   "license": "MIT",
   "devDependencies": {
-    "axios": "^0.17.0",
+    "axios": "^0.17.1",
     "chai": "^4.1.2",
     "chai-exclude": "^1.0.3",
     "chai-string": "^1.4.0",
@@ -33,6 +33,7 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
     "express-async-errors": "^2.1.1",
     "glob": "^7.1.2",
@@ -42,7 +43,7 @@
     "mkdirp": "^0.5.1",
     "nedb": "^1.8.0",
     "nunjucks": "^3.0.1",
-    "pino": "^4.10.0",
+    "pino": "^4.10.2",
     "rimraf": "^2.6.2",
     "serializr": "^1.1.14",
     "tough-cookie": "^2.3.3",
