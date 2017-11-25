@@ -45,9 +45,10 @@ class TestFailuresError extends Error {
 /* eslint-disable */
 import { test as testAppConfig } from './lib/app-config.test'
 import { test as testUtil } from './lib/util.test'
-import { test as testLogging } from './lib/logging.test';
-import { test as testProjectService } from './lib/project-service.test'
+import { test as testLogging } from './lib/logging.test'
+import { test as testRuleValidationModel } from './lib/rule-validation-model.test'
 import { test as testRuleService } from './lib/rule-service.test'
+import { test as testProjectService } from './lib/project-service.test'
 import { test as testTemplatingService } from './lib/templating-service.test'
 import { test as testServerJsonErrorHandling } from './lib/express-error-handling-middleware.json.test'
 import { test as testAdminstrationServer } from './lib/administration-server.test'
@@ -74,8 +75,9 @@ const runTest = async (testFn) => {
   await runTest(testAppConfig)
   await runTest(testUtil)
   await runTest(testLogging)
-  await runTest(testProjectService)
+  await runTest(testRuleValidationModel)
   await runTest(testRuleService)
+  await runTest(testProjectService)
   await runTest(testTemplatingService)
   await runTest(testServerJsonErrorHandling)
   await runTest(testAdminstrationServer)

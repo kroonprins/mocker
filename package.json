@@ -32,6 +32,8 @@
     "portastic": "^1.0.1"
   },
   "dependencies": {
+    "ajv": "^5.5.0",
+    "ajv-async": "^0.1.1",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
