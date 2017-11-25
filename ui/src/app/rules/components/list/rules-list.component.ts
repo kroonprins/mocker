@@ -10,16 +10,16 @@ import { ProjectRule } from '../../model/project-rule';
 export class RulesListComponent implements OnChanges {
 
   @Input()
-  private projectName: string;
+  projectName: string;
   @Input()
-  private selectedProjectRuleName: string;
+  selectedProjectRuleName: string;
   @Input() // workaround to give a way to force refresh...
-  private refresh: boolean;
+  refresh: boolean;
 
   @Output()
-  private onProjectRuleSelected = new EventEmitter<ProjectRule>();
+  onProjectRuleSelected = new EventEmitter<ProjectRule>();
 
-  private projectRules: ProjectRule[];
+  projectRules: ProjectRule[];
 
   constructor(private ruleService: RulesService) { }
 

@@ -1,27 +1,35 @@
 <ul>
-  <li *ngFor='let project of projects'>
-    <div *ngIf="!project.updateOngoing">
-      <span (click)="selectProject(project)">{{project.name}}</span>
-      <button type="button" (click)="removeProject(project)">Remove</button>
-      <button type="button" (click)="startProjectUpdate(project)">Update</button>
+  <li *ngFor='let project of projects' class="box">
+    <div *ngIf="!project.updateOngoing" class="level">
+      <div class="level-item level-left" (click)="selectProject(project)">
+        {{project.name}}
+      </div>
+      <div class="level-right">
+        <button class="button is-primary level-item" (click)="removeProject(project)">Remove</button>
+        <button class="button is-primary level-item" (click)="startProjectUpdate(project)">Update</button>
+      </div>
     </div>
-    <div *ngIf="project.updateOngoing">
-      <form #updateProjectForm="ngForm">
-        <div>
-          <label for="name"></label>
-          <input type="text" id="projectName" required [(ngModel)]="updatedProject.name" name="name">
-          <button type="button" (click)="updateProject(project)">Update</button>
-          <button type="button" (click)="cancelProjectUpdate(project)">Cancel</button>
-        </div>
-      </form>
-    </div>
+    <!-- <div *ngIf="project.updateOngoing"> -->
+    <form #updateProjectForm="ngForm" *ngIf="project.updateOngoing" class="level">
+      <!-- <div class="field is-grouped"> -->
+      <div class="control level-item level-left">
+        <input type="text" id="projectName" required [(ngModel)]="updatedProject.name" name="name" class="input" placeholder="Project name">
+      </div>
+      <div class="control level-right">
+        <button class="button is-light level-item" (click)="cancelProjectUpdate(project)">Cancel</button>
+        <button type="submit" class="button is-primary level-item" (click)="updateProject(project)">Update</button>
+      </div>
+      <!-- </div> -->
+    </form>
+    <!-- </div> -->
   </li>
-  <li>
-    <form #newProjectForm="ngForm">
-      <div>
-        <label for="name"></label>
-        <input type="text" id="projectName" required [(ngModel)]="newProject.name" name="name">
-        <button type="button" (click)="createNewProject()">Create</button>
+  <li class="box">
+    <form #newProjectForm="ngForm" class="level">
+      <div class="control level-item level-left">
+        <input type="text" id="projectName" required [(ngModel)]="newProject.name" name="name" class="input" placeholder="New project">
+      </div>
+      <div class="control level-right">
+        <button type="submit" class="button is-primary level-item" (click)="createNewProject()">Create</button>
       </div>
     </form>
   </li>

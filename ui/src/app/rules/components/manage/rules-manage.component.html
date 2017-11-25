@@ -1,29 +1,32 @@
 <div *ngIf='projectRule'>
   <form #manageRule="ngForm">
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">
-        <label for="name" class="label">Name</label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <input type="text" id="ruleName" required [(ngModel)]="projectRule.rule.name" name="name" class="input" [readonly]="isConsult()">
+    <fieldset>
+      <legend class="label is-large">Rule</legend>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="name" class="label">Name</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" id="ruleName" required [(ngModel)]="projectRule.rule.name" name="name" class="input" [readonly]="isConsult()">
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">
-        <label for="location" class="label">Location</label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <input type="text" id="location" required [(ngModel)]="projectRule.location" name="location" class="input" [readonly]="isConsult()">
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="location" class="label">Location</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" id="location" required [(ngModel)]="projectRule.location" name="location" class="input" [readonly]="isConsult()">
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </fieldset>
     <fieldset>
       <legend class="label ">Request</legend>
       <div class="field is-horizontal">
@@ -52,19 +55,113 @@
         </div>
       </div>
     </fieldset>
-
-    <div class="field is-horizontal">
-      <div class="field-label"></div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <button type="button" (click)="removeProjectRule()" class="button is-primary" *ngIf="isConsult()">Remove</button>
-            <button type="button" (click)="startUpdateProjectRule()" class="button is-primary" *ngIf="isConsult()">Update</button>
-            <button type="button" (click)="createProjectRule()" class="button is-primary" *ngIf="isCreate()">Create</button>
-            <button type="button" (click)="updateProjectRule()" class="button is-primary" *ngIf="isUpdate()">Confirm</button>
+    <fieldset>
+      <legend class="label ">Response</legend>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="templatingEngine" class="label">Templating</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" id="ruleResponseTemplatingEngine" required [(ngModel)]="projectRule.rule.response.templatingEngine" name="templatingEngine"
+                class="input" [readonly]="isConsult()">
+            </div>
           </div>
         </div>
       </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="contentType" class="label">Content-Type</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" id="ruleResponseContentType" required [(ngModel)]="projectRule.rule.response.contentType" name="contentType"
+                class="input" [readonly]="isConsult()">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="statusCode" class="label">Status code</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" id="ruleResponseStatusCode" required [(ngModel)]="projectRule.rule.response.statusCode" name="statusCode"
+                class="input" [readonly]="isConsult()">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="headers" class="label">Headers</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" id="ruleResponseHeaders" required [(ngModel)]="projectRule.rule.response.headers" name="headers"
+                class="input" [readonly]="isConsult()">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="cookies" class="label">Cookies</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" id="ruleResponseCookies" required [(ngModel)]="projectRule.rule.response.cookies" name="cookies"
+                class="input" [readonly]="isConsult()">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="body" class="label">Body</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" id="ruleResponseBody" required [(ngModel)]="projectRule.rule.response.body" name="body"
+                class="input" [readonly]="isConsult()">
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="field is-grouped is-grouped-right">
+      <p class="control" *ngIf="isConsult()">
+          <button (click)="removeProjectRule()" class="button is-primary">Remove</button>
+      </p>
+      <p class="control" *ngIf="isConsult()">
+          <button (click)="startDuplicateProjectRule()" class="button is-primary">Duplicate</button>
+      </p>
+      <p class="control" *ngIf="isConsult()">
+          <button (click)="startUpdateProjectRule()" class="button is-primary">Update</button>
+      </p>
+      <p class="control" *ngIf="isCreate()">
+          <button (click)="createProjectRule()" class="button is-primary">Create</button>
+      </p>
+      <p class="control" *ngIf="isUpdate()">
+          <button (click)="cancelUpdateProjectRule()" class="button is-light">Cancel</button>
+      </p>
+      <p class="control" *ngIf="isUpdate()">
+          <button (click)="updateProjectRule()" class="button is-primary">Confirm</button>
+      </p>
+      <p class="control" *ngIf="isDuplicate()">
+          <button (click)="cancelDuplicateProjectRule()" class="button is-light">Cancel</button>
+      </p>
+      <p class="control" *ngIf="isDuplicate()">
+          <button (click)="duplicateProjectRule()" class="button is-primary">Confirm</button>
+      </p>
     </div>
   </form>
 

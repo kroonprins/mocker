@@ -1,5 +1,8 @@
 <ul>
-  <li *ngFor='let projectRule of projectRules'>
-    <div (click)="selectProjectRule(projectRule)">Name: {{projectRule.rule.name}}, Method: {{projectRule.rule.request.method}}, Path: {{projectRule.rule.request.path}}</div>
+  <li *ngFor='let projectRule of projectRules' (click)="selectProjectRule(projectRule)" class="box">
+    <div>
+      <div class="title is-3">{{projectRule.rule.name}}</div>
+      <div>{{projectRule.rule.request.method}} - {{projectRule.rule.request.path}}</div>
+    </div>
   </li>
 </ul>

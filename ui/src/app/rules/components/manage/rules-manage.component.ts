@@ -11,17 +11,17 @@ import { ProjectRule } from '../../model/project-rule';
 export class RulesManageComponent implements OnChanges {
 
   @Input()
-  private actionType: ActionType;
+  actionType: ActionType;
   @Input()
-  private projectName: string;
+  projectName: string;
   @Input()
-  private ruleName: string;
+  ruleName: string;
 
   @Output()
-  private onRuleActionCompleted = new EventEmitter<ProjectRule>();
+  onRuleActionCompleted = new EventEmitter<ProjectRule>();
 
-  private projectRule: ProjectRule;
-  private ruleNameBeforeUpdate: string;
+  projectRule: ProjectRule;
+  ruleNameBeforeUpdate: string;
 
   constructor(private rulesService: RulesService) { }
 
@@ -29,11 +29,14 @@ export class RulesManageComponent implements OnChanges {
     switch (this.actionType) {
       case 'consult':
       case 'update':
+      case 'duplicate':
         if (this.ruleName) {
           this.rulesService.retrieveProjectRule(this.projectName, this.ruleName).subscribe(projectRule => {
             this.projectRule = projectRule;
             this.ruleNameBeforeUpdate = projectRule.rule.name;
           });
+        } else {
+          this.projectRule = null;
         }
         break;
       case 'create':
@@ -51,6 +54,9 @@ export class RulesManageComponent implements OnChanges {
   private isUpdate(): boolean {
     return this.actionType === 'update';
   }
+  private isDuplicate(): boolean {
+    return this.actionType === 'duplicate';
+  }
   private isDelete(): boolean {
     return this.actionType === 'delete';
   }
@@ -58,6 +64,7 @@ export class RulesManageComponent implements OnChanges {
   private createProjectRule(): void {
     this.rulesService.createProjectRule(this.projectName, this.projectRule).subscribe((projectRule) => {
       this.onRuleActionCompleted.emit(projectRule);
+      this.actionType = 'consult';
     });
   }
 
@@ -71,11 +78,27 @@ export class RulesManageComponent implements OnChanges {
     this.actionType = 'update';
   }
 
+  private startDuplicateProjectRule(): void {
+    this.actionType = 'duplicate';
+  }
+
+  private cancelUpdateProjectRule(): void {
+    this.actionType = 'consult';
+  }
+
   private updateProjectRule(): void {
     this.rulesService.updateProjectRule(this.projectName, this.ruleNameBeforeUpdate, this.projectRule).subscribe((projectRule) => {
       this.onRuleActionCompleted.emit(projectRule);
       this.actionType = 'consult';
     });
+  }
+
+  private cancelDuplicateProjectRule(): void {
+    this.actionType = 'consult';
+  }
+
+  private duplicateProjectRule(): void {
+    this.createProjectRule();
   }
 
 }

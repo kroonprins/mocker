@@ -11,11 +11,11 @@ import { ActionType } from './model/typedef';
 })
 export class RulesComponent implements OnInit {
 
-  private projectName: string;
-  private selectedRule: ProjectRule;
-  private selectedRuleAction: ActionType = 'none';
-  private selectedRuleName: string;
-  private refresh: boolean;
+  projectName: string;
+  selectedRule: ProjectRule;
+  selectedRuleAction: ActionType = 'none';
+  selectedRuleName: string;
+  refresh: boolean;
 
   constructor(private route: ActivatedRoute) { }
 

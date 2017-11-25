@@ -9,9 +9,9 @@ import { Project } from './model/project';
 })
 export class ProjectsComponent implements OnInit {
 
-  private projects: Project[];
-  private newProject: Project;
-  private updatedProject: Project;
+  projects: Project[];
+  newProject: Project;
+  updatedProject: Project;
 
   constructor(private projectsService: ProjectsService) { }
 

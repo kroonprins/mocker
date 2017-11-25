@@ -12,3 +12,4 @@
 * check out chai-as-promised (mainly to see if we can't improve the tests where we check on an expected exception to be thrown for async function (see https://github.com/chaijs/chai/issues/415))
 * jsdoc
 * openapi (swagger-jsdoc?)
+* add error for creating/updating project with empty name

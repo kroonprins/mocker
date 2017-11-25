@@ -1,7 +1,12 @@
 <div class="columns">
   <section class="column is-5">
     <app-rules-list [projectName]="projectName" [selectedProjectRuleName]="selectedRuleName" [refresh]="refresh" (onProjectRuleSelected)="onProjectRuleSelected($event)"></app-rules-list>
-    <button type="button" (click)="createProjectRule()">Create new rule</button>
+    <br>
+    <div class="level">
+      <div class="level-item level-right">
+        <button class="button is-primary" (click)="createProjectRule()">Create new rule</button>
+      </div>
+    </div>
   </section>
 
   <section class="column">
