@@ -40,7 +40,7 @@ config
   .registerProperty('ui-server.bind-address', ENV.MOCKER_UI_SERVER_BIND_ADDRESS || 'localhost')
   .registerProperty('ui-server.statics-location', ENV.MOCKER_UI_SERVER_STATICS_LOCATION || './ui/dist')
   .registerType(Logger, PinoLogger)
-  .registerType(ClassValidationService, new AppClassValidationService())
+  .registerInstance(ClassValidationService, new AppClassValidationService())
   .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
   .registerInstance(TemplatingService, new TemplatingService())
   .registerInstance(RuleService, new RuleService())
