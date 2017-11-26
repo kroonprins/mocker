@@ -195,21 +195,21 @@ const test = async () => {
         location: './test/rules/test_rule_1.yaml',
         rule: {
           name: 'testRule1',
-          request: { path: '/hello1/:id', method: 'get' }
+          request: { path: '/hello1/:id', method: 'GET' }
         }
       },
       {
         location: './test/rules/test_rule_2.yaml',
         rule: {
           name: 'testRule2',
-          request: { path: '/hello2', method: 'put' }
+          request: { path: '/hello2', method: 'PUT' }
         }
       },
       {
         location: './test/rules/test_rule_3.yaml',
         rule: {
           name: 'testRule3',
-          request: { path: '/hello3/:id', method: 'get' }
+          request: { path: '/hello3/:id', method: 'GET' }
         }
       }])
 
@@ -237,7 +237,7 @@ const test = async () => {
         location: './test/rules/test_rule_1.yaml',
         rule: {
           name: 'testRule1',
-          request: { path: '/hello1/:id', method: 'get' },
+          request: { path: '/hello1/:id', method: 'GET' },
           response:
             {
               templatingEngine: 'nunjucks',
@@ -286,7 +286,7 @@ const test = async () => {
         location: './test/rules/created_test_rule.yaml',
         rule: {
           name: 'createdTestRule',
-          request: { path: '/helloTest', method: 'get' },
+          request: { path: '/helloTest', method: 'GET' },
           response:
             {
               templatingEngine: 'nunjucks',
@@ -321,7 +321,7 @@ const test = async () => {
         location: './test/rules/created_test_rule.yaml',
         rule: {
           name: 'createdTestRule',
-          request: { path: '/helloTest', method: 'get' },
+          request: { path: '/helloTest', method: 'GET' },
           response:
             {
               templatingEngine: 'nunjucks',
@@ -359,37 +359,82 @@ const test = async () => {
         location: './test/rules/test_rule_1.yaml',
         rule: {
           name: 'testRule1',
-          request: { path: '/hello1/:id', method: 'get' }
+          request: { path: '/hello1/:id', method: 'GET' }
         }
       },
       {
         location: './test/rules/test_rule_2.yaml',
         rule: {
           name: 'testRule2',
-          request: { path: '/hello2', method: 'put' }
+          request: { path: '/hello2', method: 'PUT' }
         }
       },
       {
         location: './test/rules/test_rule_3.yaml',
         rule: {
           name: 'testRule3',
-          request: { path: '/hello3/:id', method: 'get' }
+          request: { path: '/hello3/:id', method: 'GET' }
         }
       },
       {
         location: './test/rules/created_test_rule.yaml',
         rule: {
           name: 'createdTestRule',
-          request: { path: '/helloTest', method: 'get' }
+          request: { path: '/helloTest', method: 'GET' }
         }
       }])
+
+      let exceptionThrownForCreateInvalidRule = false
+      try {
+        await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/rules`, {
+          location: './test/rules/created_test_rule_new_path.yaml',
+          rule: {
+            name: 'createdTestRule',
+            request: { path: '/helloTest', method: 'GET' }
+          }
+        })
+      } catch (e) {
+        expect(e.response.status).to.be.equal(400)
+        console.dir(e.response.data, { depth: 10 })
+        expect(e.response.data).excluding('uuid').to.deep.equal({
+          msg: 'Validation failed',
+          code: 'validation error',
+          data:
+            {
+              errors:
+                [{
+                  keyword: 'required',
+                  dataPath: '.rule',
+                  schemaPath: '#/required',
+                  params: { missingProperty: 'response' },
+                  message: 'should have required property \'response\''
+                }]
+            }
+        })
+        expect(e.response.data.uuid.length).is.not.equal(0)
+        exceptionThrownForCreateInvalidRule = true
+      }
+      expect(exceptionThrownForCreateInvalidRule).to.be.equal(true)
 
       const alreadyCreatedRuleWithGivenName = await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/rules`, {
         location: './test/rules/created_test_rule_new_path.yaml',
         rule: {
           name: 'createdTestRule',
-          request: {},
-          response: {}
+          request: { path: '/helloTest', method: 'GET' },
+          response:
+            {
+              templatingEngine: 'none',
+              contentType: 'text/plain',
+              statusCode: 400,
+              headers: [
+                {
+                  name: 'X-one',
+                  value: 'one'
+                }
+              ],
+              cookies: [],
+              body: 'Rule updated'
+            }
         }
       })
       expect(alreadyCreatedRuleWithGivenName.status).to.be.equal(200)
@@ -408,8 +453,21 @@ const test = async () => {
         location: './test/rules/created_test_rule.yaml',
         rule: {
           name: 'newCreatedTestRuleWithExistingLoction',
-          request: {},
-          response: {}
+          request: { path: '/helloTest', method: 'GET' },
+          response:
+            {
+              templatingEngine: 'none',
+              contentType: 'text/plain',
+              statusCode: 400,
+              headers: [
+                {
+                  name: 'X-one',
+                  value: 'one'
+                }
+              ],
+              cookies: [],
+              body: 'Rule updated'
+            }
         }
       })
       expect(alreadyCreatedRuleWithGivenLocation.status).to.be.equal(200)
@@ -428,28 +486,73 @@ const test = async () => {
         location: './test/rules/created_test_rule_new_path.yaml',
         rule: {
           name: 'newCreatedTestRuleWithExistingLoction',
-          request: { path: '/helloTest', method: 'get' },
-          response: {}
+          request: { path: '/helloTest', method: 'GET' },
+          response:
+            {
+              templatingEngine: 'none',
+              contentType: 'text/plain',
+              statusCode: 400,
+              headers: [
+                {
+                  name: 'X-one',
+                  value: 'one'
+                }
+              ],
+              cookies: [],
+              body: 'Rule updated'
+            }
         }
       })
       expect(alreadyCreatedRuleWithGivenMethodAndPath.status).to.be.equal(200)
       expect(alreadyCreatedRuleWithGivenMethodAndPath.data).excluding('uuid').to.deep.equal({
         error: true,
-        msg: 'A rule with path \'/helloTest\' and method \'get\' already exists for the project with name test_glob',
+        msg: 'A rule with path \'/helloTest\' and method \'GET\' already exists for the project with name test_glob',
         code: 'rule exists for given method and path',
         data: {
           project: 'test_glob',
-          method: 'get',
+          method: 'GET',
           path: '/helloTest'
         }
       })
       expect(alreadyCreatedRuleWithGivenMethodAndPath.data.uuid.length).is.not.equal(0)
 
+      let exceptionThrownForUpdatingToInvalidRule = false
+      try {
+        await axios.put(`http://localhost:${availablePort}/api/projects/test_glob/rules/createdTestRule`, {
+          location: './test/rules/created_test_rule_new_path.yaml',
+          rule: {
+            name: 'invalidUpdatedRule',
+            request: { path: '/helloTest', method: 'GET' }
+          }
+        })
+      } catch (e) {
+        expect(e.response.status).to.be.equal(400)
+        console.dir(e.response.data, { depth: 10 })
+        expect(e.response.data).excluding('uuid').to.deep.equal({
+          msg: 'Validation failed',
+          code: 'validation error',
+          data:
+            {
+              errors:
+                [{
+                  keyword: 'required',
+                  dataPath: '.rule',
+                  schemaPath: '#/required',
+                  params: { missingProperty: 'response' },
+                  message: 'should have required property \'response\''
+                }]
+            }
+        })
+        expect(e.response.data.uuid.length).is.not.equal(0)
+        exceptionThrownForUpdatingToInvalidRule = true
+      }
+      expect(exceptionThrownForUpdatingToInvalidRule).to.be.equal(true)
+
       const updatedRule = await axios.put(`http://localhost:${availablePort}/api/projects/test_glob/rules/createdTestRule`, {
         location: './test/rules/updated_test_rule.yaml',
         rule: {
           name: 'updatedTestRule',
-          request: { path: '/helloTestUpdate', method: 'get' },
+          request: { path: '/helloTestUpdate', method: 'GET' },
           response:
             {
               templatingEngine: 'none',
@@ -471,7 +574,7 @@ const test = async () => {
         location: './test/rules/updated_test_rule.yaml',
         rule: {
           name: 'updatedTestRule',
-          request: { path: '/helloTestUpdate', method: 'get' },
+          request: { path: '/helloTestUpdate', method: 'GET' },
           response:
             {
               templatingEngine: 'none',
@@ -495,34 +598,54 @@ const test = async () => {
         location: './test/rules/test_rule_1.yaml',
         rule: {
           name: 'testRule1',
-          request: { path: '/hello1/:id', method: 'get' }
+          request: { path: '/hello1/:id', method: 'GET' }
         }
       },
       {
         location: './test/rules/test_rule_2.yaml',
         rule: {
           name: 'testRule2',
-          request: { path: '/hello2', method: 'put' }
+          request: { path: '/hello2', method: 'PUT' }
         }
       },
       {
         location: './test/rules/test_rule_3.yaml',
         rule: {
           name: 'testRule3',
-          request: { path: '/hello3/:id', method: 'get' }
+          request: { path: '/hello3/:id', method: 'GET' }
         }
       },
       {
         location: './test/rules/updated_test_rule.yaml',
         rule: {
           name: 'updatedTestRule',
-          request: { path: '/helloTestUpdate', method: 'get' }
+          request: { path: '/helloTestUpdate', method: 'GET' }
         }
       }])
 
       let exceptionThrownForUpdateBecauseRuleNotFound = false
       try {
-        await axios.put(`http://localhost:${availablePort}/api/projects/test_glob/rules/testRuleNope`, {})
+        await axios.put(`http://localhost:${availablePort}/api/projects/test_glob/rules/testRuleNope`, {
+          location: './test/rules/updated_test_rule.yaml',
+          rule: {
+            name: 'updatedTestRule',
+            request: { path: '/helloTestUpdate', method: 'GET' },
+            response:
+              {
+                templatingEngine: 'none',
+                contentType: 'text/plain',
+                statusCode: 400,
+                headers: [
+                  {
+                    name: 'X-one',
+                    value: 'one'
+                  }
+                ],
+                cookies: [],
+                body: 'Rule updated'
+              }
+          }
+        })
       } catch (e) {
         expect(e.response.status).to.be.equal(400)
         expect(e.response.data).excluding('uuid').to.deep.equal({
@@ -548,21 +671,21 @@ const test = async () => {
         location: './test/rules/test_rule_1.yaml',
         rule: {
           name: 'testRule1',
-          request: { path: '/hello1/:id', method: 'get' }
+          request: { path: '/hello1/:id', method: 'GET' }
         }
       },
       {
         location: './test/rules/test_rule_2.yaml',
         rule: {
           name: 'testRule2',
-          request: { path: '/hello2', method: 'put' }
+          request: { path: '/hello2', method: 'PUT' }
         }
       },
       {
         location: './test/rules/test_rule_3.yaml',
         rule: {
           name: 'testRule3',
-          request: { path: '/hello3/:id', method: 'get' }
+          request: { path: '/hello3/:id', method: 'GET' }
         }
       }])
 

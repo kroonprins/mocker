@@ -35,7 +35,7 @@ const test = async () => {
     const rule = await ruleService.readRule('./test/rules/test_rule_2.yaml')
     expect(rule.name).to.be.equal('testRule2')
     expect(rule.request.path).to.be.equal('/hello2')
-    expect(rule.request.method).to.be.equal('put')
+    expect(rule.request.method).to.be.equal('PUT')
     expect(rule.response.templatingEngine).to.be.equal('nunjucks')
   } finally {
     config.reset()

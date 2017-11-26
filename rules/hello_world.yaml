@@ -2,7 +2,7 @@
 name: Hello World
 request:
   path: /hello/:id
-  method: get
+  method: GET
 response:
   templatingEngine: nunjucks
   contentType: application/json

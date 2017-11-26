@@ -2,11 +2,11 @@
 name: testRule3
 request:
   path: /hello3/:id
-  method: get
+  method: GET
 response:
   templatingEngine: none
   contentType: application/json
-  statusCode: "200"
+  statusCode: 200
   headers:
     - name: X-yup
       value: "{{req.query.q}}"

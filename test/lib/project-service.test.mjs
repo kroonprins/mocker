@@ -37,11 +37,11 @@ const test = async () => {
     expect(allProjects['test_glob'].rules[1]).to.deep.equal(new ProjectRule(
       './test/rules/test_rule_2.yaml', new Rule(
         'testRule2',
-        new Request('/hello2', 'put'),
+        new Request('/hello2', 'PUT'),
         new Response(
           'nunjucks',
           'application/json',
-          '200',
+          200,
           [],
           [],
           '{\n  "respo": "Test rule 2: {{req.body.input}}"\n}\n'
@@ -54,7 +54,7 @@ const test = async () => {
     expect(listProjectRules[0]).to.deep.equal(new ProjectRule(
       './test/rules/test_rule_1.yaml', new Rule(
         'testRule1',
-        new Request('/hello1/:id', 'get'),
+        new Request('/hello1/:id', 'GET'),
         new Response(
           'nunjucks',
           'application/json',
@@ -76,11 +76,11 @@ const test = async () => {
     expect(listProjectRules[1]).to.deep.equal(new ProjectRule(
       './test/rules/test_rule_2.yaml', new Rule(
         'testRule2',
-        new Request('/hello2', 'put'),
+        new Request('/hello2', 'PUT'),
         new Response(
           'nunjucks',
           'application/json',
-          '200',
+          200,
           [],
           [],
           '{\n  "respo": "Test rule 2: {{req.body.input}}"\n}\n'
@@ -90,11 +90,11 @@ const test = async () => {
     expect(listProjectRules[2]).to.deep.equal(new ProjectRule(
       './test/rules/test_rule_3.yaml', new Rule(
         'testRule3',
-        new Request('/hello3/:id', 'get'),
+        new Request('/hello3/:id', 'GET'),
         new Response(
           'none',
           'application/json',
-          '200',
+          200,
           [
             new Header('X-yup', '{{req.query.q}}')
           ],
@@ -148,48 +148,48 @@ const test = async () => {
       location: './test/rules/test_rule_1.yaml',
       rule: {
         name: 'testRule1',
-        request: { path: '/hello1/:id', method: 'get' },
+        request: { path: '/hello1/:id', method: 'GET' },
         response:
-        {
-          templatingEngine: 'nunjucks',
-          contentType: 'application/json',
-          statusCode: '{% if req.params.id > 5 %}400{% else %}200{% endif %}',
-          headers: [
-            {
-              name: 'X-Powered-By',
-              value: 'mocker'
-            },
-            {
-              name: 'X-positivo',
-              value: 'jawohl'
-            },
-            {
-              name: 'X-zeker',
-              value: 'klahr'
-            },
-            {
-              name: 'X-yup',
-              value: '{{req.query.q}}'
-            }
-          ],
-          cookies: [
-            {
-              name: 'koekske',
-              value: 'jummie',
-              properties: {
-                secure: true
+          {
+            templatingEngine: 'nunjucks',
+            contentType: 'application/json',
+            statusCode: '{% if req.params.id > 5 %}400{% else %}200{% endif %}',
+            headers: [
+              {
+                name: 'X-Powered-By',
+                value: 'mocker'
+              },
+              {
+                name: 'X-positivo',
+                value: 'jawohl'
+              },
+              {
+                name: 'X-zeker',
+                value: 'klahr'
+              },
+              {
+                name: 'X-yup',
+                value: '{{req.query.q}}'
               }
-            },
-            {
-              name: 'only',
-              value: 'http',
-              properties: {
-                httpOnly: true
+            ],
+            cookies: [
+              {
+                name: 'koekske',
+                value: 'jummie',
+                properties: {
+                  secure: true
+                }
+              },
+              {
+                name: 'only',
+                value: 'http',
+                properties: {
+                  httpOnly: true
+                }
               }
-            }
-          ],
-          body: '{\n  "respo": "Test rule 1: {{req.query.q}} / {{req.params.id}}"\n}\n'
-        }
+            ],
+            body: '{\n  "respo": "Test rule 1: {{req.query.q}} / {{req.params.id}}"\n}\n'
+          }
       }
     })
 
@@ -294,6 +294,15 @@ const test = async () => {
     }
     expect(exceptionThrownForCreatingRuleForNonExistingProject).to.be.equal(true)
 
+    let exceptionThrownForCreatingInvalidRule = false
+    try {
+      await projectService.createProjectRule('createdProject1', new ProjectRule())
+    } catch (e) {
+      expect(e.code).to.be.equal('validation error')
+      exceptionThrownForCreatingInvalidRule = true
+    }
+    expect(exceptionThrownForCreatingInvalidRule).to.be.equal(true)
+
     let exceptionThrownForRuleAlreadyExistsWithGivenName = false
     try {
       await projectService.createProjectRule('createdProject1', newRule)
@@ -343,6 +352,15 @@ const test = async () => {
       exceptionThrownForUpdatingNonExistingRule = true
     }
     expect(exceptionThrownForUpdatingNonExistingRule).to.be.equal(true)
+
+    let exceptionThrownForUpdatingToInvalidRule = false
+    try {
+      await projectService.updateProjectRule('createdProject1', 'test_rule 2', new ProjectRule())
+    } catch (e) {
+      expect(e.code).to.be.equal('validation error')
+      exceptionThrownForUpdatingToInvalidRule = true
+    }
+    expect(exceptionThrownForUpdatingToInvalidRule).to.be.equal(true)
 
     newRule.rule.name = 'test_rule 1'
     let exceptionThrownForUpdatingRuleToAlreadyExistsWithGivenName = false
@@ -407,6 +425,36 @@ const test = async () => {
       projectService.removeProject('updatedProject2'),
       projectService.removeProject('createdProject3')
     ])
+
+    // TODO because of the "isLoading" stuff in the project-store this results in an unhandled rejection instead of something that can be caught
+    // let exceptionThrownForInvalidProjectFile = false
+    // try {
+    //   const invalidProjectTestFile = './test/projects/invalid_test.yaml'
+    //   projectService = new ProjectService(
+    //     new InMemoryProjectStore(
+    //       invalidProjectTestFile,
+    //       new RuleService(),
+    //       new AppClassValidationService()
+    //     ))
+    // } catch (e) {
+    //   exceptionThrownForInvalidProjectFile = true
+    // }
+    // expect(exceptionThrownForInvalidProjectFile).to.be.equal(true)
+
+    // let exceptionThrownForInvalidProjectFile2 = false
+    // try {
+    //   const invalidProjectTestFile = './test/projects/invalid_test_2.yaml'
+    //   projectService = new ProjectService(
+    //     new InMemoryProjectStore(
+    //       invalidProjectTestFile,
+    //       new RuleService(),
+    //       new AppClassValidationService()
+    //     ))
+    // } catch (e) {
+    //   console.dir(e, { depth: 10 })
+    //   exceptionThrownForInvalidProjectFile2 = true
+    // }
+    // expect(exceptionThrownForInvalidProjectFile2).to.be.equal(true)
   } finally {
     config.reset()
   }

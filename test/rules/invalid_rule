@@ -1,0 +1,12 @@
+---
+name: invalid rule because no proper method
+request:
+  path: /hello1/:id
+  method: NOPE
+response:
+  templatingEngine: nope
+  contentType: application/json
+  statusCode: 200
+  headers: []
+  cookies: []
+  body: ~
