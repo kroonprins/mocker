@@ -46,6 +46,8 @@ class TestFailuresError extends Error {
 import { test as testAppConfig } from './lib/app-config.test'
 import { test as testUtil } from './lib/util.test'
 import { test as testLogging } from './lib/logging.test'
+import { test as testClassValidation } from './lib/class-validation.service.test'
+import { test as testAppClassValidation } from './lib/app-class-validation.service.test'
 import { test as testRuleValidationModel } from './lib/rule-validation-model.test'
 import { test as testRuleService } from './lib/rule-service.test'
 import { test as testProjectValidationModel } from './lib/project-validation-model.test'
@@ -76,6 +78,8 @@ const runTest = async (testFn) => {
   await runTest(testAppConfig)
   await runTest(testUtil)
   await runTest(testLogging)
+  await runTest(testClassValidation)
+  await runTest(testAppClassValidation)
   await runTest(testRuleValidationModel)
   await runTest(testRuleService)
   await runTest(testProjectValidationModel)

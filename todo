@@ -1,4 +1,3 @@
-* model validator (maybe https://www.npmjs.com/package/class-validator ?)
 * allow latency / throttling simulation
 * make it possible to make response in a rule conditional (=> avoid having to put the condition in several fields (e.g. statusCode and body are different depending some condition))
 * file download/upload mocking?
@@ -12,4 +11,4 @@
 * check out chai-as-promised (mainly to see if we can't improve the tests where we check on an expected exception to be thrown for async function (see https://github.com/chaijs/chai/issues/415))
 * jsdoc
 * openapi (swagger-jsdoc?)
-* add error for creating/updating project with empty name
+* fix naming inconsistency . or - (e.g. learing-mode.model vs project-model)

@@ -3,6 +3,8 @@
 
 import { config } from './lib/config'
 import { Logger, PinoLogger } from './lib/logging'
+import { ClassValidationService } from './lib/class-validation.service'
+import { AppClassValidationService } from './lib/app-class-validation.service'
 import { ProjectStore, InMemoryProjectStore } from './lib/project-store'
 import { RuleService } from './lib/rule-service'
 import { ProjectService } from './lib/project-service'
@@ -38,6 +40,7 @@ config
   .registerProperty('ui-server.bind-address', ENV.MOCKER_UI_SERVER_BIND_ADDRESS || 'localhost')
   .registerProperty('ui-server.statics-location', ENV.MOCKER_UI_SERVER_STATICS_LOCATION || './ui/dist')
   .registerType(Logger, PinoLogger)
+  .registerType(ClassValidationService, new AppClassValidationService())
   .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
   .registerInstance(TemplatingService, new TemplatingService())
   .registerInstance(RuleService, new RuleService())
