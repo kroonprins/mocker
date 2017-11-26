@@ -8,6 +8,7 @@ import { InMemoryProjectStore } from './../../lib/project-store'
 import { RuleService } from './../../lib/rule-service'
 import { TemplatingService } from './../../lib/templating-service'
 import { NunjucksTemplatingService } from './../../lib/templating-service.nunjucks'
+import { AppClassValidationService } from '../../lib/app-class-validation.service.mjs'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 
@@ -26,7 +27,8 @@ const test = async () => {
     const projectService = new ProjectService(
       new InMemoryProjectStore(
         './test/projects/tests.yaml',
-        new RuleService()
+        new RuleService(),
+        new AppClassValidationService()
       ))
 
     const availablePort = (await portastic.find({

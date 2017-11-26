@@ -4,6 +4,7 @@ import { Rule, Request, Response, Header, Cookie } from './../../lib/rule-model'
 import { ProjectService } from './../../lib/project-service'
 import { InMemoryProjectStore } from './../../lib/project-store'
 import { RuleService } from './../../lib/rule-service'
+import { AppClassValidationService } from '../../lib/app-class-validation.service.mjs'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 const expect = chai.expect
@@ -18,7 +19,8 @@ const test = async () => {
     let projectService = new ProjectService(
       new InMemoryProjectStore(
         './test/projects/tests.yaml',
-        new RuleService()
+        new RuleService(),
+        new AppClassValidationService()
       ))
 
     const allProjects = await projectService.listProjects()
@@ -204,7 +206,8 @@ const test = async () => {
     projectService = new ProjectService(
       new InMemoryProjectStore(
         crudProjectTestFile,
-        new RuleService()
+        new RuleService(),
+        new AppClassValidationService()
       ))
 
     const createdProjects = await Promise.all([
@@ -215,6 +218,15 @@ const test = async () => {
     expect(createdProjects[0].name).to.be.equal('createdProject1')
     expect(createdProjects[1].name).to.be.equal('createdProject2')
     expect(createdProjects[2].name).to.be.equal('createdProject3')
+
+    let exceptionThrownForEmptyProjectName = false
+    try {
+      await projectService.createProject('')
+    } catch (e) {
+      expect(e.message).to.be.equal('Validation failed')
+      exceptionThrownForEmptyProjectName = true
+    }
+    expect(exceptionThrownForEmptyProjectName).to.be.equal(true)
 
     let exceptionThrownForAlreadyCreatedProject = false
     try {
@@ -239,9 +251,18 @@ const test = async () => {
       projectService.updateProject('createdProject2', new Project('updatedProject2'))
     ])
 
+    let exceptionThrownForUpdatingProjectToEmptyName = false
+    try {
+      await projectService.updateProject('updatedProject1', new Project(''))
+    } catch (e) {
+      expect(e.message).to.be.equal('Validation failed')
+      exceptionThrownForUpdatingProjectToEmptyName = true
+    }
+    expect(exceptionThrownForUpdatingProjectToEmptyName).to.be.equal(true)
+
     let exceptionThrownForUpdatingProjectThatDoesNotExist = false
     try {
-      await projectService.removeProject('createdProject4')
+      await projectService.updateProject('createdProject4', new Project('x'))
     } catch (e) {
       expect(e.message).to.be.equal('The project with name createdProject4 does not exist')
       exceptionThrownForUpdatingProjectThatDoesNotExist = true

@@ -6,6 +6,7 @@ import { ApiServer } from './../../lib/api-server'
 import { ProjectService } from './../../lib/project-service'
 import { InMemoryProjectStore } from './../../lib/project-store'
 import { RuleService } from './../../lib/rule-service'
+import { AppClassValidationService } from '../../lib/app-class-validation.service.mjs'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 
@@ -22,7 +23,8 @@ const test = async () => {
     let projectService = new ProjectService(
       new InMemoryProjectStore(
         './test/projects/tests_update.yaml',
-        new RuleService()
+        new RuleService(),
+        new AppClassValidationService()
       ))
 
     const availablePort = (await portastic.find({
@@ -55,6 +57,31 @@ const test = async () => {
         name: 'newProject'
       })
       expect(createdProject.headers['location']).to.be.equal('/api/projects/newProject/rules')
+
+      let exceptionThrownBecauseProjectNameEmpty = false
+      try {
+        await axios.post(`http://localhost:${availablePort}/api/projects`, {
+          name: ''
+        })
+      } catch (e) {
+        expect(e.response.status).to.be.equal(400)
+        expect(e.response.data).excluding('uuid').to.deep.equal({
+          msg: 'Validation failed',
+          code: 'validation error',
+          data: {
+            errors: [{
+              keyword: 'minLength',
+              dataPath: '.name',
+              schemaPath: '#/properties/name/minLength',
+              params: { limit: 1 },
+              message: 'should NOT be shorter than 1 characters'
+            }]
+          }
+        })
+        expect(e.response.data.uuid.length).is.not.equal(0)
+        exceptionThrownBecauseProjectNameEmpty = true
+      }
+      expect(exceptionThrownBecauseProjectNameEmpty).to.be.equal(true)
 
       const alreadyCreatedProject = await axios.post(`http://localhost:${availablePort}/api/projects`, {
         name: 'newProject'
@@ -103,6 +130,31 @@ const test = async () => {
         'test_one_file_does_not_exist',
         'updatedProject'
       ])
+
+      let exceptionThrownBecauseUpdatedProjectNameEmpty = false
+      try {
+        await axios.put(`http://localhost:${availablePort}/api/projects/updatedProject`, {
+          name: ''
+        })
+      } catch (e) {
+        expect(e.response.status).to.be.equal(400)
+        expect(e.response.data).excluding('uuid').to.deep.equal({
+          msg: 'Validation failed',
+          code: 'validation error',
+          data: {
+            errors: [{
+              keyword: 'minLength',
+              dataPath: '.name',
+              schemaPath: '#/properties/name/minLength',
+              params: { limit: 1 },
+              message: 'should NOT be shorter than 1 characters'
+            }]
+          }
+        })
+        expect(e.response.data.uuid.length).is.not.equal(0)
+        exceptionThrownBecauseUpdatedProjectNameEmpty = true
+      }
+      expect(exceptionThrownBecauseUpdatedProjectNameEmpty).to.be.equal(true)
 
       const removedProject = await axios.delete(`http://localhost:${availablePort}/api/projects/updatedProject`)
       expect(removedProject.status).to.be.equal(204)
@@ -187,46 +239,46 @@ const test = async () => {
           name: 'testRule1',
           request: { path: '/hello1/:id', method: 'get' },
           response:
-          {
-            templatingEngine: 'nunjucks',
-            contentType: 'application/json',
-            statusCode: '{% if req.params.id > 5 %}400{% else %}200{% endif %}',
-            headers: [
-              {
-                name: 'X-Powered-By',
-                value: 'mocker'
-              },
-              {
-                name: 'X-positivo',
-                value: 'jawohl'
-              },
-              {
-                name: 'X-zeker',
-                value: 'klahr'
-              },
-              {
-                name: 'X-yup',
-                value: '{{req.query.q}}'
-              }
-            ],
-            cookies: [
-              {
-                name: 'koekske',
-                value: 'jummie',
-                properties: {
-                  secure: true
+            {
+              templatingEngine: 'nunjucks',
+              contentType: 'application/json',
+              statusCode: '{% if req.params.id > 5 %}400{% else %}200{% endif %}',
+              headers: [
+                {
+                  name: 'X-Powered-By',
+                  value: 'mocker'
+                },
+                {
+                  name: 'X-positivo',
+                  value: 'jawohl'
+                },
+                {
+                  name: 'X-zeker',
+                  value: 'klahr'
+                },
+                {
+                  name: 'X-yup',
+                  value: '{{req.query.q}}'
                 }
-              },
-              {
-                name: 'only',
-                value: 'http',
-                properties: {
-                  httpOnly: true
+              ],
+              cookies: [
+                {
+                  name: 'koekske',
+                  value: 'jummie',
+                  properties: {
+                    secure: true
+                  }
+                },
+                {
+                  name: 'only',
+                  value: 'http',
+                  properties: {
+                    httpOnly: true
+                  }
                 }
-              }
-            ],
-            body: '{\n  "respo": "Test rule 1: {{req.query.q}} / {{req.params.id}}"\n}\n'
-          }
+              ],
+              body: '{\n  "respo": "Test rule 1: {{req.query.q}} / {{req.params.id}}"\n}\n'
+            }
         }
       })
 
@@ -236,32 +288,32 @@ const test = async () => {
           name: 'createdTestRule',
           request: { path: '/helloTest', method: 'get' },
           response:
-          {
-            templatingEngine: 'nunjucks',
-            contentType: 'text/plain',
-            statusCode: 400,
-            headers: [
-              {
-                name: 'X-one',
-                value: 'one'
-              },
-              {
-                name: 'X-two',
-                value: 'two'
-              }
-            ],
-            cookies: [
-              {
-                name: 'cookie',
-                value: 'monster',
-                properties: {
-                  httpOnly: true,
-                  path: '/helloTest'
+            {
+              templatingEngine: 'nunjucks',
+              contentType: 'text/plain',
+              statusCode: 400,
+              headers: [
+                {
+                  name: 'X-one',
+                  value: 'one'
+                },
+                {
+                  name: 'X-two',
+                  value: 'two'
                 }
-              }
-            ],
-            body: 'Rule created'
-          }
+              ],
+              cookies: [
+                {
+                  name: 'cookie',
+                  value: 'monster',
+                  properties: {
+                    httpOnly: true,
+                    path: '/helloTest'
+                  }
+                }
+              ],
+              body: 'Rule created'
+            }
         }
       })
       expect(createdRule.status).to.be.equal(201)
@@ -271,32 +323,32 @@ const test = async () => {
           name: 'createdTestRule',
           request: { path: '/helloTest', method: 'get' },
           response:
-          {
-            templatingEngine: 'nunjucks',
-            contentType: 'text/plain',
-            statusCode: 400,
-            headers: [
-              {
-                name: 'X-one',
-                value: 'one'
-              },
-              {
-                name: 'X-two',
-                value: 'two'
-              }
-            ],
-            cookies: [
-              {
-                name: 'cookie',
-                value: 'monster',
-                properties: {
-                  httpOnly: true,
-                  path: '/helloTest'
+            {
+              templatingEngine: 'nunjucks',
+              contentType: 'text/plain',
+              statusCode: 400,
+              headers: [
+                {
+                  name: 'X-one',
+                  value: 'one'
+                },
+                {
+                  name: 'X-two',
+                  value: 'two'
                 }
-              }
-            ],
-            body: 'Rule created'
-          }
+              ],
+              cookies: [
+                {
+                  name: 'cookie',
+                  value: 'monster',
+                  properties: {
+                    httpOnly: true,
+                    path: '/helloTest'
+                  }
+                }
+              ],
+              body: 'Rule created'
+            }
         }
       })
       expect(createdRule.headers['location']).to.be.equal('/api/projects/test_glob/rules/createdTestRule')
@@ -336,8 +388,8 @@ const test = async () => {
         location: './test/rules/created_test_rule_new_path.yaml',
         rule: {
           name: 'createdTestRule',
-          request: { },
-          response: { }
+          request: {},
+          response: {}
         }
       })
       expect(alreadyCreatedRuleWithGivenName.status).to.be.equal(200)
@@ -356,8 +408,8 @@ const test = async () => {
         location: './test/rules/created_test_rule.yaml',
         rule: {
           name: 'newCreatedTestRuleWithExistingLoction',
-          request: { },
-          response: { }
+          request: {},
+          response: {}
         }
       })
       expect(alreadyCreatedRuleWithGivenLocation.status).to.be.equal(200)
@@ -377,7 +429,7 @@ const test = async () => {
         rule: {
           name: 'newCreatedTestRuleWithExistingLoction',
           request: { path: '/helloTest', method: 'get' },
-          response: { }
+          response: {}
         }
       })
       expect(alreadyCreatedRuleWithGivenMethodAndPath.status).to.be.equal(200)
@@ -399,19 +451,19 @@ const test = async () => {
           name: 'updatedTestRule',
           request: { path: '/helloTestUpdate', method: 'get' },
           response:
-          {
-            templatingEngine: 'none',
-            contentType: 'text/plain',
-            statusCode: 400,
-            headers: [
-              {
-                name: 'X-one',
-                value: 'one'
-              }
-            ],
-            cookies: [],
-            body: 'Rule updated'
-          }
+            {
+              templatingEngine: 'none',
+              contentType: 'text/plain',
+              statusCode: 400,
+              headers: [
+                {
+                  name: 'X-one',
+                  value: 'one'
+                }
+              ],
+              cookies: [],
+              body: 'Rule updated'
+            }
         }
       })
       expect(updatedRule.status).to.be.equal(200)
@@ -421,19 +473,19 @@ const test = async () => {
           name: 'updatedTestRule',
           request: { path: '/helloTestUpdate', method: 'get' },
           response:
-          {
-            templatingEngine: 'none',
-            contentType: 'text/plain',
-            statusCode: 400,
-            headers: [
-              {
-                name: 'X-one',
-                value: 'one'
-              }
-            ],
-            cookies: [],
-            body: 'Rule updated'
-          }
+            {
+              templatingEngine: 'none',
+              contentType: 'text/plain',
+              statusCode: 400,
+              headers: [
+                {
+                  name: 'X-one',
+                  value: 'one'
+                }
+              ],
+              cookies: [],
+              body: 'Rule updated'
+            }
         }
       })
 
