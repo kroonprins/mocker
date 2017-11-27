@@ -12,6 +12,10 @@ export class ProjectsComponent implements OnInit {
   projects: Project[];
   newProject: Project;
   updatedProject: Project;
+  createNewProjectFailed: boolean;
+  createNewProjectFailedUserMessage: string;
+  updateProjectFailed: boolean;
+  updateProjectFailedUserMessage: string;
 
   constructor(private projectsService: ProjectsService) { }
 
@@ -21,6 +25,8 @@ export class ProjectsComponent implements OnInit {
       });
     this.newProject = new Project();
     this.updatedProject = new Project();
+    this.createNewProjectFailed = false;
+    this.updateProjectFailed = false;
   }
 
   selectProject(project: Project): void {
@@ -28,8 +34,12 @@ export class ProjectsComponent implements OnInit {
   }
 
   createNewProject(): void {
+    this.createNewProjectFailed = false;
     this.projectsService.createProject(this.newProject).subscribe(_ => {
       this.ngOnInit();
+    }, error => {
+      this.createNewProjectFailed = true;
+      this.createNewProjectFailedUserMessage = error.toString();
     });
   }
 
@@ -44,11 +54,15 @@ export class ProjectsComponent implements OnInit {
   }
 
   updateProject(projectToUpdate: Project): void {
-    this.projectsService.updateProject(projectToUpdate.name, this.updatedProject).subscribe(_ => {
+    this.updateProjectFailed = false;
+    this.projectsService.updateProject(projectToUpdate.name, this.updatedProject).subscribe(respo => {
       if (projectToUpdate.name === this.projectsService.getLastSelectedProject().name) {
         this.projectsService.selectProject(this.updatedProject);
       }
       this.ngOnInit();
+    }, error => {
+      this.updateProjectFailed = true;
+      this.updateProjectFailedUserMessage = error.toString();
     });
   }
 

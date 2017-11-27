@@ -12,3 +12,4 @@
 * jsdoc
 * openapi (swagger-jsdoc?)
 * fix naming inconsistency . or - (e.g. learing-mode.model vs project-model)
+* add ui linting/testing also to git commit hook

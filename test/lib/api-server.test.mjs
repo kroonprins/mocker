@@ -70,11 +70,11 @@ const test = async () => {
           code: 'validation error',
           data: {
             errors: [{
-              keyword: 'minLength',
+              keyword: 'type',
               dataPath: '.name',
-              schemaPath: '#/properties/name/minLength',
-              params: { limit: 1 },
-              message: 'should NOT be shorter than 1 characters'
+              schemaPath: '#/properties/name/type',
+              params: { type: 'string' },
+              message: 'should be string'
             }]
           }
         })
@@ -143,11 +143,11 @@ const test = async () => {
           code: 'validation error',
           data: {
             errors: [{
-              keyword: 'minLength',
+              keyword: 'type',
               dataPath: '.name',
-              schemaPath: '#/properties/name/minLength',
-              params: { limit: 1 },
-              message: 'should NOT be shorter than 1 characters'
+              schemaPath: '#/properties/name/type',
+              params: { type: 'string' },
+              message: 'should be string'
             }]
           }
         })

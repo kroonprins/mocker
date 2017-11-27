@@ -144,54 +144,36 @@ const test = async () => {
     expect(rulesTestOneFileDoesNotExist[0].rule.name).to.be.equal('testRule2')
 
     const retrieveProjectRule = await projectService.retrieveProjectRule('test_glob', 'testRule1')
-    expect(retrieveProjectRule).to.deep.equal({
-      location: './test/rules/test_rule_1.yaml',
-      rule: {
-        name: 'testRule1',
-        request: { path: '/hello1/:id', method: 'GET' },
-        response:
-          {
-            templatingEngine: 'nunjucks',
-            contentType: 'application/json',
-            statusCode: '{% if req.params.id > 5 %}400{% else %}200{% endif %}',
-            headers: [
-              {
-                name: 'X-Powered-By',
-                value: 'mocker'
-              },
-              {
-                name: 'X-positivo',
-                value: 'jawohl'
-              },
-              {
-                name: 'X-zeker',
-                value: 'klahr'
-              },
-              {
-                name: 'X-yup',
-                value: '{{req.query.q}}'
-              }
-            ],
-            cookies: [
-              {
-                name: 'koekske',
-                value: 'jummie',
-                properties: {
-                  secure: true
-                }
-              },
-              {
-                name: 'only',
-                value: 'http',
-                properties: {
-                  httpOnly: true
-                }
-              }
-            ],
-            body: '{\n  "respo": "Test rule 1: {{req.query.q}} / {{req.params.id}}"\n}\n'
-          }
-      }
-    })
+    expect(retrieveProjectRule).to.deep.equal(new ProjectRule(
+      './test/rules/test_rule_1.yaml',
+      new Rule(
+        'testRule1',
+        new Request(
+          '/hello1/:id',
+          'GET'
+        ),
+        new Response(
+          'nunjucks',
+          'application/json',
+          '{% if req.params.id > 5 %}400{% else %}200{% endif %}',
+          [
+            new Header('X-Powered-By', 'mocker'),
+            new Header('X-positivo', 'jawohl'),
+            new Header('X-zeker', 'klahr'),
+            new Header('X-yup', '{{req.query.q}}')
+          ],
+          [
+            new Cookie('koekske', 'jummie', {
+              secure: true
+            }),
+            new Cookie('only', 'http', {
+              httpOnly: true
+            })
+          ],
+          '{\n  "respo": "Test rule 1: {{req.query.q}} / {{req.params.id}}"\n}\n'
+        )
+      )
+    ))
 
     let exceptionThrownForNonExistingRule = false
     try {
@@ -268,6 +250,15 @@ const test = async () => {
       exceptionThrownForUpdatingProjectThatDoesNotExist = true
     }
     expect(exceptionThrownForUpdatingProjectThatDoesNotExist).to.be.equal(true)
+
+    let exceptionThrownForUpdatingProjectToNameThatIsAlreadyUsedByOtherProject = false
+    try {
+      await projectService.updateProject('updatedProject1', new Project('updatedProject2'))
+    } catch (e) {
+      expect(e.message).to.be.equal('The project with name updatedProject2 already exists')
+      exceptionThrownForUpdatingProjectToNameThatIsAlreadyUsedByOtherProject = true
+    }
+    expect(exceptionThrownForUpdatingProjectToNameThatIsAlreadyUsedByOtherProject).to.be.equal(true)
 
     await projectService.createProject('createdProject1')
     const newRule = new ProjectRule(
