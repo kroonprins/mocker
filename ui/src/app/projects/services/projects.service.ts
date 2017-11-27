@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { LocalStorage } from 'ngx-webstorage';
 
 // TODO move common stuff to something shared
 interface ResponseErrorBody {
@@ -55,11 +56,14 @@ const serverErrorHandler = error => {
 @Injectable()
 export class ProjectsService {
 
-  // TODO move the project selection to a shared service?
-  private projectSelection: BehaviorSubject<Project> = new BehaviorSubject<Project>(new Project());
+  @LocalStorage()
+  public storedActiveProject: Project;
+
+  private projectSelection: BehaviorSubject<Project>;
   private selectedProject: Observable<Project>;
 
   constructor(private _http: HttpClient) {
+    this.projectSelection = new BehaviorSubject<Project>(this.storedActiveProject)
     this.selectedProject = this.projectSelection.asObservable();
   }
 
@@ -76,8 +80,6 @@ export class ProjectsService {
       .catch(serverErrorHandler);
   }
 
-  // TODO way to handle this in more generic way for all http calls
-  // (difference between create/update can be handled in general way (statusCode >=200 <300))
   createProject(project: Project): Observable<Object> {
     return this._http.post('http://localhost:3004/api/projects', project, { observe: 'response' })
       .map(httpResponseHandler(201))
@@ -97,6 +99,7 @@ export class ProjectsService {
   }
 
   selectProject(project: Project): void {
+    this.storedActiveProject = project;
     this.projectSelection.next(project);
   }
 

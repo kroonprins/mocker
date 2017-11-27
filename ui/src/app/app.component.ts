@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Project } from './projects/model/project';
 import { ProjectsService } from './projects/services/projects.service';
-// import { LocalStorage } from 'ngx-webstorage';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +8,7 @@ import { ProjectsService } from './projects/services/projects.service';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
-  // @LocalStorage()
-  public activeProject: Project; // TODO can be private?
+  public activeProject: Project;
 
   constructor(private projectsService: ProjectsService) {}
 

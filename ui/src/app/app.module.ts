@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-// import { Ng2Webstorage } from 'ngx-webstorage';
+import { Ng2Webstorage } from 'ngx-webstorage';
 
 import { ProjectsModule } from './projects/projects.module';
 import { RulesModule } from './rules/rules.module';
@@ -23,8 +23,8 @@ import { ProjectsService } from './projects/services/projects.service';
     HttpClientModule,
     FormsModule,
     ProjectsModule,
-    RulesModule
-    // Ng2Webstorage.forRoot({ prefix: 'mocker' })
+    RulesModule,
+    Ng2Webstorage.forRoot({ prefix: 'mocker' })
   ],
   providers: [
     ProjectsService
