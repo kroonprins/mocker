@@ -16,3 +16,19 @@ if [ "$?" != "0" ]; then
   exit 2
 fi
 
+cd ./ui
+npm run lint
+if [ "$?" != "0" ]; then
+  echo
+  echo
+  echo "Fix linting issues in ui sub directory before trying to commit again."
+  exit 1
+fi
+
+npm run build-prod
+if [ "$?" != "0" ]; then
+  echo
+  echo
+  echo "Fix issue building the ui for prod before trying to commit again."
+  exit 1
+fi

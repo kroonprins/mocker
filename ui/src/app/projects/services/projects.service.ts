@@ -63,7 +63,7 @@ export class ProjectsService {
   private selectedProject: Observable<Project>;
 
   constructor(private _http: HttpClient) {
-    this.projectSelection = new BehaviorSubject<Project>(this.storedActiveProject)
+    this.projectSelection = new BehaviorSubject<Project>(this.storedActiveProject);
     this.selectedProject = this.projectSelection.asObservable();
   }
 
