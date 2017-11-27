@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-// TODO move to something shared
+// TODO move common stuff to something shared
 interface ResponseErrorBody {
   msg: string;
   code: string;
@@ -32,6 +32,26 @@ class ResponseError /*extends Error*/ { // TODO for some reason when extending e
   }
 }
 
+const httpResponseHandler = expectedResponseCode => {
+  return response => {
+    if ((response.status === 200 && response.body['error']) || response.status === 400) {
+      const error = <ResponseErrorBody>response['body'];
+      throw new ResponseError(error.msg, error.code, error.data, error.uuid);
+    } else if (response.status === expectedResponseCode) {
+      return response.body;
+    } else {
+      throw new Error('Unexpected error response ' + JSON.stringify(response));
+    }
+  };
+};
+
+const serverErrorHandler = error => {
+  if (error instanceof HttpErrorResponse) {
+    throw new Error('Unexpected error ' + JSON.stringify(error));
+  }
+  throw error;
+};
+
 @Injectable()
 export class ProjectsService {
 
@@ -44,58 +64,36 @@ export class ProjectsService {
   }
 
   listProjects(): Observable<Project[]> {
-    return this._http.get<string[]>('http://localhost:3004/api/projects').map((projectsList) => {
-      return projectsList.map((projectName) => {
-        const project = new Project();
-        project.name = projectName;
-        return project;
-      });
-    });
+    return this._http.get<string[]>('http://localhost:3004/api/projects', { observe: 'response' })
+      .map(httpResponseHandler(200))
+      .map(projectList => {
+        return projectList.map((projectName) => {
+          const project = new Project();
+          project.name = projectName;
+          return project;
+        });
+      })
+      .catch(serverErrorHandler);
   }
 
   // TODO way to handle this in more generic way for all http calls
   // (difference between create/update can be handled in general way (statusCode >=200 <300))
   createProject(project: Project): Observable<Object> {
     return this._http.post('http://localhost:3004/api/projects', project, { observe: 'response' })
-      .map(response => {
-        if (response.status === 201) {
-          return null;
-        } else if ((response.status === 200 && response.body['error']) || response.status === 400) {
-          const error = <ResponseErrorBody>response['body'];
-          throw new ResponseError(error.msg, error.code, error.data, error.uuid);
-        } else {
-          throw new Error('Unexpected error when trying to create project ' + JSON.stringify(response));
-        }
-      })
-      .catch(error => {
-        if (error instanceof HttpErrorResponse) {
-          throw new Error('Unexpected error when trying to create project ' + JSON.stringify(error));
-        }
-        throw error;
-      });
+      .map(httpResponseHandler(201))
+      .catch(serverErrorHandler);
   }
 
   updateProject(projectName: string, project: Project): Observable<Object> {
-    return this._http.put(`http://localhost:3004/api/projects/${projectName}`, project, { observe: 'response' }).map(response => {
-      if ((response.status === 200 && response.body['error']) || response.status === 400) {
-        const error = <ResponseErrorBody>response['body'];
-        throw new ResponseError(error.msg, error.code, error.data, error.uuid);
-      } else if (response.status === 200) {
-        return response.body;
-      } else {
-        throw new Error('Unexpected error when trying to create project ' + JSON.stringify(response));
-      }
-    })
-      .catch(error => {
-        if (error instanceof HttpErrorResponse) {
-          throw new Error('Unexpected error when trying to create project ' + JSON.stringify(error));
-        }
-        throw error;
-      });
+    return this._http.put(`http://localhost:3004/api/projects/${projectName}`, project, { observe: 'response' })
+      .map(httpResponseHandler(200))
+      .catch(serverErrorHandler);
   }
 
   removeProject(project: Project): Observable<Object> {
-    return this._http.delete(`http://localhost:3004/api/projects/${project.name}`);
+    return this._http.delete(`http://localhost:3004/api/projects/${project.name}`, { observe: 'response' })
+      .map(httpResponseHandler(204))
+      .catch(serverErrorHandler);
   }
 
   selectProject(project: Project): void {

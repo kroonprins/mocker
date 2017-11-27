@@ -1,4 +1,7 @@
-<ul>
+<div *ngIf="listProjectProjectFailed" class="notification is-danger">
+  {{listProjectProjectFailedUserMessage}}
+</div>
+<ul *ngIf="!listProjectProjectFailed">
   <li *ngFor='let project of projects' class="box">
     <div *ngIf="!project.updateOngoing" class="level">
       <div class="level-item level-left" (click)="selectProject(project)">
@@ -19,8 +22,8 @@
         <button type="submit" class="button is-primary level-item" (click)="updateProject(project)" [disabled]="!updateProjectForm.form.valid">Update</button>
       </div>
     </form>
-    <div *ngIf="project.updateOngoing && updateProjectFailed" class="help is-danger">
-      {{updateProjectFailedUserMessage}}
+    <div *ngIf="(project.updateOngoing || project.deleteOngoing) && updateOrDeleteProjectFailed" class="help is-danger">
+      {{updateOrDeleteProjectFailedUserMessage}}
     </div>
   </li>
   <li class="box">

@@ -12,21 +12,28 @@ export class ProjectsComponent implements OnInit {
   projects: Project[];
   newProject: Project;
   updatedProject: Project;
+
+  listProjectProjectFailed: boolean;
+  listProjectProjectFailedUserMessage: string;
   createNewProjectFailed: boolean;
   createNewProjectFailedUserMessage: string;
-  updateProjectFailed: boolean;
-  updateProjectFailedUserMessage: string;
+  updateOrDeleteProjectFailed: boolean;
+  updateOrDeleteProjectFailedUserMessage: string;
 
   constructor(private projectsService: ProjectsService) { }
 
   ngOnInit(): void {
+    this.listProjectProjectFailed = false;
     this.projectsService.listProjects().subscribe(projects => {
-        this.projects = projects;
-      });
+      this.projects = projects;
+    }, error => {
+      this.listProjectProjectFailed = true;
+      this.listProjectProjectFailedUserMessage = error.toString();
+    });
     this.newProject = new Project();
     this.updatedProject = new Project();
     this.createNewProjectFailed = false;
-    this.updateProjectFailed = false;
+    this.updateOrDeleteProjectFailed = false;
   }
 
   selectProject(project: Project): void {
@@ -44,6 +51,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   startProjectUpdate(projectToUpdate: Project) {
+    this.updateOrDeleteProjectFailed = false;
     this.updatedProject.name = projectToUpdate.name;
     projectToUpdate.updateOngoing = true;
   }
@@ -54,24 +62,29 @@ export class ProjectsComponent implements OnInit {
   }
 
   updateProject(projectToUpdate: Project): void {
-    this.updateProjectFailed = false;
+    this.updateOrDeleteProjectFailed = false;
     this.projectsService.updateProject(projectToUpdate.name, this.updatedProject).subscribe(respo => {
       if (projectToUpdate.name === this.projectsService.getLastSelectedProject().name) {
         this.projectsService.selectProject(this.updatedProject);
       }
       this.ngOnInit();
     }, error => {
-      this.updateProjectFailed = true;
-      this.updateProjectFailedUserMessage = error.toString();
+      this.updateOrDeleteProjectFailed = true;
+      this.updateOrDeleteProjectFailedUserMessage = error.toString();
     });
   }
 
   removeProject(project: Project): void {
+    project.deleteOngoing = true;
+    this.updateOrDeleteProjectFailed = false;
     if (project.name === this.projectsService.getLastSelectedProject().name) {
       this.projectsService.selectProject(new Project());
     }
     this.projectsService.removeProject(project).subscribe(_ => {
       this.ngOnInit();
+    }, error => {
+      this.updateOrDeleteProjectFailed = true;
+      this.updateOrDeleteProjectFailedUserMessage = error.toString();
     });
   }
 
