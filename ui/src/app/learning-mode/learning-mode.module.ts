@@ -3,14 +3,20 @@ import { CommonModule } from '@angular/common';
 import { LearningModeComponent } from './learning-mode.component';
 import { LearningModeService } from './services/learning-mode.service';
 import { RecordedRequestsListComponent } from './components/list/recorded-requests-list.component';
+import { RecordedRequestsConsultComponent } from './components/consult/recorded-requests-consult.component';
+import { FormsModule } from '@angular/forms';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    MonacoEditorModule
   ],
   declarations: [
     LearningModeComponent,
-    RecordedRequestsListComponent
+    RecordedRequestsListComponent,
+    RecordedRequestsConsultComponent
   ],
   providers: [
     LearningModeService

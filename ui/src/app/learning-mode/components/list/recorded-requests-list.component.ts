@@ -43,7 +43,7 @@ export class RecordedRequestsListComponent implements OnChanges {
   }
 
   selectRecordedRequest(recordedRequest?): void {
-    if (!RecordedRequest && this.recordedRequests.length > 0) {
+    if (!recordedRequest && this.recordedRequests.length > 0) {
       this.onRecordedRequestSelected.emit(this.recordedRequests[0]);
     } else {
       this.onRecordedRequestSelected.emit(recordedRequest);

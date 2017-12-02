@@ -3,7 +3,7 @@
     <app-recorded-requests-list [projectName]="projectName" [selectedRecordedRequestId]="selectedRecordedRequestId" (onRecordedRequestSelected)="onRecordedRequestSelected($event)"></app-recorded-requests-list>
   </section>
 
-  <!-- <section class="column">
-    <app-rules-manage [actionType]="selectedRuleAction" [projectName]="projectName" [ruleName]="selectedRuleName" (onRuleActionCompleted)="onRuleActionCompleted($event)"></app-rules-manage>
-  </section> -->
+  <section class="column">
+    <app-recorded-requests-consult [projectName]="projectName" [recordedRequestId]="selectedRecordedRequestId" ></app-recorded-requests-consult>
+  </section>
 </div>

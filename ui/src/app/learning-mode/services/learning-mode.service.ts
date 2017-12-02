@@ -12,4 +12,10 @@ export class LearningModeService {
     return this._http.get<RecordedRequest[]>(`http://localhost:3004/api/learning-mode/${projectName}/recorded-requests`);
   }
 
+  retrieveRecordedRequest(projectName: string, recordedRequestId: string): Observable<RecordedRequest> {
+    return this._http.get<RecordedRequest>(
+      `http://localhost:3004/api/learning-mode/${projectName}/recorded-requests/${recordedRequestId}`
+    );
+  }
+
 }
