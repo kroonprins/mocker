@@ -5,11 +5,13 @@ import { RulesListComponent } from './components/list/rules-list.component';
 import { RulesService } from './services/rules.service';
 import { RulesManageComponent } from './components/manage/rules-manage.component';
 import { FormsModule } from '@angular/forms';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    MonacoEditorModule
   ],
   exports: [
     RulesComponent

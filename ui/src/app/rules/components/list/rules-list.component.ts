@@ -13,7 +13,7 @@ export class RulesListComponent implements OnChanges {
   projectName: string;
   @Input()
   selectedProjectRuleName: string;
-  @Input() // workaround to give a way to force refresh...
+  @Input() // workaround to give a way to force refresh... (maybe use @ViewChild in parent component to trigger refresh?)
   refresh: boolean;
 
   @Output()

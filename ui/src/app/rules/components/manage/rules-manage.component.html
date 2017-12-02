@@ -103,8 +103,8 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="ruleResponseHeaders" required [(ngModel)]="projectRule.rule.response.headers" name="headers"
-                class="input" [readonly]="isConsult()">
+              <input type="text" id="ruleResponseHeaders" required [(ngModel)]="projectRule.rule.response.headers" name="headers" class="input"
+                [readonly]="isConsult()">
             </div>
           </div>
         </div>
@@ -116,8 +116,8 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="ruleResponseCookies" required [(ngModel)]="projectRule.rule.response.cookies" name="cookies"
-                class="input" [readonly]="isConsult()">
+              <input type="text" id="ruleResponseCookies" required [(ngModel)]="projectRule.rule.response.cookies" name="cookies" class="input"
+                [readonly]="isConsult()">
             </div>
           </div>
         </div>
@@ -129,8 +129,8 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="ruleResponseBody" required [(ngModel)]="projectRule.rule.response.body" name="body"
-                class="input" [readonly]="isConsult()">
+              <ngx-monaco-editor id="ruleResponseBody" required class="monaco-code-editor" [options]="monacoEditorOptions" [(ngModel)]="projectRule.rule.response.body"
+                name="body"></ngx-monaco-editor>
             </div>
           </div>
         </div>
@@ -139,28 +139,28 @@
 
     <div class="field is-grouped is-grouped-right">
       <p class="control" *ngIf="isConsult()">
-          <button (click)="removeProjectRule()" class="button is-primary">Remove</button>
+        <button (click)="removeProjectRule()" class="button is-primary">Remove</button>
       </p>
       <p class="control" *ngIf="isConsult()">
-          <button (click)="startDuplicateProjectRule()" class="button is-primary">Duplicate</button>
+        <button (click)="startDuplicateProjectRule()" class="button is-primary">Duplicate</button>
       </p>
       <p class="control" *ngIf="isConsult()">
-          <button (click)="startUpdateProjectRule()" class="button is-primary">Update</button>
+        <button (click)="startUpdateProjectRule()" class="button is-primary">Update</button>
       </p>
       <p class="control" *ngIf="isCreate()">
-          <button (click)="createProjectRule()" class="button is-primary">Create</button>
+        <button (click)="createProjectRule()" class="button is-primary">Create</button>
       </p>
       <p class="control" *ngIf="isUpdate()">
-          <button (click)="cancelUpdateProjectRule()" class="button is-light">Cancel</button>
+        <button (click)="cancelUpdateProjectRule()" class="button is-light">Cancel</button>
       </p>
       <p class="control" *ngIf="isUpdate()">
-          <button (click)="updateProjectRule()" class="button is-primary">Confirm</button>
+        <button (click)="updateProjectRule()" class="button is-primary">Confirm</button>
       </p>
       <p class="control" *ngIf="isDuplicate()">
-          <button (click)="cancelDuplicateProjectRule()" class="button is-light">Cancel</button>
+        <button (click)="cancelDuplicateProjectRule()" class="button is-light">Cancel</button>
       </p>
       <p class="control" *ngIf="isDuplicate()">
-          <button (click)="duplicateProjectRule()" class="button is-primary">Confirm</button>
+        <button (click)="duplicateProjectRule()" class="button is-primary">Confirm</button>
       </p>
     </div>
   </form>

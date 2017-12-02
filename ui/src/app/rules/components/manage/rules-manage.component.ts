@@ -22,6 +22,7 @@ export class RulesManageComponent implements OnChanges {
 
   projectRule: ProjectRule;
   ruleNameBeforeUpdate: string;
+  monacoEditorOptions: object;
 
   constructor(private rulesService: RulesService) { }
 
@@ -43,6 +44,7 @@ export class RulesManageComponent implements OnChanges {
         this.projectRule = ProjectRule.newEmpty();
         break;
     }
+    this.setMonacoEditorSettings();
   }
 
   private isConsult(): boolean {
@@ -76,14 +78,17 @@ export class RulesManageComponent implements OnChanges {
 
   private startUpdateProjectRule(): void {
     this.actionType = 'update';
+    this.setMonacoEditorSettings();
   }
 
   private startDuplicateProjectRule(): void {
     this.actionType = 'duplicate';
+    this.setMonacoEditorSettings();
   }
 
   private cancelUpdateProjectRule(): void {
     this.actionType = 'consult';
+    this.setMonacoEditorSettings();
   }
 
   private updateProjectRule(): void {
@@ -95,10 +100,25 @@ export class RulesManageComponent implements OnChanges {
 
   private cancelDuplicateProjectRule(): void {
     this.actionType = 'consult';
+    this.setMonacoEditorSettings();
   }
 
   private duplicateProjectRule(): void {
     this.createProjectRule();
+  }
+
+  private setMonacoEditorSettings() {
+    this.monacoEditorOptions = {
+      language: 'json',
+      minimap: {
+        enabled: false
+      },
+      scrollbar: {
+        horizontal: 'auto',
+        vertical: 'auto'
+      },
+      readOnly: this.isConsult()
+    };
   }
 
 }
