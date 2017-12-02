@@ -23,6 +23,7 @@ export class ProjectsComponent implements OnInit {
   constructor(private projectsService: ProjectsService) { }
 
   ngOnInit(): void {
+    // TODO cache list of projects in service? because not necessary to always retrieve from server
     this.listProjectProjectFailed = false;
     this.projectsService.listProjects().subscribe(projects => {
       this.projects = projects;

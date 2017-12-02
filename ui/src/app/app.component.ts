@@ -24,4 +24,11 @@ export class AppComponent implements OnInit {
     }
     return `/projects/${this.activeProject.name}/rules`;
   }
+
+  getLearningModeRouterLink(): string {
+    if (!this.activeProject) {
+      return;
+    }
+    return `/projects/${this.activeProject.name}/learning-mode`;
+  }
 }

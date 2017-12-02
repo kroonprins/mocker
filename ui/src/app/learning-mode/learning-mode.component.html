@@ -1,0 +1,9 @@
+<div class="columns">
+  <section class="column is-5">
+    <app-recorded-requests-list [projectName]="projectName" [selectedRecordedRequestId]="selectedRecordedRequestId" (onRecordedRequestSelected)="onRecordedRequestSelected($event)"></app-recorded-requests-list>
+  </section>
+
+  <!-- <section class="column">
+    <app-rules-manage [actionType]="selectedRuleAction" [projectName]="projectName" [ruleName]="selectedRuleName" (onRuleActionCompleted)="onRuleActionCompleted($event)"></app-rules-manage>
+  </section> -->
+</div>

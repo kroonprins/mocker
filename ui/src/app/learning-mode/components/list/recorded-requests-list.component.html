@@ -1,0 +1,8 @@
+<ul>
+  <li *ngFor='let recordedRequest of recordedRequests' (click)="selectRecordedRequest(recordedRequest)" class="box">
+    <div>
+      <div class="title is-3">{{recordedRequest._id}}</div>
+      <!-- <div>{{projectRule.rule.request.method}} - {{projectRule.rule.request.path}}</div> -->
+    </div>
+  </li>
+</ul>

@@ -32,7 +32,6 @@ export class RulesListComponent implements OnChanges {
     } else {
       this.findProjectRuleToSelect();
     }
-
   }
 
   private findProjectRuleToSelect(): void {

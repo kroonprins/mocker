@@ -11,6 +11,7 @@ import { Ng2Webstorage } from 'ngx-webstorage';
 import { ProjectsModule } from './projects/projects.module';
 import { RulesModule } from './rules/rules.module';
 import { ProjectsService } from './projects/services/projects.service';
+import { LearningModeModule } from './learning-mode/learning-mode.module';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { ProjectsService } from './projects/services/projects.service';
     FormsModule,
     ProjectsModule,
     RulesModule,
+    LearningModeModule,
     Ng2Webstorage.forRoot({ prefix: 'mocker' })
   ],
   providers: [

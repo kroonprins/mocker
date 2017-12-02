@@ -12,6 +12,9 @@
       <div class="navbar-item">
         <a [routerLink]="getRulesRouterLink()" routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{exact: true}" [hidden]="!(activeProject && activeProject.name)">Rules</a>
       </div>
+      <div class="navbar-item">
+        <a [routerLink]="getLearningModeRouterLink()" routerLinkActive="active-navigation-link" [routerLinkActiveOptions]="{exact: true}" [hidden]="!(activeProject && activeProject.name)">Learning Mode</a>
+      </div>
     </div>
     <div class="navbar-end">
       <div *ngIf="activeProject && activeProject.name" class="navbar-item"><span class="is-size-7 has-text-grey-light">Active project&nbsp;</span>{{activeProject.name}}</div>
