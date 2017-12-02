@@ -7,6 +7,9 @@ import { ProjectService } from './../../lib/project-service'
 import { InMemoryProjectStore } from './../../lib/project-store'
 import { RuleService } from './../../lib/rule-service'
 import { AppClassValidationService } from '../../lib/app-class-validation.service.mjs'
+import { LearningModeService } from './../../lib/learning-mode.service'
+import { LearningModeDbService } from './../../lib/learning-mode.db.service'
+import { RecordedRequest } from './../../lib/learning-mode.model'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 
@@ -27,13 +30,16 @@ const test = async () => {
         new AppClassValidationService()
       ))
 
+    let learningModeDbService = new LearningModeDbService('./test/tmp/test2.db')
+    let learningModeService = new LearningModeService(learningModeDbService)
+
     const availablePort = (await portastic.find({
       min: 20000,
       max: 30000,
       retrieve: 1
     }))[0]
 
-    const apiServer = new ApiServer(availablePort, 'localhost', projectService)
+    const apiServer = new ApiServer(availablePort, 'localhost', projectService, learningModeService)
     try {
       await apiServer.start()
 
@@ -395,7 +401,6 @@ const test = async () => {
         })
       } catch (e) {
         expect(e.response.status).to.be.equal(400)
-        console.dir(e.response.data, { depth: 10 })
         expect(e.response.data).excluding('uuid').to.deep.equal({
           msg: 'Validation failed',
           code: 'validation error',
@@ -527,7 +532,6 @@ const test = async () => {
         })
       } catch (e) {
         expect(e.response.status).to.be.equal(400)
-        console.dir(e.response.data, { depth: 10 })
         expect(e.response.data).excluding('uuid').to.deep.equal({
           msg: 'Validation failed',
           code: 'validation error',
@@ -706,6 +710,70 @@ const test = async () => {
         exceptionThrownForDeleteBecauseRuleNotFound = true
       }
       expect(exceptionThrownForDeleteBecauseRuleNotFound).to.be.equal(true)
+
+      const recordedRequestsEmpty = await axios.get(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests`)
+      expect(recordedRequestsEmpty.status).to.be.equal(200)
+      expect(recordedRequestsEmpty.data.length).to.be.equal(0)
+
+      const timestamp = new Date()
+      await learningModeService.saveRecordedRequest(new RecordedRequest(undefined, 'test_project', timestamp))
+      await learningModeService.saveRecordedRequest(new RecordedRequest(undefined, 'test_project', timestamp))
+
+      const recordedRequests = await axios.get(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests`)
+      expect(recordedRequests.status).to.be.equal(200)
+      expect(recordedRequests.data.length).to.be.equal(2)
+      expect(recordedRequests.data[0]).excluding('_id').to.deep.equal({ timestamp: timestamp.getTime() })
+
+      const id = recordedRequests.data[0]['_id']
+      const recordedRequest = await axios.get(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests/${id}`)
+      expect(recordedRequest.status).to.be.equal(200)
+      expect(recordedRequest.data).excluding('_id').to.deep.equal({ project: 'test_project', timestamp: timestamp.getTime() })
+
+      let exceptionThrownForRetrieveBecauseRecordedRequestNotFound = false
+      try {
+        await await axios.get(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests/x`)
+      } catch (e) {
+        expect(e.response.status).to.be.equal(400)
+        expect(e.response.data).excluding('uuid').to.deep.equal({
+          msg: 'The recorded request with id x does not exist',
+          code: 'recorded request not found',
+          data: { id: 'x' }
+        })
+        expect(e.response.data.uuid.length).is.not.equal(0)
+        exceptionThrownForRetrieveBecauseRecordedRequestNotFound = true
+      }
+      expect(exceptionThrownForRetrieveBecauseRecordedRequestNotFound).to.be.equal(true)
+
+      const removedRequest = await axios.delete(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests/${id}`)
+      expect(removedRequest.status).to.be.equal(204)
+      expect(removedRequest.data).to.be.equal('')
+
+      let exceptionThrownForDeleteBecauseRecordedRequestNotFound = false
+      try {
+        await axios.delete(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests/x`)
+      } catch (e) {
+        expect(e.response.status).to.be.equal(400)
+        expect(e.response.data).excluding('uuid').to.deep.equal({
+          msg: 'Trying to delete recorded request with id x which does not exist',
+          code: 'recorded request not found',
+          data: { id: 'x' }
+        })
+        expect(e.response.data.uuid.length).is.not.equal(0)
+        exceptionThrownForDeleteBecauseRecordedRequestNotFound = true
+      }
+      expect(exceptionThrownForDeleteBecauseRecordedRequestNotFound).to.be.equal(true)
+
+      const recordedRequestsAfterDelete = await axios.get(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests`)
+      expect(recordedRequestsAfterDelete.status).to.be.equal(200)
+      expect(recordedRequestsAfterDelete.data.length).to.be.equal(1)
+
+      const removedAllRequest = await axios.delete(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests`)
+      expect(removedAllRequest.status).to.be.equal(204)
+      expect(removedAllRequest.data).to.be.equal('')
+
+      const recordedRequestsAfterDeleteAll = await axios.get(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests`)
+      expect(recordedRequestsAfterDeleteAll.status).to.be.equal(200)
+      expect(recordedRequestsAfterDeleteAll.data.length).to.be.equal(0)
     } finally {
       apiServer.stop()
     }

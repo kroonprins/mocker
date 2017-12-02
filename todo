@@ -14,3 +14,4 @@
 * fix naming inconsistency . or - (e.g. learing-mode.model vs project-model)
 (* add ui testing also to git commit hook)
 * make possible that header/cookie is conditional in response
+* split api server?

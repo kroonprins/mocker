@@ -24,6 +24,9 @@ const test = async () => {
     const retrievedResult = await learningModeDbService.findRecordedRequests('project')
     expect(retrievedResult.length).to.be.equal(2)
 
+    const retrievedRequest = await learningModeDbService.findRecordedRequest('id1')
+    expect(retrievedRequest.project).to.be.equal('project')
+
     const numRemoved = await learningModeDbService.removeAll('project')
     expect(numRemoved).to.be.equal(2)
 
@@ -39,7 +42,7 @@ const test = async () => {
     const retrievedResultAfterInsert = await learningModeDbService.findRecordedRequests('project')
     expect(retrievedResultAfterInsert.length).to.be.equal(2)
 
-    const numRemovedAfterRemoveRecorededRequest = await learningModeDbService.removeRecordedRequest(recordedRequest3)
+    const numRemovedAfterRemoveRecorededRequest = await learningModeDbService.removeRecordedRequest('id3')
     expect(numRemovedAfterRemoveRecorededRequest).to.be.equal(1)
     const retrievedResultRemoveRecorededRequest = await learningModeDbService.findRecordedRequests('project')
     expect(retrievedResultRemoveRecorededRequest.length).to.be.equal(1)
