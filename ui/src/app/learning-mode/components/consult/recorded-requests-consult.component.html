@@ -9,7 +9,8 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="timestamp" [ngModel]="recordedRequest.timestamp | date:'d/M/yy, H:mm:ss'" name="name" class="input" readonly>
+              <input type="text" id="timestamp" [ngModel]="recordedRequest.timestamp | date:'d/M/yy, H:mm:ss'" name="name" class="input"
+                readonly>
             </div>
           </div>
         </div>
@@ -24,8 +25,7 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="requestMethod" required [ngModel]="recordedRequest.request.method" name="method" class="input"
-                readonly>
+              <input type="text" id="requestMethod" required [ngModel]="recordedRequest.request.method" name="method" class="input" readonly>
             </div>
           </div>
         </div>
@@ -49,55 +49,62 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="requestFullPath" required [ngModel]="recordedRequest.request.fullPath" name="fullPath" class="input" readonly>
+              <input type="text" id="requestFullPath" required [ngModel]="recordedRequest.request.fullPath" name="fullPath" class="input"
+                readonly>
             </div>
           </div>
         </div>
       </div>
-      <div class="field is-horizontal">
+      <div class="field is-horizontal" *ngIf="recordedRequest.request.params && recordedRequest.request.params.length > 0">
         <div class="field-label is-normal">
           <label for="params" class="label">Query parameters</label>
         </div>
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="requestParams" required [ngModel]="recordedRequest.request.params" name="params" class="input" readonly>
+              <div *ngFor='let param of recordedRequest.request.params' name="param">
+                <strong>{{param.name}}:</strong> {{param.value}}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="field is-horizontal">
+      <div class="field is-horizontal" *ngIf="recordedRequest.request.headers && recordedRequest.request.headers.length > 0">
         <div class="field-label is-normal">
-          <label for="headers" class="label">Headers</label>
+          <label for="requestHeaders" class="label">Headers</label>
         </div>
         <div class="field-body">
           <div class="field">
-            <div class="control">
-              <input type="text" id="requestHeaders" required [ngModel]="recordedRequest.request.headers" name="headers" class="input" readonly>
+            <div class="control" name="requestHeaders">
+              <div *ngFor='let header of recordedRequest.request.headers'>
+                <strong>{{header.name}}:</strong> {{header.value}}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="field is-horizontal">
+      <div class="field is-horizontal" *ngIf="recordedRequest.request.cookies && recordedRequest.request.cookies.length > 0">
         <div class="field-label is-normal">
-          <label for="cookies" class="label">Cookies</label>
+          <label for="requestCookies" class="label">Cookies</label>
         </div>
         <div class="field-body">
           <div class="field">
-            <div class="control">
-              <input type="text" id="requestCookies" required [ngModel]="recordedRequest.request.cookies" name="cookies" class="input" readonly>
+            <div class="control" name="responseCookies">
+              <div *ngFor='let cookie of recordedRequest.request.cookies'>
+                <strong>{{cookie.name}}:</strong> {{cookie.value}}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="field is-horizontal">
+      <div class="field is-horizontal" *ngIf="recordedRequest.request.body">
         <div class="field-label is-normal">
           <label for="requestBody" class="label">Body</label>
         </div>
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <ngx-monaco-editor *ngIf="recordedRequest.request.body" id="requestBody" required class="monaco-code-editor" [options]="monacoEditorOptions" [ngModel]="recordedRequest.request.body"
+              <ngx-monaco-editor id="requestBody" required class="monaco-code-editor" [options]="monacoEditorOptions" [ngModel]="recordedRequest.request.body"
                 name="requestBody"></ngx-monaco-editor>
             </div>
           </div>
@@ -132,28 +139,31 @@
           </div>
         </div>
       </div>
-      <div class="field is-horizontal">
+      <div class="field is-horizontal" *ngIf="recordedRequest.response.headers && recordedRequest.response.headers.length > 0">
         <div class="field-label is-normal">
           <label for="responseHeaders" class="label">Headers</label>
         </div>
         <div class="field-body">
           <div class="field">
-            <div class="control">
-              <input type="text" id="responseHeaders" required [ngModel]="recordedRequest.response.headers" name="responseHeaders" class="input"
-                readonly>
+            <div class="control" name="responseHeaders">
+              <div *ngFor='let responseHeader of recordedRequest.response.headers'>
+                <strong>{{responseHeader.name}}:</strong> {{responseHeader.value}}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="field is-horizontal">
+      <div class="field is-horizontal" *ngIf="recordedRequest.response.cookies && recordedRequest.response.cookies.length > 0">
         <div class="field-label is-normal">
           <label for="responseCookies" class="label">Cookies</label>
         </div>
         <div class="field-body">
           <div class="field">
-            <div class="control">
-              <input type="text" id="responseCookies" required [ngModel]="recordedRequest.response.cookies" name="responseCookies" class="input"
-                readonly>
+            <div class="control" name="responseCookies">
+              <!-- TODO cookie properties -->
+              <div *ngFor='let responseCookie of recordedRequest.response.cookies'>
+                <strong>{{responseCookie.name}}:</strong> {{responseCookie.value}}
+              </div>
             </div>
           </div>
         </div>
@@ -165,40 +175,19 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <ngx-monaco-editor *ngIf="recordedRequest.response.body" id="responseBody" required class="monaco-code-editor" [options]="monacoEditorOptions" [ngModel]="recordedRequest.response.body"
-                name="responseBody" (onInit)="onInitResponseBodyEditor($event)"></ngx-monaco-editor>
+              <ngx-monaco-editor *ngIf="recordedRequest.response.body" id="responseBody" required class="monaco-code-editor" [options]="monacoEditorOptions"
+                [ngModel]="recordedRequest.response.body" name="responseBody" (onInit)="onInitResponseBodyEditor($event)"></ngx-monaco-editor>
             </div>
           </div>
         </div>
       </div>
     </fieldset>
 
-    <!-- <div class="field is-grouped is-grouped-right">
-      <p class="control" *ngIf="isConsult()">
-        <button (click)="removeProjectRule()" class="button is-primary">Remove</button>
+    <div class="field is-grouped is-grouped-right">
+      <p class="control">
+        <button (click)="createProjectRule()" class="button is-primary">Create Rule</button>
       </p>
-      <p class="control" *ngIf="isConsult()">
-        <button (click)="startDuplicateProjectRule()" class="button is-primary">Duplicate</button>
-      </p>
-      <p class="control" *ngIf="isConsult()">
-        <button (click)="startUpdateProjectRule()" class="button is-primary">Update</button>
-      </p>
-      <p class="control" *ngIf="isCreate()">
-        <button (click)="createProjectRule()" class="button is-primary">Create</button>
-      </p>
-      <p class="control" *ngIf="isUpdate()">
-        <button (click)="cancelUpdateProjectRule()" class="button is-light">Cancel</button>
-      </p>
-      <p class="control" *ngIf="isUpdate()">
-        <button (click)="updateProjectRule()" class="button is-primary">Confirm</button>
-      </p>
-      <p class="control" *ngIf="isDuplicate()">
-        <button (click)="cancelDuplicateProjectRule()" class="button is-light">Cancel</button>
-      </p>
-      <p class="control" *ngIf="isDuplicate()">
-        <button (click)="duplicateProjectRule()" class="button is-primary">Confirm</button>
-      </p>
-    </div> -->
+    </div>
   </form>
 
 </div>

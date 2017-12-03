@@ -47,7 +47,10 @@ const httpResponseHandler = expectedResponseCode => {
 };
 
 const serverErrorHandler = error => {
-  throw new Error('Unexpected error ' + JSON.stringify(error));
+  if (error instanceof HttpErrorResponse) {
+    throw new Error('Unexpected error ' + JSON.stringify(error));
+  }
+  throw error;
 };
 
 @Injectable()

@@ -96,32 +96,98 @@
           </div>
         </div>
       </div>
-      <div class="field is-horizontal">
+      <div class="field is-horizontal" *ngFor="let ruleResponseHeader of projectRule.rule.response.headers; let i = index">
         <div class="field-label is-normal">
-          <label for="headers" class="label">Headers</label>
+          <label for="headers" class="label">{{i === 0 ? 'Headers' : ''}}</label>
         </div>
-        <div class="field-body">
+        <div class="field-body" name="headers">
           <div class="field">
             <div class="control">
-              <input type="text" id="ruleResponseHeaders" required [(ngModel)]="projectRule.rule.response.headers" name="headers" class="input"
-                [readonly]="isConsult()">
+              <input type="text" id="ruleResponseHeaderName" required [(ngModel)]="ruleResponseHeader.name" class="input" [readonly]="isConsult()"
+                placeholder="name" name="ruleResponseHeaderName-{{i}}">
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <input type="text" id="ruleResponseHeaderValue" required [(ngModel)]="ruleResponseHeader.value" class="input" [readonly]="isConsult()"
+                placeholder="value" name="ruleResponseHeaderValue-{{i}}">
+            </div>
+          </div>
+          <div class="field" *ngIf="!isConsult()">
+            <div class="control">
+              <button (click)="removeHeader(i)" class="button is-primary">Remove</button>
             </div>
           </div>
         </div>
       </div>
-      <div class="field is-horizontal">
+      <div class="field is-horizontal" *ngIf="!isConsult()">
         <div class="field-label is-normal">
-          <label for="cookies" class="label">Cookies</label>
+          <label class="label">{{projectRule.rule.response.headers && projectRule.rule.response.headers.length > 0 ? '' : 'Headers' }}</label>
         </div>
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="ruleResponseCookies" required [(ngModel)]="projectRule.rule.response.cookies" name="cookies" class="input"
-                [readonly]="isConsult()">
+              <input type="text" id="newResponseHeaderName" required [(ngModel)]="newHeader.name" class="input" placeholder="name" name="newResponseHeaderName">
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <input type="text" id="newResponseHeaderValue" required [(ngModel)]="newHeader.value" class="input" placeholder="value" name="newResponseHeaderValue">
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <button (click)="addNewHeader()" class="button is-primary">Add</button>
             </div>
           </div>
         </div>
       </div>
+      <div class="field is-horizontal" *ngFor="let ruleResponseCookie of projectRule.rule.response.cookies; let i = index">
+        <div class="field-label is-normal">
+          <label for="cookies" class="label">{{i === 0 ? 'Cookies' : ''}}</label>
+        </div>
+        <div class="field-body" name="cookies">
+          <div class="field">
+            <div class="control">
+              <input type="text" id="ruleResponseCookieName" required [(ngModel)]="ruleResponseCookie.name" class="input" [readonly]="isConsult()"
+                placeholder="name" name="ruleResponseCookieName-{{i}}">
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <input type="text" id="ruleResponseCookieValue" required [(ngModel)]="ruleResponseCookie.value" class="input" [readonly]="isConsult()"
+                placeholder="value" name="ruleResponseCookieValue-{{i}}">
+            </div>
+          </div>
+          <div class="field" *ngIf="!isConsult()">
+            <div class="control">
+              <button (click)="removeCookie(i)" class="button is-primary">Remove</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal" *ngIf="!isConsult()">
+          <div class="field-label is-normal">
+            <label class="label">{{projectRule.rule.response.cookies && projectRule.rule.response.cookies.length > 0 ? '' : 'Cookies' }}</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input type="text" id="newResponseCookieName" required [(ngModel)]="newCookie.name" class="input" placeholder="name" name="newResponseCookieName">
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <input type="text" id="newResponseCookieValue" required [(ngModel)]="newCookie.value" class="input" placeholder="value" name="newResponseCookieValue">
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <button (click)="addNewCookie()" class="button is-primary">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label for="body" class="label">Body</label>
@@ -146,6 +212,9 @@
       </p>
       <p class="control" *ngIf="isConsult()">
         <button (click)="startUpdateProjectRule()" class="button is-primary">Update</button>
+      </p>
+      <p class="control" *ngIf="isCreate()">
+        <button (click)="cancelCreateProjectRule()" class="button is-light">Cancel</button>
       </p>
       <p class="control" *ngIf="isCreate()">
         <button (click)="createProjectRule()" class="button is-primary">Create</button>

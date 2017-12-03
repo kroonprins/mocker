@@ -15,3 +15,4 @@
 (* add ui testing also to git commit hook)
 * make possible that header/cookie is conditional in response
 * split api server?
+* add class validation on learning mode model

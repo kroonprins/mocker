@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { ActionType } from '../../model/typedef';
 import { RulesService } from '../../services/rules.service';
-import { ProjectRule } from '../../model/project-rule';
+import { ProjectRule, ResponseHeader, ResponseCookie } from '../../model/project-rule';
 
 @Component({
   selector: 'app-rules-manage',
@@ -21,12 +21,17 @@ export class RulesManageComponent implements OnChanges {
   onRuleActionCompleted = new EventEmitter<ProjectRule>();
 
   projectRule: ProjectRule;
+  selectedRuleBeforeCreate: ProjectRule;
   ruleNameBeforeUpdate: string;
   monacoEditorOptions: object;
+  newHeader: ResponseHeader;
+  newCookie: ResponseCookie;
 
   constructor(private rulesService: RulesService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.newHeader = new ResponseHeader();
+    this.newCookie = new ResponseCookie();
     switch (this.actionType) {
       case 'consult':
       case 'update':
@@ -41,6 +46,7 @@ export class RulesManageComponent implements OnChanges {
         }
         break;
       case 'create':
+        this.selectedRuleBeforeCreate = this.projectRule;
         this.projectRule = ProjectRule.newEmpty();
         break;
     }
@@ -61,6 +67,12 @@ export class RulesManageComponent implements OnChanges {
   }
   private isDelete(): boolean {
     return this.actionType === 'delete';
+  }
+
+  private cancelCreateProjectRule(): void {
+    this.onRuleActionCompleted.emit(this.selectedRuleBeforeCreate);
+    this.actionType = 'consult';
+    this.setMonacoEditorSettings();
   }
 
   private createProjectRule(): void {
@@ -89,6 +101,7 @@ export class RulesManageComponent implements OnChanges {
   private cancelUpdateProjectRule(): void {
     this.actionType = 'consult';
     this.setMonacoEditorSettings();
+    this.ngOnChanges(null); // TODO better way to remove any manual changes?
   }
 
   private updateProjectRule(): void {
@@ -101,6 +114,7 @@ export class RulesManageComponent implements OnChanges {
   private cancelDuplicateProjectRule(): void {
     this.actionType = 'consult';
     this.setMonacoEditorSettings();
+    this.ngOnChanges(null); // TODO better way to remove any manual changes?
   }
 
   private duplicateProjectRule(): void {
@@ -119,6 +133,28 @@ export class RulesManageComponent implements OnChanges {
       },
       readOnly: this.isConsult()
     };
+  }
+
+  private addNewHeader(): void {
+    const headers = this.projectRule.rule.response.headers || [];
+    headers.push(this.newHeader);
+    this.newHeader = new ResponseHeader();
+    this.projectRule.rule.response.headers = headers;
+  }
+
+  private removeHeader(index: number) {
+    this.projectRule.rule.response.headers.splice(index, 1);
+  }
+
+  private addNewCookie(): void {
+    const cookies = this.projectRule.rule.response.cookies || [];
+    cookies.push(this.newCookie);
+    this.newCookie = new ResponseCookie();
+    this.projectRule.rule.response.cookies = cookies;
+  }
+
+  private removeCookie(index: number) {
+    this.projectRule.rule.response.cookies.splice(index, 1);
   }
 
 }

@@ -38,12 +38,9 @@ export class RecordedRequestsConsultComponent implements OnChanges {
   }
 
   onInitResponseBodyEditor(editor) {
-    // editor.getAction('editor.action.formatDocument').run();
-
+    // TODO find better way to format (this only works first time, not when switching between requests) => maybe use ng2-ace-editor instead
     const didScrollChangeDisposable = editor.onDidScrollChange(function (event) {
       didScrollChangeDisposable.dispose();
-      // console.log(editor)
-      // editor.setProperty('readOnly', true)
       editor.getAction('editor.action.formatDocument').run();
     });
   }
