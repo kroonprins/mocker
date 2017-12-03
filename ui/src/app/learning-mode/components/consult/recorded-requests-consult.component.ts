@@ -45,7 +45,7 @@ export class RecordedRequestsConsultComponent implements OnChanges {
       // console.log(editor)
       // editor.setProperty('readOnly', true)
       editor.getAction('editor.action.formatDocument').run();
-    })
+    });
   }
 
 }
