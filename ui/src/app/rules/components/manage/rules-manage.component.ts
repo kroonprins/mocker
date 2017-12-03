@@ -30,8 +30,8 @@ export class RulesManageComponent implements OnChanges {
   constructor(private rulesService: RulesService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.newHeader = new ResponseHeader();
-    this.newCookie = new ResponseCookie();
+    this.newHeader = ResponseHeader.newEmpty();
+    this.newCookie = ResponseCookie.newEmpty();
     switch (this.actionType) {
       case 'consult':
       case 'update':
@@ -138,7 +138,7 @@ export class RulesManageComponent implements OnChanges {
   private addNewHeader(): void {
     const headers = this.projectRule.rule.response.headers || [];
     headers.push(this.newHeader);
-    this.newHeader = new ResponseHeader();
+    this.newHeader = ResponseHeader.newEmpty();
     this.projectRule.rule.response.headers = headers;
   }
 
@@ -149,7 +149,7 @@ export class RulesManageComponent implements OnChanges {
   private addNewCookie(): void {
     const cookies = this.projectRule.rule.response.cookies || [];
     cookies.push(this.newCookie);
-    this.newCookie = new ResponseCookie();
+    this.newCookie = ResponseCookie.newEmpty();
     this.projectRule.rule.response.cookies = cookies;
   }
 

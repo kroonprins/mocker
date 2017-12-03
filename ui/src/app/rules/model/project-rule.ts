@@ -21,12 +21,22 @@ class Response {
 class ResponseHeader {
   name: string;
   value: string;
+
+  static newEmpty(): ResponseHeader {
+    return new ResponseHeader();
+  }
 }
 
 class ResponseCookie {
   name: string;
   value: string;
   properties: object;
+
+  static newEmpty(): ResponseCookie {
+    const responseCookie =  new ResponseCookie();
+    responseCookie.properties = {};
+    return responseCookie;
+  }
 }
 
 class ProjectRule {
