@@ -116,6 +116,28 @@ const test = async () => {
       expect(secondRecordedRequest.request.cookies[0].value).to.be.equal('c1')
       expect(secondRecordedRequest.request.cookies[1].name).to.be.equal('cookie2')
       expect(secondRecordedRequest.request.cookies[1].value).to.be.equal('c2')
+
+      const thirdRequest = await axios.post(`http://localhost:${reverseProxyPort}/test2`, {
+        a: 'b'
+      }, {
+        headers: {
+          'X-test': 'header1'
+        }
+      })
+      expect(thirdRequest.status).to.be.equal(200)
+      const checkThirdRequestRecorded = await learningModeService.findRecordedRequests('reverseProxyTestProject')
+      expect(checkThirdRequestRecorded.length).to.be.equal(3)
+      const thirdRecordedRequest = checkThirdRequestRecorded.filter((req) => {
+        return req.id !== checkSecondRequestRecorded[0].id && req.id !== checkSecondRequestRecorded[1].id
+      })[0]
+      expect(thirdRecordedRequest.project).to.be.equal('reverseProxyTestProject')
+      expect(thirdRecordedRequest.request.method).to.be.equal('POST')
+      expect(thirdRecordedRequest.request.path).to.be.equal('/test2')
+      expect(thirdRecordedRequest.request.fullPath).to.be.equal('/test2')
+      expect(thirdRecordedRequest.request.params.length).to.be.equal(0)
+      expect(thirdRecordedRequest.request.cookies.length).to.be.equal(0)
+      expect(thirdRecordedRequest.request.body).to.be.equal('{"a":"b"}')
+      expect(thirdRecordedRequest.response.body).to.be.equal('test2')
     } finally {
       Promise.all([
         await proxyServer.stop(),

@@ -16,3 +16,9 @@
 * make possible that header/cookie is conditional in response
 * split api server?
 * add class validation on learning mode model
+* put mjs_workaround directory in .gitignore + remove directory from git
+* logger not working on reverse proxy
+* add sorting options on api
+* word wrapping in ui
+* unit test timeout on windows + npm test not running on windows + ln not possible on windows for npm install
+* use guard to disable routing to rules/learning mode if no project selected?

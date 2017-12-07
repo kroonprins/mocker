@@ -7,7 +7,7 @@ import { LearningModeComponent } from './learning-mode/learning-mode.component';
 const routes: Routes = [
   { path: '', redirectTo: '/projects', pathMatch: 'full' },
   { path: 'projects', component: ProjectsComponent },
-  { path: 'projects/:projectName/rules', component: RulesComponent },
+  { path: 'projects/:projectName/rules', component: RulesComponent }, // TODO put this one and the next one in module specific child router?
   { path: 'projects/:projectName/learning-mode', component: LearningModeComponent },
 ];
 

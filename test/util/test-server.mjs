@@ -23,6 +23,10 @@ class TestServer {
       res.send('test1')
     })
 
+    app.post('/test2', async (req, res) => {
+      res.send('test2')
+    })
+
     return new Promise((resolve, reject) => {
       this.server = app.listen(this.port, () => {
         this.logger.info('Test server started on port %d', this.port)
