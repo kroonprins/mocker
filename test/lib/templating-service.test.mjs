@@ -9,10 +9,30 @@ const expect = chai.expect
 // could split this up so that not all test run synchronously
 const test = async () => {
   try {
+    class TestNunjucksTemplatingHelpers {
+      constructor () {
+        this.filters = {
+          prependText: (str, text) => {
+            return text + str
+          },
+          appendText: (str, text) => {
+            return str + text
+          }
+        }
+        this.functions = {
+          writeA: () => {
+            return 'A'
+          },
+          writeText: (text) => {
+            return text
+          }
+        }
+      }
+    }
     config
       .registerProperty('logging.level.startup', 'debug')
       .registerType(Logger, PinoLogger)
-      .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
+      .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService(new TestNunjucksTemplatingHelpers()))
 
     let templatingService = new TemplatingService()
 
@@ -35,6 +55,18 @@ const test = async () => {
 
     const resultForNunjucks = await templatingService.render('nunjucks', 'Hello {{name}}', { name: 'world' })
     expect(resultForNunjucks).to.be.equal('Hello world')
+
+    const resultForNunjucksHelperFunction1 = await templatingService.render('nunjucks', 'Hello {{name}} {{writeA()}}', { name: 'world' })
+    expect(resultForNunjucksHelperFunction1).to.be.equal('Hello world A')
+
+    const resultForNunjucksHelperFunction2 = await templatingService.render('nunjucks', 'Hello {{name}} {{writeText("text")}}', { name: 'world' })
+    expect(resultForNunjucksHelperFunction2).to.be.equal('Hello world text')
+
+    const resultForNunjucksHelperFilter1 = await templatingService.render('nunjucks', 'Hello {{name | prependText("brave new ")}}', { name: 'world' })
+    expect(resultForNunjucksHelperFilter1).to.be.equal('Hello brave new world')
+
+    const resultForNunjucksHelperFilter2 = await templatingService.render('nunjucks', 'Hello {{name | prependText("brave new ") | appendText("s")}}', { name: 'world' })
+    expect(resultForNunjucksHelperFilter2).to.be.equal('Hello brave new worlds')
   } finally {
     config.reset()
   }

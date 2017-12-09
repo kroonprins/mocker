@@ -7,6 +7,7 @@ import { ProjectService } from './../../lib/project-service'
 import { InMemoryProjectStore } from './../../lib/project-store'
 import { RuleService } from './../../lib/rule-service'
 import { TemplatingService } from './../../lib/templating-service'
+import { NunjucksTemplatingHelpers } from './../../lib/templating-helpers.nunjucks'
 import { NunjucksTemplatingService } from './../../lib/templating-service.nunjucks'
 import { AppClassValidationService } from '../../lib/app-class-validation.service.mjs'
 import { Logger, PinoLogger } from './../../lib/logging'
@@ -21,6 +22,7 @@ const test = async () => {
     config
       .registerProperty('logging.level.startup', 'debug')
       .registerType(Logger, PinoLogger)
+      .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
       .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
 
     const templatingService = new TemplatingService()

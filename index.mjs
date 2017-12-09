@@ -9,6 +9,7 @@ import { ProjectStore, InMemoryProjectStore } from './lib/project-store'
 import { RuleService } from './lib/rule-service'
 import { ProjectService } from './lib/project-service'
 import { TemplatingService } from './lib/templating-service'
+import { NunjucksTemplatingHelpers } from './lib/templating-helpers.nunjucks'
 import { NunjucksTemplatingService } from './lib/templating-service.nunjucks'
 import { MockServer } from './lib/mock-server'
 import { AdministrationServer } from './lib/administration-server'
@@ -41,6 +42,7 @@ config
   .registerProperty('ui-server.statics-location', ENV.MOCKER_UI_SERVER_STATICS_LOCATION || './ui/dist')
   .registerType(Logger, PinoLogger)
   .registerInstance(ClassValidationService, new AppClassValidationService())
+  .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
   .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
   .registerInstance(TemplatingService, new TemplatingService())
   .registerInstance(RuleService, new RuleService())
