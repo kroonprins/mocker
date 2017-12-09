@@ -6,11 +6,13 @@ import { RecordedRequestsListComponent } from './components/list/recorded-reques
 import { RecordedRequestsConsultComponent } from './components/consult/recorded-requests-consult.component';
 import { FormsModule } from '@angular/forms';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { RulesModule } from '../rules/rules.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    RulesModule,
     MonacoEditorModule
   ],
   declarations: [

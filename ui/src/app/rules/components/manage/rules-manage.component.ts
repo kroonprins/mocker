@@ -16,6 +16,8 @@ export class RulesManageComponent implements OnChanges {
   projectName: string;
   @Input()
   ruleName: string;
+  @Input()
+  initializedRuleForCreation: ProjectRule;
 
   @Output()
   onRuleActionCompleted = new EventEmitter<ProjectRule>();
@@ -47,7 +49,11 @@ export class RulesManageComponent implements OnChanges {
         break;
       case 'create':
         this.selectedRuleBeforeCreate = this.projectRule;
-        this.projectRule = ProjectRule.newEmpty();
+        if (this.initializedRuleForCreation) {
+          this.projectRule = this.initializedRuleForCreation;
+        } else {
+          this.projectRule = ProjectRule.newEmpty();
+        }
         break;
     }
     this.setMonacoEditorSettings();

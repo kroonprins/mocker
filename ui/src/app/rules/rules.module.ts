@@ -14,7 +14,8 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     MonacoEditorModule
   ],
   exports: [
-    RulesComponent
+    RulesComponent, // TODO needs to be exported?
+    RulesManageComponent
   ],
   declarations: [
     RulesComponent,

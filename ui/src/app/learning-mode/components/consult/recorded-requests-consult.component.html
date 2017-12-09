@@ -269,11 +269,15 @@
       </div>
     </fieldset>
 
-    <div class="field is-grouped is-grouped-right">
+    <div class="field is-grouped is-grouped-right" *ngIf="!doCreateProjectRule">
       <p class="control">
-        <button (click)="createProjectRule()" class="button is-primary">Create Rule</button>
+        <button (click)="startCreateProjectRule()" class="button is-primary">Create Rule</button>
       </p>
     </div>
   </form>
 
 </div>
+
+
+<app-rules-manage *ngIf="doCreateProjectRule" actionType="create" [projectName]="projectName" [initializedRuleForCreation]="initializedRuleForCreation"
+  (onRuleActionCompleted)="createProjectRuleCompleted($event)"></app-rules-manage>
