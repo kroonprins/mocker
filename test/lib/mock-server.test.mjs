@@ -29,6 +29,7 @@ const test = async () => {
     const projectService = new ProjectService(
       new InMemoryProjectStore(
         './test/projects/tests.yaml',
+        './test/rules',
         new RuleService(),
         new AppClassValidationService()
       ))

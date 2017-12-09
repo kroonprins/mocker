@@ -12,14 +12,14 @@
         <button class="button is-primary level-item" (click)="startProjectUpdate(project)">Update</button>
       </div>
     </div>
-    <form #updateProjectForm="ngForm" *ngIf="project.updateOngoing" class="level">
+    <form #updateProjectForm="ngForm" *ngIf="project.updateOngoing" (ngSubmit)="updateProject(project)"  class="level">
       <div class="control level-item level-left">
         <input type="text" id="projectName" required [(ngModel)]="updatedProject.name" name="nameOfProjectToUpdate" class="input"
           placeholder="Project name">
       </div>
       <div class="control level-right">
         <button class="button is-light level-item" (click)="cancelProjectUpdate(project)">Cancel</button>
-        <button type="submit" class="button is-primary level-item" (click)="updateProject(project)" [disabled]="!updateProjectForm.form.valid">Update</button>
+        <button type="submit" class="button is-primary level-item" [disabled]="!updateProjectForm.form.valid">Update</button>
       </div>
     </form>
     <div *ngIf="(project.updateOngoing || project.deleteOngoing) && updateOrDeleteProjectFailed" class="help is-danger">
@@ -27,13 +27,13 @@
     </div>
   </li>
   <li class="box">
-    <form #newProjectForm="ngForm" class="level">
+    <form #newProjectForm="ngForm" (ngSubmit)="createNewProject()" class="level">
       <div class="control level-item level-left">
         <input type="text" id="projectName" required [(ngModel)]="newProject.name" name="nameOfProjectToCreate" class='input' placeholder="New project"
           #nameOfProjectToCreate="ngModel">
       </div>
       <div class="control level-right">
-        <button type="submit" class="button is-primary level-item" (click)="createNewProject()" [disabled]="!newProjectForm.form.valid">Create</button>
+        <button type="submit" class="button is-primary level-item" [disabled]="!newProjectForm.form.valid">Create</button>
       </div>
     </form>
     <div *ngIf="createNewProjectFailed" class="help is-danger">

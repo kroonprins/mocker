@@ -19,6 +19,7 @@ const test = async () => {
     let projectService = new ProjectService(
       new InMemoryProjectStore(
         './test/projects/tests.yaml',
+        './test/rules',
         new RuleService(),
         new AppClassValidationService()
       ))
@@ -188,6 +189,7 @@ const test = async () => {
     projectService = new ProjectService(
       new InMemoryProjectStore(
         crudProjectTestFile,
+        './test/rules',
         new RuleService(),
         new AppClassValidationService()
       ))
@@ -424,6 +426,7 @@ const test = async () => {
     //   projectService = new ProjectService(
     //     new InMemoryProjectStore(
     //       invalidProjectTestFile,
+    //       './test/rules',
     //       new RuleService(),
     //       new AppClassValidationService()
     //     ))
@@ -438,6 +441,7 @@ const test = async () => {
     //   projectService = new ProjectService(
     //     new InMemoryProjectStore(
     //       invalidProjectTestFile,
+    //       './test/rules',
     //       new RuleService(),
     //       new AppClassValidationService()
     //     ))

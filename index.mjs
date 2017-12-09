@@ -24,7 +24,8 @@ const ENV = process.env
 config
   .registerProperty('project', 'Wow, even more amazing!!')
   .registerProperty('logging.level.startup', ENV.MOCKER_LOG_LEVEL || 'info')
-  .registerProperty('project.default.location', ENV.MOCKER_PROJECTS_FILE || './projects/projects.yaml')
+  .registerProperty('project.location', ENV.MOCKER_PROJECTS_FILE || './projects/projects.yaml')
+  .registerProperty('rule.default.location', ENV.MOCKER_RULES_DEFAULT_LOCATION || './rules')
   .registerProperty('mock-server.port', ENV.MOCKER_MOCK_SERVER_PORT || 3000)
   .registerProperty('mock-server.bind-address', ENV.MOCKER_MOCK_SERVER_BIND_ADDRESS || 'localhost')
   .registerProperty('administration-server.port', ENV.MOCKER_ADMINISTRATION_SERVER_PORT || 3001)

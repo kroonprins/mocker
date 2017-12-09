@@ -20,3 +20,4 @@
 * add sorting options on api
 * unit test timeout on windows + npm test not running on windows + ln not possible on windows for npm install
 * use guard to disable routing to rules/learning mode if no project selected?
+* try reactive forms
