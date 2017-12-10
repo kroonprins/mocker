@@ -23,13 +23,17 @@ export class RecordedRequestsListComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('projectName' in changes) {
-      this.learningModeService.listRecordedRequests(this.projectName).subscribe(recordedRequests => {
-        this.recordedRequests = recordedRequests;
-        this.findRecordedRequestToSelect();
-      });
+      this.refresh();
     } else {
       this.findRecordedRequestToSelect();
     }
+  }
+
+  refresh(): void {
+    this.learningModeService.listRecordedRequests(this.projectName).subscribe(recordedRequests => {
+      this.recordedRequests = recordedRequests;
+      this.findRecordedRequestToSelect();
+    });
   }
 
   private findRecordedRequestToSelect(): void {
@@ -48,6 +52,13 @@ export class RecordedRequestsListComponent implements OnChanges {
     } else {
       this.onRecordedRequestSelected.emit(recordedRequest);
     }
+  }
+
+  removeAllRecordedRequests(): void {
+    this.learningModeService.removeAllRecordedRequests(this.projectName).subscribe(recordedRequests => {
+      this.refresh();
+      this.onRecordedRequestSelected.emit();
+    });
   }
 
 }

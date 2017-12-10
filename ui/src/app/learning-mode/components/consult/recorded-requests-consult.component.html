@@ -271,6 +271,7 @@
 
     <div class="field is-grouped is-grouped-right" *ngIf="!doCreateProjectRule">
       <p class="control">
+        <button (click)="removeRecordedRequest()" class="button is-primary">Remove</button>
         <button (click)="startCreateProjectRule()" class="button is-primary">Create Rule</button>
       </p>
     </div>

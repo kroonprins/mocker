@@ -13,8 +13,6 @@ export class RulesListComponent implements OnChanges {
   projectName: string;
   @Input()
   selectedProjectRuleName: string;
-  @Input() // workaround to give a way to force refresh... (maybe use @ViewChild in parent component to trigger refresh?)
-  refresh: boolean;
 
   @Output()
   onProjectRuleSelected = new EventEmitter<ProjectRule>();
@@ -24,14 +22,18 @@ export class RulesListComponent implements OnChanges {
   constructor(private ruleService: RulesService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('projectName' in changes || 'refresh' in changes) {
-      this.ruleService.listProjectRules(this.projectName).subscribe(projectRules => {
-        this.projectRules = projectRules;
-        this.findProjectRuleToSelect();
-      });
+    if ('projectName' in changes) {
+      this.refresh();
     } else {
       this.findProjectRuleToSelect();
     }
+  }
+
+  refresh(): void {
+    this.ruleService.listProjectRules(this.projectName).subscribe(projectRules => {
+      this.projectRules = projectRules;
+      this.findProjectRuleToSelect();
+    });
   }
 
   private findProjectRuleToSelect(): void {

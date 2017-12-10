@@ -1,3 +1,8 @@
+<div class="level">
+  <div class="level-item level-right">
+      <button class="button is-primary" (click)="removeAllRecordedRequests()">Remove all</button>
+  </div>
+</div>
 <ul>
   <li *ngFor='let recordedRequest of recordedRequests' (click)="selectRecordedRequest(recordedRequest)" class="box">
     <div>

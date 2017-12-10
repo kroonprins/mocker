@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ParamMap } from '@angular/router/src/shared';
 import { ProjectRule } from './model/project-rule';
 import { ActionType } from './model/typedef';
+import { RulesListComponent } from './components/list/rules-list.component';
 
 @Component({
   selector: 'app-rules',
@@ -15,7 +16,9 @@ export class RulesComponent implements OnInit {
   selectedRule: ProjectRule;
   selectedRuleAction: ActionType = 'none';
   selectedRuleName: string;
-  refresh: boolean;
+
+  @ViewChild(RulesListComponent)
+  listComponent: RulesListComponent;
 
   constructor(private route: ActivatedRoute) { }
 
@@ -38,7 +41,7 @@ export class RulesComponent implements OnInit {
   }
 
   onRuleActionCompleted(projectRule: ProjectRule) {
-    this.refresh = !this.refresh;
+    this.listComponent.refresh();
     this.selectProjectRule(projectRule);
   }
 

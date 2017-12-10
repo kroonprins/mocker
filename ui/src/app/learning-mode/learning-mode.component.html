@@ -4,6 +4,6 @@
   </section>
 
   <section class="column">
-    <app-recorded-requests-consult [projectName]="projectName" [recordedRequestId]="selectedRecordedRequestId" ></app-recorded-requests-consult>
+    <app-recorded-requests-consult [projectName]="projectName" [recordedRequestId]="selectedRecordedRequestId" (onRecordedRequestRemoved)="onRecordedRequestRemoved($event)"></app-recorded-requests-consult>
   </section>
 </div>

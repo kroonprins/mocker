@@ -1,4 +1,4 @@
-import { Component, OnChanges, SimpleChanges, Input } from '@angular/core';
+import { Component, OnChanges, SimpleChanges, Input, EventEmitter, Output } from '@angular/core';
 import { LearningModeService } from '../../services/learning-mode.service';
 import { RecordedRequest } from '../../model/learning-mode';
 import { ProjectRule } from '../../../rules/model/project-rule';
@@ -14,6 +14,9 @@ export class RecordedRequestsConsultComponent implements OnChanges {
   projectName: string;
   @Input()
   recordedRequestId: string;
+
+  @Output()
+  onRecordedRequestRemoved = new EventEmitter<RecordedRequest>();
 
   recordedRequest: RecordedRequest;
   monacoEditorOptions = {
@@ -38,6 +41,8 @@ export class RecordedRequestsConsultComponent implements OnChanges {
       this.learningModeService.retrieveRecordedRequest(this.projectName, this.recordedRequestId).subscribe(recordedRequest => {
         this.recordedRequest = recordedRequest;
       });
+    } else {
+      this.recordedRequest = null;
     }
   }
 
@@ -56,6 +61,12 @@ export class RecordedRequestsConsultComponent implements OnChanges {
 
   createProjectRuleCompleted(): void {
     this.doCreateProjectRule = false;
+  }
+
+  removeRecordedRequest(): void {
+    this.learningModeService.removeRecordedRequest(this.projectName, this.recordedRequestId).subscribe(recordedRequest => {
+      this.onRecordedRequestRemoved.emit(this.recordedRequest);
+    });
   }
 
 }

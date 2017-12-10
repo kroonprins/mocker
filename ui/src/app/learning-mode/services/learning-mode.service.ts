@@ -19,6 +19,18 @@ export class LearningModeService {
     );
   }
 
+  removeRecordedRequest(projectName: string, recordedRequestId: string): Observable<RecordedRequest> {
+    return this._http.delete<RecordedRequest>(
+      `http://localhost:3004/api/learning-mode/${projectName}/recorded-requests/${recordedRequestId}`
+    );
+  }
+
+  removeAllRecordedRequests(projectName: string): Observable<RecordedRequest> {
+    return this._http.delete<RecordedRequest>(
+      `http://localhost:3004/api/learning-mode/${projectName}/recorded-requests`
+    );
+  }
+
   recordedRequestToProjectRule(recordedRequest: RecordedRequest): ProjectRule {
     const request = new Request();
     request.method = recordedRequest.request.method;
