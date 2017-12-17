@@ -14,10 +14,17 @@
 * fix naming inconsistency . or - (e.g. learing-mode.model vs project-model)
 (* add ui testing also to git commit hook)
 * make possible that header/cookie is conditional in response
-* split api server?
+* split api server
 * add class validation on learning mode model
 * put mjs_workaround directory in .gitignore + remove directory from git
 * add sorting options on api
 * unit test timeout on windows + npm test not running on windows + ln not possible on windows for npm install
 * use guard to disable routing to rules/learning mode if no project selected?
 * try reactive forms
+* problem body parsing in reverse proxy on windows
+* ui mode: starts ui+api+administration server => from ui mock server and reverse proxy can be started
+  mock server only mode: only start mock server
+* store the templating helpers in a db + allow them to be entered in the ui
+* how can we make the ui services use the correct port of the api server?
+* make possible that mock server logs traffic in a db
+* try alternatives for monaco code editor (ace/codemirror)
