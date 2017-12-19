@@ -28,3 +28,4 @@
 * how can we make the ui services use the correct port of the api server?
 * make possible that mock server logs traffic in a db
 * try alternatives for monaco code editor (ace/codemirror)
+* add unit test for ui-server

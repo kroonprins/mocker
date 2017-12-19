@@ -59,7 +59,7 @@ import { test as testAdminstrationServer } from './lib/administration-server.tes
 import { test as testMockServer } from './lib/mock-server.test'
 import { test as testLearningModeDbService } from './lib/learning-mode.db.service.test'
 import { test as testLearningModeService } from './lib/learning-mode.service.test'
-import { test as testLearningModeReverseProxy } from'./lib/learning-mode.reverse-proxy.test'
+import { test as testLearningModeReverseProxy } from './lib/learning-mode.reverse-proxy.test'
 import { test as testApiServer } from './lib/api-server.test'
 /* eslint-enable */
 
@@ -76,28 +76,28 @@ const runTest = async (testFn) => {
 }
 
 (async () => {
-  // await runTest(testAppConfig)
-  // await runTest(testUtil)
-  // await runTest(testLogging)
-  // await runTest(testClassValidation)
-  // await runTest(testAppClassValidation)
-  // await runTest(testRuleValidationModel)
-  // await runTest(testRuleService)
-  // await runTest(testProjectValidationModel)
-  // await runTest(testProjectService)
-  // await runTest(testTemplatingService)
-  // await runTest(testServerJsonErrorHandling)
+  await runTest(testAppConfig)
+  await runTest(testUtil)
+  await runTest(testLogging)
+  await runTest(testClassValidation)
+  await runTest(testAppClassValidation)
+  await runTest(testRuleValidationModel)
+  await runTest(testRuleService)
+  await runTest(testProjectValidationModel)
+  await runTest(testProjectService)
+  await runTest(testTemplatingService)
+  await runTest(testServerJsonErrorHandling)
   await runTest(testServerService)
-  // await runTest(testAdminstrationServer)
-  // await runTest(testMockServer)
-  // await runTest(testLearningModeDbService)
-  // await runTest(testLearningModeService)
-  // await runTest(testLearningModeReverseProxy)
-  // await runTest(testApiServer)
+  await runTest(testAdminstrationServer)
+  await runTest(testMockServer)
+  await runTest(testLearningModeDbService)
+  await runTest(testLearningModeService)
+  await runTest(testLearningModeReverseProxy)
+  await runTest(testApiServer)
 
   const tests = await _findTests()
   if (tests.length !== countTotal) {
-    // throw new Error(`It seems some of the test have not been added in the runner: ${tests.length} <=> ${countTotal}`)
+    throw new Error(`It seems some of the test have not been added in the runner: ${tests.length} <=> ${countTotal}`)
   }
   if (failures.length > 0) {
     throw new TestFailuresError(`Some tests failed (${failures.length}/${countTotal})`, failures)
