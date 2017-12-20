@@ -9,7 +9,11 @@ import { RuleService } from './../../lib/rule-service'
 import { AppClassValidationService } from '../../lib/app-class-validation.service.mjs'
 import { LearningModeService } from './../../lib/learning-mode.service'
 import { LearningModeDbService } from './../../lib/learning-mode.db.service'
+import { ServerService, InMemoryServerStore } from './../../lib/server.service'
 import { RecordedRequest } from './../../lib/learning-mode.model'
+import { TemplatingService } from './../../lib/templating-service'
+import { NunjucksTemplatingHelpers } from './../../lib/templating-helpers.nunjucks'
+import { NunjucksTemplatingService } from './../../lib/templating-service.nunjucks'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 
@@ -34,13 +38,17 @@ const test = async () => {
     let learningModeDbService = new LearningModeDbService('./test/tmp/test2.db')
     let learningModeService = new LearningModeService(learningModeDbService)
 
-    const availablePort = (await portastic.find({
+    const serverService = new ServerService(new InMemoryServerStore())
+
+    const availablePorts = (await portastic.find({
       min: 20000,
       max: 30000,
-      retrieve: 1
-    }))[0]
+      retrieve: 3
+    }))
 
-    const apiServer = new ApiServer(availablePort, 'localhost', projectService, learningModeService)
+    const availablePort = availablePorts[0]
+
+    const apiServer = new ApiServer(availablePort, 'localhost', projectService, learningModeService, serverService)
     try {
       await apiServer.start()
 
@@ -775,6 +783,77 @@ const test = async () => {
       const recordedRequestsAfterDeleteAll = await axios.get(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests`)
       expect(recordedRequestsAfterDeleteAll.status).to.be.equal(200)
       expect(recordedRequestsAfterDeleteAll.data.length).to.be.equal(0)
+
+      config
+        .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
+        .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
+        .registerInstance(TemplatingService, new TemplatingService())
+        .registerInstance(ProjectService, projectService)
+        .registerInstance(LearningModeService, learningModeService)
+
+      const startMockServer = await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/mock-server`, {
+        port: availablePorts[2],
+        bindAddress: 'localhost'
+      })
+      expect(startMockServer.status).to.be.equal(200)
+      expect(startMockServer.data).to.deep.equal({
+        serverId: 'test_glob##mock-server'
+      })
+
+      const startMockServerAgain = await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/mock-server`, {
+        port: availablePorts[1],
+        bindAddress: 'localhost'
+      })
+
+      expect(startMockServerAgain.status).to.be.equal(200)
+      expect(startMockServerAgain.data).to.deep.equal({
+        serverId: 'test_glob##mock-server'
+      })
+
+      const stopMockServer = await axios.delete(`http://localhost:${availablePort}/api/projects/test_glob/mock-server`)
+      expect(stopMockServer.status).to.be.equal(204)
+      expect(stopMockServer.data).to.equal('')
+
+      const stopAlreadyStoppedMockServer = await axios.delete(`http://localhost:${availablePort}/api/projects/test_glob/mock-server`)
+      expect(stopAlreadyStoppedMockServer.status).to.be.equal(204)
+      expect(stopAlreadyStoppedMockServer.data).to.equal('')
+
+      let exceptionThrownBecauseStartingForwardProxyNotYetImplemented = false
+      try {
+        await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/learning-mode-server`, {
+          port: availablePorts[2],
+          bindAddress: 'localhost',
+          type: 'forward-proxy'
+        })
+      } catch (e) {
+        expect(e.response.status).to.be.equal(500)
+        expect(e.response.data).excluding('uuid').to.deep.equal({
+          msg: 'An unexpected error occurred',
+          code: 'unexpected error'
+        })
+        expect(e.response.data.uuid.length).is.not.equal(0)
+        exceptionThrownBecauseStartingForwardProxyNotYetImplemented = true
+      }
+      expect(exceptionThrownBecauseStartingForwardProxyNotYetImplemented).to.be.equal(true)
+
+      const startLearningModeReverseProxyServer = await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/learning-mode-server`, {
+        port: availablePorts[2],
+        bindAddress: 'localhost',
+        type: 'reverse-proxy',
+        target: 'http://localhost:12345'
+      })
+      expect(startLearningModeReverseProxyServer.status).to.be.equal(200)
+      expect(startLearningModeReverseProxyServer.data).to.deep.equal({
+        serverId: 'test_glob##learning-mode-server'
+      })
+
+      const stopLearningModeServer = await axios.delete(`http://localhost:${availablePort}/api/projects/test_glob/learning-mode-server`)
+      expect(stopLearningModeServer.status).to.be.equal(204)
+      expect(stopLearningModeServer.data).to.equal('')
+
+      const stopAlreadyStoppedLearningModeServer = await axios.delete(`http://localhost:${availablePort}/api/projects/test_glob/learning-mode-server`)
+      expect(stopAlreadyStoppedLearningModeServer.status).to.be.equal(204)
+      expect(stopAlreadyStoppedLearningModeServer.data).to.equal('')
     } finally {
       apiServer.stop()
     }

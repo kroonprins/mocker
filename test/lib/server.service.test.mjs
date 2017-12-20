@@ -8,6 +8,8 @@ const expect = chai.expect
 class TestServer extends Server {
   constructor (port, bindAddress) {
     super()
+    this.port = port
+    this.bindAddress = bindAddress
     this.status = 'constructed'
   }
 
@@ -54,6 +56,21 @@ const test = async () => {
   await serverService.stopServer(1)
   expect(server2.status).to.be.equal('stopped')
   expect(await serverService.retrieveServer(1)).to.equal(undefined)
+
+  const server1 = await serverService.retrieveServer(0)
+  await serverService.restartServer(0)
+  const restartedServer1 = await serverService.retrieveServer(0)
+  expect(restartedServer1).to.equal(server1)
+  expect(restartedServer1.status).to.equal('started')
+
+  const server3 = await serverService.retrieveServer('myid')
+  expect(server3.status).to.equal('started')
+  expect(server3.port).to.equal(1234)
+  const serverId3StartedAgain = await serverService.startNewServer('myid', TestServer, 1235, 'localhost')
+  expect(serverId3StartedAgain).to.be.equal('myid')
+  const server3StartedAgain = await serverService.retrieveServer('myid')
+  expect(server3StartedAgain.status).to.equal('started')
+  expect(server3StartedAgain.port).to.equal(1235)
 }
 
 export {
