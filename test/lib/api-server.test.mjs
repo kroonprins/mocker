@@ -797,7 +797,7 @@ const test = async () => {
       })
       expect(startMockServer.status).to.be.equal(200)
       expect(startMockServer.data).to.deep.equal({
-        serverId: 'test_glob##mock-server'
+        serverId: 'test_glob##mockServer'
       })
 
       const startMockServerAgain = await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/mock-server`, {
@@ -805,9 +805,40 @@ const test = async () => {
         bindAddress: 'localhost'
       })
 
+      const listEnrichedProjectsAfterMockServerStarted = await axios.get(`http://localhost:${availablePort}/api/projects?serverStatus=true`)
+      expect(listEnrichedProjectsAfterMockServerStarted.status).to.be.equal(200)
+      expect(listEnrichedProjectsAfterMockServerStarted.data).to.deep.equal([
+        { name: 'test_one_file', mockServer: {}, learningModeServer: {} },
+        { name: 'test_glob', mockServer: { port: availablePorts[1], bindAddress: 'localhost', status: 'Symbol(STARTED)' }, learningModeServer: {} },
+        {
+          name: 'test_multiple_files',
+          mockServer: {},
+          learningModeServer: {}
+        },
+        {
+          name: 'test_multiple_glob',
+          mockServer: {},
+          learningModeServer: {}
+        },
+        {
+          name: 'test_glob_no_match',
+          mockServer: {},
+          learningModeServer: {}
+        },
+        {
+          name: 'test_file_does_not_exist',
+          mockServer: {},
+          learningModeServer: {}
+        },
+        {
+          name: 'test_one_file_does_not_exist',
+          mockServer: {},
+          learningModeServer: {}
+        }])
+
       expect(startMockServerAgain.status).to.be.equal(200)
       expect(startMockServerAgain.data).to.deep.equal({
-        serverId: 'test_glob##mock-server'
+        serverId: 'test_glob##mockServer'
       })
 
       const stopMockServer = await axios.delete(`http://localhost:${availablePort}/api/projects/test_glob/mock-server`)
@@ -844,8 +875,39 @@ const test = async () => {
       })
       expect(startLearningModeReverseProxyServer.status).to.be.equal(200)
       expect(startLearningModeReverseProxyServer.data).to.deep.equal({
-        serverId: 'test_glob##learning-mode-server'
+        serverId: 'test_glob##learningModeServer'
       })
+
+      const listEnrichedProjectsAfterLearningModeServerStarted = await axios.get(`http://localhost:${availablePort}/api/projects?serverStatus=true`)
+      expect(listEnrichedProjectsAfterLearningModeServerStarted.status).to.be.equal(200)
+      expect(listEnrichedProjectsAfterLearningModeServerStarted.data).to.deep.equal([
+        { name: 'test_one_file', mockServer: {}, learningModeServer: {} },
+        { name: 'test_glob', mockServer: {}, learningModeServer: { port: availablePorts[2], bindAddress: 'localhost', status: 'Symbol(STARTED)' } },
+        {
+          name: 'test_multiple_files',
+          mockServer: {},
+          learningModeServer: {}
+        },
+        {
+          name: 'test_multiple_glob',
+          mockServer: {},
+          learningModeServer: {}
+        },
+        {
+          name: 'test_glob_no_match',
+          mockServer: {},
+          learningModeServer: {}
+        },
+        {
+          name: 'test_file_does_not_exist',
+          mockServer: {},
+          learningModeServer: {}
+        },
+        {
+          name: 'test_one_file_does_not_exist',
+          mockServer: {},
+          learningModeServer: {}
+        }])
 
       const stopLearningModeServer = await axios.delete(`http://localhost:${availablePort}/api/projects/test_glob/learning-mode-server`)
       expect(stopLearningModeServer.status).to.be.equal(204)
