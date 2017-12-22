@@ -8,22 +8,39 @@
         {{project.name}}
       </div>
       <div class="level-right">
+        <button class="button is-primary level-item" (click)="toggleMockServerDetails(project)">Mock server</button>
+        <button class="button is-primary level-item" (click)="toggleLearningModeDetails(project)">Learning mode server</button>
         <button class="button is-primary level-item" (click)="removeProject(project)">Remove</button>
         <button class="button is-primary level-item" (click)="startProjectUpdate(project)">Update</button>
       </div>
     </div>
-    <form #updateProjectForm="ngForm" *ngIf="project.updateOngoing" (ngSubmit)="updateProject(project)"  class="level">
+    <form #updateProjectForm="ngForm" *ngIf="project.updateOngoing" (ngSubmit)="updateProject(project)" class="level">
       <div class="control level-item level-left">
         <input type="text" id="projectName" required [(ngModel)]="updatedProject.name" name="nameOfProjectToUpdate" class="input"
           placeholder="Project name">
       </div>
       <div class="control level-right">
-        <button class="button is-light level-item" (click)="cancelProjectUpdate(project)">Cancel</button>
+        <button type="button" class="button is-light level-item" (click)="cancelProjectUpdate(project)">Cancel</button>
         <button type="submit" class="button is-primary level-item" [disabled]="!updateProjectForm.form.valid">Update</button>
       </div>
     </form>
     <div *ngIf="(project.updateOngoing || project.deleteOngoing) && updateOrDeleteProjectFailed" class="help is-danger">
       {{updateOrDeleteProjectFailedUserMessage}}
+    </div>
+    <form #mockServerForm="ngForm" *ngIf="project.showMockServerDetails" (ngSubmit)="startMockServer(project)" class="level">
+      <div class="control level-item level-left">
+        <input type="text" id="mockServerPort" required [(ngModel)]="project.mockServer.port" name="mockServerPort" class="input"
+          placeholder="Port">
+        <input type="text" id="mockServerBindAddress" required [(ngModel)]="project.mockServer.bindAddress" name="mockServerBindAddress"
+          class="input" placeholder="Bind address">
+      </div>
+      <div class="control level-right">
+        <button type="button" class="button is-light level-item" (click)="stopMockServer(project)">Stop</button>
+        <button type="submit" class="button is-success level-item" [disabled]="!mockServerForm.form.valid">Start</button>
+      </div>
+    </form>
+    <div *ngIf="project.showMockServerDetails && mockServerActionFailed" class="help is-danger">
+      {{mockServerActionFailedUserMessage}}
     </div>
   </li>
   <li class="box">

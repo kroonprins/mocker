@@ -19,6 +19,8 @@ export class ProjectsComponent implements OnInit {
   createNewProjectFailedUserMessage: string;
   updateOrDeleteProjectFailed: boolean;
   updateOrDeleteProjectFailedUserMessage: string;
+  mockServerActionFailed: boolean;
+  mockServerActionFailedUserMessage: string;
 
   constructor(private projectsService: ProjectsService) { }
 
@@ -35,6 +37,7 @@ export class ProjectsComponent implements OnInit {
     this.updatedProject = new Project();
     this.createNewProjectFailed = false;
     this.updateOrDeleteProjectFailed = false;
+    this.mockServerActionFailed = false;
   }
 
   selectProject(project: Project): void {
@@ -86,6 +89,28 @@ export class ProjectsComponent implements OnInit {
     }, error => {
       this.updateOrDeleteProjectFailed = true;
       this.updateOrDeleteProjectFailedUserMessage = error.toString();
+    });
+  }
+
+  toggleMockServerDetails(project: Project): void {
+    project.showMockServerDetails = !project.showMockServerDetails;
+  }
+
+  startMockServer(project: Project): void {
+    this.projectsService.startMockServer(project).subscribe(response => {
+      this.ngOnInit();
+    }, error => {
+      this.mockServerActionFailed = true;
+      this.mockServerActionFailedUserMessage = error.toString();
+    });
+  }
+
+  stopMockServer(project: Project): void {
+    this.projectsService.stopMockServer(project).subscribe(response => {
+      this.ngOnInit();
+    }, error => {
+      this.mockServerActionFailed = true;
+      this.mockServerActionFailedUserMessage = error.toString();
     });
   }
 

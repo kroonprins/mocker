@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Project } from '../model/project';
+import { Project, MockServer, LearningModeServer } from '../model/project';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -68,12 +68,25 @@ export class ProjectsService {
   }
 
   listProjects(): Observable<Project[]> {
-    return this._http.get<string[]>('http://localhost:3004/api/projects', { observe: 'response' })
+    return this._http.get('http://localhost:3004/api/projects?serverStatus=true', { observe: 'response' })
       .map(httpResponseHandler(200))
       .map(projectList => {
-        return projectList.map((projectName) => {
+        return projectList.map((item) => {
           const project = new Project();
-          project.name = projectName;
+          project.name = item.name;
+
+          const mockServer = new MockServer();
+          mockServer.port = item.mockServer.port;
+          mockServer.bindAddress = item.mockServer.bindAddress;
+          mockServer.status = item.mockServer.status;
+          project.mockServer = mockServer;
+
+          const learningModeServer = new LearningModeServer();
+          learningModeServer.port = item.mockServer.port;
+          learningModeServer.bindAddress = item.learningModeServer.bindAddress;
+          learningModeServer.status = item.learningModeServer.status;
+          project.learningModeServer = learningModeServer;
+
           return project;
         });
       })
@@ -109,6 +122,18 @@ export class ProjectsService {
 
   getLastSelectedProject(): Project {
     return this.projectSelection.getValue();
+  }
+
+  startMockServer(project: Project): Observable<Object> {
+    return this._http.post(`http://localhost:3004/api/projects/${project.name}/mock-server`, project.mockServer, { observe: 'response' })
+      .map(httpResponseHandler(200))
+      .catch(serverErrorHandler);
+  }
+
+  stopMockServer(project: Project): Observable<Object> {
+    return this._http.delete(`http://localhost:3004/api/projects/${project.name}/mock-server`, { observe: 'response' })
+      .map(httpResponseHandler(204))
+      .catch(serverErrorHandler);
   }
 
 }
