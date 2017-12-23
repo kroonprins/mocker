@@ -19,8 +19,8 @@ export class ProjectsComponent implements OnInit {
   createNewProjectFailedUserMessage: string;
   updateOrDeleteProjectFailed: boolean;
   updateOrDeleteProjectFailedUserMessage: string;
-  mockServerActionFailed: boolean;
-  mockServerActionFailedUserMessage: string;
+  serverActionFailed: boolean;
+  serverActionFailedUserMessage: string;
 
   constructor(private projectsService: ProjectsService) { }
 
@@ -37,7 +37,7 @@ export class ProjectsComponent implements OnInit {
     this.updatedProject = new Project();
     this.createNewProjectFailed = false;
     this.updateOrDeleteProjectFailed = false;
-    this.mockServerActionFailed = false;
+    this.serverActionFailed = false;
   }
 
   selectProject(project: Project): void {
@@ -93,15 +93,15 @@ export class ProjectsComponent implements OnInit {
   }
 
   toggleMockServerDetails(project: Project): void {
-    project.showMockServerDetails = !project.showMockServerDetails;
+    project.showServerDetails = project.showServerDetails !== 'mockServer' ? 'mockServer' : undefined;
   }
 
   startMockServer(project: Project): void {
     this.projectsService.startMockServer(project).subscribe(response => {
       this.ngOnInit();
     }, error => {
-      this.mockServerActionFailed = true;
-      this.mockServerActionFailedUserMessage = error.toString();
+      this.serverActionFailed = true;
+      this.serverActionFailedUserMessage = error.toString();
     });
   }
 
@@ -109,8 +109,30 @@ export class ProjectsComponent implements OnInit {
     this.projectsService.stopMockServer(project).subscribe(response => {
       this.ngOnInit();
     }, error => {
-      this.mockServerActionFailed = true;
-      this.mockServerActionFailedUserMessage = error.toString();
+      this.serverActionFailed = true;
+      this.serverActionFailedUserMessage = error.toString();
+    });
+  }
+
+  toggleLearningModeServerDetails(project: Project): void {
+    project.showServerDetails = project.showServerDetails !== 'learningModeServer' ? 'learningModeServer' : undefined;
+  }
+
+  startLearningModeServer(project: Project): void {
+    this.projectsService.startLearningModeServer(project).subscribe(response => {
+      this.ngOnInit();
+    }, error => {
+      this.serverActionFailed = true;
+      this.serverActionFailedUserMessage = error.toString();
+    });
+  }
+
+  stopLearningModeServer(project: Project): void {
+    this.projectsService.stopLearningModeServer(project).subscribe(response => {
+      this.ngOnInit();
+    }, error => {
+      this.serverActionFailed = true;
+      this.serverActionFailedUserMessage = error.toString();
     });
   }
 

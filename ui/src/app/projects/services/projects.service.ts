@@ -72,7 +72,7 @@ export class ProjectsService {
       .map(httpResponseHandler(200))
       .map(projectList => {
         return projectList.map((item) => {
-          const project = new Project();
+          const project = new Project(); // TODO is all this actually necessary?
           project.name = item.name;
 
           const mockServer = new MockServer();
@@ -82,9 +82,11 @@ export class ProjectsService {
           project.mockServer = mockServer;
 
           const learningModeServer = new LearningModeServer();
-          learningModeServer.port = item.mockServer.port;
+          learningModeServer.port = item.learningModeServer.port;
           learningModeServer.bindAddress = item.learningModeServer.bindAddress;
           learningModeServer.status = item.learningModeServer.status;
+          learningModeServer.targetHost = item.learningModeServer.targetHost;
+          learningModeServer.type = item.learningModeServer.type;
           project.learningModeServer = learningModeServer;
 
           return project;
@@ -132,6 +134,19 @@ export class ProjectsService {
 
   stopMockServer(project: Project): Observable<Object> {
     return this._http.delete(`http://localhost:3004/api/projects/${project.name}/mock-server`, { observe: 'response' })
+      .map(httpResponseHandler(204))
+      .catch(serverErrorHandler);
+  }
+
+  startLearningModeServer(project: Project): Observable<Object> {
+    return this._http.post(`http://localhost:3004/api/projects/${project.name}/learning-mode-server`, project.learningModeServer,
+      { observe: 'response' })
+      .map(httpResponseHandler(200))
+      .catch(serverErrorHandler);
+  }
+
+  stopLearningModeServer(project: Project): Observable<Object> {
+    return this._http.delete(`http://localhost:3004/api/projects/${project.name}/learning-mode-server`, { observe: 'response' })
       .map(httpResponseHandler(204))
       .catch(serverErrorHandler);
   }

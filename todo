@@ -30,3 +30,4 @@
 * try alternatives for monaco code editor (ace/codemirror)
 * add unit test for ui-server
 * improve reverse proxy unit tests (e.g. didn't catch that output headers weren't saved with a previous bug)
+* componentize much more in ui

@@ -8,8 +8,10 @@
         {{project.name}}
       </div>
       <div class="level-right">
-        <button class="button is-primary level-item" (click)="toggleMockServerDetails(project)">Mock server</button>
-        <button class="button is-primary level-item" (click)="toggleLearningModeDetails(project)">Learning mode server</button>
+        <button class="button level-item" [class.is-success]="project.mockServer.status === 'started'" [class.is-primary]="project.mockServer.status !== 'started'"
+          (click)="toggleMockServerDetails(project)">Mock server</button>
+        <button class="button level-item" [class.is-success]="project.learningModeServer.status === 'started'" [class.is-primary]="project.learningModeServer.status !== 'started'"
+          (click)="toggleLearningModeServerDetails(project)">Learning mode server</button>
         <button class="button is-primary level-item" (click)="removeProject(project)">Remove</button>
         <button class="button is-primary level-item" (click)="startProjectUpdate(project)">Update</button>
       </div>
@@ -27,7 +29,7 @@
     <div *ngIf="(project.updateOngoing || project.deleteOngoing) && updateOrDeleteProjectFailed" class="help is-danger">
       {{updateOrDeleteProjectFailedUserMessage}}
     </div>
-    <form #mockServerForm="ngForm" *ngIf="project.showMockServerDetails" (ngSubmit)="startMockServer(project)" class="level">
+    <form #mockServerForm="ngForm" *ngIf="project.showServerDetails === 'mockServer'" (ngSubmit)="startMockServer(project)" class="level">
       <div class="control level-item level-left">
         <input type="text" id="mockServerPort" required [(ngModel)]="project.mockServer.port" name="mockServerPort" class="input"
           placeholder="Port">
@@ -35,12 +37,36 @@
           class="input" placeholder="Bind address">
       </div>
       <div class="control level-right">
-        <button type="button" class="button is-light level-item" (click)="stopMockServer(project)">Stop</button>
-        <button type="submit" class="button is-success level-item" [disabled]="!mockServerForm.form.valid">Start</button>
+        <button type="button" class="button is-light level-item" [disabled]="project.mockServer.status !== 'started'" (click)="stopMockServer(project)">Stop</button>
+        <button type="submit" class="button is-success level-item" [disabled]="!mockServerForm.form.valid">{{project.mockServer.status === 'started' ? 'Restart' : 'Start'}}</button>
       </div>
     </form>
-    <div *ngIf="project.showMockServerDetails && mockServerActionFailed" class="help is-danger">
-      {{mockServerActionFailedUserMessage}}
+    <form #learningModeServerForm="ngForm" *ngIf="project.showServerDetails === 'learningModeServer'" (ngSubmit)="startLearningModeServer(project)"
+      class="level">
+      <div class="control level-item level-left">
+        <div class="select">
+          <select id="learningModeServerType" required [(ngModel)]="project.learningModeServer.type" name="learningModeServerType">
+            <option value=""></option>
+            <option value="reverse-proxy">Reverse proxy</option>
+            <option value="forward-proxy">Forward proxy</option>
+          </select>
+        </div>
+        <!-- <input type="text" id="learningModeServerType" required [(ngModel)]="project.learningModeServer.type" name="learningModeServerType"
+          class="input" placeholder="Type (reverse-proxy / forward-proxy)"> -->
+        <input type="text" id="learningModeServerPort" required [(ngModel)]="project.learningModeServer.port" name="learningModeServerPort"
+          class="input" placeholder="Port">
+        <input type="text" id="learningModeServerBindAddress" required [(ngModel)]="project.learningModeServer.bindAddress" name="learningModeServerBindAddress"
+          class="input" placeholder="Bind address">
+        <input type="text" id="learningModeReverseProxyServerTargetHost" required [(ngModel)]="project.learningModeServer.targetHost" name="learningModeReverseProxyServerTargetHost"
+          class="input" placeholder="Target" *ngIf="project.learningModeServer.type === 'reverse-proxy'">
+      </div>
+      <div class="control level-right">
+        <button type="button" class="button is-light level-item" [disabled]="project.learningModeServer.status !== 'started'" (click)="stopLearningModeServer(project)">Stop</button>
+        <button type="submit" class="button is-success level-item" [disabled]="!learningModeServerForm.form.valid">{{project.learningModeServer.status === 'started' ? 'Restart' : 'Start'}}</button>
+      </div>
+    </form>
+    <div *ngIf="project.showServerDetails && serverActionFailed" class="help is-danger">
+      {{serverActionFailedUserMessage}}
     </div>
   </li>
   <li class="box">

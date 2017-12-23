@@ -9,7 +9,7 @@ class MockServer extends Server {
 
 class LearningModeServer extends Server {
   public type: string;
-  public target: string;
+  public targetHost: string;
 }
 
 class Project {
@@ -18,8 +18,7 @@ class Project {
   public learningModeServer: LearningModeServer;
   public updateOngoing = false;
   public deleteOngoing = false;
-  public showMockServerDetails = false;
-  public showLearningModeServerDetails = false;
+  public showServerDetails: string;
 }
 
 export { Project, MockServer, LearningModeServer };

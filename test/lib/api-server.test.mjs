@@ -809,7 +809,7 @@ const test = async () => {
       expect(listEnrichedProjectsAfterMockServerStarted.status).to.be.equal(200)
       expect(listEnrichedProjectsAfterMockServerStarted.data).to.deep.equal([
         { name: 'test_one_file', mockServer: {}, learningModeServer: {} },
-        { name: 'test_glob', mockServer: { port: availablePorts[1], bindAddress: 'localhost', status: 'Symbol(STARTED)' }, learningModeServer: {} },
+        { name: 'test_glob', mockServer: { port: availablePorts[1], bindAddress: 'localhost', status: 'started' }, learningModeServer: {} },
         {
           name: 'test_multiple_files',
           mockServer: {},
@@ -871,7 +871,7 @@ const test = async () => {
         port: availablePorts[2],
         bindAddress: 'localhost',
         type: 'reverse-proxy',
-        target: 'http://localhost:12345'
+        targetHost: 'http://localhost:12345'
       })
       expect(startLearningModeReverseProxyServer.status).to.be.equal(200)
       expect(startLearningModeReverseProxyServer.data).to.deep.equal({
@@ -882,7 +882,17 @@ const test = async () => {
       expect(listEnrichedProjectsAfterLearningModeServerStarted.status).to.be.equal(200)
       expect(listEnrichedProjectsAfterLearningModeServerStarted.data).to.deep.equal([
         { name: 'test_one_file', mockServer: {}, learningModeServer: {} },
-        { name: 'test_glob', mockServer: {}, learningModeServer: { port: availablePorts[2], bindAddress: 'localhost', status: 'Symbol(STARTED)' } },
+        {
+          name: 'test_glob',
+          mockServer: {},
+          learningModeServer: {
+            port: 20002,
+            bindAddress: 'localhost',
+            status: 'started',
+            type: 'reverse-proxy',
+            targetHost: 'http://localhost:12345'
+          }
+        },
         {
           name: 'test_multiple_files',
           mockServer: {},
