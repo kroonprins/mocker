@@ -3,4 +3,4 @@
 
 import { Mocker } from './lib/mocker'
 
-(new Mocker()).start()
+(new Mocker()).startMockServer()

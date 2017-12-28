@@ -3,16 +3,19 @@
   "version": "1.0.0",
   "repository": "https://github.com/kroonprins/mocker",
   "description": "Mock server with learning mode",
-  "main": "index.mjs",
+  "main": "mocker-ui.mjs",
   "scripts": {
-    "start": "node --experimental-modules index.mjs",
+    "start": "./mocker-ui.mjs",
     "//": "Use extremly basic runner for tests until one of the frameworks supports mjs...",
     "test": "node --experimental-modules test/runner.mjs; rc=$?; rm -fr ./test/tmp; exit $rc",
     "postinstall": "rm -fr .git/hooks && ln -fs ../.githooks/ .git/hooks; mkdir -p ./lib/mjs_workaround && ln -f ./node_modules/serializr/lib/es/serializr.js lib/mjs_workaround/serializr-es6-module-loader.mjs; cd ./ui && npm install && npm run build-prod",
     "version-check": "npm-check-updates",
     "lint-check": "eslint index.mjs lib/*.mjs test/**/*.mjs",
     "lint-fix": "eslint index.mjs lib/*.mjs test/**/*.mjs --fix",
-    "doc": "jsdoc -c jsdoc-conf.json"
+    "doc": "jsdoc -c jsdoc-conf.json",
+    "ui": "./mocker-ui.mjs",
+    "mock-server": "./mocker-mock-server.mjs",
+    "learning-mode": "./mocker-learning-mode.mjs"
   },
   "author": "kroonprins",
   "license": "MIT",
