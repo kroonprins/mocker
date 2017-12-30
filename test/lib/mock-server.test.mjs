@@ -2,6 +2,9 @@ import chai from 'chai'
 import chaiString from 'chai-string'
 import portastic from 'portastic'
 import axios from 'axios'
+import { ConfigService } from './../../lib/config.service'
+import { RuleValidationModel } from './../../lib//rule-validation-model'
+import { ProjectValidationModel } from './../../lib//project-validation-model'
 import { MockServer } from './../../lib/mock-server'
 import { ProjectService } from './../../lib/project-service'
 import { InMemoryProjectStore } from './../../lib/project-store'
@@ -24,6 +27,9 @@ const test = async () => {
       .registerType(Logger, PinoLogger)
       .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
       .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
+      .registerInstance(TemplatingService, new TemplatingService())
+      .registerInstance(RuleValidationModel, new RuleValidationModel(new ConfigService()))
+      .registerInstance(ProjectValidationModel, new ProjectValidationModel())
 
     const templatingService = new TemplatingService()
     const projectService = new ProjectService(

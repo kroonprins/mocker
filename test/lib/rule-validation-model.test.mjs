@@ -1,20 +1,33 @@
 import chai from 'chai'
 import Ajv from 'ajv'
 import ajvAsync from 'ajv-async'
+import { ConfigService } from './../../lib/config.service'
 import { Request, Header, Cookie, Response, Rule } from '../../lib/rule-model'
-import { RequestValidationModel, HeaderValidationModel, CookieValidationModel, ResponseValidationModel, RuleValidationModel } from '../../lib/rule-validation-model'
+import { RuleValidationModel } from '../../lib/rule-validation-model'
+import { Logger, PinoLogger } from './../../lib/logging'
+import { config } from './../../lib/config'
 
 const expect = chai.expect
 
 // could split this up so that not all test run synchronously
 const test = async () => {
+  config
+    .registerProperty('logging.level.startup', 'debug')
+    .registerType(Logger, PinoLogger)
+
+  const ruleValidationModel = new RuleValidationModel(new ConfigService({
+    listEngines: () => {
+      return [ 'none', 'nunjucks' ]
+    }
+  }))
+
   const jsonSchemaValidator = ajvAsync(new Ajv())
   jsonSchemaValidator
-    .addSchema(RequestValidationModel, 'Request')
-    .addSchema(HeaderValidationModel, 'Header')
-    .addSchema(CookieValidationModel, 'Cookie')
-    .addSchema(ResponseValidationModel, 'Response')
-    .addSchema(RuleValidationModel, 'Rule')
+    .addSchema(ruleValidationModel[Request], 'Request')
+    .addSchema(ruleValidationModel[Header], 'Header')
+    .addSchema(ruleValidationModel[Cookie], 'Cookie')
+    .addSchema(ruleValidationModel[Response], 'Response')
+    .addSchema(ruleValidationModel[Rule], 'Rule')
 
   expect(await jsonSchemaValidator.validate('Request', new Request())).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('Request', new Request(null, 'GET'))).to.be.equal(false)

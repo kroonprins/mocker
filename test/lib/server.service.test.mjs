@@ -1,4 +1,5 @@
 import chai from 'chai'
+import { ServerValidationModel } from './../../lib//server-validation-model'
 import { Server, ServerService, InMemoryServerStore, LearningModeServerTypes } from '../../lib/server.service'
 import { AppClassValidationService } from '../../lib/app-class-validation.service'
 import { Logger, PinoLogger } from './../../lib/logging'
@@ -39,6 +40,7 @@ const test = async () => {
   config
     .registerProperty('logging.level.startup', 'debug')
     .registerType(Logger, PinoLogger)
+    .registerInstance(ServerValidationModel, new ServerValidationModel())
 
   const serverService = new ServerService(new InMemoryServerStore(), new AppClassValidationService())
 

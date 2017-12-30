@@ -1,10 +1,16 @@
 import chai from 'chai'
+import { ConfigService } from './../../lib/config.service'
+import { RuleValidationModel } from './../../lib//rule-validation-model'
+import { ProjectValidationModel } from './../../lib//project-validation-model'
 import { Project, ProjectRule } from './../../lib/project-model'
 import { Rule, Request, Response, Header, Cookie } from './../../lib/rule-model'
 import { ProjectService } from './../../lib/project-service'
 import { InMemoryProjectStore } from './../../lib/project-store'
 import { RuleService } from './../../lib/rule-service'
 import { AppClassValidationService } from '../../lib/app-class-validation.service'
+import { TemplatingService } from './../../lib/templating-service'
+import { NunjucksTemplatingHelpers } from './../../lib/templating-helpers.nunjucks'
+import { NunjucksTemplatingService } from './../../lib/templating-service.nunjucks'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 const expect = chai.expect
@@ -15,6 +21,11 @@ const test = async () => {
     config
       .registerProperty('logging.level.startup', 'debug')
       .registerType(Logger, PinoLogger)
+      .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
+      .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
+      .registerInstance(TemplatingService, new TemplatingService())
+      .registerInstance(RuleValidationModel, new RuleValidationModel(new ConfigService()))
+      .registerInstance(ProjectValidationModel, new ProjectValidationModel())
 
     let projectService = new ProjectService(
       new InMemoryProjectStore(

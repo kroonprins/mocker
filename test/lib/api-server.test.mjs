@@ -2,6 +2,9 @@ import chai from 'chai'
 import chaiExclude from 'chai-exclude'
 import portastic from 'portastic'
 import axios from 'axios'
+import { RuleValidationModel } from './../../lib/rule-validation-model'
+import { ProjectValidationModel } from './../../lib/project-validation-model'
+import { ServerValidationModel } from './../../lib/server-validation-model'
 import { ApiServer } from './../../lib/api-server'
 import { ProjectService } from './../../lib/project-service'
 import { InMemoryProjectStore } from './../../lib/project-store'
@@ -30,6 +33,10 @@ const test = async () => {
       .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
       .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
       .registerInstance(TemplatingService, new TemplatingService())
+      .registerInstance(ConfigService, new ConfigService())
+      .registerInstance(RuleValidationModel, new RuleValidationModel())
+      .registerInstance(ProjectValidationModel, new ProjectValidationModel())
+      .registerInstance(ServerValidationModel, new ServerValidationModel())
 
     let projectService = new ProjectService(
       new InMemoryProjectStore(

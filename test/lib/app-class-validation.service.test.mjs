@@ -1,4 +1,10 @@
 import chai from 'chai'
+import { ConfigService } from './../../lib/config.service'
+import { RuleValidationModel } from './../../lib//rule-validation-model'
+import { ProjectValidationModel } from './../../lib//project-validation-model'
+import { TemplatingService } from './../../lib/templating-service'
+import { NunjucksTemplatingHelpers } from './../../lib/templating-helpers.nunjucks'
+import { NunjucksTemplatingService } from './../../lib/templating-service.nunjucks'
 import { ClassValidationError } from './../../lib/class-validation.service'
 import { AppClassValidationService } from './../../lib/app-class-validation.service'
 import { ProjectFile, ProjectRule } from '../../lib/project-model'
@@ -14,6 +20,11 @@ const test = async () => {
     config
       .registerProperty('logging.level.startup', 'debug')
       .registerType(Logger, PinoLogger)
+      .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
+      .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
+      .registerInstance(TemplatingService, new TemplatingService())
+      .registerInstance(RuleValidationModel, new RuleValidationModel(new ConfigService()))
+      .registerInstance(ProjectValidationModel, new ProjectValidationModel())
 
     let appClassValidationService = new AppClassValidationService()
 
