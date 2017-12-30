@@ -14,6 +14,7 @@ import { RecordedRequest } from './../../lib/learning-mode.model'
 import { TemplatingService } from './../../lib/templating-service'
 import { NunjucksTemplatingHelpers } from './../../lib/templating-helpers.nunjucks'
 import { NunjucksTemplatingService } from './../../lib/templating-service.nunjucks'
+import { ConfigService } from './../../lib/config.service'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 
@@ -26,6 +27,9 @@ const test = async () => {
     config
       .registerProperty('logging.level.startup', 'debug')
       .registerType(Logger, PinoLogger)
+      .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
+      .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
+      .registerInstance(TemplatingService, new TemplatingService())
 
     let projectService = new ProjectService(
       new InMemoryProjectStore(
@@ -40,6 +44,8 @@ const test = async () => {
 
     const serverService = new ServerService(new InMemoryServerStore(), new AppClassValidationService())
 
+    const configService = new ConfigService()
+
     const availablePorts = (await portastic.find({
       min: 20000,
       max: 30000,
@@ -48,7 +54,7 @@ const test = async () => {
 
     const availablePort = availablePorts[0]
 
-    const apiServer = new ApiServer(availablePort, 'localhost', projectService, learningModeService, serverService)
+    const apiServer = new ApiServer(availablePort, 'localhost', projectService, learningModeService, serverService, configService)
     try {
       await apiServer.start()
 
@@ -785,9 +791,6 @@ const test = async () => {
       expect(recordedRequestsAfterDeleteAll.data.length).to.be.equal(0)
 
       config
-        .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
-        .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
-        .registerInstance(TemplatingService, new TemplatingService())
         .registerInstance(ProjectService, projectService)
         .registerInstance(LearningModeService, learningModeService)
 
@@ -969,6 +972,12 @@ const test = async () => {
         exceptionThrownBecauseInputValidationFailed = true
       }
       expect(exceptionThrownBecauseInputValidationFailed).to.be.equal(true)
+
+      const configTest = await axios.get(`http://localhost:${availablePort}/api/config/templating-types`)
+      expect(configTest.status).to.equal(200)
+      expect(configTest.data).to.deep.equal({
+        value: ['none', 'nunjucks']
+      })
     } finally {
       apiServer.stop()
     }

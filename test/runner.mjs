@@ -46,6 +46,7 @@ class TestFailuresError extends Error {
 import { test as testAppConfig } from './lib/app-config.test'
 import { test as testUtil } from './lib/util.test'
 import { test as testLogging } from './lib/logging.test'
+import { test as testConfigService } from './lib/config.service.test'
 import { test as testClassValidation } from './lib/class-validation.service.test'
 import { test as testAppClassValidation } from './lib/app-class-validation.service.test'
 import { test as testRuleValidationModel } from './lib/rule-validation-model.test'
@@ -72,7 +73,11 @@ const runTest = async (testFn) => {
   try {
     return await testFn()
   } catch (e) {
-    failures.push(e)
+    failures.push({
+      exception: e,
+      test: testFn,
+      idx: countTotal
+    })
   }
 }
 
@@ -80,6 +85,7 @@ const runTest = async (testFn) => {
   await runTest(testAppConfig)
   await runTest(testUtil)
   await runTest(testLogging)
+  await runTest(testConfigService)
   await runTest(testClassValidation)
   await runTest(testAppClassValidation)
   await runTest(testRuleValidationModel)
@@ -110,7 +116,8 @@ const runTest = async (testFn) => {
   console.error()
   if (e instanceof TestFailuresError) {
     for (let failure of e.failures) {
-      console.error(failure.stack)
+      console.error(failure.idx)
+      console.error(failure.exception.stack)
       console.error()
     }
   }
