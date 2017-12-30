@@ -12,6 +12,7 @@ export class ProjectsComponent implements OnInit {
   projects: Project[];
   newProject: Project;
   updatedProject: Project;
+  learningModeServerTypes: string[];
 
   listProjectProjectFailed: boolean;
   listProjectProjectFailedUserMessage: string;
@@ -33,6 +34,11 @@ export class ProjectsComponent implements OnInit {
       this.listProjectProjectFailed = true;
       this.listProjectProjectFailedUserMessage = error.toString();
     });
+    if (!this.learningModeServerTypes) {
+      this.projectsService.listLearningModeServerTypes().subscribe(response => {
+        this.learningModeServerTypes = response['value'];
+      });
+    }
     this.newProject = new Project();
     this.updatedProject = new Project();
     this.createNewProjectFailed = false;

@@ -151,4 +151,10 @@ export class ProjectsService {
       .catch(serverErrorHandler);
   }
 
+  listLearningModeServerTypes (): Observable<Object> {
+    return this._http.get(`http://localhost:3004/api/config/learning-mode-server-types`, { observe: 'response' })
+      .map(httpResponseHandler(200))
+      .catch(serverErrorHandler);
+  }
+
 }

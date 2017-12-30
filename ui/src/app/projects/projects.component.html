@@ -45,10 +45,8 @@
       class="level">
       <div class="control level-item level-left">
         <div class="select">
-          <select id="learningModeServerType" required [(ngModel)]="project.learningModeServer.type" name="learningModeServerType">
-            <option value=""></option>
-            <option value="reverse-proxy">Reverse proxy</option>
-            <option value="forward-proxy">Forward proxy</option>
+          <select id="learningModeServerType" required [(ngModel)]="project.learningModeServer.type" name="learningModeServerType" placeholder="Type">
+            <option *ngFor="let learningModeServerType of learningModeServerTypes" [value]="learningModeServerType">{{learningModeServerType}}</option>
           </select>
         </div>
         <!-- <input type="text" id="learningModeServerType" required [(ngModel)]="project.learningModeServer.type" name="learningModeServerType"
