@@ -9,7 +9,7 @@ import { RuleService } from './../../lib/rule-service'
 import { AppClassValidationService } from '../../lib/app-class-validation.service.mjs'
 import { LearningModeService } from './../../lib/learning-mode.service'
 import { LearningModeDbService } from './../../lib/learning-mode.db.service'
-import { ServerService, InMemoryServerStore } from './../../lib/server.service'
+import { ServerService, InMemoryServerStore, LearningModeServerTypes } from './../../lib/server.service'
 import { RecordedRequest } from './../../lib/learning-mode.model'
 import { TemplatingService } from './../../lib/templating-service'
 import { NunjucksTemplatingHelpers } from './../../lib/templating-helpers.nunjucks'
@@ -870,7 +870,7 @@ const test = async () => {
       const startLearningModeReverseProxyServer = await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/learning-mode-server`, {
         port: availablePorts[2],
         bindAddress: 'localhost',
-        type: 'reverse-proxy',
+        type: LearningModeServerTypes.REVERSE_PROXY,
         targetHost: 'http://localhost:12345'
       })
       expect(startLearningModeReverseProxyServer.status).to.be.equal(200)
@@ -889,7 +889,7 @@ const test = async () => {
             port: 20002,
             bindAddress: 'localhost',
             status: 'started',
-            type: 'reverse-proxy',
+            type: LearningModeServerTypes.REVERSE_PROXY,
             targetHost: 'http://localhost:12345'
           }
         },

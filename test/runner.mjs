@@ -54,6 +54,7 @@ import { test as testProjectValidationModel } from './lib/project-validation-mod
 import { test as testProjectService } from './lib/project-service.test'
 import { test as testTemplatingService } from './lib/templating-service.test'
 import { test as testServerJsonErrorHandling } from './lib/express-error-handling-middleware.json.test'
+import { test as testServerValidationModel } from './lib/server-validation-model.test'
 import { test as testServerService } from './lib/server.service.test'
 import { test as testAdminstrationServer } from './lib/administration-server.test'
 import { test as testMockServer } from './lib/mock-server.test'
@@ -87,6 +88,7 @@ const runTest = async (testFn) => {
   await runTest(testProjectService)
   await runTest(testTemplatingService)
   await runTest(testServerJsonErrorHandling)
+  await runTest(testServerValidationModel)
   await runTest(testServerService)
   await runTest(testAdminstrationServer)
   await runTest(testMockServer)
