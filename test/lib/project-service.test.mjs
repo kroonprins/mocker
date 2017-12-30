@@ -4,7 +4,7 @@ import { Rule, Request, Response, Header, Cookie } from './../../lib/rule-model'
 import { ProjectService } from './../../lib/project-service'
 import { InMemoryProjectStore } from './../../lib/project-store'
 import { RuleService } from './../../lib/rule-service'
-import { AppClassValidationService } from '../../lib/app-class-validation.service.mjs'
+import { AppClassValidationService } from '../../lib/app-class-validation.service'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 const expect = chai.expect

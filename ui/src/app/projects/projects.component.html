@@ -31,7 +31,7 @@
     </div>
     <form #mockServerForm="ngForm" *ngIf="project.showServerDetails === 'mockServer'" (ngSubmit)="startMockServer(project)" class="level">
       <div class="control level-item level-left">
-        <input type="text" id="mockServerPort" required [(ngModel)]="project.mockServer.port" name="mockServerPort" class="input"
+        <input type="number" id="mockServerPort" required [(ngModel)]="project.mockServer.port" name="mockServerPort" class="input"
           placeholder="Port">
         <input type="text" id="mockServerBindAddress" required [(ngModel)]="project.mockServer.bindAddress" name="mockServerBindAddress"
           class="input" placeholder="Bind address">
@@ -53,7 +53,7 @@
         </div>
         <!-- <input type="text" id="learningModeServerType" required [(ngModel)]="project.learningModeServer.type" name="learningModeServerType"
           class="input" placeholder="Type (reverse-proxy / forward-proxy)"> -->
-        <input type="text" id="learningModeServerPort" required [(ngModel)]="project.learningModeServer.port" name="learningModeServerPort"
+        <input type="number" id="learningModeServerPort" required [(ngModel)]="project.learningModeServer.port" name="learningModeServerPort"
           class="input" placeholder="Port">
         <input type="text" id="learningModeServerBindAddress" required [(ngModel)]="project.learningModeServer.bindAddress" name="learningModeServerBindAddress"
           class="input" placeholder="Bind address">

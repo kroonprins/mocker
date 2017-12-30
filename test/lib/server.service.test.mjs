@@ -1,7 +1,9 @@
 import chai from 'chai'
-import { Server, ServerService, InMemoryServerStore } from '../../lib/server.service'
+import { Server, ServerService, InMemoryServerStore, LearningModeServerTypes } from '../../lib/server.service'
+import { AppClassValidationService } from '../../lib/app-class-validation.service'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
+import { MockServer, LearningModeServer } from '../../lib/server-model'
 
 const expect = chai.expect
 
@@ -38,7 +40,7 @@ const test = async () => {
     .registerProperty('logging.level.startup', 'debug')
     .registerType(Logger, PinoLogger)
 
-  const serverService = new ServerService(new InMemoryServerStore())
+  const serverService = new ServerService(new InMemoryServerStore(), new AppClassValidationService())
 
   const serverId1 = await serverService.startNewServer(null, TestServer, 1234, 'localhost')
   expect(serverId1).to.be.equal(0)
@@ -71,6 +73,59 @@ const test = async () => {
   const server3StartedAgain = await serverService.retrieveServer('myid')
   expect(server3StartedAgain.status).to.equal('started')
   expect(server3StartedAgain.port).to.equal(1235)
+
+  let exceptionThrownBecauseInvalidPort = false
+  try {
+    await serverService.validateServer(MockServer, {
+      port: '8000'
+    })
+  } catch (e) {
+    expect(e.message).to.equal('Validation failed')
+    exceptionThrownBecauseInvalidPort = true
+  }
+  expect(exceptionThrownBecauseInvalidPort).to.equal(true)
+
+  const validateCorrectMockServer = await serverService.validateServer(MockServer, {
+    port: 8000
+  })
+  expect(validateCorrectMockServer).to.equal(true)
+
+  let exceptionThrownBecauseInvalidForward = false
+  try {
+    await serverService.validateServer(LearningModeServer, {
+      port: '8000',
+      type: LearningModeServerTypes.FORWARD_PROXY
+    })
+  } catch (e) {
+    expect(e.message).to.equal('Validation failed')
+    exceptionThrownBecauseInvalidForward = true
+  }
+  expect(exceptionThrownBecauseInvalidForward).to.equal(true)
+
+  const validateCorrectForwardLearningModeServer = await serverService.validateServer(LearningModeServer, {
+    port: 8000,
+    type: LearningModeServerTypes.FORWARD_PROXY
+  })
+  expect(validateCorrectForwardLearningModeServer).to.equal(true)
+
+  let exceptionThrownBecauseInvalidReverse = false
+  try {
+    await serverService.validateServer(LearningModeServer, {
+      port: 8000,
+      type: LearningModeServerTypes.Reverse_PROXY
+    })
+  } catch (e) {
+    expect(e.message).to.equal('Validation failed')
+    exceptionThrownBecauseInvalidReverse = true
+  }
+  expect(exceptionThrownBecauseInvalidReverse).to.equal(true)
+
+  const validateCorrectReverseLearningModeServer = await serverService.validateServer(LearningModeServer, {
+    port: 8000,
+    type: LearningModeServerTypes.REVERSE_PROXY,
+    targetHost: 'x'
+  })
+  expect(validateCorrectReverseLearningModeServer).to.equal(true)
 }
 
 export {

@@ -32,6 +32,11 @@ const test = async () => {
     'localhost'
   ))).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('LearningModeServer', new LearningModeServer(
+    LearningModeServerTypes.FORWARD_PROXY,
+    8000,
+    'localhost'
+  ))).to.be.equal(true)
+  expect(await jsonSchemaValidator.validate('LearningModeServer', new LearningModeServer(
     LearningModeServerTypes.REVERSE_PROXY,
     8000,
     'localhost',

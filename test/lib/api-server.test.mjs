@@ -38,7 +38,7 @@ const test = async () => {
     let learningModeDbService = new LearningModeDbService('./test/tmp/test2.db')
     let learningModeService = new LearningModeService(learningModeDbService)
 
-    const serverService = new ServerService(new InMemoryServerStore())
+    const serverService = new ServerService(new InMemoryServerStore(), new AppClassValidationService())
 
     const availablePorts = (await portastic.find({
       min: 20000,
@@ -854,7 +854,7 @@ const test = async () => {
         await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/learning-mode-server`, {
           port: availablePorts[2],
           bindAddress: 'localhost',
-          type: 'forward-proxy'
+          type: LearningModeServerTypes.FORWARD_PROXY
         })
       } catch (e) {
         expect(e.response.status).to.be.equal(500)
@@ -926,6 +926,49 @@ const test = async () => {
       const stopAlreadyStoppedLearningModeServer = await axios.delete(`http://localhost:${availablePort}/api/projects/test_glob/learning-mode-server`)
       expect(stopAlreadyStoppedLearningModeServer.status).to.be.equal(204)
       expect(stopAlreadyStoppedLearningModeServer.data).to.equal('')
+
+      let exceptionThrownBecauseInputValidationFailed = false
+      try {
+        await axios.post(`http://localhost:${availablePort}/api/projects/test_glob/learning-mode-server`, {
+          port: availablePorts[2],
+          bindAddress: 'localhost',
+          type: LearningModeServerTypes.REVERSE_PROXY
+        })
+      } catch (e) {
+        expect(e.response.status).to.be.equal(400)
+        expect(e.response.data).excluding('uuid').to.deep.equal({
+          msg: 'Validation failed',
+          code: 'validation error',
+          data:
+            {
+              errors:
+                [{
+                  keyword: 'required',
+                  dataPath: '',
+                  schemaPath: '#/allOf/1/anyOf/0/required',
+                  params: { missingProperty: '.targetHost' },
+                  message: 'should have required property \'.targetHost\''
+                },
+                {
+                  keyword: 'enum',
+                  dataPath: '.type',
+                  schemaPath: '#/allOf/1/anyOf/1/properties/type/enum',
+                  params: { allowedValues: ['forward-proxy'] },
+                  message: 'should be equal to one of the allowed values'
+                },
+                {
+                  keyword: 'anyOf',
+                  dataPath: '',
+                  schemaPath: '#/allOf/1/anyOf',
+                  params: {},
+                  message: 'should match some schema in anyOf'
+                }]
+            }
+        })
+        expect(e.response.data.uuid.length).is.not.equal(0)
+        exceptionThrownBecauseInputValidationFailed = true
+      }
+      expect(exceptionThrownBecauseInputValidationFailed).to.be.equal(true)
     } finally {
       apiServer.stop()
     }
