@@ -7,13 +7,15 @@ import { RecordedRequestsConsultComponent } from './components/consult/recorded-
 import { FormsModule } from '@angular/forms';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { RulesModule } from '../rules/rules.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     RulesModule,
-    MonacoEditorModule
+    MonacoEditorModule,
+    SharedModule
   ],
   declarations: [
     LearningModeComponent,

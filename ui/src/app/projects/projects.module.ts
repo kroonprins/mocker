@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { ProjectsComponent } from './projects.component';
 import { ProjectsService } from './services/projects.service';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
   exports: [
     ProjectsComponent

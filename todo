@@ -32,3 +32,7 @@
 * handle xml input body on mock server => either use body-parser-xml (but xml to json is always tricky with arrays) or have the text bodyparser handle the "*/xml" content type and add an xpath template helper function
 * put this todo list as github todos in github project
 * add ability to mock server to proxy requests to the real server if no rule defined
+* make http method '*' possible? and list of http methods?
+* when updating project name it should update all recorded requests..., when removing project all associated recorded requests can be removed
+* possible issue on windows when renaming file that only updated casing?
+* possible issue that response cookies get recorded as headers in reverse proxy learning mode?

@@ -16,7 +16,7 @@ export class RecordedRequestsConsultComponent implements OnChanges {
   recordedRequestId: string;
 
   @Output()
-  onRecordedRequestRemoved = new EventEmitter<RecordedRequest>();
+  recordedRequestRemoved = new EventEmitter<RecordedRequest>();
 
   recordedRequest: RecordedRequest;
   monacoEditorOptions = {
@@ -65,7 +65,7 @@ export class RecordedRequestsConsultComponent implements OnChanges {
 
   removeRecordedRequest(): void {
     this.learningModeService.removeRecordedRequest(this.projectName, this.recordedRequestId).subscribe(recordedRequest => {
-      this.onRecordedRequestRemoved.emit(this.recordedRequest);
+      this.recordedRequestRemoved.emit(this.recordedRequest);
     });
   }
 

@@ -24,7 +24,7 @@ export class LearningModeComponent implements OnInit {
     this.projectName = this.route.snapshot.paramMap.get('projectName');
   }
 
-  onRecordedRequestSelected(recordedRequest: RecordedRequest): void {
+  recordedRequestSelected(recordedRequest: RecordedRequest): void {
     this.selectRecordedRequest(recordedRequest);
   }
 
@@ -33,7 +33,7 @@ export class LearningModeComponent implements OnInit {
     this.selectedRecordedRequestId = recordedRequest ? this.selectedRecordedRequest._id : undefined;
   }
 
-  onRecordedRequestRemoved(recordedRequest: RecordedRequest): void {
+  recordedRequestRemoved(recordedRequest: RecordedRequest): void {
     this.listComponent.refresh();
   }
 

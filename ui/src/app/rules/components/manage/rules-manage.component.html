@@ -36,13 +36,7 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="ruleRequestMethod" required [(ngModel)]="projectRule.rule.request.method" name="method" class="input"
-              readonly *ngIf="isConsult()">
-              <div class="select" *ngIf="!isConsult()">
-                <select id="ruleRequestMethod" required [(ngModel)]="projectRule.rule.request.method" name="method">
-                  <option *ngFor="let httpMethod of httpMethods" [value]="httpMethod">{{httpMethod}}</option>
-                </select>
-              </div>
+              <app-config-dropdown id="ruleRequestMethod" name="method" configItem="http-methods" [readonly]="isConsult()" [(value)]="projectRule.rule.request.method"></app-config-dropdown>
             </div>
           </div>
         </div>
@@ -69,13 +63,7 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="ruleResponseTemplatingEngine" required [(ngModel)]="projectRule.rule.response.templatingEngine" name="templatingEngine"
-                class="input" readonly *ngIf="isConsult()">
-              <div class="select" *ngIf="!isConsult()">
-                <select id="templatingTypes" required [(ngModel)]="projectRule.rule.response.templatingEngine" name="templatingEngine">
-                  <option *ngFor="let templatingType of templatingTypes" [value]="templatingType">{{templatingType}}</option>
-                </select>
-              </div>
+              <app-config-dropdown id="ruleResponseTemplatingEngine" name="templatingEngine" configItem="templating-types" [readonly]="isConsult()" [(value)]="projectRule.rule.response.templatingEngine"></app-config-dropdown>
             </div>
           </div>
         </div>

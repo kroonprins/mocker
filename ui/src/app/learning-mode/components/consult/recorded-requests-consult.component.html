@@ -25,7 +25,7 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="requestMethod" required [ngModel]="recordedRequest.request.method" name="method" class="input" readonly>
+              <app-config-dropdown id="requestMethod" name="method" configItem="http-methods" readonly="true" [(value)]="recordedRequest.request.method"></app-config-dropdown>
             </div>
           </div>
         </div>
@@ -281,4 +281,4 @@
 
 
 <app-rules-manage *ngIf="doCreateProjectRule" actionType="create" [projectName]="projectName" [initializedRuleForCreation]="initializedRuleForCreation"
-  (onRuleActionCompleted)="createProjectRuleCompleted($event)"></app-rules-manage>
+  (ruleActionCompleted)="createProjectRuleCompleted($event)"></app-rules-manage>

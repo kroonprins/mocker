@@ -26,7 +26,7 @@ export class RulesComponent implements OnInit {
     this.projectName = this.route.snapshot.paramMap.get('projectName');
   }
 
-  onProjectRuleSelected(projectRule: ProjectRule): void {
+  projectRuleSelected(projectRule: ProjectRule): void {
     this.selectProjectRule(projectRule);
   }
 
@@ -40,9 +40,8 @@ export class RulesComponent implements OnInit {
     this.selectedRuleAction = 'create';
   }
 
-  onRuleActionCompleted(projectRule: ProjectRule) {
-    this.listComponent.refresh();
-    this.selectProjectRule(projectRule);
+  ruleActionCompleted(projectRule: ProjectRule) {
+    this.listComponent.refresh(projectRule);
   }
 
 }

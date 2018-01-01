@@ -6,12 +6,14 @@ import { RulesService } from './services/rules.service';
 import { RulesManageComponent } from './components/manage/rules-manage.component';
 import { FormsModule } from '@angular/forms';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    MonacoEditorModule
+    MonacoEditorModule,
+    SharedModule
   ],
   exports: [
     RulesComponent, // TODO needs to be exported?

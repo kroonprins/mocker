@@ -44,14 +44,10 @@
     <form #learningModeServerForm="ngForm" *ngIf="project.showServerDetails === 'learningModeServer'" (ngSubmit)="startLearningModeServer(project)"
       class="level">
       <div class="control level-item level-left">
-        <div class="select">
-          <select id="learningModeServerType" required [(ngModel)]="project.learningModeServer.type" name="learningModeServerType">
-            <option value="" disabled>Type</option>
-            <option *ngFor="let learningModeServerType of learningModeServerTypes" [value]="learningModeServerType">{{learningModeServerType}}</option>
-          </select>
-        </div>
+        <app-config-dropdown id="learningModeServerType" name="learningModeServerType" configItem="learning-mode-server-types" [(value)]="project.learningModeServer.type"></app-config-dropdown>
         <input type="number" id="learningModeServerPort" required [(ngModel)]="project.learningModeServer.port" name="learningModeServerPort"
-          class="input" placeholder="Port" min="1" max="65535"> <!-- TODO angular does not support min/max -->
+          class="input" placeholder="Port" min="1" max="65535">
+        <!-- TODO angular does not support min/max -->
         <input type="text" id="learningModeServerBindAddress" required [(ngModel)]="project.learningModeServer.bindAddress" name="learningModeServerBindAddress"
           class="input" placeholder="Bind address">
         <input type="text" id="learningModeReverseProxyServerTargetHost" required [(ngModel)]="project.learningModeServer.targetHost"

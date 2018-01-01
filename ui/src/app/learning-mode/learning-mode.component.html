@@ -1,9 +1,9 @@
 <div class="columns">
   <section class="column is-5">
-    <app-recorded-requests-list [projectName]="projectName" [selectedRecordedRequestId]="selectedRecordedRequestId" (onRecordedRequestSelected)="onRecordedRequestSelected($event)"></app-recorded-requests-list>
+    <app-recorded-requests-list [projectName]="projectName" [selectedRecordedRequestId]="selectedRecordedRequestId" (recordedRequestSelected)="recordedRequestSelected($event)"></app-recorded-requests-list>
   </section>
 
   <section class="column">
-    <app-recorded-requests-consult [projectName]="projectName" [recordedRequestId]="selectedRecordedRequestId" (onRecordedRequestRemoved)="onRecordedRequestRemoved($event)"></app-recorded-requests-consult>
+    <app-recorded-requests-consult [projectName]="projectName" [recordedRequestId]="selectedRecordedRequestId" (recordedRequestRemoved)="recordedRequestRemoved($event)"></app-recorded-requests-consult>
   </section>
 </div>

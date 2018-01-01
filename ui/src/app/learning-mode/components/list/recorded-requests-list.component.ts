@@ -15,7 +15,7 @@ export class RecordedRequestsListComponent implements OnChanges {
   selectedRecordedRequestId: string;
 
   @Output()
-  onRecordedRequestSelected = new EventEmitter<RecordedRequest>();
+  recordedRequestSelected = new EventEmitter<RecordedRequest>();
 
   recordedRequests: RecordedRequest[];
 
@@ -48,16 +48,16 @@ export class RecordedRequestsListComponent implements OnChanges {
 
   selectRecordedRequest(recordedRequest?): void {
     if (!recordedRequest && this.recordedRequests.length > 0) {
-      this.onRecordedRequestSelected.emit(this.recordedRequests[0]);
+      this.recordedRequestSelected.emit(this.recordedRequests[0]);
     } else {
-      this.onRecordedRequestSelected.emit(recordedRequest);
+      this.recordedRequestSelected.emit(recordedRequest);
     }
   }
 
   removeAllRecordedRequests(): void {
     this.learningModeService.removeAllRecordedRequests(this.projectName).subscribe(recordedRequests => {
       this.refresh();
-      this.onRecordedRequestSelected.emit();
+      this.recordedRequestSelected.emit();
     });
   }
 

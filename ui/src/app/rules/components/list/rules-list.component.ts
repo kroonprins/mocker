@@ -15,7 +15,7 @@ export class RulesListComponent implements OnChanges {
   selectedProjectRuleName: string;
 
   @Output()
-  onProjectRuleSelected = new EventEmitter<ProjectRule>();
+  projectRuleSelected = new EventEmitter<ProjectRule>();
 
   projectRules: ProjectRule[];
 
@@ -29,10 +29,14 @@ export class RulesListComponent implements OnChanges {
     }
   }
 
-  refresh(): void {
+  refresh(projectRule?: ProjectRule): void {
     this.ruleService.listProjectRules(this.projectName).subscribe(projectRules => {
       this.projectRules = projectRules;
-      this.findProjectRuleToSelect();
+      if (projectRule) {
+        this.selectProjectRule(projectRule);
+      } else {
+        this.findProjectRuleToSelect();
+      }
     });
   }
 
@@ -48,9 +52,9 @@ export class RulesListComponent implements OnChanges {
 
   selectProjectRule(projectRule?): void {
     if (!projectRule && this.projectRules.length > 0) {
-      this.onProjectRuleSelected.emit(this.projectRules[0]);
+      this.projectRuleSelected.emit(this.projectRules[0]);
     } else {
-      this.onProjectRuleSelected.emit(projectRule);
+      this.projectRuleSelected.emit(projectRule);
     }
   }
 
