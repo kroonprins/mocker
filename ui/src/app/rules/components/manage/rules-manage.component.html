@@ -37,7 +37,12 @@
           <div class="field">
             <div class="control">
               <input type="text" id="ruleRequestMethod" required [(ngModel)]="projectRule.rule.request.method" name="method" class="input"
-                [readonly]="isConsult()">
+              readonly *ngIf="isConsult()">
+              <div class="select" *ngIf="!isConsult()">
+                <select id="ruleRequestMethod" required [(ngModel)]="projectRule.rule.request.method" name="method">
+                  <option *ngFor="let httpMethod of httpMethods" [value]="httpMethod">{{httpMethod}}</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -65,7 +70,12 @@
           <div class="field">
             <div class="control">
               <input type="text" id="ruleResponseTemplatingEngine" required [(ngModel)]="projectRule.rule.response.templatingEngine" name="templatingEngine"
-                class="input" [readonly]="isConsult()">
+                class="input" readonly *ngIf="isConsult()">
+              <div class="select" *ngIf="!isConsult()">
+                <select id="templatingTypes" required [(ngModel)]="projectRule.rule.response.templatingEngine" name="templatingEngine">
+                  <option *ngFor="let templatingType of templatingTypes" [value]="templatingType">{{templatingType}}</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -275,8 +285,8 @@
                   <label for="newResponseCookiePropertyHttpOnly" class="label">httpOnly</label>
                 </div>
                 <div class="field-body" name="newResponseCookiePropertyHttpOnly">
-                  <input type="text" id="newResponseCookiePropertyHttpOnly" required [(ngModel)]="newCookie.properties.httpOnly"
-                    class="input" name="newResponseCookiePropertyHttpOnly">
+                  <input type="text" id="newResponseCookiePropertyHttpOnly" required [(ngModel)]="newCookie.properties.httpOnly" class="input"
+                    name="newResponseCookiePropertyHttpOnly">
                 </div>
               </div>
               <div class="field is-horizontal">
@@ -329,8 +339,7 @@
                   <label for="newResponseCookiePropertyPath" class="label">path</label>
                 </div>
                 <div class="field-body" name="newResponseCookiePropertyPath">
-                  <input type="text" id="newResponseCookiePropertyPath" required [(ngModel)]="newCookie.properties.path" class="input"
-                    name="newResponseCookiePropertyPath">
+                  <input type="text" id="newResponseCookiePropertyPath" required [(ngModel)]="newCookie.properties.path" class="input" name="newResponseCookiePropertyPath">
                 </div>
               </div>
               <div class="field is-horizontal">
@@ -347,8 +356,8 @@
                   <label for="newResponseCookiePropertySameSite" class="label">same-site</label>
                 </div>
                 <div class="field-body" name="newResponseCookiePropertySameSite">
-                  <input type="text" id="newResponseCookiePropertySameSite" required [(ngModel)]="newCookie.properties.sameSite"
-                    class="input" name="newResponseCookiePropertySameSite">
+                  <input type="text" id="newResponseCookiePropertySameSite" required [(ngModel)]="newCookie.properties.sameSite" class="input"
+                    name="newResponseCookiePropertySameSite">
                 </div>
               </div>
             </div>

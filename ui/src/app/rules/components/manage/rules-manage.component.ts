@@ -8,7 +8,7 @@ import { ProjectRule, ResponseHeader, ResponseCookie } from '../../model/project
   templateUrl: './rules-manage.component.html',
   styleUrls: ['./rules-manage.component.sass']
 })
-export class RulesManageComponent implements OnChanges {
+export class RulesManageComponent implements OnInit, OnChanges {
 
   @Input()
   actionType: ActionType;
@@ -29,7 +29,23 @@ export class RulesManageComponent implements OnChanges {
   newHeader: ResponseHeader;
   newCookie: ResponseCookie;
 
+  httpMethods: string[];
+  templatingTypes: string[];
+
   constructor(private rulesService: RulesService) { }
+
+  ngOnInit(): void {
+    if (!this.httpMethods) {
+      this.rulesService.listHttpMethods().subscribe(httpMethods => {
+        this.httpMethods = httpMethods['value'];
+      });
+    }
+    if (!this.templatingTypes) {
+      this.rulesService.listTemplatingTypes().subscribe(templatingTypes => {
+        this.templatingTypes = templatingTypes['value'];
+      });
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.newHeader = ResponseHeader.newEmpty();

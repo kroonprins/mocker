@@ -38,7 +38,7 @@ const test = async () => {
 
   expect(await jsonSchemaValidator.validate('ProjectFile', new ProjectFile())).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('ProjectFile', new ProjectFile('x'))).to.be.equal(true)
-  expect(await jsonSchemaValidator.validate('ProjectFile', new ProjectFile('123456789012345678901234567890123456789012'))).to.be.equal(false)
+  expect(await jsonSchemaValidator.validate('ProjectFile', new ProjectFile('12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901'))).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('ProjectFile', new ProjectFile('x', 'y'))).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('ProjectFile', new ProjectFile('x', ['y']))).to.be.equal(true)
 

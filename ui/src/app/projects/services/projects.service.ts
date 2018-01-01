@@ -86,7 +86,7 @@ export class ProjectsService {
           learningModeServer.bindAddress = item.learningModeServer.bindAddress;
           learningModeServer.status = item.learningModeServer.status;
           learningModeServer.targetHost = item.learningModeServer.targetHost;
-          learningModeServer.type = item.learningModeServer.type;
+          learningModeServer.type = item.learningModeServer.type || 'reverse-proxy';
           project.learningModeServer = learningModeServer;
 
           return project;

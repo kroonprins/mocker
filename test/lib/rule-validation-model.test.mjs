@@ -81,7 +81,7 @@ const test = async () => {
   expect(await jsonSchemaValidator.validate('Rule', new Rule())).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('Rule', new Rule(null, new Request('/test', 'GET'), new Response('nunjucks', 'x')))).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), new Response('nunjucks', 'x')))).to.be.equal(true)
-  expect(await jsonSchemaValidator.validate('Rule', new Rule('123456789012345678901234567890123456789011', new Request('/test', 'GET'), new Response('nunjucks', 'x')))).to.be.equal(false)
+  expect(await jsonSchemaValidator.validate('Rule', new Rule('12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901', new Request('/test', 'GET'), new Response('nunjucks', 'x')))).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('Rule', new Rule('x', 'x', new Response('nunjucks', 'x')))).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), 'x'))).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('test', 'GET'), new Response('nunjucks', 'x')))).to.be.equal(false)

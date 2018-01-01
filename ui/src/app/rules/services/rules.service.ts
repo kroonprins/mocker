@@ -28,4 +28,12 @@ export class RulesService {
   updateProjectRule(projectName: string, ruleName: string, updatedProjectRule: ProjectRule): Observable<ProjectRule> {
     return this._http.put<ProjectRule>(`http://localhost:3004/api/projects/${projectName}/rules/${ruleName}`, updatedProjectRule);
   }
+
+  listHttpMethods (): Observable<string[]> {
+    return this._http.get<string[]>(`http://localhost:3004/api/config/http-methods`);
+  }
+
+  listTemplatingTypes (): Observable<string[]> {
+    return this._http.get<string[]>(`http://localhost:3004/api/config/templating-types`);
+  }
 }

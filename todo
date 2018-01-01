@@ -31,3 +31,4 @@
 * componentize much more in ui
 * handle xml input body on mock server => either use body-parser-xml (but xml to json is always tricky with arrays) or have the text bodyparser handle the "*/xml" content type and add an xpath template helper function
 * put this todo list as github todos in github project
+* add ability to mock server to proxy requests to the real server if no rule defined

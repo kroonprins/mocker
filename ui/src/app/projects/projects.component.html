@@ -19,7 +19,7 @@
     <form #updateProjectForm="ngForm" *ngIf="project.updateOngoing" (ngSubmit)="updateProject(project)" class="level">
       <div class="control level-item level-left">
         <input type="text" id="projectName" required [(ngModel)]="updatedProject.name" name="nameOfProjectToUpdate" class="input"
-          placeholder="Project name">
+          placeholder="Project name" maxlength="100">
       </div>
       <div class="control level-right">
         <button type="button" class="button is-light level-item" (click)="cancelProjectUpdate(project)">Cancel</button>
@@ -32,7 +32,7 @@
     <form #mockServerForm="ngForm" *ngIf="project.showServerDetails === 'mockServer'" (ngSubmit)="startMockServer(project)" class="level">
       <div class="control level-item level-left">
         <input type="number" id="mockServerPort" required [(ngModel)]="project.mockServer.port" name="mockServerPort" class="input"
-          placeholder="Port">
+          placeholder="Port" min="1" max="65535">
         <input type="text" id="mockServerBindAddress" required [(ngModel)]="project.mockServer.bindAddress" name="mockServerBindAddress"
           class="input" placeholder="Bind address">
       </div>
@@ -45,18 +45,17 @@
       class="level">
       <div class="control level-item level-left">
         <div class="select">
-          <select id="learningModeServerType" required [(ngModel)]="project.learningModeServer.type" name="learningModeServerType" placeholder="Type">
+          <select id="learningModeServerType" required [(ngModel)]="project.learningModeServer.type" name="learningModeServerType">
+            <option value="" disabled>Type</option>
             <option *ngFor="let learningModeServerType of learningModeServerTypes" [value]="learningModeServerType">{{learningModeServerType}}</option>
           </select>
         </div>
-        <!-- <input type="text" id="learningModeServerType" required [(ngModel)]="project.learningModeServer.type" name="learningModeServerType"
-          class="input" placeholder="Type (reverse-proxy / forward-proxy)"> -->
         <input type="number" id="learningModeServerPort" required [(ngModel)]="project.learningModeServer.port" name="learningModeServerPort"
-          class="input" placeholder="Port">
+          class="input" placeholder="Port" min="1" max="65535"> <!-- TODO angular does not support min/max -->
         <input type="text" id="learningModeServerBindAddress" required [(ngModel)]="project.learningModeServer.bindAddress" name="learningModeServerBindAddress"
           class="input" placeholder="Bind address">
-        <input type="text" id="learningModeReverseProxyServerTargetHost" required [(ngModel)]="project.learningModeServer.targetHost" name="learningModeReverseProxyServerTargetHost"
-          class="input" placeholder="Target" *ngIf="project.learningModeServer.type === 'reverse-proxy'">
+        <input type="text" id="learningModeReverseProxyServerTargetHost" required [(ngModel)]="project.learningModeServer.targetHost"
+          name="learningModeReverseProxyServerTargetHost" class="input" placeholder="Target" *ngIf="project.learningModeServer.type === 'reverse-proxy'">
       </div>
       <div class="control level-right">
         <button type="button" class="button is-light level-item" [disabled]="project.learningModeServer.status !== 'started'" (click)="stopLearningModeServer(project)">Stop</button>
@@ -71,7 +70,7 @@
     <form #newProjectForm="ngForm" (ngSubmit)="createNewProject()" class="level">
       <div class="control level-item level-left">
         <input type="text" id="projectName" required [(ngModel)]="newProject.name" name="nameOfProjectToCreate" class='input' placeholder="New project"
-          #nameOfProjectToCreate="ngModel">
+          #nameOfProjectToCreate="ngModel" maxlength="100">
       </div>
       <div class="control level-right">
         <button type="submit" class="button is-primary level-item" [disabled]="!newProjectForm.form.valid">Create</button>
