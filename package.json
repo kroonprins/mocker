@@ -49,7 +49,7 @@
     "mkdirp": "^0.5.1",
     "nedb": "^1.8.0",
     "nunjucks": "^3.0.1",
-    "pino": "^4.10.2",
+    "pino": "^4.10.3",
     "rimraf": "^2.6.2",
     "serializr": "^1.1.14",
     "tough-cookie": "^2.3.3",

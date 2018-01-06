@@ -47,7 +47,7 @@
         <app-config-dropdown id="learningModeServerType" name="learningModeServerType" configItem="learning-mode-server-types" [(value)]="project.learningModeServer.type"></app-config-dropdown>
         <input type="number" id="learningModeServerPort" required [(ngModel)]="project.learningModeServer.port" name="learningModeServerPort"
           class="input" placeholder="Port" min="1" max="65535">
-        <!-- TODO angular does not support min/max -->
+        <!-- TODO angular does not support min/max otb -->
         <input type="text" id="learningModeServerBindAddress" required [(ngModel)]="project.learningModeServer.bindAddress" name="learningModeServerBindAddress"
           class="input" placeholder="Bind address">
         <input type="text" id="learningModeReverseProxyServerTargetHost" required [(ngModel)]="project.learningModeServer.targetHost"

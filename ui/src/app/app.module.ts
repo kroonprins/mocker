@@ -12,6 +12,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { RulesModule } from './rules/rules.module';
 import { ProjectsService } from './projects/services/projects.service';
 import { LearningModeModule } from './learning-mode/learning-mode.module';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 
 @NgModule({
@@ -26,7 +27,19 @@ import { LearningModeModule } from './learning-mode/learning-mode.module';
     ProjectsModule,
     RulesModule,
     LearningModeModule,
-    Ng2Webstorage.forRoot({ prefix: 'mocker' })
+    Ng2Webstorage.forRoot({ prefix: 'mocker' }),
+    // TODO: figure out how these defaultOptions are supposed to work (they don't seem to propagate in child modules)
+    MonacoEditorModule.forRoot(/* {
+      defaultOptions: {
+        minimap: {
+          enabled: false
+        },
+        scrollbar: {
+          horizontal: 'auto',
+          vertical: 'auto'
+        },
+      }
+    } */)
   ],
   providers: [
     ProjectsService

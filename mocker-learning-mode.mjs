@@ -4,3 +4,6 @@
 import { Mocker } from './lib/mocker'
 
 (new Mocker()).startLearningModeReverseProxyServer()
+  .catch(error => {
+    console.error('Failed to start learning mode server', error)
+  })
