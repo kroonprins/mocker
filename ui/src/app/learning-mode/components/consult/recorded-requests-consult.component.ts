@@ -21,13 +21,6 @@ export class RecordedRequestsConsultComponent implements OnChanges {
   recordedRequest: RecordedRequest;
   monacoEditorOptions = {
     language: 'json',
-    minimap: {
-      enabled: false
-    },
-    scrollbar: {
-      horizontal: 'auto',
-      vertical: 'auto'
-    },
     readOnly: false // TODO should be true but then the formatting doesn't work
   };
 

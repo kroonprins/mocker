@@ -28,8 +28,7 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     RulesModule,
     LearningModeModule,
     Ng2Webstorage.forRoot({ prefix: 'mocker' }),
-    // TODO: figure out how these defaultOptions are supposed to work (they don't seem to propagate in child modules)
-    MonacoEditorModule.forRoot(/* {
+    MonacoEditorModule.forRoot({
       defaultOptions: {
         minimap: {
           enabled: false
@@ -39,7 +38,7 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
           vertical: 'auto'
         },
       }
-    } */)
+    })
   ],
   providers: [
     ProjectsService

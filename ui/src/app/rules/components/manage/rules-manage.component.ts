@@ -132,13 +132,6 @@ export class RulesManageComponent implements OnChanges {
   private setMonacoEditorSettings() {
     this.monacoEditorOptions = {
       language: 'json',
-      minimap: {
-        enabled: false
-      },
-      scrollbar: {
-        horizontal: 'auto',
-        vertical: 'auto'
-      },
       readOnly: this.isConsult()
     };
   }
