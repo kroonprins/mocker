@@ -1,4 +1,5 @@
 import { ResponseCookie, Cookie } from '../../shared/model/cookie';
+import { NameValuePair } from '../../shared/model/name-value-pair';
 
 class Request {
   method: string;
@@ -8,11 +9,6 @@ class Request {
   params: NameValuePair[];
   headers: NameValuePair[];
   cookies: Cookie[];
-}
-
-class NameValuePair {
-  name: string;
-  value: string;
 }
 
 class Response {

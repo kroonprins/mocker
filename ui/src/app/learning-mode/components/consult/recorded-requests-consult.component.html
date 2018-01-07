@@ -55,34 +55,8 @@
           </div>
         </div>
       </div>
-      <div class="field is-horizontal" *ngIf="recordedRequest.request.params && recordedRequest.request.params.length > 0">
-        <div class="field-label is-normal">
-          <label for="params" class="label">Query parameters</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <div *ngFor='let param of recordedRequest.request.params' name="param">
-                <strong>{{param.name}}:</strong> {{param.value}}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field is-horizontal" *ngIf="recordedRequest.request.headers && recordedRequest.request.headers.length > 0">
-        <div class="field-label is-normal">
-          <label for="requestHeaders" class="label">Headers</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control" name="requestHeaders">
-              <div *ngFor='let header of recordedRequest.request.headers'>
-                <strong>{{header.name}}:</strong> {{header.value}}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-name-value-pairs [nameValuePairs]="recordedRequest.request.params" label="Query parameters" readonly="true"></app-name-value-pairs>
+      <app-name-value-pairs [nameValuePairs]="recordedRequest.request.headers" label="Headers" readonly="true"></app-name-value-pairs>
       <app-cookies [cookies]=recordedRequest.request.cookies label='Cookies' readonly="true"></app-cookies>
       <div class="field is-horizontal" *ngIf="recordedRequest.request.body">
         <div class="field-label is-normal">
@@ -126,20 +100,7 @@
           </div>
         </div>
       </div>
-      <div class="field is-horizontal" *ngIf="recordedRequest.response.headers && recordedRequest.response.headers.length > 0">
-        <div class="field-label is-normal">
-          <label for="responseHeaders" class="label">Headers</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control" name="responseHeaders">
-              <div *ngFor='let responseHeader of recordedRequest.response.headers'>
-                <strong>{{responseHeader.name}}:</strong> {{responseHeader.value}}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-name-value-pairs [nameValuePairs]="recordedRequest.response.headers" label="Headers" readonly="true"></app-name-value-pairs>
       <app-cookies [cookies]="recordedRequest.response.cookies" label="Cookies" readonly="true"></app-cookies>
       <div class="field is-horizontal">
         <div class="field-label is-normal">

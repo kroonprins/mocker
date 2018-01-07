@@ -4,6 +4,7 @@ import { ConfigDropdownComponent } from './components/config-dropdown.component'
 import { ConfigDropdownService } from './services/config-dropdown.service';
 import { FormsModule } from '@angular/forms';
 import { CookiesComponent } from './components/cookies.component';
+import { NameValuePairsComponent } from './components/name-value-pairs.component';
 
 @NgModule({
   imports: [
@@ -12,9 +13,10 @@ import { CookiesComponent } from './components/cookies.component';
   ],
   exports: [
     ConfigDropdownComponent,
-    CookiesComponent
+    CookiesComponent,
+    NameValuePairsComponent
   ],
-  declarations: [ConfigDropdownComponent, CookiesComponent],
+  declarations: [ConfigDropdownComponent, CookiesComponent, NameValuePairsComponent],
   providers: [
     ConfigDropdownService
   ]

@@ -1,4 +1,5 @@
 import { ResponseCookie } from '../../shared/model/cookie';
+import { NameValuePair } from '../../shared/model/name-value-pair';
 
 class Rule {
   name: string;
@@ -15,18 +16,9 @@ class Response {
   templatingEngine: string; // TODO enum? (enum = type?)
   contentType: string;
   statusCode: number;
-  headers: ResponseHeader[] = [];
+  headers: NameValuePair[] = [];
   cookies: ResponseCookie[] = [];
   body: string;
-}
-
-class ResponseHeader {
-  name: string;
-  value: string;
-
-  static newEmpty(): ResponseHeader {
-    return new ResponseHeader();
-  }
 }
 
 class ProjectRule {
@@ -45,5 +37,5 @@ class ProjectRule {
   }
 }
 
-export { ProjectRule, Rule, Request, Response, ResponseHeader };
+export { ProjectRule, Rule, Request, Response };
 

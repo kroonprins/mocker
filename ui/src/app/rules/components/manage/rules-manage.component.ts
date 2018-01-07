@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { ActionType } from '../../model/typedef';
 import { RulesService } from '../../services/rules.service';
-import { ProjectRule, ResponseHeader } from '../../model/project-rule';
+import { ProjectRule } from '../../model/project-rule';
 import { ResponseCookie } from '../../../shared/model/cookie';
 
 @Component({
@@ -27,12 +27,10 @@ export class RulesManageComponent implements OnChanges {
   selectedRuleBeforeCreate: ProjectRule;
   ruleNameBeforeUpdate: string;
   monacoEditorOptions: object;
-  newHeader: ResponseHeader;
 
   constructor(private rulesService: RulesService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.newHeader = ResponseHeader.newEmpty();
     switch (this.actionType) {
       case 'consult':
       case 'update':
@@ -133,17 +131,6 @@ export class RulesManageComponent implements OnChanges {
       language: 'json',
       readOnly: this.isConsult()
     };
-  }
-
-  private addNewHeader(): void {
-    const headers = this.projectRule.rule.response.headers || [];
-    headers.push(this.newHeader);
-    this.newHeader = ResponseHeader.newEmpty();
-    this.projectRule.rule.response.headers = headers;
-  }
-
-  private removeHeader(index: number) {
-    this.projectRule.rule.response.headers.splice(index, 1);
   }
 
 }

@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { RecordedRequest } from '../model/learning-mode';
-import { ProjectRule, Rule, Request, Response, ResponseHeader } from '../../rules/model/project-rule';
+import { ProjectRule, Rule, Request, Response } from '../../rules/model/project-rule';
 import { ResponseCookie } from '../../shared/model/cookie';
+import { NameValuePair } from '../../shared/model/name-value-pair';
 
 @Injectable()
 export class LearningModeService {
@@ -42,9 +43,9 @@ export class LearningModeService {
     response.statusCode = recordedRequest.response.statusCode;
     response.body = recordedRequest.response.body;
 
-    const headers: ResponseHeader[] = [];
+    const headers: NameValuePair[] = [];
     for (const recordedRequestResponseHeader of recordedRequest.response.headers) {
-      const responseHeader = new ResponseHeader();
+      const responseHeader = new NameValuePair();
       responseHeader.name = recordedRequestResponseHeader.name;
       responseHeader.value = recordedRequestResponseHeader.value;
       headers.push(responseHeader);

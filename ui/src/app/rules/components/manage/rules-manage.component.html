@@ -95,52 +95,7 @@
           </div>
         </div>
       </div>
-      <div class="field is-horizontal" *ngFor="let ruleResponseHeader of projectRule.rule.response.headers; let i = index">
-        <div class="field-label is-normal">
-          <label for="headers" class="label">{{i === 0 ? 'Headers' : ''}}</label>
-        </div>
-        <div class="field-body" name="headers">
-          <div class="field">
-            <div class="control">
-              <input type="text" id="ruleResponseHeaderName" required [(ngModel)]="ruleResponseHeader.name" class="input" [readonly]="isConsult()"
-                placeholder="name" name="ruleResponseHeaderName-{{i}}">
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <input type="text" id="ruleResponseHeaderValue" required [(ngModel)]="ruleResponseHeader.value" class="input" [readonly]="isConsult()"
-                placeholder="value" name="ruleResponseHeaderValue-{{i}}">
-            </div>
-          </div>
-          <div class="field" *ngIf="!isConsult()">
-            <div class="control">
-              <button (click)="removeHeader(i)" class="button is-primary">Remove</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field is-horizontal" *ngIf="!isConsult()">
-        <div class="field-label is-normal">
-          <label class="label">{{projectRule.rule.response.headers && projectRule.rule.response.headers.length > 0 ? '' : 'Headers' }}</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <input type="text" id="newResponseHeaderName" required [(ngModel)]="newHeader.name" class="input" placeholder="name" name="newResponseHeaderName">
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <input type="text" id="newResponseHeaderValue" required [(ngModel)]="newHeader.value" class="input" placeholder="value" name="newResponseHeaderValue">
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <button (click)="addNewHeader()" class="button is-primary">Add</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-name-value-pairs [nameValuePairs]="projectRule.rule.response.headers" label="Headers" [readonly]="isConsult()"></app-name-value-pairs>
       <app-cookies [cookies]="projectRule.rule.response.cookies" label="Cookies" [readonly]="isConsult()" isResponseCookie="true"></app-cookies>
       <div class="field is-horizontal">
         <div class="field-label is-normal">

@@ -1,0 +1,50 @@
+<div class="field" *ngFor="let nameValuePair of nameValuePairs; let i = index">
+  <div class="field is-horizontal">
+    <div class="field-label is-normal">
+      <label for="nameValuePair" class="label">{{i === 0 ? label : ''}}</label>
+    </div>
+    <div class="field-body" name="nameValuePair">
+      <div class="field">
+        <div class="control">
+          <input type="text" id="nameValuePairName" required [(ngModel)]="nameValuePair.name" class="input" [readonly]="readonly" placeholder="name"
+            name="nameValuePair-{{i}}">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input type="text" id="nameValuePairValue" [(ngModel)]="nameValuePair.value" class="input" [readonly]="readonly" placeholder="value"
+            name="nameValuePair-{{i}}">
+        </div>
+      </div>
+      <div class="field" *ngIf="!readonly">
+        <div class="control">
+          <button (click)="removeNameValuePair(i)" class="button is-primary">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="field">
+  <div class="field is-horizontal" *ngIf="!readonly">
+    <div class="field-label is-normal">
+      <label class="label">{{nameValuePairs && nameValuePairs.length > 0 ? '' : label }}</label>
+    </div>
+    <div class="field-body">
+      <div class="field">
+        <div class="control">
+          <input type="text" id="newNameValuePairName" required [(ngModel)]="newNameValuePair.name" class="input" placeholder="name" name="newNameValuePairName">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input type="text" id="newNameValuePairValue" [(ngModel)]="newNameValuePair.value" class="input" placeholder="value" name="newNameValuePairValue">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <button (click)="addNewNameValuePair()" class="button is-primary">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
