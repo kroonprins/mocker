@@ -83,20 +83,7 @@
           </div>
         </div>
       </div>
-      <div class="field is-horizontal" *ngIf="recordedRequest.request.cookies && recordedRequest.request.cookies.length > 0">
-        <div class="field-label is-normal">
-          <label for="requestCookies" class="label">Cookies</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control" name="responseCookies">
-              <div *ngFor='let cookie of recordedRequest.request.cookies'>
-                <strong>{{cookie.name}}:</strong> {{cookie.value}}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-cookies [cookies]=recordedRequest.request.cookies label='Cookies' readonly="true"></app-cookies>
       <div class="field is-horizontal" *ngIf="recordedRequest.request.body">
         <div class="field-label is-normal">
           <label for="requestBody" class="label">Body</label>
@@ -153,107 +140,7 @@
           </div>
         </div>
       </div>
-      <div class="field is-horizontal" *ngIf="recordedRequest.response.cookies && recordedRequest.response.cookies.length > 0">
-        <div class="field-label is-normal">
-          <label for="responseCookies" class="label">Cookies</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control" name="responseCookies">
-              <!-- TODO cookie properties -->
-              <div *ngFor='let responseCookie of recordedRequest.response.cookies'>
-                <strong>{{responseCookie.name}}:</strong> {{responseCookie.value}}
-                <div class="field">
-                  <!-- TODO make this a component -->
-                  <div class="control">
-                    <div class="field is-horizontal">
-                      <div class="field-label is-normal">
-                        <label for="responseCookiePropertyHttpOnly" class="label">httpOnly</label>
-                      </div>
-                      <div class="field-body" name="responseCookiePropertyHttpOnly">
-                        <input type="text" id="responseCookiePropertyHttpOnly" required [(ngModel)]="responseCookie.properties.httpOnly" class="input"
-                          name="responseCookiePropertyHttpOnly" readonly>
-                      </div>
-                    </div>
-                    <div class="field is-horizontal">
-                      <div class="field-label is-normal">
-                        <label for="responseCookiePropertySecure" class="label">secure</label>
-                      </div>
-                      <div class="field-body" name="responseCookiePropertySecure">
-                        <input type="text" id="responseCookiePropertySecure" required [(ngModel)]="responseCookie.properties.secure" class="input"
-                          name="responseCookiePropertySecure" readonly>
-                      </div>
-                    </div>
-                    <div class="field is-horizontal">
-                      <div class="field-label is-normal">
-                        <label for="responseCookiePropertyDomain" class="label">domain</label>
-                      </div>
-                      <div class="field-body" name="responseCookiePropertyDomain">
-                        <input type="text" id="responseCookiePropertyDomain" required [(ngModel)]="responseCookie.properties.domain" class="input"
-                          name="responseCookiePropertyDomain" readonly>
-                      </div>
-                    </div>
-                    <div class="field is-horizontal">
-                      <div class="field-label is-normal">
-                        <label for="responseCookiePropertyEncode" class="label">encode</label>
-                      </div>
-                      <div class="field-body" name="responseCookiePropertyEncode">
-                        <input type="text" id="responseCookiePropertyEncode" required [(ngModel)]="responseCookie.properties.encode" class="input"
-                          name="responseCookiePropertyEncode" readonly>
-                      </div>
-                    </div>
-                    <div class="field is-horizontal">
-                      <div class="field-label is-normal">
-                        <label for="responseCookiePropertyExpires" class="label">expires</label>
-                      </div>
-                      <div class="field-body" name="responseCookiePropertyExpires">
-                        <input type="text" id="responseCookiePropertyExpires" required [(ngModel)]="responseCookie.properties.expires" class="input"
-                          name="responseCookiePropertyExpires" readonly>
-                      </div>
-                    </div>
-                    <div class="field is-horizontal">
-                      <div class="field-label is-normal">
-                        <label for="responseCookiePropertyMaxAge" class="label">max-age</label>
-                      </div>
-                      <div class="field-body" name="responseCookiePropertyMaxAge">
-                        <input type="text" id="responseCookiePropertyMaxAge" required [(ngModel)]="responseCookie.properties.maxAge" class="input"
-                          name="responseCookiePropertyMaxAge" readonly>
-                      </div>
-                    </div>
-                    <div class="field is-horizontal">
-                      <div class="field-label is-normal">
-                        <label for="responseCookiePropertyPath" class="label">path</label>
-                      </div>
-                      <div class="field-body" name="responseCookiePropertyPath">
-                        <input type="text" id="responseCookiePropertyPath" required [(ngModel)]="responseCookie.properties.path" class="input" name="responseCookiePropertyPath"
-                          readonly>
-                      </div>
-                    </div>
-                    <div class="field is-horizontal">
-                      <div class="field-label is-normal">
-                        <label for="responseCookiePropertySigned" class="label">signed</label>
-                      </div>
-                      <div class="field-body" name="responseCookiePropertySigned">
-                        <input type="text" id="responseCookiePropertySigned" required [(ngModel)]="responseCookie.properties.signed" class="input"
-                          name="responseCookiePropertySigned" readonly>
-                      </div>
-                    </div>
-                    <div class="field is-horizontal">
-                      <div class="field-label is-normal">
-                        <label for="responseCookiePropertySameSite" class="label">same-site</label>
-                      </div>
-                      <div class="field-body" name="responseCookiePropertySameSite">
-                        <input type="text" id="responseCookiePropertySameSite" required [(ngModel)]="responseCookie.properties.sameSite" class="input"
-                          name="responseCookiePropertySameSite" readonly>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-cookies [cookies]="recordedRequest.response.cookies" label="Cookies" readonly="true"></app-cookies>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label for="responseBody" class="label">Body</label>

@@ -1,7 +1,8 @@
 import { Component, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { ActionType } from '../../model/typedef';
 import { RulesService } from '../../services/rules.service';
-import { ProjectRule, ResponseHeader, ResponseCookie } from '../../model/project-rule';
+import { ProjectRule, ResponseHeader } from '../../model/project-rule';
+import { ResponseCookie } from '../../../shared/model/cookie';
 
 @Component({
   selector: 'app-rules-manage',
@@ -27,13 +28,11 @@ export class RulesManageComponent implements OnChanges {
   ruleNameBeforeUpdate: string;
   monacoEditorOptions: object;
   newHeader: ResponseHeader;
-  newCookie: ResponseCookie;
 
   constructor(private rulesService: RulesService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.newHeader = ResponseHeader.newEmpty();
-    this.newCookie = ResponseCookie.newEmpty();
     switch (this.actionType) {
       case 'consult':
       case 'update':
@@ -145,17 +144,6 @@ export class RulesManageComponent implements OnChanges {
 
   private removeHeader(index: number) {
     this.projectRule.rule.response.headers.splice(index, 1);
-  }
-
-  private addNewCookie(): void {
-    const cookies = this.projectRule.rule.response.cookies || [];
-    cookies.push(this.newCookie);
-    this.newCookie = ResponseCookie.newEmpty();
-    this.projectRule.rule.response.cookies = cookies;
-  }
-
-  private removeCookie(index: number) {
-    this.projectRule.rule.response.cookies.splice(index, 1);
   }
 
 }

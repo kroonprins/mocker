@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ConfigDropdownComponent } from './components/config-dropdown.component';
 import { ConfigDropdownService } from './services/config-dropdown.service';
 import { FormsModule } from '@angular/forms';
+import { CookiesComponent } from './components/cookies.component';
 
 @NgModule({
   imports: [
@@ -10,9 +11,10 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   exports: [
-    ConfigDropdownComponent
+    ConfigDropdownComponent,
+    CookiesComponent
   ],
-  declarations: [ConfigDropdownComponent],
+  declarations: [ConfigDropdownComponent, CookiesComponent],
   providers: [
     ConfigDropdownService
   ]

@@ -1,3 +1,5 @@
+import { ResponseCookie } from '../../shared/model/cookie';
+
 class Rule {
   name: string;
   request: Request;
@@ -27,18 +29,6 @@ class ResponseHeader {
   }
 }
 
-class ResponseCookie {
-  name: string;
-  value: string;
-  properties: object;
-
-  static newEmpty(): ResponseCookie {
-    const responseCookie =  new ResponseCookie();
-    responseCookie.properties = {};
-    return responseCookie;
-  }
-}
-
 class ProjectRule {
   location: string;
   rule: Rule;
@@ -55,5 +45,5 @@ class ProjectRule {
   }
 }
 
-export { ProjectRule, Rule, Request, Response, ResponseHeader, ResponseCookie };
+export { ProjectRule, Rule, Request, Response, ResponseHeader };
 

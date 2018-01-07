@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { RecordedRequest } from '../model/learning-mode';
-import { ProjectRule, Rule, Request, Response, ResponseHeader, ResponseCookie } from '../../rules/model/project-rule';
+import { ProjectRule, Rule, Request, Response, ResponseHeader } from '../../rules/model/project-rule';
+import { ResponseCookie } from '../../shared/model/cookie';
 
 @Injectable()
 export class LearningModeService {
