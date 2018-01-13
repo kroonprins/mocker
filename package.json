@@ -22,9 +22,9 @@
   "devDependencies": {
     "axios": "^0.17.1",
     "chai": "^4.1.2",
-    "chai-exclude": "^1.0.3",
+    "chai-exclude": "^1.0.5",
     "chai-string": "^1.4.0",
-    "eslint": "^4.14.0",
+    "eslint": "^4.15.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^5.2.1",
@@ -35,8 +35,8 @@
     "portastic": "^1.0.1"
   },
   "dependencies": {
-    "ajv": "^5.5.2",
-    "ajv-async": "^0.1.1",
+    "ajv": "^6.0.1",
+    "ajv-async": "^1.0.1",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",

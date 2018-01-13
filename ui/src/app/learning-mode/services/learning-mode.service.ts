@@ -5,31 +5,36 @@ import { RecordedRequest } from '../model/learning-mode';
 import { ProjectRule, Rule, Request, Response } from '../../rules/model/project-rule';
 import { ResponseCookie } from '../../shared/model/cookie';
 import { NameValuePair } from '../../shared/model/name-value-pair';
+import { AppConfigurationService } from '../../shared/services/app-configuration.service';
 
 @Injectable()
 export class LearningModeService {
 
-  constructor(private _http: HttpClient) { }
+  private apiServerLocation: string;
+
+  constructor(private _http: HttpClient, private appConfigurationService: AppConfigurationService) {
+    this.apiServerLocation = this.appConfigurationService.retrieveApiServerLocation();
+  }
 
   listRecordedRequests(projectName: string): Observable<RecordedRequest[]> {
-    return this._http.get<RecordedRequest[]>(`http://localhost:3004/api/learning-mode/${projectName}/recorded-requests`);
+    return this._http.get<RecordedRequest[]>(`${this.apiServerLocation}/api/learning-mode/${projectName}/recorded-requests`);
   }
 
   retrieveRecordedRequest(projectName: string, recordedRequestId: string): Observable<RecordedRequest> {
     return this._http.get<RecordedRequest>(
-      `http://localhost:3004/api/learning-mode/${projectName}/recorded-requests/${recordedRequestId}`
+      `${this.apiServerLocation}/api/learning-mode/${projectName}/recorded-requests/${recordedRequestId}`
     );
   }
 
   removeRecordedRequest(projectName: string, recordedRequestId: string): Observable<RecordedRequest> {
     return this._http.delete<RecordedRequest>(
-      `http://localhost:3004/api/learning-mode/${projectName}/recorded-requests/${recordedRequestId}`
+      `${this.apiServerLocation}/api/learning-mode/${projectName}/recorded-requests/${recordedRequestId}`
     );
   }
 
   removeAllRecordedRequests(projectName: string): Observable<RecordedRequest> {
     return this._http.delete<RecordedRequest>(
-      `http://localhost:3004/api/learning-mode/${projectName}/recorded-requests`
+      `${this.apiServerLocation}/api/learning-mode/${projectName}/recorded-requests`
     );
   }
 

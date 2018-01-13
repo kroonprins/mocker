@@ -23,7 +23,6 @@
 * try reactive forms
 * problem body parsing in reverse proxy on windows
 * store the templating helpers in a db + allow them to be entered in the ui
-* how can we make the ui services use the correct port of the api server?
 * make possible that mock server logs traffic in a db
 * try alternatives for monaco code editor (ace/codemirror)
 * add unit test for ui-server
@@ -36,3 +35,4 @@
 * when updating project name it should update all recorded requests..., when removing project all associated recorded requests can be removed
 * possible issue on windows when renaming file that only updated casing?
 * possible issue that response cookies get recorded as headers in reverse proxy learning mode?
+* allow running in https

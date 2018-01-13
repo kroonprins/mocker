@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,6 +13,8 @@ import { RulesModule } from './rules/rules.module';
 import { ProjectsService } from './projects/services/projects.service';
 import { LearningModeModule } from './learning-mode/learning-mode.module';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { SharedModule } from './shared/shared.module';
+import { AppConfigurationService } from './shared/services/app-configuration.service';
 
 
 @NgModule({
@@ -24,6 +26,7 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    SharedModule,
     ProjectsModule,
     RulesModule,
     LearningModeModule,
@@ -41,6 +44,12 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     })
   ],
   providers: [
+    {
+      'provide': APP_INITIALIZER,
+      'useFactory': (configurationService: AppConfigurationService) => () => configurationService.initializeApiServerLocation(),
+      'deps': [ AppConfigurationService ],
+      'multi': true,
+    },
     ProjectsService
   ],
   bootstrap: [AppComponent]

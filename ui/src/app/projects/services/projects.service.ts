@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { LocalStorage } from 'ngx-webstorage';
+import { AppConfigurationService } from '../../shared/services/app-configuration.service';
 
 // TODO move common stuff to something shared
 interface ResponseErrorBody {
@@ -62,13 +63,16 @@ export class ProjectsService {
   private projectSelection: BehaviorSubject<Project>;
   private selectedProject: Observable<Project>;
 
-  constructor(private _http: HttpClient) {
+  private apiServerLocation: string;
+
+  constructor(private _http: HttpClient, private appConfigurationService: AppConfigurationService) {
     this.projectSelection = new BehaviorSubject<Project>(this.storedActiveProject);
     this.selectedProject = this.projectSelection.asObservable();
+    this.apiServerLocation = this.appConfigurationService.retrieveApiServerLocation();
   }
 
   listProjects(): Observable<Project[]> {
-    return this._http.get('http://localhost:3004/api/projects?serverStatus=true', { observe: 'response' })
+    return this._http.get(`${this.apiServerLocation}/api/projects?serverStatus=true`, { observe: 'response' })
       .map(httpResponseHandler(200))
       .map(projectList => {
         return projectList.map((item) => {
@@ -96,19 +100,19 @@ export class ProjectsService {
   }
 
   createProject(project: Project): Observable<Object> {
-    return this._http.post('http://localhost:3004/api/projects', project, { observe: 'response' })
+    return this._http.post(`${this.apiServerLocation}/api/projects`, project, { observe: 'response' })
       .map(httpResponseHandler(201))
       .catch(serverErrorHandler);
   }
 
   updateProject(projectName: string, project: Project): Observable<Object> {
-    return this._http.put(`http://localhost:3004/api/projects/${projectName}`, project, { observe: 'response' })
+    return this._http.put(`${this.apiServerLocation}/api/projects/${projectName}`, project, { observe: 'response' })
       .map(httpResponseHandler(200))
       .catch(serverErrorHandler);
   }
 
   removeProject(project: Project): Observable<Object> {
-    return this._http.delete(`http://localhost:3004/api/projects/${project.name}`, { observe: 'response' })
+    return this._http.delete(`${this.apiServerLocation}/api/projects/${project.name}`, { observe: 'response' })
       .map(httpResponseHandler(204))
       .catch(serverErrorHandler);
   }
@@ -127,26 +131,27 @@ export class ProjectsService {
   }
 
   startMockServer(project: Project): Observable<Object> {
-    return this._http.post(`http://localhost:3004/api/projects/${project.name}/mock-server`, project.mockServer, { observe: 'response' })
+    return this._http.post(`${this.apiServerLocation}/api/projects/${project.name}/mock-server`,
+      project.mockServer, { observe: 'response' })
       .map(httpResponseHandler(200))
       .catch(serverErrorHandler);
   }
 
   stopMockServer(project: Project): Observable<Object> {
-    return this._http.delete(`http://localhost:3004/api/projects/${project.name}/mock-server`, { observe: 'response' })
+    return this._http.delete(`${this.apiServerLocation}/api/projects/${project.name}/mock-server`, { observe: 'response' })
       .map(httpResponseHandler(204))
       .catch(serverErrorHandler);
   }
 
   startLearningModeServer(project: Project): Observable<Object> {
-    return this._http.post(`http://localhost:3004/api/projects/${project.name}/learning-mode-server`, project.learningModeServer,
+    return this._http.post(`${this.apiServerLocation}/api/projects/${project.name}/learning-mode-server`, project.learningModeServer,
       { observe: 'response' })
       .map(httpResponseHandler(200))
       .catch(serverErrorHandler);
   }
 
   stopLearningModeServer(project: Project): Observable<Object> {
-    return this._http.delete(`http://localhost:3004/api/projects/${project.name}/learning-mode-server`, { observe: 'response' })
+    return this._http.delete(`${this.apiServerLocation}/api/projects/${project.name}/learning-mode-server`, { observe: 'response' })
       .map(httpResponseHandler(204))
       .catch(serverErrorHandler);
   }

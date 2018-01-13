@@ -5,6 +5,7 @@ import { ConfigDropdownService } from './services/config-dropdown.service';
 import { FormsModule } from '@angular/forms';
 import { CookiesComponent } from './components/cookies.component';
 import { NameValuePairsComponent } from './components/name-value-pairs.component';
+import { AppConfigurationService } from './services/app-configuration.service';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { NameValuePairsComponent } from './components/name-value-pairs.component
   ],
   declarations: [ConfigDropdownComponent, CookiesComponent, NameValuePairsComponent],
   providers: [
-    ConfigDropdownService
+    ConfigDropdownService,
+    AppConfigurationService
   ]
 })
 export class SharedModule { }
