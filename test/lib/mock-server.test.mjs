@@ -109,7 +109,7 @@ const test = async () => {
       }
       expect(exceptionThrownBecauseNoMethodMatch).to.be.equal(true)
     } finally {
-      mockServer.stop()
+      await mockServer.stop()
     }
   } finally {
     config.reset()

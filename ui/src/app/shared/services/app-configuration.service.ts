@@ -4,11 +4,13 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
+import { AppConfig } from '../model/app-config';
 
 @Injectable()
 export class AppConfigurationService {
 
   apiServerLocation: string;
+  administrationServerLocation: string;
 
   constructor(private _http: HttpClient) {
   }
@@ -17,13 +19,19 @@ export class AppConfigurationService {
     return this.apiServerLocation;
   }
 
-  initializeApiServerLocation(): Promise<void> {
-    return this._http.get('/api-server-location').map(response => {
-      return <string>response['location'];
-    }).catch(e => {
-      return Observable.of('http://localhost:3004');
-    }).toPromise().then(location => {
-      this.apiServerLocation = location;
+  retrieveAdministrationServerLocation(): string {
+    return this.administrationServerLocation;
+  }
+
+  initializeAppConfiguration(): Promise<void> {
+    return this._http.get<AppConfig>('/config').catch(e => {
+      return Observable.of({
+        apiServerLocation: 'http://localhost:3004',
+        administrationServerLocation: 'http://localhost:3001'
+      });
+    }).toPromise().then(config => {
+      this.apiServerLocation = config.apiServerLocation;
+      this.administrationServerLocation = config.administrationServerLocation;
     });
   }
 }

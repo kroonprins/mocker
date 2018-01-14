@@ -46,7 +46,7 @@ import { AppConfigurationService } from './shared/services/app-configuration.ser
   providers: [
     {
       'provide': APP_INITIALIZER,
-      'useFactory': (configurationService: AppConfigurationService) => () => configurationService.initializeApiServerLocation(),
+      'useFactory': (configurationService: AppConfigurationService) => () => configurationService.initializeAppConfiguration(),
       'deps': [ AppConfigurationService ],
       'multi': true,
     },

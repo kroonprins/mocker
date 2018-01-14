@@ -27,7 +27,7 @@ const test = async () => {
     const administrationServer = new AdministrationServer(availablePort, 'localhost')
 
     try {
-      administrationServer.start()
+      await administrationServer.start()
 
       const initialLogLevel = testLogger.getLevel()
       expect(initialLogLevel).to.be.equal('info')
@@ -63,7 +63,7 @@ const test = async () => {
         }
       })
     } finally {
-      administrationServer.stop()
+      await administrationServer.stop()
     }
   } finally {
     config.reset()

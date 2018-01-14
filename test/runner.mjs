@@ -63,6 +63,7 @@ import { test as testLearningModeDbService } from './lib/learning-mode.db.servic
 import { test as testLearningModeService } from './lib/learning-mode.service.test'
 import { test as testLearningModeReverseProxy } from './lib/learning-mode.reverse-proxy.test'
 import { test as testApiServer } from './lib/api-server.test'
+import { test as testUiServer } from './lib/ui-server.test'
 /* eslint-enable */
 
 let countTotal = 0
@@ -102,6 +103,7 @@ const runTest = async (testFn) => {
   await runTest(testLearningModeService)
   await runTest(testLearningModeReverseProxy)
   await runTest(testApiServer)
+  await runTest(testUiServer)
 
   const tests = await _findTests()
   if (tests.length !== countTotal) {

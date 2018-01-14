@@ -986,7 +986,7 @@ const test = async () => {
         value: ['none', 'nunjucks']
       })
     } finally {
-      apiServer.stop()
+      await apiServer.stop()
     }
   } finally {
     config.reset()

@@ -62,6 +62,7 @@ const test = async () => {
   expect(await serverService.retrieveServer(1)).to.equal(undefined)
 
   const server1 = await serverService.retrieveServer(0)
+  expect(server1.location()).to.equal('http://localhost:1234')
   await serverService.restartServer(0)
   const restartedServer1 = await serverService.retrieveServer(0)
   expect(restartedServer1).to.equal(server1)
