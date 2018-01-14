@@ -107,7 +107,7 @@ const runTest = async (testFn) => {
 
   const tests = await _findTests()
   if (tests.length !== countTotal) {
-    // throw new Error(`It seems some of the test have not been added in the runner: ${tests.length} <=> ${countTotal}`)
+    throw new Error(`It seems some of the test have not been added in the runner: ${tests.length} <=> ${countTotal}`)
   }
   if (failures.length > 0) {
     throw new TestFailuresError(`Some tests failed (${failures.length}/${countTotal})`, failures)

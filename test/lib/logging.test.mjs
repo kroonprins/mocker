@@ -18,6 +18,7 @@ const test = () => {
     // create parent logger with given level
     const baseLoggerWithLevel = config.getClassInstance(Logger, { level: 'error' })
     expect(baseLoggerWithLevel.getLevel()).to.equal('error')
+    expect(baseLogger.getLevel()).to.equal('error')
 
     // create parent logger with incorrect level
     expect(() => config.getClassInstance(Logger, { level: 'nope' })).to.throw(FunctionalValidationError)
@@ -26,68 +27,126 @@ const test = () => {
     const childLogger = config.getClassInstance(Logger, { id: 'child' })
     expect(childLogger.getLevel()).to.equal('warn')
 
-    // create child logger with given level
+    // create same child logger with given level
     const childLoggerWithLevel = config.getClassInstance(Logger, { id: 'child', level: 'debug' })
     expect(childLoggerWithLevel.getLevel()).to.equal('debug')
+    expect(childLogger.getLevel()).to.equal('debug')
+
+    // create another child logger with other id
+    const childLoggerWithOtherId = config.getClassInstance(Logger, { id: 'another.child', level: 'warn' })
+    expect(childLoggerWithOtherId.getLevel()).to.equal('warn')
+    expect(childLoggerWithLevel.getLevel()).to.equal('debug')
+    expect(childLogger.getLevel()).to.equal('debug')
 
     // create child logger with incorrect level
     expect(() => config.getClassInstance(Logger, { id: 'nope', level: 'nope' })).to.throw(FunctionalValidationError)
 
+    // get logger by id
+    const retrievedBaseLogger = Logger.getLogger()
+    expect(retrievedBaseLogger.id).to.equal(baseLogger.id)
+    expect(retrievedBaseLogger.getLevel()).to.equal(baseLogger.getLevel())
+    expect(retrievedBaseLogger.id).to.equal(baseLoggerWithLevel.id)
+    expect(retrievedBaseLogger.getLevel()).to.equal(baseLoggerWithLevel.getLevel())
+    const retrievedChildLogger = Logger.getLogger('child')
+    expect(retrievedChildLogger.id).to.equal(childLogger.id)
+    expect(retrievedChildLogger.getLevel()).to.equal(childLogger.getLevel())
+    const retrievedOtherChildLogger = Logger.getLogger('another.child')
+    expect(retrievedOtherChildLogger.id).to.equal(childLoggerWithOtherId.id)
+    expect(retrievedOtherChildLogger.getLevel()).to.equal(childLoggerWithOtherId.getLevel())
+
     // update level of one child logger
     childLoggerWithLevel.setLevel('trace')
     expect(childLoggerWithLevel.getLevel()).to.equal('trace')
-    expect(childLogger.getLevel()).to.equal('warn')
+    expect(childLogger.getLevel()).to.equal('trace')
+    expect(childLoggerWithOtherId.getLevel()).to.equal('warn')
     expect(baseLoggerWithLevel.getLevel()).to.equal('error')
-    expect(baseLogger.getLevel()).to.equal('warn')
+    expect(baseLogger.getLevel()).to.equal('error')
 
-    // update level of one child logger with incorrect log level
+    // Test getCreatedLoggers
+    const createdLoggers = Logger.getCreatedLoggers()
+    expect(createdLoggers).to.deep.equal({
+      parent: { level: 'error' },
+      children:
+        [
+          { id: 'child', level: 'trace' },
+          { id: 'another.child', level: 'warn' }
+        ]
+    })
+
+    // try updating level of one child logger with incorrect log level
     expect(() => childLoggerWithLevel.setLevel('nope')).to.throw(FunctionalValidationError)
     expect(childLoggerWithLevel.getLevel()).to.equal('trace')
-    expect(childLogger.getLevel()).to.equal('warn')
+    expect(childLogger.getLevel()).to.equal('trace')
+    expect(childLoggerWithOtherId.getLevel()).to.equal('warn')
     expect(baseLoggerWithLevel.getLevel()).to.equal('error')
-    expect(baseLogger.getLevel()).to.equal('warn')
+    expect(baseLogger.getLevel()).to.equal('error')
 
-    // update level of one parent logger
+    // update level of parent logger
     baseLoggerWithLevel.setLevel('debug')
     expect(childLoggerWithLevel.getLevel()).to.equal('trace')
-    expect(childLogger.getLevel()).to.equal('warn')
+    expect(childLogger.getLevel()).to.equal('trace')
+    expect(childLoggerWithOtherId.getLevel()).to.equal('warn')
     expect(baseLoggerWithLevel.getLevel()).to.equal('debug')
-    expect(baseLogger.getLevel()).to.equal('warn')
+    expect(baseLogger.getLevel()).to.equal('debug')
 
-    // update level of one parent logger with incorrect log level
+    // try updating level of parent logger with incorrect log level
     expect(() => baseLoggerWithLevel.setLevel('nope')).to.throw(FunctionalValidationError)
     expect(childLoggerWithLevel.getLevel()).to.equal('trace')
-    expect(childLogger.getLevel()).to.equal('warn')
+    expect(childLogger.getLevel()).to.equal('trace')
+    expect(childLoggerWithOtherId.getLevel()).to.equal('warn')
     expect(baseLoggerWithLevel.getLevel()).to.equal('debug')
-    expect(baseLogger.getLevel()).to.equal('warn')
+    expect(baseLogger.getLevel()).to.equal('debug')
 
-    // update level of all loggers by setting level on a child logger
-    childLoggerWithLevel.setLevel('info', true)
+    // update level of one child logger by id
+    Logger.updateLogLevel('trace', 'child')
+    expect(childLoggerWithLevel.getLevel()).to.equal('trace')
+    expect(childLogger.getLevel()).to.equal('trace')
+    expect(childLoggerWithOtherId.getLevel()).to.equal('warn')
+    expect(baseLoggerWithLevel.getLevel()).to.equal('debug')
+    expect(baseLogger.getLevel()).to.equal('debug')
+
+    // try updating level of one child logger by id with incorrect log level
+    expect(() => Logger.updateLogLevel('nope', 'child')).to.throw(FunctionalValidationError)
+    expect(childLoggerWithLevel.getLevel()).to.equal('trace')
+    expect(childLogger.getLevel()).to.equal('trace')
+    expect(childLoggerWithOtherId.getLevel()).to.equal('warn')
+    expect(baseLoggerWithLevel.getLevel()).to.equal('debug')
+    expect(baseLogger.getLevel()).to.equal('debug')
+
+    // update level of parent logger
+    Logger.updateLogLevel('error')
+    expect(childLoggerWithLevel.getLevel()).to.equal('trace')
+    expect(childLogger.getLevel()).to.equal('trace')
+    expect(childLoggerWithOtherId.getLevel()).to.equal('warn')
+    expect(baseLoggerWithLevel.getLevel()).to.equal('error')
+    expect(baseLogger.getLevel()).to.equal('error')
+
+    // try updating level of parent logger with incorrect log level
+    expect(() => Logger.updateLogLevel('nope')).to.throw(FunctionalValidationError)
+    expect(childLoggerWithLevel.getLevel()).to.equal('trace')
+    expect(childLogger.getLevel()).to.equal('trace')
+    expect(childLoggerWithOtherId.getLevel()).to.equal('warn')
+    expect(baseLoggerWithLevel.getLevel()).to.equal('error')
+    expect(baseLogger.getLevel()).to.equal('error')
+
+    // update level of all loggers
+    Logger.updateGlobalLogLevel('info')
     expect(childLoggerWithLevel.getLevel()).to.equal('info')
     expect(childLogger.getLevel()).to.equal('info')
+    expect(childLoggerWithOtherId.getLevel()).to.equal('info')
     expect(baseLoggerWithLevel.getLevel()).to.equal('info')
     expect(baseLogger.getLevel()).to.equal('info')
 
-    // update level of all loggers by setting incorrect level on a child logger
-    expect(() => childLoggerWithLevel.setLevel('nope', true)).to.throw(FunctionalValidationError)
+    // try updating level of all loggers by setting incorrect level
+    expect(() => Logger.updateGlobalLogLevel('nope')).to.throw(FunctionalValidationError)
     expect(childLoggerWithLevel.getLevel()).to.equal('info')
     expect(childLogger.getLevel()).to.equal('info')
+    expect(childLoggerWithOtherId.getLevel()).to.equal('info')
     expect(baseLoggerWithLevel.getLevel()).to.equal('info')
     expect(baseLogger.getLevel()).to.equal('info')
 
-    // update level of all loggers by setting level on a parent logger
-    baseLogger.setLevel('warn', true)
-    expect(childLoggerWithLevel.getLevel()).to.equal('warn')
-    expect(childLogger.getLevel()).to.equal('warn')
-    expect(baseLoggerWithLevel.getLevel()).to.equal('warn')
-    expect(baseLogger.getLevel()).to.equal('warn')
-
-    // update level of all loggers by setting incorrect level on a parent logger
-    expect(() => baseLogger.setLevel('nope', true)).to.throw(FunctionalValidationError)
-    expect(childLoggerWithLevel.getLevel()).to.equal('warn')
-    expect(childLogger.getLevel()).to.equal('warn')
-    expect(baseLoggerWithLevel.getLevel()).to.equal('warn')
-    expect(baseLogger.getLevel()).to.equal('warn')
+    // Error when trying to retrieve unknown logger
+    expect(() => Logger.getLogger('nope')).to.throw(FunctionalValidationError)
   } finally {
     config.reset()
   }

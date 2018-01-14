@@ -51,8 +51,11 @@ const test = async () => {
       'TRACE',
       'PATCH'])
 
-    expect(await configService.get('config-items')).to.deep.equal(['learning-mode-server-types', 'templating-types', 'http-methods', 'config-items'])
-    expect(configService.getSync('config-items')).to.deep.equal(['learning-mode-server-types', 'templating-types', 'http-methods', 'config-items'])
+    expect(await configService.get('log-levels')).to.deep.equal(['error', 'warn', 'info', 'debug', 'trace'])
+    expect(configService.getSync('log-levels')).to.deep.equal(['error', 'warn', 'info', 'debug', 'trace'])
+
+    expect(await configService.get('config-items')).to.deep.equal(['learning-mode-server-types', 'templating-types', 'http-methods', 'log-levels', 'config-items'])
+    expect(configService.getSync('config-items')).to.deep.equal(['learning-mode-server-types', 'templating-types', 'http-methods', 'log-levels', 'config-items'])
   } finally {
     config.reset()
   }

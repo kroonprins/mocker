@@ -16,7 +16,10 @@ const test = async () => {
       .registerProperty('logging.level.startup', 'info')
       .registerType(Logger, PinoLogger)
 
+    Logger.reset()
+
     const testLogger = config.getClassInstance(Logger, { id: 'test-logger' })
+    expect(testLogger.getLevel()).to.be.equal('info')
 
     const availablePort = (await portastic.find({
       min: 50000,
@@ -29,7 +32,8 @@ const test = async () => {
     try {
       await administrationServer.start()
 
-      const initialLogLevel = testLogger.getLevel()
+      Logger.updateGlobalLogLevel('info')
+      const initialLogLevel = Logger.getLogger('test-logger').getLevel()
       expect(initialLogLevel).to.be.equal('info')
 
       const responseUpdateLoglevel = await axios.put(`http://localhost:${availablePort}/administration/loglevel`, {
@@ -37,7 +41,20 @@ const test = async () => {
       })
       expect(responseUpdateLoglevel.status).to.be.equal(200)
       expect(testLogger.getLevel()).to.equal('debug')
-      testLogger.setLevel(initialLogLevel, true)
+      expect(Logger.getLogger('test-logger').getLevel()).to.equal('debug')
+
+      const retrieveUpdatedLoglevel = await axios.get(`http://localhost:${availablePort}/administration/loglevel`)
+      expect(retrieveUpdatedLoglevel.status).to.be.equal(200)
+      expect(retrieveUpdatedLoglevel.data).to.deep.equal({
+        parent: { },
+        children:
+          [
+            { id: 'test-logger', level: 'debug' },
+            { id: 'administration-server', level: 'debug' }
+          ]
+      })
+
+      Logger.updateGlobalLogLevel(initialLogLevel)
 
       const responseUpdateLoglevelWithMaxAge = await axios.put(`http://localhost:${availablePort}/administration/loglevel`, {
         level: 'debug',
@@ -45,8 +62,10 @@ const test = async () => {
       })
       expect(responseUpdateLoglevelWithMaxAge.status).to.be.equal(200)
       expect(testLogger.getLevel()).to.equal('debug')
+      expect(Logger.getLogger('test-logger').getLevel()).to.equal('debug')
       await new Promise(resolve => setTimeout(resolve, 1000))
       expect(testLogger.getLevel()).to.equal(initialLogLevel)
+      expect(Logger.getLogger('test-logger').getLevel()).to.equal(initialLogLevel)
 
       // Test incorrect level
       const responseUpdateWithIncorrectLoglevel = await axios.put(`http://localhost:${availablePort}/administration/loglevel`, {
@@ -59,7 +78,55 @@ const test = async () => {
         code: 'invalid log level',
         data: {
           level: 'nope',
-          supportedLevels: [ 'error', 'warn', 'info', 'debug', 'trace' ]
+          supportedLevels: ['error', 'warn', 'info', 'debug', 'trace']
+        }
+      })
+
+      const responseUpdateLoglevelForId = await axios.put(`http://localhost:${availablePort}/administration/loglevel/test-logger`, {
+        level: 'debug'
+      })
+      expect(responseUpdateLoglevelForId.status).to.be.equal(200)
+      expect(testLogger.getLevel()).to.equal('debug')
+      expect(Logger.getLogger('test-logger').getLevel()).to.equal('debug')
+      expect(Logger.getLogger('administration-server').getLevel()).to.equal('info')
+
+      const retrieveUpdatedLoglevelForId = await axios.get(`http://localhost:${availablePort}/administration/loglevel`)
+      expect(retrieveUpdatedLoglevelForId.status).to.be.equal(200)
+      expect(retrieveUpdatedLoglevelForId.data).to.deep.equal({
+        parent: { },
+        children:
+          [
+            { id: 'test-logger', level: 'debug' },
+            { id: 'administration-server', level: 'info' }
+          ]
+      })
+
+      Logger.updateGlobalLogLevel(initialLogLevel)
+
+      const responseUpdateLoglevelForIdWithMaxAge = await axios.put(`http://localhost:${availablePort}/administration/loglevel/test-logger`, {
+        level: 'debug',
+        maxAge: 1000
+      })
+      expect(responseUpdateLoglevelForIdWithMaxAge.status).to.be.equal(200)
+      expect(testLogger.getLevel()).to.equal('debug')
+      expect(Logger.getLogger('test-logger').getLevel()).to.equal('debug')
+      expect(Logger.getLogger('administration-server').getLevel()).to.equal('info')
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      expect(testLogger.getLevel()).to.equal(initialLogLevel)
+      expect(Logger.getLogger('test-logger').getLevel()).to.equal(initialLogLevel)
+      expect(Logger.getLogger('administration-server').getLevel()).to.equal('info')
+
+      const responseUpdateLogForUnknownId = await axios.put(`http://localhost:${availablePort}/administration/loglevel/nope`, {
+        level: 'trace'
+      })
+      expect(responseUpdateLogForUnknownId.status).to.be.equal(200)
+      expect(responseUpdateLogForUnknownId.data).excluding('uuid').to.deep.equal({
+        error: true,
+        msg: 'The requested logger with id nope does not exist.',
+        code: 'invalid log id',
+        data: {
+          id: 'nope',
+          knownIds: [ 'test-logger', 'administration-server' ]
         }
       })
     } finally {
