@@ -11,6 +11,8 @@ export class ConfigDropdownComponent implements OnChanges {
   configItem: string;
   @Input()
   readonly: boolean;
+  @Input()
+  emptyValue = false;
 
   @Input()
   value: string;

@@ -1,0 +1,45 @@
+<div *ngIf="logLevels">
+  <form #manageLogLevel="ngForm" (ngSubmit)="updateLogLevel()">
+    <fieldset>
+      <legend class="label is-large">Logging</legend>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="baseLogger" class="label">Set global log level</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <app-config-dropdown id="baseLogger" name="baseLogger" configItem="log-levels" [(value)]="logLevels.parent.level" emptyValue="true"></app-config-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field" *ngIf="!logLevels.parent.level">
+        <div class="field is-horizontal" *ngFor="let childLogger of logLevels.children">
+          <div class="field-label is-normal">
+            <label for="baseLogger" class="label">{{childLogger.id}}</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <app-config-dropdown id="baseLogger" name="baseLogger" configItem="log-levels" [(value)]="childLogger.level"></app-config-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="submit" class="label"></label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <button name="submit" type="submit" class="button level-item" [disabled]="!manageLogLevel.form.valid">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

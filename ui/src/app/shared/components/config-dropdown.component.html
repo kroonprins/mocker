@@ -1,6 +1,7 @@
 <input type="text" id="item" required [ngModel]="value" name="item" class="input" readonly *ngIf="readonly">
 <div class="select" *ngIf="!readonly">
   <select id="item" required [(ngModel)]="value" name="item" (change)="selectItem($event.target.value)">
+    <option *ngIf="emptyValue" value=""></option>
     <option *ngFor="let item of items" [value]="item">{{item}}</option>
   </select>
 </div>

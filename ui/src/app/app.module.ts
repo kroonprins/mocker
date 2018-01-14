@@ -12,6 +12,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { RulesModule } from './rules/rules.module';
 import { ProjectsService } from './projects/services/projects.service';
 import { LearningModeModule } from './learning-mode/learning-mode.module';
+import { AdministrationModule } from './administration/administration.module';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { SharedModule } from './shared/shared.module';
 import { AppConfigurationService } from './shared/services/app-configuration.service';
@@ -30,6 +31,7 @@ import { AppConfigurationService } from './shared/services/app-configuration.ser
     ProjectsModule,
     RulesModule,
     LearningModeModule,
+    AdministrationModule,
     Ng2Webstorage.forRoot({ prefix: 'mocker' }),
     MonacoEditorModule.forRoot({
       defaultOptions: {
