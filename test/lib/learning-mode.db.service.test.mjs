@@ -1,5 +1,6 @@
 import chai from 'chai'
 import { RecordedRequest } from './../../lib/learning-mode.model'
+import { QueryOpts } from './../../lib/learning-mode.db.model'
 import { LearningModeDbService } from './../../lib/learning-mode.db.service'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
@@ -18,11 +19,39 @@ const test = async () => {
     const checkEmptyDb = await learningModeDbService.findRecordedRequests('project')
     expect(checkEmptyDb.length).to.be.equal(0)
 
-    await learningModeDbService.insertRecordedRequest(new RecordedRequest('id1', 'project', null, null))
-    await learningModeDbService.insertRecordedRequest(new RecordedRequest('id2', 'project', null, null)) // could be done in parallel
+    const timestamp1 = new Date()
+    const timestamp2 = new Date()
+    timestamp2.setDate(timestamp1.getDate() + 1)
+    await learningModeDbService.insertRecordedRequest(new RecordedRequest('id1', 'project', timestamp1, null))
+    await learningModeDbService.insertRecordedRequest(new RecordedRequest('id2', 'project', timestamp2, null)) // could be done in parallel
 
     const retrievedResult = await learningModeDbService.findRecordedRequests('project')
     expect(retrievedResult.length).to.be.equal(2)
+    expect(retrievedResult[0].id).to.be.equal('id1')
+    expect(retrievedResult[1].id).to.be.equal('id2')
+
+    const retrievedRequestSortedByTimestamp = await learningModeDbService.findRecordedRequests('project', new QueryOpts({
+      timestamp: -1
+    }))
+    expect(retrievedRequestSortedByTimestamp.length).to.be.equal(2)
+    expect(retrievedRequestSortedByTimestamp[0].id).to.be.equal('id2')
+    expect(retrievedRequestSortedByTimestamp[1].id).to.be.equal('id1')
+
+    const retrievedRequestSkipOne = await learningModeDbService.findRecordedRequests('project', new QueryOpts({
+      timestamp: -1
+    }, 1))
+    expect(retrievedRequestSkipOne.length).to.be.equal(1)
+    expect(retrievedRequestSkipOne[0].id).to.be.equal('id1')
+
+    const retrievedRequestSkipWithoutSort = await learningModeDbService.findRecordedRequests('project', new QueryOpts(undefined, 1))
+    expect(retrievedRequestSkipWithoutSort.length).to.be.equal(1)
+    expect(retrievedRequestSkipWithoutSort[0].id).to.be.equal('id2')
+
+    const retrievedRequestLimitedToOne = await learningModeDbService.findRecordedRequests('project', new QueryOpts({
+      timestamp: -1
+    }, 0, 1))
+    expect(retrievedRequestLimitedToOne.length).to.be.equal(1)
+    expect(retrievedRequestLimitedToOne[0].id).to.be.equal('id2')
 
     const retrievedRequest = await learningModeDbService.findRecordedRequest('id1')
     expect(retrievedRequest.project).to.be.equal('project')

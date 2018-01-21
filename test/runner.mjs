@@ -59,6 +59,7 @@ import { test as testServerValidationModel } from './lib/server-validation-model
 import { test as testServerService } from './lib/server.service.test'
 import { test as testAdminstrationServer } from './lib/administration-server.test'
 import { test as testMockServer } from './lib/mock-server.test'
+import { test as testLearningModeDbModel } from './lib/learning-mode.db.model.test'
 import { test as testLearningModeDbService } from './lib/learning-mode.db.service.test'
 import { test as testLearningModeService } from './lib/learning-mode.service.test'
 import { test as testLearningModeReverseProxy } from './lib/learning-mode.reverse-proxy.test'
@@ -99,6 +100,7 @@ const runTest = async (testFn) => {
   await runTest(testServerService)
   await runTest(testAdminstrationServer)
   await runTest(testMockServer)
+  await runTest(testLearningModeDbModel)
   await runTest(testLearningModeDbService)
   await runTest(testLearningModeService)
   await runTest(testLearningModeReverseProxy)

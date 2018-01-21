@@ -17,7 +17,9 @@ export class LearningModeService {
   }
 
   listRecordedRequests(projectName: string): Observable<RecordedRequest[]> {
-    return this._http.get<RecordedRequest[]>(`${this.apiServerLocation}/api/learning-mode/${projectName}/recorded-requests`);
+    return this._http.get<RecordedRequest[]>(
+      `${this.apiServerLocation}/api/learning-mode/${projectName}/recorded-requests?sort=-timestamp`
+    );
   }
 
   retrieveRecordedRequest(projectName: string, recordedRequestId: string): Observable<RecordedRequest> {

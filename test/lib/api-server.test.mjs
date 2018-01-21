@@ -737,19 +737,35 @@ const test = async () => {
       expect(recordedRequestsEmpty.status).to.be.equal(200)
       expect(recordedRequestsEmpty.data.length).to.be.equal(0)
 
-      const timestamp = new Date()
-      await learningModeService.saveRecordedRequest(new RecordedRequest(undefined, 'test_project', timestamp))
-      await learningModeService.saveRecordedRequest(new RecordedRequest(undefined, 'test_project', timestamp))
+      const timestamp1 = new Date()
+      const timestamp2 = new Date()
+      timestamp2.setDate(timestamp1.getDate() + 1)
+      await learningModeService.saveRecordedRequest(new RecordedRequest(undefined, 'test_project', timestamp1))
+      await learningModeService.saveRecordedRequest(new RecordedRequest(undefined, 'test_project', timestamp2))
 
       const recordedRequests = await axios.get(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests`)
       expect(recordedRequests.status).to.be.equal(200)
       expect(recordedRequests.data.length).to.be.equal(2)
-      expect(recordedRequests.data[0]).excluding('_id').to.deep.equal({ timestamp: timestamp.getTime() })
 
-      const id = recordedRequests.data[0]['_id']
+      const recordedRequestsSorted = await axios.get(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests?sort=-timestamp`)
+      expect(recordedRequestsSorted.status).to.be.equal(200)
+      expect(recordedRequestsSorted.data.length).to.be.equal(2)
+      expect(recordedRequestsSorted.data[0]).excluding('_id').to.deep.equal({ timestamp: timestamp2.getTime() })
+
+      const recordedRequestsSortedAndSkipped = await axios.get(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests?sort=-timestamp&skip=1`)
+      expect(recordedRequestsSortedAndSkipped.status).to.be.equal(200)
+      expect(recordedRequestsSortedAndSkipped.data.length).to.be.equal(1)
+      expect(recordedRequestsSortedAndSkipped.data[0]).excluding('_id').to.deep.equal({ timestamp: timestamp1.getTime() })
+
+      const recordedRequestsLimited = await axios.get(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests?sort=-timestamp&limit=1`)
+      expect(recordedRequestsLimited.status).to.be.equal(200)
+      expect(recordedRequestsLimited.data.length).to.be.equal(1)
+      expect(recordedRequestsLimited.data[0]).excluding('_id').to.deep.equal({ timestamp: timestamp2.getTime() })
+
+      const id = recordedRequestsSorted.data[1]['_id']
       const recordedRequest = await axios.get(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests/${id}`)
       expect(recordedRequest.status).to.be.equal(200)
-      expect(recordedRequest.data).excluding('_id').to.deep.equal({ project: 'test_project', timestamp: timestamp.getTime() })
+      expect(recordedRequest.data).excluding('_id').to.deep.equal({ project: 'test_project', timestamp: timestamp1.getTime() })
 
       let exceptionThrownForRetrieveBecauseRecordedRequestNotFound = false
       try {
