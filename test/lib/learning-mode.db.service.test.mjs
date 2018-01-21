@@ -1,7 +1,9 @@
 import chai from 'chai'
 import { RecordedRequest } from './../../lib/learning-mode.model'
 import { QueryOpts } from './../../lib/learning-mode.db.model'
+import { LearningModeDbValidationModel } from './../../lib/learning-mode.db.validation-model'
 import { LearningModeDbService } from './../../lib/learning-mode.db.service'
+import { AppClassValidationService } from '../../lib/app-class-validation.service'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 
@@ -13,8 +15,11 @@ const test = async () => {
     config
       .registerProperty('logging.level.startup', 'debug')
       .registerType(Logger, PinoLogger)
+      .registerInstance(LearningModeDbValidationModel, new LearningModeDbValidationModel())
 
-    let learningModeDbService = new LearningModeDbService('./test/tmp/test.db')
+    let learningModeDbService = new LearningModeDbService(
+      './test/tmp/test.db',
+      new AppClassValidationService())
 
     const checkEmptyDb = await learningModeDbService.findRecordedRequests('project')
     expect(checkEmptyDb.length).to.be.equal(0)

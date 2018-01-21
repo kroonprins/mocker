@@ -1,8 +1,10 @@
 import chai from 'chai'
 import { RecordedRequest } from './../../lib/learning-mode.model'
 import { QueryOpts } from './../../lib/learning-mode.db.model'
+import { LearningModeDbValidationModel } from './../../lib/learning-mode.db.validation-model'
 import { LearningModeDbService } from './../../lib/learning-mode.db.service'
 import { LearningModeService } from './../../lib/learning-mode.service'
+import { AppClassValidationService } from '../../lib/app-class-validation.service'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 
@@ -14,8 +16,9 @@ const test = async () => {
     config
       .registerProperty('logging.level.startup', 'debug')
       .registerType(Logger, PinoLogger)
+      .registerInstance(LearningModeDbValidationModel, new LearningModeDbValidationModel())
 
-    let learningModeDbService = new LearningModeDbService('./test/tmp/test.db')
+    let learningModeDbService = new LearningModeDbService('./test/tmp/test.db', new AppClassValidationService())
     let learningModeService = new LearningModeService(learningModeDbService)
 
     const checkEmptyDb = await learningModeService.findRecordedRequests('project_learningModeService')
@@ -29,8 +32,6 @@ const test = async () => {
 
     const retrievedResult = await learningModeService.findRecordedRequests('project_learningModeService')
     expect(retrievedResult.length).to.be.equal(2)
-    expect(retrievedResult[0].timestamp.getTime()).to.be.equal(timestamp1.getTime())
-    expect(retrievedResult[1].timestamp.getTime()).to.be.equal(timestamp2.getTime())
     const id = retrievedResult[0].id
 
     const retrievedRequestWithQueryOpts = await learningModeService.findRecordedRequests('project_learningModeService', new QueryOpts({

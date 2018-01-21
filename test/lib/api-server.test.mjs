@@ -4,6 +4,7 @@ import portastic from 'portastic'
 import axios from 'axios'
 import { RuleValidationModel } from './../../lib/rule-validation-model'
 import { ProjectValidationModel } from './../../lib/project-validation-model'
+import { LearningModeDbValidationModel } from './../../lib/learning-mode.db.validation-model'
 import { ServerValidationModel } from './../../lib/server-validation-model'
 import { ApiServer } from './../../lib/api-server'
 import { ProjectService } from './../../lib/project-service'
@@ -36,20 +37,23 @@ const test = async () => {
       .registerInstance(ConfigService, new ConfigService())
       .registerInstance(RuleValidationModel, new RuleValidationModel())
       .registerInstance(ProjectValidationModel, new ProjectValidationModel())
+      .registerInstance(LearningModeDbValidationModel, new LearningModeDbValidationModel())
       .registerInstance(ServerValidationModel, new ServerValidationModel())
+
+    const appClassValidationService = new AppClassValidationService()
 
     let projectService = new ProjectService(
       new InMemoryProjectStore(
         './test/projects/tests_update.yaml',
         './test/rules',
         new RuleService(),
-        new AppClassValidationService()
+        appClassValidationService
       ))
 
-    let learningModeDbService = new LearningModeDbService('./test/tmp/test2.db')
+    let learningModeDbService = new LearningModeDbService('./test/tmp/test2.db', appClassValidationService)
     let learningModeService = new LearningModeService(learningModeDbService)
 
-    const serverService = new ServerService(new InMemoryServerStore(), new AppClassValidationService())
+    const serverService = new ServerService(new InMemoryServerStore(), appClassValidationService)
 
     const configService = new ConfigService()
 

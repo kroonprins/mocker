@@ -7,6 +7,8 @@ import { TestServer } from './../util/test-server'
 import { LearningModeReverseProxyServer } from './../../lib/learning-mode.reverse-proxy'
 import { LearningModeService } from './../../lib/learning-mode.service'
 import { LearningModeDbService } from './../../lib/learning-mode.db.service'
+import { LearningModeDbValidationModel } from './../../lib/learning-mode.db.validation-model'
+import { AppClassValidationService } from '../../lib/app-class-validation.service'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 
@@ -20,8 +22,12 @@ const test = async () => {
     config
       .registerProperty('logging.level.startup', 'debug')
       .registerType(Logger, PinoLogger)
+      .registerInstance(LearningModeDbValidationModel, new LearningModeDbValidationModel())
 
-    let learningModeDbService = new LearningModeDbService('./test/tmp/test.db')
+    let learningModeDbService = new LearningModeDbService(
+      './test/tmp/test.db',
+      new AppClassValidationService()
+    )
     let learningModeService = new LearningModeService(learningModeDbService)
 
     const availablePorts = (await portastic.find({
