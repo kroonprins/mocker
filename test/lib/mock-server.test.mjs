@@ -3,8 +3,9 @@ import chaiString from 'chai-string'
 import portastic from 'portastic'
 import axios from 'axios'
 import { ConfigService } from './../../lib/config.service'
-import { RuleValidationModel } from './../../lib//rule-validation-model'
-import { ProjectValidationModel } from './../../lib//project-validation-model'
+import { LatencyValidationModel } from './../../lib/latency-validation-model'
+import { RuleValidationModel } from './../../lib/rule-validation-model'
+import { ProjectValidationModel } from './../../lib/project-validation-model'
 import { MockServer } from './../../lib/mock-server'
 import { ProjectService } from './../../lib/project-service'
 import { InMemoryProjectStore } from './../../lib/project-store'
@@ -28,6 +29,7 @@ const test = async () => {
       .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
       .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
       .registerInstance(TemplatingService, new TemplatingService())
+      .registerInstance(LatencyValidationModel, new LatencyValidationModel())
       .registerInstance(RuleValidationModel, new RuleValidationModel(new ConfigService()))
       .registerInstance(ProjectValidationModel, new ProjectValidationModel())
 
@@ -88,17 +90,25 @@ const test = async () => {
       }
       expect(exceptionThrownBecauseIdGreaterThanFive).to.be.equal(true)
 
+      const startTimeRule2 = (new Date()).getTime()
       const responseRule2 = await axios.put(`http://localhost:${availablePort}/hello2`, {
         input: 'testRule2'
       })
+      const durationRule2 = (new Date()).getTime() - startTimeRule2
       expect(responseRule2.status).to.be.equal(200)
       expect(responseRule2.data.respo).to.be.equal('Test rule 2: testRule2')
       expect(responseRule2.headers['content-type']).to.startsWith('application/json')
+      expect(durationRule2).to.be.above(2000)
+      expect(durationRule2).to.be.below(3000)
 
+      const startTimeRule3 = (new Date()).getTime()
       const responseRule3 = await axios.get(`http://localhost:${availablePort}/hello3/d`)
+      const durationRule3 = (new Date()).getTime() - startTimeRule3
       expect(responseRule3.status).to.be.equal(200)
       expect(responseRule3.data.respo).to.be.equal('Test rule 3: {{req.query.q}} / {{req.params.id}}')
       expect(responseRule3.headers['x-yup']).to.be.equal('{{req.query.q}}')
+      expect(durationRule3).to.be.above(1000)
+      expect(durationRule3).to.be.below(3200)
 
       let exceptionThrownBecauseNoMethodMatch = false
       try {

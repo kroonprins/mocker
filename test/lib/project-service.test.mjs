@@ -1,5 +1,7 @@
 import chai from 'chai'
 import { ConfigService } from './../../lib/config.service'
+import { LatencyValidationModel } from './../../lib/latency-validation-model'
+import { FixedLatency, RandomLatency } from '../../lib/latency-model.mjs'
 import { RuleValidationModel } from './../../lib//rule-validation-model'
 import { ProjectValidationModel } from './../../lib//project-validation-model'
 import { Project, ProjectRule } from './../../lib/project-model'
@@ -24,6 +26,7 @@ const test = async () => {
       .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
       .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
       .registerInstance(TemplatingService, new TemplatingService())
+      .registerInstance(LatencyValidationModel, new LatencyValidationModel())
       .registerInstance(RuleValidationModel, new RuleValidationModel(new ConfigService()))
       .registerInstance(ProjectValidationModel, new ProjectValidationModel())
 
@@ -57,7 +60,8 @@ const test = async () => {
           [],
           [],
           '{\n  "respo": "Test rule 2: {{req.body.input}}"\n}\n'
-        )
+        ),
+        new FixedLatency(2000)
       )
     ))
 
@@ -96,7 +100,8 @@ const test = async () => {
           [],
           [],
           '{\n  "respo": "Test rule 2: {{req.body.input}}"\n}\n'
-        )
+        ),
+        new FixedLatency(2000)
       )
     ))
     expect(listProjectRules[2]).to.deep.equal(new ProjectRule(
@@ -112,7 +117,9 @@ const test = async () => {
           ],
           [],
           '{\n  "respo": "Test rule 3: {{req.query.q}} / {{req.params.id}}"\n}\n'
-        )
+        ),
+        undefined,
+        new RandomLatency(1000, 3000)
       )
     ))
 

@@ -4,6 +4,8 @@ import ajvAsync from 'ajv-async'
 import { ConfigService } from './../../lib/config.service'
 import { Request, Header, Cookie, Response, Rule } from '../../lib/rule-model'
 import { RuleValidationModel } from '../../lib/rule-validation-model'
+import { LatencyValidationModel } from '../../lib/latency-validation-model.mjs'
+import { FixedLatency, RandomLatency } from '../../lib/latency-model.mjs'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 
@@ -15,14 +17,17 @@ const test = async () => {
     .registerProperty('logging.level.startup', 'debug')
     .registerType(Logger, PinoLogger)
 
+  const latencyValidationModel = new LatencyValidationModel()
   const ruleValidationModel = new RuleValidationModel(new ConfigService({
     listEngines: () => {
       return [ 'none', 'nunjucks' ]
     }
-  }))
+  }), latencyValidationModel)
 
   const jsonSchemaValidator = ajvAsync(new Ajv())
   jsonSchemaValidator
+    .addSchema(latencyValidationModel[FixedLatency], 'FixedLatency')
+    .addSchema(latencyValidationModel[RandomLatency], 'RandomLatency')
     .addSchema(ruleValidationModel[Request], 'Request')
     .addSchema(ruleValidationModel[Header], 'Header')
     .addSchema(ruleValidationModel[Cookie], 'Cookie')
@@ -86,6 +91,9 @@ const test = async () => {
   expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), 'x'))).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('test', 'GET'), new Response('nunjucks', 'x')))).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), new Response('x', 'x')))).to.be.equal(false)
+  expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), new Response('nunjucks', 'x'), new FixedLatency(1)))).to.be.equal(true)
+  expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), new Response('nunjucks', 'x'), undefined, new RandomLatency(1)))).to.be.equal(false)
+  expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), new Response('nunjucks', 'x'), undefined, new RandomLatency(1, 2)))).to.be.equal(true)
 }
 
 export {

@@ -1,5 +1,8 @@
 ---
 name: testRule3
+randomLatency:
+  min: 1000
+  max: 3000
 request:
   path: /hello3/:id
   method: GET

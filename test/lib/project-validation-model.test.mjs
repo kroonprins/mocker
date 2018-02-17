@@ -2,6 +2,8 @@ import chai from 'chai'
 import Ajv from 'ajv'
 import ajvAsync from 'ajv-async'
 import { ConfigService } from './../../lib/config.service'
+import { LatencyValidationModel } from '../../lib/latency-validation-model.mjs'
+import { FixedLatency, RandomLatency } from '../../lib/latency-model.mjs'
 import { ProjectsFile, ProjectFile, Project, ProjectRule } from '../../lib/project-model'
 import { ProjectValidationModel } from '../../lib/project-validation-model'
 import { Request, Header, Cookie, Response, Rule } from '../../lib/rule-model'
@@ -17,15 +19,18 @@ const test = async () => {
     .registerProperty('logging.level.startup', 'debug')
     .registerType(Logger, PinoLogger)
 
+  const latencyValidationModel = new LatencyValidationModel()
   const ruleValidationModel = new RuleValidationModel(new ConfigService({
     listEngines: () => {
       return [ 'none', 'nunjucks' ]
     }
-  }))
+  }), latencyValidationModel)
   const projectValidationModel = new ProjectValidationModel(ruleValidationModel)
 
   const jsonSchemaValidator = ajvAsync(new Ajv())
   jsonSchemaValidator
+    .addSchema(latencyValidationModel[FixedLatency], 'FixedLatency')
+    .addSchema(latencyValidationModel[RandomLatency], 'RandomLatency')
     .addSchema(ruleValidationModel[Request], 'Request')
     .addSchema(ruleValidationModel[Header], 'Header')
     .addSchema(ruleValidationModel[Cookie], 'Cookie')

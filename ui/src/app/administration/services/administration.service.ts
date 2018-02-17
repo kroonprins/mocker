@@ -19,7 +19,7 @@ export class AdministrationService {
   retrieveCurrentLogLevels(): Observable<LogLevels> {
     return this._http.get<LogLevels>(`${this.administrationServerLocation}/administration/loglevel`).map(logLevels => {
       if (!('level' in logLevels.parent)) {
-        logLevels.parent.level = undefined;
+        logLevels.parent['level'] = undefined;
       }
       logLevels.parent.initialLevel = logLevels.parent.level;
       for (const childLogger of logLevels.children) {

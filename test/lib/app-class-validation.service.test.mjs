@@ -1,5 +1,6 @@
 import chai from 'chai'
 import { ConfigService } from './../../lib/config.service'
+import { LatencyValidationModel } from './../../lib/latency-validation-model'
 import { RuleValidationModel } from './../../lib//rule-validation-model'
 import { ProjectValidationModel } from './../../lib//project-validation-model'
 import { TemplatingService } from './../../lib/templating-service'
@@ -23,6 +24,7 @@ const test = async () => {
       .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
       .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
       .registerInstance(TemplatingService, new TemplatingService())
+      .registerInstance(LatencyValidationModel, new LatencyValidationModel())
       .registerInstance(RuleValidationModel, new RuleValidationModel(new ConfigService()))
       .registerInstance(ProjectValidationModel, new ProjectValidationModel())
 

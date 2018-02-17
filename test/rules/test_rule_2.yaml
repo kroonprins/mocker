@@ -1,5 +1,7 @@
 ---
 name: testRule2
+fixedLatency:
+  value: 2000
 request:
   path: /hello2
   method: PUT

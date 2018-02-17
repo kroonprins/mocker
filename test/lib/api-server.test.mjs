@@ -2,6 +2,7 @@ import chai from 'chai'
 import chaiExclude from 'chai-exclude'
 import portastic from 'portastic'
 import axios from 'axios'
+import { LatencyValidationModel } from './../../lib/latency-validation-model'
 import { RuleValidationModel } from './../../lib/rule-validation-model'
 import { ProjectValidationModel } from './../../lib/project-validation-model'
 import { LearningModeDbValidationModel } from './../../lib/learning-mode.db.validation-model'
@@ -35,6 +36,7 @@ const test = async () => {
       .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
       .registerInstance(TemplatingService, new TemplatingService())
       .registerInstance(ConfigService, new ConfigService())
+      .registerInstance(LatencyValidationModel, new LatencyValidationModel())
       .registerInstance(RuleValidationModel, new RuleValidationModel())
       .registerInstance(ProjectValidationModel, new ProjectValidationModel())
       .registerInstance(LearningModeDbValidationModel, new LearningModeDbValidationModel())

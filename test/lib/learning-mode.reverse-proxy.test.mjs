@@ -62,7 +62,7 @@ const test = async () => {
       expect(proxiedRequestToBeEqualToTestServerResponse.status).to.be.equal(testServerResponse.status)
       expect(proxiedRequestToBeEqualToTestServerResponse.data).to.be.equal(testServerResponse.data)
 
-      expect(proxiedRequestToBeEqualToTestServerResponse.headers).excluding('date').to.deep.equal(testServerResponse.headers)
+      expect(proxiedRequestToBeEqualToTestServerResponse.headers).excluding(['date', 'access-control-allow-origin']).to.deep.equal(testServerResponse.headers)
 
       const checkRequestRecorded = await learningModeService.findRecordedRequests('reverseProxyTestProject')
       expect(checkRequestRecorded.length).to.be.equal(1)

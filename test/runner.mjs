@@ -50,6 +50,7 @@ import { test as testConfigService } from './lib/config.service.test'
 import { test as testClassValidation } from './lib/class-validation.service.test'
 import { test as testAppClassValidation } from './lib/app-class-validation.service.test'
 import { test as testRuleValidationModel } from './lib/rule-validation-model.test'
+import { test as testLatencyValidationModel } from './lib/latency-validation-model.test'
 import { test as testRuleService } from './lib/rule-service.test'
 import { test as testProjectValidationModel } from './lib/project-validation-model.test'
 import { test as testProjectService } from './lib/project-service.test'
@@ -91,6 +92,7 @@ const runTest = async (testFn) => {
   await runTest(testConfigService)
   await runTest(testClassValidation)
   await runTest(testAppClassValidation)
+  await runTest(testLatencyValidationModel)
   await runTest(testRuleValidationModel)
   await runTest(testRuleService)
   await runTest(testProjectValidationModel)
