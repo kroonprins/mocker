@@ -1,4 +1,4 @@
-* allow latency / throttling simulation
+* allow latency also at global project level
 * make it possible to make response in a rule conditional (=> avoid having to put the condition in several fields (e.g. statusCode and body are different depending some condition))
 * file download/upload mocking?
 * investigate pouchdb as alternative to nedb (because last commit for nedb more than 2 years ago). Related to it: investigate if none of the bigger odm frameworks (e.g. mongoose / waterline) support an embedded db.

@@ -1,0 +1,31 @@
+<div class="field is-horizontal">
+  <div class="field-label is-normal">
+    <label for="latency" class="label">{{label}}</label>
+  </div>
+  <div class="field-body">
+    <div class="field">
+      <div class="control">
+        <app-config-dropdown id="latencyType" name="method" configItem="latency-types" [readonly]="readonly" [(value)]="latencyType"
+          emptyValue="true" (valueChange)="changeLatencyType()"></app-config-dropdown>
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <input *ngIf="latencyType === 'fixed'" type="number" id="fixedLatency" required [(ngModel)]="item.fixedLatency.value" name="fixedLatency"
+          class="input" [readonly]="readonly">
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <input *ngIf="latencyType === 'random'" type="number" id="randomLatencyMin" required [(ngModel)]="item.randomLatency.min"
+          name="randomLatencyMin" class="input" [readonly]="readonly" placeholder="Minimum">
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <input *ngIf="latencyType === 'random'" type="number" id="randomLatencyMax" required [(ngModel)]="item.randomLatency.max"
+          name="randomLatencyMax" class="input" [readonly]="readonly" placeholder="Maximum">
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,10 +1,13 @@
 import { ResponseCookie } from '../../shared/model/cookie';
 import { NameValuePair } from '../../shared/model/name-value-pair';
+import { FixedLatency, RandomLatency } from '../../shared/model/latency';
 
 class Rule {
   name: string;
   request: Request;
   response: Response;
+  fixedLatency: FixedLatency;
+  randomLatency: RandomLatency;
 }
 
 class Request {
