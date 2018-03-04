@@ -50,7 +50,7 @@ const test = async () => {
       'test_one_file_does_not_exist'])
     expect(allProjects['test_glob'].rules.length).to.be.equal(3)
     expect(allProjects['test_glob'].rules[1]).to.deep.equal(new ProjectRule(
-      './test/rules/test_rule_2.yaml', new Rule(
+      '../rules/test_rule_2.yaml', new Rule(
         'testRule2',
         new Request('/hello2', 'PUT'),
         new Response(
@@ -68,7 +68,7 @@ const test = async () => {
     const listProjectRules = await projectService.listProjectRules('test_glob', true)
     expect(listProjectRules.length).to.be.equal(3)
     expect(listProjectRules[0]).to.deep.equal(new ProjectRule(
-      './test/rules/test_rule_1.yaml', new Rule(
+      '../rules/test_rule_1.yaml', new Rule(
         'testRule1',
         new Request('/hello1/:id', 'GET'),
         new Response(
@@ -90,7 +90,7 @@ const test = async () => {
       )
     ))
     expect(listProjectRules[1]).to.deep.equal(new ProjectRule(
-      './test/rules/test_rule_2.yaml', new Rule(
+      '../rules/test_rule_2.yaml', new Rule(
         'testRule2',
         new Request('/hello2', 'PUT'),
         new Response(
@@ -105,7 +105,7 @@ const test = async () => {
       )
     ))
     expect(listProjectRules[2]).to.deep.equal(new ProjectRule(
-      './test/rules/test_rule_3.yaml', new Rule(
+      '../rules/test_rule_3.yaml', new Rule(
         'testRule3',
         new Request('/hello3/:id', 'GET'),
         new Response(
@@ -164,7 +164,7 @@ const test = async () => {
 
     const retrieveProjectRule = await projectService.retrieveProjectRule('test_glob', 'testRule1')
     expect(retrieveProjectRule).to.deep.equal(new ProjectRule(
-      './test/rules/test_rule_1.yaml',
+      '../rules/test_rule_1.yaml',
       new Rule(
         'testRule1',
         new Request(
@@ -282,7 +282,7 @@ const test = async () => {
 
     await projectService.createProject('createdProject1')
     const newRule = new ProjectRule(
-      './test/tmp_rules/test_rule_for_created_project_1.yaml',
+      '../tmp_rules/test_rule_for_created_project_1.yaml',
       new Rule(
         'test_rule 1',
         new Request(
@@ -328,12 +328,12 @@ const test = async () => {
     try {
       await projectService.createProjectRule('createdProject1', newRule)
     } catch (e) {
-      expect(e.message).to.be.equal('A rule with location \'./test/tmp_rules/test_rule_for_created_project_1.yaml\' already exists for the project with name createdProject1')
+      expect(e.message).to.be.equal('A rule with location \'../tmp_rules/test_rule_for_created_project_1.yaml\' already exists for the project with name createdProject1')
       exceptionThrownForRuleAlreadyExistsWithGivenLocation = true
     }
     expect(exceptionThrownForRuleAlreadyExistsWithGivenLocation).to.be.equal(true)
 
-    newRule.location = './test/tmp_rules/test_rule_for_created_project_2.yaml'
+    newRule.location = '../tmp_rules/test_rule_for_created_project_2.yaml'
     let exceptionThrownForRuleAlreadyExistsWithSamePathAndMethod = false
     try {
       await projectService.createProjectRule('createdProject1', newRule)
@@ -384,17 +384,17 @@ const test = async () => {
     expect(exceptionThrownForUpdatingRuleToAlreadyExistsWithGivenName).to.be.equal(true)
 
     newRule.rule.name = 'test_rule 2'
-    newRule.location = './test/tmp_rules/test_rule_for_created_project_1.yaml'
+    newRule.location = '../tmp_rules/test_rule_for_created_project_1.yaml'
     let exceptionThrownForUpdatingRuleToAlreadyExistsWithGivenLocation = false
     try {
       await projectService.updateProjectRule('createdProject1', newRule.rule.name, newRule)
     } catch (e) {
-      expect(e.message).to.be.equal('A rule with location \'./test/tmp_rules/test_rule_for_created_project_1.yaml\' already exists for the project with name createdProject1')
+      expect(e.message).to.be.equal('A rule with location \'../tmp_rules/test_rule_for_created_project_1.yaml\' already exists for the project with name createdProject1')
       exceptionThrownForUpdatingRuleToAlreadyExistsWithGivenLocation = true
     }
     expect(exceptionThrownForUpdatingRuleToAlreadyExistsWithGivenLocation).to.be.equal(true)
 
-    newRule.location = './test/tmp_rules/test_rule_for_created_project_2.yaml'
+    newRule.location = '../tmp_rules/test_rule_for_created_project_2.yaml'
     newRule.rule.request.method = 'GET'
     let exceptionThrownForUpdatingRuleToAlreadyExistsWithSamePathAndMethod = false
     try {
@@ -415,7 +415,7 @@ const test = async () => {
 
     await projectService.removeProjectRule('createdProject3', newRule.rule.name)
 
-    newRule.location = './test/tmp_rules/test_rule_for_created_project_3.yaml'
+    newRule.location = '../tmp_rules/test_rule_for_created_project_3.yaml'
     newRule.rule.name = 'test_rule 3'
     await projectService.updateProjectRule('createdProject1', 'test_rule 2', newRule)
 

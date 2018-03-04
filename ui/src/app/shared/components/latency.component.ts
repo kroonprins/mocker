@@ -1,4 +1,4 @@
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
 import { FixedLatency, RandomLatency } from '../model/latency';
 
 @Component({
@@ -6,7 +6,7 @@ import { FixedLatency, RandomLatency } from '../model/latency';
   templateUrl: './latency.component.html',
   styleUrls: ['./latency.component.sass']
 })
-export class LatencyComponent implements OnInit {
+export class LatencyComponent implements OnChanges {
 
   @Input()
   item: object; // TODO make interface
@@ -15,15 +15,17 @@ export class LatencyComponent implements OnInit {
   @Input()
   readonly: boolean;
 
-  latencyType: string;
+  latencyType: string = null;
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges): void {
     if ('fixedLatency' in this.item) {
       this.latencyType = 'fixed';
     } else if ('randomLatency' in this.item) {
       this.latencyType = 'random';
+    } else {
+      this.latencyType = null;
     }
   }
 

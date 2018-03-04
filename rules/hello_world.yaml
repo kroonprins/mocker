@@ -1,5 +1,8 @@
 ---
 name: Hello World
+randomLatency:
+  min: 500
+  max: 2000
 request:
   path: /hello/:id
   method: GET

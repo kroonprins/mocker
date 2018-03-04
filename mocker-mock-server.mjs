@@ -3,7 +3,11 @@
 
 import { Mocker } from './lib/mocker'
 
-(new Mocker()).startMockServer()
-  .catch(error => {
-    console.error('Failed to start mock server', error)
-  })
+try {
+  (new Mocker()).startMockServer()
+    .catch(error => {
+      console.error('Failed to start mock server: ', error.message)
+    })
+} catch (error) {
+  console.error('Failed to start mock server: ', error.message)
+}
