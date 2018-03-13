@@ -11,6 +11,8 @@ const test = () => {
       .registerProperty('logging.level.startup', 'warn')
       .registerType(Logger, PinoLogger)
 
+    Logger.reset()
+
     // create parent logger with default level
     const baseLogger = config.getClassInstance(Logger)
     expect(baseLogger.getLevel()).to.equal('warn')
