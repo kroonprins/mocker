@@ -74,11 +74,15 @@ const test = () => {
   config.registerProperty('test.property', 'test_property')
 
   expect(config.getProperty(property)).to.be.equal('test_property')
+  expect(config.getOptionalProperty(property)).to.be.equal('test_property')
 
   config.unregisterProperty(property)
 
   // expect an exception when trying to retrieve property that isn't registered
-  expect(() => config.getInstance(property)).to.throw('No instance has been registered for \'test.property\'')
+  expect(() => config.getProperty(property)).to.throw('No property has been registered for \'test.property\'')
+
+  // expect undefined when trying to retrieve optional property that isn't registered
+  expect(config.getOptionalProperty(property)).to.equal(undefined)
 }
 
 export {

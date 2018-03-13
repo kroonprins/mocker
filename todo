@@ -35,3 +35,5 @@
 * possible issue on windows when renaming file that only updated casing?
 * possible issue that response cookies get recorded as headers in reverse proxy learning mode?
 * allow running in https
+* templating type 'none': replace by absent type?
+* remove .eslinteginore once possible

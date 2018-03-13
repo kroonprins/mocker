@@ -5,14 +5,23 @@ import path from 'path'
 import columnify from 'columnify'
 import colors from 'colors'
 
+const filterArgs = process.argv.slice(2)
+let filters = []
+for (let filterArg of filterArgs) {
+  filters = filters.concat(filterArg.split(/[,;]/))
+}
+const DO_FILTER = filters.length > 0
+const FILTER_REGEX = new RegExp(filters.join('|'))
+
 const findTests = async () => {
   return (await globAsync('./**/*.test.mjs')).map(testFile => path.resolve(testFile))
 }
 
 class TestResult {
-  constructor (fileName, failure) {
+  constructor (fileName, failure, executed) {
     this.fileName = fileName
     this.failure = failure
+    this.executed = executed
   }
 
   get fileName () {
@@ -44,11 +53,12 @@ const reportTestResults = (testResults) => {
     }
   }
 
-  logHeader('Results:')
+  logHeader(`Results (${testResults.length}):`)
   const columns = testResults.map(testResult => {
-    const color = testResult.failure ? colors.red : colors.green
+    const color = testResult.executed ? (testResult.failure ? colors.red : colors.green) : colors.gray
     return {
       'test': color(testResult.fileName),
+      '#executions': color(testResult.executed ? 1 : 0),
       '#failures': color(testResult.failure ? 1 : 0),
       'failure': color(testResult.failure ? testResult.failure.message : '')
     }
@@ -56,15 +66,30 @@ const reportTestResults = (testResults) => {
   console.log(columnify(columns))
 }
 
+const skipTest = (testFile) => {
+  if(!DO_FILTER) {
+    return false
+  }
+  return !path.basename(testFile).match(FILTER_REGEX)
+}
+
 (async () => {
 
   const testFiles = await findTests()
 
   const testResults = []
-  let testFailure = false;
+  let testFailure = false
 
   for (let testFile of testFiles) {
     const testResult = new TestResult(testFile)
+    testResults.push(testResult)
+
+    if(skipTest(testFile)) {
+      testResult.executed = false
+      continue
+    } else {
+      testResult.executed = true
+    }
 
     try {
       const testModule = await import(testFile)
@@ -73,7 +98,6 @@ const reportTestResults = (testResults) => {
       testResult.failure = e
       testFailure = true
     }
-    testResults.push(testResult)
   }
 
   reportTestResults(testResults)

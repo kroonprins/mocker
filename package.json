@@ -7,7 +7,8 @@
   "scripts": {
     "start": "./mocker-ui.mjs",
     "//": "Use extremly basic runner for tests until one of the frameworks supports mjs...",
-    "test": "node --experimental-modules test/runner.mjs; rc=$?; rm -fr ./test/tmp; exit $rc",
+    "test": "node --experimental-modules test/runner.mjs",
+    "posttest": "rm -fr ./test/tmp;",
     "postinstall": "./post-install.sh",
     "version-check": "npm-check-updates",
     "lint-check": "eslint index.mjs lib/*.mjs test/**/*.mjs",

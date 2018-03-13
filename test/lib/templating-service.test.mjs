@@ -3,6 +3,7 @@ import { TemplatingService } from './../../lib/templating-service'
 import { NunjucksTemplatingService } from './../../lib/templating-service.nunjucks'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
+import { NunjucksTemplatingHelpers } from '../../lib/templating-helpers.nunjucks'
 
 const expect = chai.expect
 
@@ -28,7 +29,36 @@ const test = async () => {
           }
         }
       }
+
+      init () {
+        return Promise.resolve(this)
+      }
     }
+
+    class TestNunjucksTemplatingHelpersWithExtraHelpers extends NunjucksTemplatingHelpers {
+      constructor () {
+        super('./test/util/extra-template-helpers.nunjucks.mjs')
+        this.DEFAULT_HELPERS = {
+          filters: {
+            prependText: (str, text) => {
+              return text + str
+            },
+            appendText: (str, text) => {
+              return str + text
+            }
+          },
+          functions: {
+            writeA: () => {
+              return 'A'
+            },
+            writeText: (text) => {
+              return text
+            }
+          }
+        }
+      }
+    }
+
     config
       .registerProperty('logging.level.startup', 'debug')
       .registerType(Logger, PinoLogger)
@@ -67,6 +97,35 @@ const test = async () => {
 
     const resultForNunjucksHelperFilter2 = await templatingService.render('nunjucks', 'Hello {{name | prependText("brave new ") | appendText("s")}}', { name: 'world' })
     expect(resultForNunjucksHelperFilter2).to.be.equal('Hello brave new worlds')
+
+    config
+      .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService(new TestNunjucksTemplatingHelpersWithExtraHelpers()))
+
+    const templatingServiceWithExtraHelpers = new TemplatingService()
+
+    const resultForNoneWithExtraHelpers = await templatingServiceWithExtraHelpers.render('none', 'Hello {{name}}', { name: 'world' })
+    expect(resultForNoneWithExtraHelpers).to.be.equal('Hello {{name}}')
+
+    const resultForNunjucksWithExtraHelpers = await templatingServiceWithExtraHelpers.render('nunjucks', 'Hello {{name}}', { name: 'world' })
+    expect(resultForNunjucksWithExtraHelpers).to.be.equal('Hello world')
+
+    const resultForNunjucksHelperFunction1WithExtraHelpers = await templatingServiceWithExtraHelpers.render('nunjucks', 'Hello {{name}} {{writeA()}}', { name: 'world' })
+    expect(resultForNunjucksHelperFunction1WithExtraHelpers).to.be.equal('Hello world overwrittenA')
+
+    const resultForNunjucksHelperFunction2WithExtraHelpers = await templatingServiceWithExtraHelpers.render('nunjucks', 'Hello {{name}} {{writeText("text")}}', { name: 'world' })
+    expect(resultForNunjucksHelperFunction2WithExtraHelpers).to.be.equal('Hello world text')
+
+    const resultForNunjucksHelperFunction3WithExtraHelpers = await templatingServiceWithExtraHelpers.render('nunjucks', 'Hello {{name}} {{writeZ()}}', { name: 'world' })
+    expect(resultForNunjucksHelperFunction3WithExtraHelpers).to.be.equal('Hello world Z')
+
+    const resultForNunjucksHelperFilter1WithExtraHelpers = await templatingServiceWithExtraHelpers.render('nunjucks', 'Hello {{name | prependText("brave new ")}}', { name: 'world' })
+    expect(resultForNunjucksHelperFilter1WithExtraHelpers).to.be.equal('Hello brave new world')
+
+    const resultForNunjucksHelperFilter2WithExtraHelpers = await templatingServiceWithExtraHelpers.render('nunjucks', 'Hello {{name | prependText("brave new ") | appendText("s")}}', { name: 'world' })
+    expect(resultForNunjucksHelperFilter2WithExtraHelpers).to.be.equal('Hello brave new worlds overwritten')
+
+    const resultForNunjucksHelperFilter3WithExtraHelpers = await templatingServiceWithExtraHelpers.render('nunjucks', 'Hello {{name | prependText("brave new ") | extraAppend("s")}}', { name: 'world' })
+    expect(resultForNunjucksHelperFilter3WithExtraHelpers).to.be.equal('Hello brave new worlds extra')
   } finally {
     config.reset()
   }
