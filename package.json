@@ -1,6 +1,6 @@
 {
   "name": "@kroonprins/mocker",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "repository": "https://github.com/kroonprins/mocker",
   "description": "Mock server with learning mode",
   "main": "mocker-ui.mjs",
@@ -43,6 +43,7 @@
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
+    "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "express-async-errors": "^2.1.2",
     "express-delay": "^0.2.0",
@@ -58,5 +59,10 @@
     "serializr": "^1.1.14",
     "tough-cookie": "^2.3.4",
     "uuid": "^3.2.1"
+  },
+  "bin": {
+    "mocker-ui": "./mocker-ui.mjs",
+    "mocker-mock-server": "./mocker-mock-server.mjs",
+    "mocker-learning-mode": "./mocker-learning-mode.mjs"
   }
 }
