@@ -3,7 +3,6 @@
 * file download/upload mocking?
 * investigate pouchdb as alternative to nedb (because last commit for nedb more than 2 years ago). Related to it: investigate if none of the bigger odm frameworks (e.g. mongoose / waterline) support an embedded db.
 * make path and method in request of a rule arrays?
-* publish to npm
 * serializr also has callback functions => check if promisify
 * maybe add watch on yaml files to refresh project memory model when file system changes
 * make clustering of mock server possible
@@ -16,7 +15,6 @@
 * make possible that header/cookie is conditional in response
 * split api server
 * add class validation on learning mode model
-* put mjs_workaround directory in .gitignore + remove directory from git
 * add sorting options on api
 * unit test timeout on windows + npm test not running on windows + ln not possible on windows for npm install
 * use guard to disable routing to rules/learning mode if no project selected?
