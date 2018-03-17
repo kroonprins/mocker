@@ -37,3 +37,4 @@
 * allow running in https
 * templating type 'none': replace by absent type?
 * remove .eslinteginore once possible
+* bin section of package.json not working on windows because it requires shebang to be #!/usr/bin/env node (which doesn't work because --experimental-modules flag must be set)

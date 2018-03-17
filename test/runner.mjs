@@ -4,6 +4,8 @@ import { globAsync } from './../lib/fs-util'
 import path from 'path'
 import columnify from 'columnify'
 import colors from 'colors'
+import cjs from './mjs_workaround/cjs'
+import { createModulePath } from './../lib/dynamic-module-import-helper'
 
 const filterArgs = process.argv.slice(2)
 let filters = []
@@ -92,7 +94,7 @@ const skipTest = (testFile) => {
     }
 
     try {
-      const testModule = await import(testFile)
+      const testModule = await import(createModulePath(testFile, cjs.__dirname))
       await testModule.test()
     } catch (e) {
       testResult.failure = e
