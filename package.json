@@ -1,6 +1,6 @@
 {
   "name": "@kroonprins/mocker",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "repository": "https://github.com/kroonprins/mocker",
   "description": "Mock server with learning mode",
   "main": "mocker-ui.mjs",
@@ -27,7 +27,7 @@
     "chai-string": "^1.4.0",
     "colors": "^1.2.1",
     "columnify": "^1.5.4",
-    "eslint": "^4.18.2",
+    "eslint": "^4.19.0",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-node": "^6.0.1",
@@ -38,9 +38,10 @@
     "portastic": "^1.0.1"
   },
   "dependencies": {
-    "ajv": "^6.2.1",
+    "ajv": "^6.3.0",
     "ajv-async": "^1.0.1",
     "body-parser": "^1.18.2",
+    "body-parser-xml": "^1.1.0",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
@@ -55,7 +56,7 @@
     "nedb": "^1.8.0",
     "normalize-path": "^2.1.1",
     "nunjucks": "^3.1.2",
-    "pino": "^4.13.0",
+    "pino": "^4.14.0",
     "rimraf": "^2.6.2",
     "serializr": "^1.1.14",
     "tough-cookie": "^2.3.4",
