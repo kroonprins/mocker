@@ -1,6 +1,6 @@
 {
   "name": "@kroonprins/mocker",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "repository": "https://github.com/kroonprins/mocker",
   "description": "Mock server with learning mode",
   "main": "mocker-ui.mjs",
@@ -42,6 +42,7 @@
     "ajv-async": "^1.0.1",
     "body-parser": "^1.18.2",
     "body-parser-xml": "^1.1.0",
+    "chokidar": "^2.0.4",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",

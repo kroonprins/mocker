@@ -14,6 +14,7 @@ import { TemplatingService } from './../../lib/templating-service'
 import { NunjucksTemplatingHelpers } from './../../lib/templating-helpers.nunjucks'
 import { NunjucksTemplatingService } from './../../lib/templating-service.nunjucks'
 import { AppClassValidationService } from '../../lib/app-class-validation.service.mjs'
+import { ClassValidationService } from '../../lib/class-validation.service'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
 
@@ -23,9 +24,13 @@ chai.use(chaiString)
 // could split this up so that not all test run synchronously
 const test = async () => {
   try {
+    const projectFileLocation = './test/projects/tests.yaml'
+
     config
       .registerProperty('logging.level.startup', 'debug')
       .registerType(Logger, PinoLogger)
+      .registerProperty('project.location', projectFileLocation)
+      .registerProperty('mock-server.watch-for-configuration-changes', false)
       .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
       .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
       .registerInstance(TemplatingService, new TemplatingService())
@@ -33,13 +38,17 @@ const test = async () => {
       .registerInstance(RuleValidationModel, new RuleValidationModel(new ConfigService()))
       .registerInstance(ProjectValidationModel, new ProjectValidationModel())
 
+    const appClassValidationService = new AppClassValidationService()
+    config
+      .registerInstance(ClassValidationService, appClassValidationService)
+
     const templatingService = new TemplatingService()
     const projectService = new ProjectService(
       new InMemoryProjectStore(
-        './test/projects/tests.yaml',
+        projectFileLocation,
         './test/rules',
         new RuleService(),
-        new AppClassValidationService()
+        appClassValidationService
       ))
 
     const availablePort = (await portastic.find({

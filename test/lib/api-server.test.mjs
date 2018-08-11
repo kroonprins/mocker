@@ -19,6 +19,7 @@ import { RecordedRequest } from './../../lib/learning-mode.model'
 import { TemplatingService } from './../../lib/templating-service'
 import { NunjucksTemplatingHelpers } from './../../lib/templating-helpers.nunjucks'
 import { NunjucksTemplatingService } from './../../lib/templating-service.nunjucks'
+import { ClassValidationService } from '../../lib/class-validation.service'
 import { ConfigService } from './../../lib/config.service'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
@@ -29,9 +30,13 @@ chai.use(chaiExclude)
 // could split this up so that not all test run synchronously
 const test = async () => {
   try {
+    const projectFileLocation = './test/projects/tests_update.yaml'
+
     config
       .registerProperty('logging.level.startup', 'debug')
       .registerType(Logger, PinoLogger)
+      .registerProperty('project.location', projectFileLocation)
+      .registerProperty('mock-server.watch-for-configuration-changes', false)
       .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
       .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
       .registerInstance(TemplatingService, new TemplatingService())
@@ -43,10 +48,12 @@ const test = async () => {
       .registerInstance(ServerValidationModel, new ServerValidationModel())
 
     const appClassValidationService = new AppClassValidationService()
+    config
+      .registerInstance(ClassValidationService, appClassValidationService)
 
     let projectService = new ProjectService(
       new InMemoryProjectStore(
-        './test/projects/tests_update.yaml',
+        projectFileLocation,
         './test/rules',
         new RuleService(),
         appClassValidationService
