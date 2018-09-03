@@ -37,3 +37,4 @@
 * remove .eslinteginore once possible
 * bin section of package.json not working on windows because it requires shebang to be #!/usr/bin/env node (which doesn't work because --experimental-modules flag must be set)
 * improve ProjectChangeWatcher to reinitialize when the project files changes (in case the watch list must be updated)
+* put hierarchy in lib folder

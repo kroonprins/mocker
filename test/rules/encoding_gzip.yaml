@@ -1,0 +1,18 @@
+---
+name: testGzipEncoding
+request:
+  path: /gzip
+  method: GET
+response:
+  templatingEngine: none
+  contentType: application/json
+  statusCode: 200
+  headers:
+    - name: X-yup
+      value: "bla"
+    - name: content-encoding
+      value: gzip
+  body: |
+    {
+      "respo": "gzip content"
+    }

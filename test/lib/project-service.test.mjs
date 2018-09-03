@@ -39,7 +39,7 @@ const test = async () => {
       ))
 
     const allProjects = await projectService.listProjects()
-    expect(Object.keys(allProjects).length).to.be.equal(7)
+    expect(Object.keys(allProjects).length).to.be.equal(8)
     expect(Object.keys(allProjects)).to.deep.equal([
       'test_one_file',
       'test_glob',
@@ -47,7 +47,8 @@ const test = async () => {
       'test_multiple_glob',
       'test_glob_no_match',
       'test_file_does_not_exist',
-      'test_one_file_does_not_exist'])
+      'test_one_file_does_not_exist',
+      'test_encoding'])
     expect(allProjects['test_glob'].rules.length).to.be.equal(3)
     expect(allProjects['test_glob'].rules[1]).to.deep.equal(new ProjectRule(
       '../rules/test_rule_2.yaml', new Rule(

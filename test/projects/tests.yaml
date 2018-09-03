@@ -5,7 +5,7 @@ projects:
       - ../rules/test_rule_2.yaml
   - name: test_glob
     rules:
-      - ../rules/*.yaml
+      - ../rules/test_*.yaml
   - name: test_multiple_files
     rules:
       - ../rules/test_rule_2.yaml
@@ -24,3 +24,6 @@ projects:
     rules:
       - ../rules/nope.yaml
       - ../rules/test_rule_2.yaml
+  - name: test_encoding
+    rules:
+      - ../rules/encoding_*.yaml
