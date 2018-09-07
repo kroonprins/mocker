@@ -136,7 +136,6 @@ const test = async () => {
       await mockServerForEncodingTest.start()
 
       const responseGzip = await axios.get(`http://localhost:${availablePort}/gzip`)
-      console.dir(responseGzip.headers, {depth: 10})
       expect(responseGzip.status).to.be.equal(200)
       expect(responseGzip.data.respo).to.be.equal('gzip content')
       expect(responseGzip.headers['content-type']).to.startsWith('application/json')
@@ -144,7 +143,6 @@ const test = async () => {
       // expect(responseGzip.headers['content-encoding']).to.be.equal('gzip') // axios seems to remove the header
 
       const responseDeflate = await axios.get(`http://localhost:${availablePort}/deflate`)
-      console.dir(responseDeflate.headers, {depth: 10})
       expect(responseDeflate.status).to.be.equal(200)
       expect(responseDeflate.data.respo).to.be.equal('deflate content')
       expect(responseDeflate.headers['content-type']).to.startsWith('application/json')
@@ -152,7 +150,6 @@ const test = async () => {
       // expect(responseDeflate.headers['content-encoding']).to.be.equal('deflate') // axios seems to remove the header
 
       const responseUnsupported = await axios.get(`http://localhost:${availablePort}/unsupported`)
-      console.dir(responseUnsupported.headers, {depth: 10})
       expect(responseUnsupported.status).to.be.equal(200)
       expect(responseUnsupported.data.respo).to.be.equal('unsupported content')
       expect(responseUnsupported.headers['content-type']).to.startsWith('application/json')
