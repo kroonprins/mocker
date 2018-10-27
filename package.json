@@ -1,6 +1,6 @@
 {
   "name": "@kroonprins/mocker",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "repository": "https://github.com/kroonprins/mocker",
   "description": "Mock server with learning mode",
   "main": "mocker-ui.mjs",
@@ -16,7 +16,10 @@
     "doc": "jsdoc -c jsdoc-conf.json",
     "ui": "./mocker-ui.mjs",
     "mock-server": "./mocker-mock-server.mjs",
-    "learning-mode": "./mocker-learning-mode.mjs"
+    "learning-mode": "./mocker-learning-mode.mjs",
+    "docker-build": "cross-var docker build -t kroonprins/mocker:latest -t kroonprins/mocker:$npm_package_version .",
+    "docker-test": "docker run kroonprins/mocker npm test",
+    "docker-push": "docker push kroonprins/mocker"
   },
   "author": "kroonprins",
   "license": "MIT",
@@ -27,6 +30,7 @@
     "chai-string": "^1.5.0",
     "colors": "^1.3.2",
     "columnify": "^1.5.4",
+    "cross-var": "^1.1.0",
     "eslint": "^5.5.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",

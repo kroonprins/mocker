@@ -48,10 +48,10 @@ const test = async () => {
     await wait(1000)
     await overwriteFile(newFile1, '')
     await overwriteFile(newFile2, '')
-    await wait(1000)
+    await wait(3000)
     await unlinkAsync(newFile1)
     await unlinkAsync(newFile2)
-    await wait(1000)
+    await wait(3000)
 
     expect(eventsReceived).to.equal(2)
   } finally {

@@ -31,23 +31,23 @@ const test = async () => {
 
       const basePath = await axios.get(`http://localhost:${availablePort}`)
       expect(basePath.status).to.equal(200)
-      expect(basePath.data).to.equal('The index\n')
+      expect(basePath.data.trim()).to.equal('The index')
 
       const indexPath = await axios.get(`http://localhost:${availablePort}/index.html`)
       expect(indexPath.status).to.equal(200)
-      expect(indexPath.data).to.equal('The index\n')
+      expect(indexPath.data.trim()).to.equal('The index')
 
       const otherPath = await axios.get(`http://localhost:${availablePort}/other.html`)
       expect(otherPath.status).to.equal(200)
-      expect(otherPath.data).to.equal('The other\n')
+      expect(otherPath.data.trim()).to.equal('The other')
 
       const subPath = await axios.get(`http://localhost:${availablePort}/subdir/sub.html`)
       expect(subPath.status).to.equal(200)
-      expect(subPath.data).to.equal('The sub\n')
+      expect(subPath.data.trim()).to.equal('The sub')
 
       const randomPath = await axios.get(`http://localhost:${availablePort}/subdir/rrr/iiho/uu/oo`)
       expect(randomPath.status).to.equal(200)
-      expect(randomPath.data).to.equal('The index\n')
+      expect(randomPath.data.trim()).to.equal('The index')
 
       config
         .registerInstance(AdministrationServer, new AdministrationServer(60001, 'localhost'))
