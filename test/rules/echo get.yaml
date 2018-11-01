@@ -1,0 +1,10 @@
+name: echo get
+request:
+  path: /echo
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: application/json
+  statusCode: 200
+  body: |
+    {{ echo(req) }}

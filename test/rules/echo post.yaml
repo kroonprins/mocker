@@ -1,0 +1,10 @@
+name: echo post
+request:
+  path: /echo
+  method: POST
+response:
+  templatingEngine: nunjucks
+  contentType: application/json
+  statusCode: 200
+  body: |
+    {{ echo(req) }}

@@ -1,0 +1,5 @@
+---
+projects:
+  - name: test_echo
+    rules:
+      - ../rules/echo*.yaml

@@ -1,6 +1,6 @@
 {
   "name": "@kroonprins/mocker",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "repository": "https://github.com/kroonprins/mocker",
   "description": "Mock server with learning mode",
   "main": "mocker-ui.mjs",
