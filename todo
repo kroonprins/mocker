@@ -41,3 +41,8 @@
 * to check: npm install fails if angular cli not installed globally?
 * add more testing on file watching + improve code around restarting logic
 * add mirror server like httpbin?
+* investigate yaml autocomplete
+* generate swagger for mock server
+* create mock server rules from a swagger definition
+* add optional dependency app-config to simplify what needs to be set up in unit tests. In general review dependencies because there is too much unnecessary things to set up in unit tests. Or check if the can be some kind of "mock"-mode.
+* make possible to activate project watch from ui?
