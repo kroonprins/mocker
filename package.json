@@ -17,7 +17,6 @@
     "ui": "./mocker-ui.mjs",
     "mock-server": "./mocker-mock-server.mjs",
     "learning-mode": "./mocker-learning-mode.mjs",
-    "mock-server-swagger-ui": "./mocker-mock-server-swagger-ui.mjs",
     "docker-build": "cross-var docker build -t kroonprins/mocker:latest -t kroonprins/mocker:$npm_package_version .",
     "docker-test": "docker run kroonprins/mocker npm test",
     "docker-push": "docker push kroonprins/mocker"

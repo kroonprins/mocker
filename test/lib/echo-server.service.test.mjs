@@ -32,6 +32,7 @@ const test = async () => {
       .registerType(Logger, PinoLogger)
       .registerProperty('project.location', projectFileLocation)
       .registerProperty('mock-server.watch-for-configuration-changes', false)
+      .registerProperty('mock-server-swagger-ui.enabled', false)
       .registerInstance(EchoServerService, new EchoServerService())
       .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
       .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
