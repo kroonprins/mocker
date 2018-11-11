@@ -1,0 +1,19 @@
+name: swagger post with input but no nunjucks
+request:
+  path: /post_with_input_but_no_nunjucks
+  method: POST
+response:
+  templatingEngine: none
+  contentType: application/json
+  statusCode: "{{req.query.q1}}"
+  headers:
+    - name: x-header-1
+      value: "{{req.headers['h2']}}"
+    - name: x-header-2
+      value: "{{req.cookies['c2']}}"
+  cookies:
+    - name: cookie1
+      value: "{{req.headers[\"h3\"]}}"
+    - name: cookie2
+      value: "{{req.cookies[\"c3\"]}}"
+  body: hello swagger for input body {{req.body.x}}

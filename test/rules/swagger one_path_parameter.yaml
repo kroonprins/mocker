@@ -1,0 +1,9 @@
+name: swagger get with one path parameter
+request:
+  path: /get/:pathParam
+  method: GET
+response:
+  templatingEngine: none
+  contentType: plain/text
+  statusCode: 200
+  body: hello swagger for one path parameter

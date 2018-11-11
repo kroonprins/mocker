@@ -1,0 +1,26 @@
+name: swagger get with response cookies
+request:
+  path: /get_response_cookies
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: plain/text
+  statusCode: 200
+  cookies:
+    - name: cookie1
+      value: value1
+      properties: {
+        secure: true,
+        httpOnly: false
+      }
+    - name: cookie2
+      value: "{{req.query.q2}}"
+    - name: cookie3
+      value: value3
+    - name: cookie4
+      value: "{{req.query.q4}}"
+      properties: {
+        secure: false,
+        httpOnly: false
+      }
+  body: hello swagger with response cookies

@@ -1,0 +1,9 @@
+name: swagger post with input body
+request:
+  path: /post_with_input_body
+  method: POST
+response:
+  templatingEngine: nunjucks
+  contentType: application/json
+  statusCode: 200
+  body: hello swagger for input body {{req.body.x}}

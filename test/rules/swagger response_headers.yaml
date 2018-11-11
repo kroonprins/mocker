@@ -1,0 +1,18 @@
+name: swagger get with response headers
+request:
+  path: /get_response_headers
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: plain/text
+  statusCode: 200
+  headers:
+    - name: x-header-1
+      value: value1
+    - name: x-header-2
+      value: "{{req.query.q2}}"
+    - name: x-header-3
+      value: value3
+    - name: x-header-4
+      value: "{{req.query.q4}}"
+  body: hello swagger with response headers

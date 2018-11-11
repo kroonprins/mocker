@@ -1,0 +1,9 @@
+name: swagger get with multiple path parameters
+request:
+  path: /get/:pathParam1/yo/:pathParam2/yu/:3/:4
+  method: GET
+response:
+  templatingEngine: none
+  contentType: plain/text
+  statusCode: 200
+  body: hello swagger for multiple path parameters

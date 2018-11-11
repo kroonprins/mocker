@@ -1,0 +1,15 @@
+name: swagger get with input cookie parameters
+request:
+  path: /get_with_input_cookie_parameters
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: "{{req.cookies.c1}}"
+  statusCode: 200
+  headers:
+    - name: x-header
+      value: "{{req.cookies['c2']}}"
+  cookies:
+    - name: cookie
+      value: "{{req.cookies[\"c3\"]}}"
+  body: hello swagger for input cookie parameters {{req.cookies.c4}}

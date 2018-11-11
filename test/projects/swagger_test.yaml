@@ -1,0 +1,5 @@
+---
+projects:
+  - name: test_swagger
+    rules:
+      - ../rules/swagger*.yaml

@@ -1,8 +1,8 @@
 ---
 name: Hello World 2
 request:
-  path: /hello2/:id
-  method: GET
+  path: /hello2/:id/:do/:jo/:ja
+  method: POST
 response:
   templatingEngine: nunjucks
   contentType: application/json
@@ -11,7 +11,11 @@ response:
     - name: X-positivo
       value: jawohl
     - name: X-zeker
-      value: klahr
+      value: "{{req.headers['x-input-zeker']}}"
+    - name: X-zeker-2
+      value: "{{req.headers.h}}"
+    - name: X-zeker-3
+      value: "{{req.headers[\"x-input-zeker2\"]}}"
     - name: X-yup
       value: "{{req.query.q}}"
   cookies:
@@ -25,5 +29,5 @@ response:
         httpOnly: true
   body: |
     {
-      "respo": "Donder op, man! {{req.query.q}} / {{req.params.id}}"
+      "respo": "Donder op, man! {{req.query.q}} / {{req.params.id}} / {{req.cookies.only}} / {{req.body.a}}"
     }

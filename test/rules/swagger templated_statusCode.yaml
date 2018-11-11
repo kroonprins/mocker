@@ -1,0 +1,9 @@
+name: swagger get with templated status code
+request:
+  path: /getTemplatedStatusCode
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: plain/text
+  statusCode: "{% if req.params.id > 5 %}400{% else %}200{% endif %}"
+  body: hello swagger for templated status code

@@ -1,0 +1,15 @@
+name: swagger get with input header parameters
+request:
+  path: /get_with_input_header_parameters
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: "{{req.headers.h1}}"
+  statusCode: 200
+  headers:
+    - name: x-header
+      value: "{{req.headers['h2']}}"
+  cookies:
+    - name: cookie
+      value: "{{req.headers[\"h3\"]}}"
+  body: hello swagger for input header parameters {{req.headers.h4}}

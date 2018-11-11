@@ -1,0 +1,9 @@
+name: swagger get with 501 status code
+request:
+  path: /get501
+  method: GET
+response:
+  templatingEngine: none
+  contentType: plain/text
+  statusCode: 501
+  body: hello swagger for http/501

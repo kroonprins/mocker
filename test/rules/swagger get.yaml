@@ -1,0 +1,9 @@
+name: swagger get without templating
+request:
+  path: /get
+  method: GET
+response:
+  templatingEngine: none
+  contentType: plain/text
+  statusCode: 200
+  body: hello swagger for get

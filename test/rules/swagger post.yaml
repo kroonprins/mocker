@@ -1,0 +1,9 @@
+name: swagger post without templating
+request:
+  path: /post
+  method: POST
+response:
+  templatingEngine: none
+  contentType: plain/text
+  statusCode: 200
+  body: hello swagger for post
