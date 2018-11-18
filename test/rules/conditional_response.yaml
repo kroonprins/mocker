@@ -1,0 +1,29 @@
+---
+name: Conditional response
+request:
+  path: /conditional/:id
+  method: GET
+conditionalResponse:
+  templatingEngine: nunjucks
+  response:
+    - condition: "{{req.params.id > 5}}"
+      contentType: application/json
+      statusCode: "200"
+      headers:
+        - name: x-header
+          value: "{{req.query.q}}"
+      body: |
+        {
+          "message": "This request is very good"
+        }
+    - condition: "{{req.params.id <= 5 and req.params.id > 1}}"
+      contentType: text/plain
+      statusCode: "400"
+      body: "This request is very bad"
+    - condition: true
+      contentType: application/json
+      statusCode: "500"
+      body: |
+        {
+          "message": "This request is the worst"
+        }

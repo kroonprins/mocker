@@ -1,0 +1,25 @@
+name: swagger post with conditional response
+request:
+  path: /post_conditional_response
+  method: POST
+conditionalResponse:
+  templatingEngine: nunjucks
+  response:
+    - condition: "{{req.query.q1 > 5}}"
+      contentType: application/json
+      statusCode: "200"
+      body: "body1"
+    - condition: "{{req.headers.h1 <= 5 and req.body.x > 1}}"
+      contentType: plain/text
+      statusCode: "400"
+      headers:
+        - name: x-header
+          value: "{{req.headers['h2']}}"
+      cookies:
+        - name: cookie
+          value: "{{req.headers[\"h3\"]}}"
+      body: "body2"
+    - condition: true
+      contentType: application/json
+      statusCode: "500"
+      body: "body3"

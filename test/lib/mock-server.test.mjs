@@ -159,6 +159,47 @@ const test = async () => {
     } finally {
       await mockServerForEncodingTest.stop()
     }
+
+    const mockServerForConditionalResponseTest = new MockServer(availablePort, 'localhost', 'test_conditional_response', projectService, templatingService)
+    try {
+      await mockServerForConditionalResponseTest.start()
+
+      const response1 = await axios.get(`http://localhost:${availablePort}/conditional/10?q=11`)
+      expect(response1.status).to.be.equal(200)
+      expect(response1.data).to.deep.equal({
+        message: 'This request is very good'
+      })
+      expect(response1.headers['content-type']).to.startsWith('application/json')
+      expect(response1.headers['x-header']).to.be.equal('11')
+
+      let exceptionThrownBecauseHttp400 = false
+      try {
+        await axios.get(`http://localhost:${availablePort}/conditional/3?q=5`)
+      } catch (e) {
+        expect(e.response.status).to.be.equal(400)
+        expect(e.response.data).to.equal('This request is very bad')
+        expect(e.response.headers['content-type']).to.startsWith('text/plain')
+        expect(e.response.headers['x-header']).to.be.equal(undefined)
+        exceptionThrownBecauseHttp400 = true
+      }
+      expect(exceptionThrownBecauseHttp400).to.be.equal(true)
+
+      let exceptionThrownBecauseHttp500 = false
+      try {
+        await axios.get(`http://localhost:${availablePort}/conditional/blabla?q=5`)
+      } catch (e) {
+        expect(e.response.status).to.be.equal(500)
+        expect(e.response.data).to.deep.equal({
+          message: 'This request is the worst'
+        })
+        expect(e.response.headers['content-type']).to.startsWith('application/json')
+        expect(e.response.headers['x-header']).to.be.equal(undefined)
+        exceptionThrownBecauseHttp500 = true
+      }
+      expect(exceptionThrownBecauseHttp500).to.be.equal(true)
+    } finally {
+      await mockServerForConditionalResponseTest.stop()
+    }
   } finally {
     config.reset()
   }

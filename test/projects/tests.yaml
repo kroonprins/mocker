@@ -27,3 +27,6 @@ projects:
   - name: test_encoding
     rules:
       - ../rules/encoding_*.yaml
+  - name: test_conditional_response
+    rules:
+      - ../rules/conditional_response*.yaml

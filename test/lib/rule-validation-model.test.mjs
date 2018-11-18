@@ -96,6 +96,14 @@ const test = async () => {
   expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), new Response('nunjucks', 'x'), undefined, new FixedLatency(1)))).to.be.equal(true)
   expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), new Response('nunjucks', 'x'), undefined, undefined, new RandomLatency(1)))).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), new Response('nunjucks', 'x'), undefined, undefined, new RandomLatency(1, 2)))).to.be.equal(true)
+  expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), undefined, 'x'))).to.be.equal(false)
+  expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), undefined, new ConditionalResponse()))).to.be.equal(false)
+  expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), undefined, new ConditionalResponse('nunjucks', 'x')))).to.be.equal(false)
+  expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), undefined, new ConditionalResponse('nunjucks', [ new ConditionalResponseValue(true, 'x') ])))).to.be.equal(true)
+  expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), undefined, new ConditionalResponse('nunjucks', [ new ConditionalResponseValue(true, 'x'), 'x' ])))).to.be.equal(false)
+  expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), undefined, new ConditionalResponse('nunjucks', [ new ConditionalResponseValue(true, 'x'), new ConditionalResponseValue(true, 'x') ])))).to.be.equal(true)
+  expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), undefined, new ConditionalResponse('nunjucks', [])))).to.be.equal(false)
+  expect(await jsonSchemaValidator.validate('Rule', new Rule('x', new Request('/test', 'GET'), new Response('nunjucks', 'x'), new ConditionalResponse('nunjucks', [ new ConditionalResponseValue(true, 'x') ])))).to.be.equal(false)
 }
 
 export {
