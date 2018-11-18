@@ -1,10 +1,8 @@
 * allow latency also at global project level
-* make it possible to make response in a rule conditional (=> avoid having to put the condition in several fields (e.g. statusCode and body are different depending some condition))
 * file download/upload mocking?
 * investigate pouchdb as alternative to nedb (because last commit for nedb more than 2 years ago). Related to it: investigate if none of the bigger odm frameworks (e.g. mongoose / waterline) support an embedded db.
 * make path and method in request of a rule arrays?
 * serializr also has callback functions => check if promisify
-* maybe add watch on yaml files to refresh project memory model when file system changes
 * make clustering of mock server possible
 * some pretty horrifying object cloning going on => investigate immutable structures (at first sight not straightforward with classes)
 * check out chai-as-promised (mainly to see if we can't improve the tests where we check on an expected exception to be thrown for async function (see https://github.com/chaijs/chai/issues/415))
@@ -41,7 +39,6 @@
 * to check: npm install fails if angular cli not installed globally?
 * add more testing on file watching + improve code around restarting logic
 * investigate yaml autocomplete
-* generate swagger for mock server
 * create mock server rules from a swagger definition
 * add optional dependency app-config to simplify what needs to be set up in unit tests. In general review dependencies because there is too much unnecessary things to set up in unit tests. Or check if the can be some kind of "mock"-mode.
 * make possible to activate project watch from ui?
@@ -54,3 +51,6 @@
 * split into separate libraries
 * make version of mock server in go
 * make version of learning mode with immediate save to rule
+* find test runner that does support modules easily without workarounds
+* check why learning mode unit tests fail after another test has failed, but work again after cleaning test.db
+* better clean up after failing unit tests

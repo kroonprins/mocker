@@ -6,8 +6,8 @@ import { Mocker } from './lib/mocker'
 try {
   (new Mocker()).startLearningModeReverseProxyServer()
     .catch(error => {
-      console.error('Failed to start learning mode server: ', error.message)
+      console.error('Failed to start learning mode server: ', error.stack)
     })
 } catch (error) {
-  console.error('Failed to start learning mode server: ', error.message)
+  console.error('Failed to start learning mode server: ', error.stack)
 }

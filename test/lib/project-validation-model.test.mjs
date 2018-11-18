@@ -6,7 +6,7 @@ import { LatencyValidationModel } from '../../lib/latency-validation-model.mjs'
 import { FixedLatency, RandomLatency } from '../../lib/latency-model.mjs'
 import { ProjectsFile, ProjectFile, Project, ProjectRule } from '../../lib/project-model'
 import { ProjectValidationModel } from '../../lib/project-validation-model'
-import { Request, Header, Cookie, Response, Rule } from '../../lib/rule-model'
+import { Request, Header, Cookie, Response, ConditionalResponse, ConditionalResponseValue, Rule } from '../../lib/rule-model'
 import { RuleValidationModel } from '../../lib/rule-validation-model'
 import { Logger, PinoLogger } from './../../lib/logging'
 import { config } from './../../lib/config'
@@ -35,6 +35,8 @@ const test = async () => {
     .addSchema(ruleValidationModel[Header], 'Header')
     .addSchema(ruleValidationModel[Cookie], 'Cookie')
     .addSchema(ruleValidationModel[Response], 'Response')
+    .addSchema(ruleValidationModel[ConditionalResponse], 'ConditionalResponse')
+    .addSchema(ruleValidationModel[ConditionalResponseValue], 'ConditionalResponseValue')
     .addSchema(ruleValidationModel[Rule], 'Rule')
     .addSchema(projectValidationModel[ProjectsFile], 'ProjectsFile')
     .addSchema(projectValidationModel[ProjectFile], 'ProjectFile')

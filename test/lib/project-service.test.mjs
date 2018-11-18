@@ -62,6 +62,7 @@ const test = async () => {
           [],
           '{\n  "respo": "Test rule 2: {{req.body.input}}"\n}\n'
         ),
+        undefined,
         new FixedLatency(2000)
       )
     ))
@@ -102,6 +103,7 @@ const test = async () => {
           [],
           '{\n  "respo": "Test rule 2: {{req.body.input}}"\n}\n'
         ),
+        undefined,
         new FixedLatency(2000)
       )
     ))
@@ -119,6 +121,7 @@ const test = async () => {
           [],
           '{\n  "respo": "Test rule 3: {{req.query.q}} / {{req.params.id}}"\n}\n'
         ),
+        undefined,
         undefined,
         new RandomLatency(1000, 3000)
       )
