@@ -286,6 +286,18 @@ const test = async () => {
         schema: {
           type: 'string'
         }
+      }, {
+        in: 'query',
+        name: 'q6',
+        schema: {
+          type: 'string'
+        }
+      }, {
+        in: 'query',
+        name: 'q7',
+        schema: {
+          type: 'string'
+        }
       }],
       responses:
       {
@@ -301,7 +313,8 @@ const test = async () => {
             }
           },
           content:
-            { '{{req.query.q1}}': { schema: { type: 'string', example: 'hello swagger for input query parameters {{req.query.q4}}' } } }
+            { '{% if req.query.q1 + req.query.q7 > aFunc(req.query.q5) - req.query.q8 %}application/json{% else %}{{req.query.q6 | filter}}{% endif %}':
+              { schema: { type: 'string', example: 'hello swagger for input query parameters {{aFunc(req.query.q4)}}' } } }
         }
       }
     })

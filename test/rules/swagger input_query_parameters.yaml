@@ -4,7 +4,7 @@ request:
   method: GET
 response:
   templatingEngine: nunjucks
-  contentType: "{{req.query.q1}}"
+  contentType: "{% if req.query.q1 + req.query.q7 > aFunc(req.query.q5) - req.query.q8 %}application/json{% else %}{{req.query.q6 | filter}}{% endif %}"
   statusCode: 200
   headers:
     - name: x-header
@@ -12,4 +12,4 @@ response:
   cookies:
     - name: cookie
       value: "{{req.query[\"q3\"]}}"
-  body: hello swagger for input query parameters {{req.query.q4}}
+  body: hello swagger for input query parameters {{aFunc(req.query.q4)}}

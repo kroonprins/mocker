@@ -40,7 +40,6 @@
 * put hierarchy in lib folder
 * to check: npm install fails if angular cli not installed globally?
 * add more testing on file watching + improve code around restarting logic
-* add mirror server like httpbin?
 * investigate yaml autocomplete
 * generate swagger for mock server
 * create mock server rules from a swagger definition
@@ -51,3 +50,7 @@
     * echo
     * path parameter used in response
 * add unit test for swagger ui handling in mock server
+* make mock server integration in unit tests (with wrapper to verify that it has been called)
+* split into separate libraries
+* make version of mock server in go
+* make version of learning mode with immediate save to rule
