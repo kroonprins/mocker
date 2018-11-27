@@ -22,9 +22,9 @@
   },
   "homepage": "https://github.com/kroonprins/mocker#readme",
   "dependencies": {
-    "@kroonprins/mocker-learning-mode": "0.1.0",
-    "@kroonprins/mocker-mock-server": "0.1.0",
-    "@kroonprins/mocker-shared-lib": "0.1.0",
+    "@kroonprins/mocker-learning-mode": "^0.1.0",
+    "@kroonprins/mocker-mock-server": "^0.1.0",
+    "@kroonprins/mocker-shared-lib": "^0.1.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dotenv": "^6.1.0",
