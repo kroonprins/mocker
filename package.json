@@ -18,7 +18,11 @@
     "docker-test-local-mock-server": "docker run mocker-local-mock-server npm test",
     "docker-test-local-learning-mode": "docker run mocker-local-learning-mode npm test",
     "docker-test-local-ui": "docker run mocker-local-ui npm test",
-    "docker-test-local-shared-lib": "docker run mocker-local-shared-lib"
+    "docker-test-local-shared-lib": "docker run mocker-local-shared-lib",
+    "docker-build": "lerna run docker-build",
+    "docker-test": "lerna run docker-test",
+    "docker-push": "lerna run docker-push",
+    "publish-packages": "lerna publish"
   },
   "devDependencies": {
     "cross-var": "^1.1.0",

@@ -66,3 +66,4 @@
 * check jsdoc again after split in modules (jsdoc per module)
 * handle relative paths in start.mjs scripts
 * find alternative for npm-check-updates as it results in npm audit complaining
+* docker image for ui: multi-stage to only get result of angular prod build
