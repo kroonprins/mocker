@@ -1,0 +1,43 @@
+{
+  "name": "@kroonprins/mocker-ui",
+  "version": "0.1.0",
+  "description": "UI for mocker",
+  "main": "exports.mjs",
+  "scripts": {
+    "start": "./start.mjs",
+    "test": "mocker-test-runner",
+    "version-check": "updates",
+    "docker-build": "cross-var docker build -t kroonprins/mocker-ui:latest -t kroonprins/mocker-ui:$npm_package_version .",
+    "docker-test": "docker run kroonprins/mocker-ui npm test",
+    "docker-push": "docker push kroonprins/mocker-ui"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kroonprins/mocker.git"
+  },
+  "author": "kroonprins",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kroonprins/mocker/issues"
+  },
+  "homepage": "https://github.com/kroonprins/mocker#readme",
+  "dependencies": {
+    "@kroonprins/mocker-learning-mode": "0.1.0",
+    "@kroonprins/mocker-mock-server": "0.1.0",
+    "@kroonprins/mocker-shared-lib": "0.1.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "serializr": "^1.3.0"
+  },
+  "devDependencies": {
+    "ajv": "^6.5.5",
+    "ajv-async": "^1.0.1",
+    "axios": "^0.18.0",
+    "chai": "^4.2.0",
+    "chai-exclude": "^1.0.11",
+    "portastic": "^1.0.1",
+    "updates": "^5.3.0"
+  }
+}

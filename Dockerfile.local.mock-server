@@ -1,0 +1,17 @@
+FROM node:11.2.0-alpine
+
+WORKDIR /app
+COPY . .
+
+RUN npm install -g lerna
+RUN lerna bootstrap
+
+FROM node:alpine
+
+WORKDIR /app
+# dependencies
+COPY --from=0 /app/packages/mocker-shared-lib /mocker-shared-lib/
+# app
+COPY --from=0 /app/packages/mocker-mock-server .
+
+CMD [ "npm", "start" ]

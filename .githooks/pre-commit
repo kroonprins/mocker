@@ -16,7 +16,7 @@ if [ "$?" != "0" ]; then
   exit 2
 fi
 
-cd ./ui
+cd packages/mocker-ui/src/angular
 npm run lint
 if [ "$?" != "0" ]; then
   echo

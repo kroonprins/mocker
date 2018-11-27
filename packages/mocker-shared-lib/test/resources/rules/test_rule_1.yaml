@@ -1,0 +1,31 @@
+---
+name: testRule1
+request:
+  path: /hello1/:id
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: application/json
+  statusCode: "{% if req.params.id > 5 %}400{% else %}200{% endif %}"
+  headers:
+    - name: X-Powered-By
+      value: mocker
+    - name: X-positivo
+      value: jawohl
+    - name: X-zeker
+      value: klahr
+    - name: X-yup
+      value: "{{req.query.q}}"
+  cookies:
+    - name: koekske
+      value: jummie
+      properties:
+        secure: true
+    - name: only
+      value: http
+      properties:
+        httpOnly: true
+  body: |
+    {
+      "respo": "Test rule 1: {{req.query.q}} / {{req.params.id}}"
+    }

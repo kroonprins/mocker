@@ -1,6 +1,4 @@
 node_modules/
 generated-jsdoc/
-lib/mjs_workaround/serializr-es6-module-loader.mjs
 data/
 tmp/
-tmp*

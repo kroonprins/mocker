@@ -1,4 +1,0 @@
-projects:
-  - name: 'invalid rule'
-    rules:
-      - ./test/rules/invalid_rule #no .yaml to avoid rule getting picked up by glob of other project

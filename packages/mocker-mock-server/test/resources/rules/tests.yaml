@@ -1,0 +1,15 @@
+---
+projects:
+  - name: test_glob
+    rules:
+      - ../rules/test_*.yaml
+  - name: test_multiple_glob
+    rules:
+      - ../rules/test_rule_1*
+      - ../rules/test_rule_2*
+  - name: test_encoding
+    rules:
+      - ../rules/encoding_*.yaml
+  - name: test_conditional_response
+    rules:
+      - ../rules/conditional_response*.yaml

@@ -1,8 +1,0 @@
----
-projects:
-  - name: Wow, this is amazing!
-    rules:
-      - ../rules/hello_world.yaml
-  - name: Wow, even more amazing!!
-    rules:
-      - ../rules/*.yaml

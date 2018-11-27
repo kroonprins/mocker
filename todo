@@ -52,5 +52,17 @@
 * make version of mock server in go
 * make version of learning mode with immediate save to rule
 * find test runner that does support modules easily without workarounds
-* check why learning mode unit tests fail after another test has failed, but work again after cleaning test.db
-* better clean up after failing unit tests
+* create a default-config in the shared libs setting up default instances so that other modules (and unit tests) only need to overwrite if ever needed
+* invert dependency between config.service and templating.service so everything of templating can be moved to the mock server module (be careful to also clean up package.json of shared libs) + e.g. app-class-validation.service.test, config.service.test + move echo-service as well
+* check if dependency on nunjuckstemplatingservice can't be optional in templating services so that unit tests have to register less if nunjucks not needed
+* check project change watcher overlap with project store, meaning also that there are a lot of dependencies in mock-server that are already in shared libs
+* check if possible to do something about logging results of test-runner not always printed last
+* integrate swagger in admin-server?
+* review split of server-model over shared-libs and ui
+* remove the comment that was copy-pasted at the start of every unit test
+* figure out why project service test does leave the crud_test.yaml file messed up if another test failed (maybe because at some point this.logger was used in the catch)
+* if reverse proxy target does not start with http:// then technical error => check error handling
+* when removing project from ui, make sure servers for it are stopped
+* check jsdoc again after split in modules (jsdoc per module)
+* handle relative paths in start.mjs scripts
+* find alternative for npm-check-updates as it results in npm audit complaining
