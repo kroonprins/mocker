@@ -40,6 +40,7 @@
     "chai": "^4.2.0",
     "chai-exclude": "^1.0.11",
     "chai-string": "^1.5.0",
+    "cross-var": "^1.1.0",
     "express": "^4.16.4",
     "express-async-errors": "^3.1.1",
     "portastic": "^1.0.1",

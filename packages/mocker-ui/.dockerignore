@@ -2,3 +2,5 @@ node_modules
 Dockerfile
 exports.mjs
 data
+src/angular/node_modules
+src/angular/dist
