@@ -1,10 +1,10 @@
-import { Logger } from './logging'
-import { config } from './config'
 import fs from 'fs'
 import path from 'path'
 import cjs from './mjs_workaround/cjs'
-import { createModulePath } from './dynamic-module-import-helper'
+import { createModulePath } from '@kroonprins/mocker-shared-lib/dynamic-module-import-helper'
 import { EchoServerService } from './echo-server.service'
+import { Logger } from '@kroonprins/mocker-shared-lib/logging'
+import { config } from '@kroonprins/mocker-shared-lib/config'
 
 class NunjucksTemplatingHelpers {
   constructor(userDefinedHelperLocations = config.getOptionalProperty('templating.helpers.nunjucks'), echoServerService = config.getOptionalInstance(EchoServerService)) {
@@ -74,7 +74,7 @@ class NunjucksTemplatingHelpers {
         import(createModulePath(resolvedLocation, cjs.__dirname)).then(module => {
           Object.assign(this.filters, module.HELPERS.filters)
           Object.assign(this.functions, module.HELPERS.functions)
-        }));
+        }))
     }
 
     return Promise.all(dynamicImportPromises)

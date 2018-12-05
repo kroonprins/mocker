@@ -1,8 +1,8 @@
 import chai from 'chai'
 import { TemplatingService } from '../src/templating.service'
 import { NunjucksTemplatingService } from '../src/templating.service.nunjucks'
-import { Logger, PinoLogger } from '../src/logging'
-import { config } from '../src/config'
+import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging'
+import { config } from '@kroonprins/mocker-shared-lib/config'
 import { NunjucksTemplatingHelpers } from '../src/templating-helpers.nunjucks'
 
 const expect = chai.expect

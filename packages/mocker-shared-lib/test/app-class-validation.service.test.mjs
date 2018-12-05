@@ -7,9 +7,6 @@ import { Request, Cookie, Response, Rule } from '../src/rule-model'
 import { ConfigService } from '../src/config.service'
 import { LatencyValidationModel } from '../src/latency-validation-model'
 import { RuleValidationModel } from '../src/rule-validation-model'
-import { TemplatingService } from '../src/templating.service'
-import { NunjucksTemplatingHelpers } from '../src/templating-helpers.nunjucks'
-import { NunjucksTemplatingService } from '../src/templating.service.nunjucks'
 import { Logger, PinoLogger } from '../src/logging'
 import { config } from '../src/config'
 
@@ -21,9 +18,6 @@ const test = async () => {
     config
       .registerProperty('logging.level.startup', 'debug')
       .registerType(Logger, PinoLogger)
-      .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers()) // TODO remove these templating classes once moved to mock-server
-      .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
-      .registerInstance(TemplatingService, new TemplatingService())
       .registerInstance(LatencyValidationModel, new LatencyValidationModel())
       .registerInstance(RuleValidationModel, new RuleValidationModel(new ConfigService()))
       .registerInstance(ProjectValidationModel, new ProjectValidationModel())

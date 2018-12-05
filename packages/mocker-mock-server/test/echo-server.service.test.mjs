@@ -3,6 +3,7 @@ import chaiExclude from 'chai-exclude'
 import portastic from 'portastic'
 import axios from 'axios'
 import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
+import { initialize as setDefaultConfigMockServer } from '../src/config-default'
 import { MockServer } from '../src/mock-server'
 import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging'
 import { config } from '@kroonprins/mocker-shared-lib/config'
@@ -21,6 +22,7 @@ const test = async () => {
       .registerProperty('project.location', projectFileLocation)
 
     setDefaultConfig()
+    setDefaultConfigMockServer()
 
     const availablePort = (await portastic.find({
       min: 40000,

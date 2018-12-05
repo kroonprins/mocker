@@ -1,7 +1,3 @@
-import { EchoServerService } from './echo-server.service'
-import { NunjucksTemplatingHelpers } from './templating-helpers.nunjucks'
-import { NunjucksTemplatingService } from './templating.service.nunjucks'
-import { TemplatingService } from './templating.service'
 import { ConfigService } from './config.service'
 import { LatencyValidationModel } from './latency-validation-model'
 import { RuleValidationModel } from './rule-validation-model'
@@ -18,10 +14,6 @@ const initialize = () => {
   config
     .registerDefaultProperty('logging.level.startup', 'info')
     .registerType(Logger, PinoLogger)
-    .registerInstance(EchoServerService, new EchoServerService())
-    .registerInstance('NunjucksTemplatingHelpers', new NunjucksTemplatingHelpers())
-    .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService())
-    .registerInstance(TemplatingService, new TemplatingService())
     .registerInstance(ConfigService, new ConfigService())
     .registerInstance(LatencyValidationModel, new LatencyValidationModel())
     .registerInstance(RuleValidationModel, new RuleValidationModel())

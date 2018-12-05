@@ -96,11 +96,8 @@ const skipTest = (testFile) => {
       testResult.executed = true
     }
 
-    // console.log('hier'+testFile)
-    // console.log(createModulePath(testFile, cjs.__dirname))
     try {
       const testModule = await import(createModulePath(testFile, cjs.__dirname))
-      // const testModule = await import(testFile)
       await testModule.test()
     } catch (e) {
       testResult.failure = e

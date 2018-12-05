@@ -1,6 +1,5 @@
 import { TechnicalValidationError } from './error-types'
 import { LearningModeServerTypes } from './server.service'
-import { TemplatingService } from './templating.service'
 import { Logger } from './logging'
 import { config } from './config'
 
@@ -8,15 +7,14 @@ import { config } from './config'
  * Service for retrieve various configuration items.
  */
 class ConfigService {
-  constructor (templatingService = config.getInstance(TemplatingService)) {
-    this.templatingService = templatingService
+  constructor () {
     this.logger = config.getClassInstance(Logger, { id: 'config.service' })
     this.MAPPING_SYNC = {
       'learning-mode-server-types': () => {
         return Object.values(LearningModeServerTypes)
       },
       'templating-types': () => {
-        return this.templatingService.listEngines()
+        return ['none', 'nunjucks']
       },
       'http-methods': () => {
         return [

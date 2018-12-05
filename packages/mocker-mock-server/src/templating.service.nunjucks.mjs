@@ -1,7 +1,7 @@
 import nunjucks from 'nunjucks'
 import memoize from 'mem'
-import { Logger } from './logging'
-import { config } from './config'
+import { Logger } from '@kroonprins/mocker-shared-lib/logging'
+import { config } from '@kroonprins/mocker-shared-lib/config'
 
 class NunjucksTemplatingService {
   constructor (helpers = config.getInstance('NunjucksTemplatingHelpers')) {

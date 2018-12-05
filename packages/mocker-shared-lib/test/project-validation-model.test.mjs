@@ -20,11 +20,7 @@ const test = async () => {
     .registerType(Logger, PinoLogger)
 
   const latencyValidationModel = new LatencyValidationModel()
-  const ruleValidationModel = new RuleValidationModel(new ConfigService({
-    listEngines: () => {
-      return [ 'none', 'nunjucks' ]
-    }
-  }), latencyValidationModel)
+  const ruleValidationModel = new RuleValidationModel(new ConfigService(), latencyValidationModel)
   const projectValidationModel = new ProjectValidationModel(ruleValidationModel)
 
   const jsonSchemaValidator = ajvAsync(new Ajv())

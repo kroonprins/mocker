@@ -7,6 +7,7 @@ import { LearningModeService, RecordedRequest, initialize as setDefaultLearningM
 import { LearningModeServerTypes } from '@kroonprins/mocker-shared-lib/server.service'
 import { unlinkAsync, copyFileAsync, moveFileAsync } from '@kroonprins/mocker-shared-lib/fs-util'
 import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
+import { initialize as setDefaultConfigMockServer } from '@kroonprins/mocker-mock-server'
 import { initialize as setDefaultConfigUI } from '../src/config-default'
 import { config } from '@kroonprins/mocker-shared-lib/config'
 
@@ -27,6 +28,7 @@ const test = async () => {
       .registerProperty('learning-mode.db.location', testLearningModeDbLocation)
 
     setDefaultConfig()
+    setDefaultConfigMockServer()
     setDefaultLearningModeConfig()
     setDefaultConfigUI()
 

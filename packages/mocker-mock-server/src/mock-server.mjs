@@ -7,7 +7,7 @@ import zlib from 'zlib'
 import { Server } from '@kroonprins/mocker-shared-lib/server.service'
 import { ProjectService } from '@kroonprins/mocker-shared-lib/project.service'
 import { ProjectChangeWatcher } from './project-change-watcher'
-import { TemplatingService } from '@kroonprins/mocker-shared-lib/templating.service'
+import { TemplatingService } from './templating.service'
 import { MockServerSwaggerUiServer } from './mock-server-swagger-ui'
 import { config } from '@kroonprins/mocker-shared-lib/config'
 

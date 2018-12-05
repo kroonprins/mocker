@@ -54,20 +54,24 @@ const test = () => {
   expect(instanceWithTooManyArguments.b).to.be.equal('x')
 
   // ---- Register instance ----
-  class TestInstance {}
-  const instance = new TestInstance()
+  class TestInstance {
+    constructor (test) {
+      this.test = test
+    }
+  }
+  const instance = new TestInstance('xyz')
   config.registerInstance(TestInstance, instance)
 
-  expect(config.getInstance(TestInstance)).to.be.equal(instance)
+  expect(config.getInstance(TestInstance).test).to.be.equal(instance.test)
 
   config.unregisterInstance(TestInstance)
 
   // expect an exception when trying to retrieve instance for a class that isn't registered
-  expect(() => config.getInstance(TestInstance)).to.throw('No instance has been registered for \'class TestInstance {}\'')
+  expect(() => config.getInstance(TestInstance)).to.throw('No instance has been registered for \'TestInstance\'')
 
   // register by name
   config.registerInstance('name', instance)
-  expect(config.getInstance('name')).to.be.equal(instance)
+  expect(config.getInstance('name').test).to.be.equal(instance.test)
 
   // ---- Register property ----
   const property = 'test.property'

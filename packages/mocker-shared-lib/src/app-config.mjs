@@ -6,6 +6,25 @@
  */
 class AppConfigurationError extends Error {}
 
+class WrappedProxy {
+  constructor (target) {
+    this.target = target
+    this.proxy = new Proxy(this.target, new Proxy({}, {
+      get: (_, property) => {
+        return (...args) => Reflect[property].apply(null, [this.target, ...args.slice(1)])
+      }
+    }))
+  }
+
+  update (newTarget) {
+    this.target = newTarget
+  }
+
+  unwrap () {
+    return this.proxy
+  }
+}
+
 /**
  * Extremely basic DI container.
  * Allows registering instances, types and properties.
@@ -73,7 +92,11 @@ class AppConfig {
    * @memberof AppConfig
    */
   registerInstance (id, instance) {
-    this.instanceContainer[id] = instance
+    if (id in this.instanceContainer) {
+      this.instanceContainer[id].update(instance)
+    } else {
+      this.instanceContainer[id] = new WrappedProxy(instance)
+    }
     return this
   }
 
@@ -152,9 +175,9 @@ class AppConfig {
    */
   getInstance (id) {
     if (!(id in this.instanceContainer)) {
-      throw new AppConfigurationError(`No instance has been registered for '${id}'`)
+      throw new AppConfigurationError(`No instance has been registered for '${typeof id === 'string' ? id : id.name}'`)
     }
-    return this.instanceContainer[id]
+    return this.instanceContainer[id].unwrap()
   }
 
   /**
@@ -166,7 +189,7 @@ class AppConfig {
    */
   getOptionalInstance (id) {
     if (id in this.instanceContainer) {
-      return this.instanceContainer[id]
+      return this.instanceContainer[id].unwrap()
     } else {
       // TODO can we log warning?
       return undefined
@@ -180,9 +203,9 @@ class AppConfig {
    * @memberof AppConfig
    */
   getInstancesForType (type) {
-    return Object.values(this.instanceContainer).filter(instance => {
-      return instance instanceof type
-    })
+    return Object.values(this.instanceContainer)
+      .map(wrappedProxy => wrappedProxy.target)
+      .filter(instance => instance instanceof type)
   }
 
   /**

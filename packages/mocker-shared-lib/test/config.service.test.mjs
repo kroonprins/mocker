@@ -1,6 +1,5 @@
 import chai from 'chai'
 import { ConfigService } from '../src/config.service'
-import { TemplatingService } from '../src/templating.service'
 import { Logger, PinoLogger } from '../src/logging'
 import { config } from '../src/config'
 
@@ -13,7 +12,7 @@ const test = async () => {
       .registerType(Logger, PinoLogger)
       .registerInstance('NunjucksTemplatingService', {})
 
-    const configService = new ConfigService(new TemplatingService())
+    const configService = new ConfigService()
 
     let exceptionThrownBecauseUnknownItem = false
     try {

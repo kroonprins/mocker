@@ -1,5 +1,6 @@
 import chai from 'chai'
 import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
+import { initialize as setDefaultConfigMockServer } from '../src/config-default'
 import { ProjectService } from '@kroonprins/mocker-shared-lib/project.service'
 import { SwaggerGenerationService } from '../src/swagger-generation.service'
 import { config } from '@kroonprins/mocker-shared-lib/config'
@@ -13,6 +14,7 @@ const test = async () => {
       .registerProperty('project.location', './test/resources/projects/swagger_test.yaml')
 
     setDefaultConfig()
+    setDefaultConfigMockServer()
 
     const servers = [{
       url: 'http://bind:8989', description: 'desc'
