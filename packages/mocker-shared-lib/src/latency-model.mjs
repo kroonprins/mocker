@@ -11,6 +11,10 @@ class RandomLatency {
     this.min = min
     this.max = max
   }
+
+  generateValue () {
+    return Math.floor(Math.random() * (this.max - this.min + 1)) + this.min
+  }
 }
 
 export {

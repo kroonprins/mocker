@@ -64,7 +64,6 @@
 * when removing project from ui, make sure servers for it are stopped
 * check jsdoc again after split in modules (jsdoc per module)
 * handle relative paths in start.mjs scripts
-* make delays part of response, so that values can be templated + different per response in case of conditional response?
 * add info about delay in generated swagger
 * make config.getProperty return an object to which can be listened for changes so that properties can be updated at runtime from the admin-server (the proxy of config.getInstance could possibly also get extra functionality to listen for update event)
 * let learning mode also save the delay

@@ -10,8 +10,14 @@ class LatencyValidationModel extends ValidationModel {
         'type': 'object',
         'properties': {
           'value': {
-            'type': 'number',
-            'minimum': 0
+            'anyOf': [
+              {
+                'type': 'number',
+                'minimum': 0
+              }, {
+                'type': 'string'
+              }
+            ]
           }
         },
         'required': [
@@ -28,12 +34,24 @@ class LatencyValidationModel extends ValidationModel {
         'type': 'object',
         'properties': {
           'min': {
-            'type': 'number',
-            'minimum': 0
+            'anyOf': [
+              {
+                'type': 'number',
+                'minimum': 0
+              }, {
+                'type': 'string'
+              }
+            ]
           },
           'max': {
-            'type': 'number',
-            'minimum': 1
+            'anyOf': [
+              {
+                'type': 'number',
+                'minimum': 1
+              }, {
+                'type': 'string'
+              }
+            ]
           }
         },
         'required': [

@@ -90,6 +90,22 @@ const test = async () => {
       expect(durationRule3).to.be.above(1000)
       expect(durationRule3).to.be.below(3200)
 
+      const startTimeRule4 = (new Date()).getTime()
+      const responseRule4 = await axios.get(`http://localhost:${availablePort}/templated-fixed-latency`)
+      const durationRule4 = (new Date()).getTime() - startTimeRule4
+      expect(responseRule4.status).to.be.equal(200)
+      expect(responseRule4.data).to.be.equal('templated fixed latency')
+      expect(durationRule4).to.be.above(2000)
+      expect(durationRule4).to.be.below(3000)
+
+      const startTimeRule5 = (new Date()).getTime()
+      const responseRule5 = await axios.get(`http://localhost:${availablePort}/templated-random-latency`)
+      const durationRule5 = (new Date()).getTime() - startTimeRule5
+      expect(responseRule5.status).to.be.equal(200)
+      expect(responseRule5.data).to.be.equal('templated random latency')
+      expect(durationRule5).to.be.above(1000)
+      expect(durationRule5).to.be.below(3200)
+
       let exceptionThrownBecauseNoMethodMatch = false
       try {
         await axios.post(`http://localhost:${availablePort}/hello3/d`)
@@ -167,6 +183,38 @@ const test = async () => {
         exceptionThrownBecauseHttp500 = true
       }
       expect(exceptionThrownBecauseHttp500).to.be.equal(true)
+
+      const startTimeConditionalResponseWithLatency1 = (new Date()).getTime()
+      const conditionalResponseWithLatency1 = await axios.get(`http://localhost:${availablePort}/conditional-with-latency/10?q=11`)
+      const durationConditionalResponseWithLatency1 = (new Date()).getTime() - startTimeConditionalResponseWithLatency1
+      expect(conditionalResponseWithLatency1.status).to.be.equal(200)
+      expect(conditionalResponseWithLatency1.data).to.deep.equal({
+        message: 'This request is very good and very fixed'
+      })
+      expect(conditionalResponseWithLatency1.headers['content-type']).to.startsWith('application/json')
+      expect(conditionalResponseWithLatency1.headers['x-header']).to.be.equal('11')
+      expect(durationConditionalResponseWithLatency1).to.be.above(2000)
+      expect(durationConditionalResponseWithLatency1).to.be.below(3000)
+
+      const startTimeConditionalResponseWithLatency2 = (new Date()).getTime()
+      const conditionalResponseWithLatency2 = await axios.get(`http://localhost:${availablePort}/conditional-with-latency/3?q=5`)
+      const durationConditionalResponseWithLatency2 = (new Date()).getTime() - startTimeConditionalResponseWithLatency2
+      expect(conditionalResponseWithLatency2.status).to.be.equal(200)
+      expect(conditionalResponseWithLatency2.data).to.equal('This request is also good but a bit random')
+      expect(conditionalResponseWithLatency2.headers['content-type']).to.startsWith('text/plain')
+      expect(durationConditionalResponseWithLatency2).to.be.above(500)
+      expect(durationConditionalResponseWithLatency2).to.be.below(1600)
+
+      const startTimeConditionalResponseWithLatency3 = (new Date()).getTime()
+      const conditionalResponseWithLatency3 = await axios.get(`http://localhost:${availablePort}/conditional-with-latency/blabla?q=5`)
+      const durationConditionalResponseWithLatency3 = (new Date()).getTime() - startTimeConditionalResponseWithLatency3
+      expect(conditionalResponseWithLatency3.status).to.be.equal(200)
+      expect(conditionalResponseWithLatency3.data).to.deep.equal({
+        message: 'This request is the best and very quick'
+      })
+      expect(conditionalResponseWithLatency3.headers['content-type']).to.startsWith('application/json')
+      expect(durationConditionalResponseWithLatency3).to.be.above(10)
+      expect(durationConditionalResponseWithLatency3).to.be.below(300)
     } finally {
       await mockServerForConditionalResponseTest.stop()
     }

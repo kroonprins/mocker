@@ -66,8 +66,10 @@ class Cookie {
 }
 
 class Response {
-  constructor (templatingEngine, contentType, statusCode = 200, headers = [], cookies = [], body = null) {
+  constructor (templatingEngine, fixedLatency, randomLatency, contentType, statusCode = 200, headers = [], cookies = [], body = null) {
     this.templatingEngine = templatingEngine
+    this.fixedLatency = fixedLatency
+    this.randomLatency = randomLatency
     this.contentType = contentType
     this.statusCode = statusCode
     this.headers = headers
@@ -80,6 +82,18 @@ class Response {
   }
   get templatingEngine () {
     return this._templatingEngine
+  }
+  set fixedLatency (fixedLatency) {
+    this._fixedLatency = fixedLatency
+  }
+  get fixedLatency () {
+    return this._fixedLatency
+  }
+  set randomLatency (randomLatency) {
+    this._randomLatency = randomLatency
+  }
+  get randomLatency () {
+    return this._randomLatency
   }
   set contentType (contentType) {
     this._contentType = contentType ? contentType.trim() : null
@@ -134,8 +148,10 @@ class ConditionalResponse {
 }
 
 class ConditionalResponseValue {
-  constructor (condition, contentType, statusCode = 200, headers = [], cookies = [], body = null) {
+  constructor (condition, fixedLatency, randomLatency, contentType, statusCode = 200, headers = [], cookies = [], body = null) {
     this.condition = condition
+    this.fixedLatency = fixedLatency
+    this.randomLatency = randomLatency
     this.contentType = contentType
     this.statusCode = statusCode
     this.headers = headers
@@ -148,6 +164,18 @@ class ConditionalResponseValue {
   }
   get condition () {
     return this._condition
+  }
+  set fixedLatency (fixedLatency) {
+    this._fixedLatency = fixedLatency
+  }
+  get fixedLatency () {
+    return this._fixedLatency
+  }
+  set randomLatency (randomLatency) {
+    this._randomLatency = randomLatency
+  }
+  get randomLatency () {
+    return this._randomLatency
   }
   set contentType (contentType) {
     this._contentType = contentType ? contentType.trim() : null
@@ -182,13 +210,11 @@ class ConditionalResponseValue {
 }
 
 class Rule {
-  constructor (name, request, response, conditionalResponse, fixedLatency, randomLatency) {
+  constructor (name, request, response, conditionalResponse) {
     this.name = name
     this.request = request
     this.response = response
     this.conditionalResponse = conditionalResponse
-    this.fixedLatency = fixedLatency
-    this.randomLatency = randomLatency
   }
 
   set name (name) {
@@ -214,18 +240,6 @@ class Rule {
   }
   get conditionalResponse () {
     return this._conditionalResponse
-  }
-  set fixedLatency (fixedLatency) {
-    this._fixedLatency = fixedLatency
-  }
-  get fixedLatency () {
-    return this._fixedLatency
-  }
-  set randomLatency (randomLatency) {
-    this._randomLatency = randomLatency
-  }
-  get randomLatency () {
-    return this._randomLatency
   }
 }
 

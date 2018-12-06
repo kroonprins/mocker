@@ -115,6 +115,16 @@ class RuleValidationModel extends ValidationModel {
             'type': 'string',
             'enum': configService.getSync('templating-types')
           },
+          'fixedLatency': {
+            'anyOf': [{
+              '$ref': `${latencyValidationModel[FixedLatency].$id}#/FixedLatency`
+            }, { 'type': 'null' }]
+          },
+          'randomLatency': {
+            'anyOf': [{
+              '$ref': `${latencyValidationModel[RandomLatency].$id}#/RandomLatency`
+            }, { 'type': 'null' }]
+          },
           'contentType': {
             'type': 'string' // TODO get list of values from function?
           },
@@ -154,6 +164,16 @@ class RuleValidationModel extends ValidationModel {
           'condition': {
             'type': ['boolean', 'string']
           },
+          'fixedLatency': {
+            'anyOf': [{
+              '$ref': `${latencyValidationModel[FixedLatency].$id}#/FixedLatency`
+            }, { 'type': 'null' }]
+          },
+          'randomLatency': {
+            'anyOf': [{
+              '$ref': `${latencyValidationModel[RandomLatency].$id}#/RandomLatency`
+            }, { 'type': 'null' }]
+          },
           'contentType': {
             'type': 'string' // TODO get list of values from function?
           },
@@ -178,6 +198,7 @@ class RuleValidationModel extends ValidationModel {
         },
         'required': [
           'condition', 'contentType', 'statusCode' // TODO is content-type mandatory response header in http spec?
+          // TODO only one of fixedLatency/randomLatency
         ]
         // 'additionalProperties': false
       },
@@ -227,12 +248,6 @@ class RuleValidationModel extends ValidationModel {
           },
           'conditionalResponse': {
             '$ref': `${this[ConditionalResponse].$id}#/ConditionalResponse`
-          },
-          'fixedLatency': {
-            '$ref': `${latencyValidationModel[FixedLatency].$id}#/FixedLatency`
-          },
-          'randomLatency': {
-            '$ref': `${latencyValidationModel[RandomLatency].$id}#/RandomLatency`
           }
         },
         'required': [

@@ -1,0 +1,13 @@
+---
+name: testRuleTemplatedRandomLatency
+request:
+  path: /templated-random-latency
+  method: GET
+response:
+  templatingEngine: nunjucks
+  randomLatency:
+    min: "{{ 500 + 500 }}"
+    max: "{{ 9000 / 3 }}"
+  contentType: application/json
+  statusCode: 200
+  body: "templated random latency"

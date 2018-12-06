@@ -60,7 +60,7 @@ const test = async () => {
         new Rule(
           'x',
           new Request('/test', 'GET'),
-          new Response('nunjucks', 'x')
+          new Response('nunjucks', undefined, undefined, 'x')
         )
       )
     )
@@ -73,7 +73,7 @@ const test = async () => {
         new Rule(
           'x',
           new Request('/test', 'GET'),
-          new Response('nunjucks', 'x')
+          new Response('nunjucks', undefined, undefined, 'x')
         )
       )
     )
@@ -88,7 +88,7 @@ const test = async () => {
     new Rule(
       'x',
       new Request('/test', 'GET'),
-      new Response('nunjucks', 'x')
+      new Response('nunjucks', undefined, undefined, 'x')
     )
   )]))).to.be.equal(true)
 }

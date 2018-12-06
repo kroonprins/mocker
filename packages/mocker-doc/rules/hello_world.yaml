@@ -1,13 +1,13 @@
 ---
 name: Hello World
-randomLatency:
-  min: 500
-  max: 2000
 request:
   path: /hello/:id
   method: GET
 response:
   templatingEngine: nunjucks
+  randomLatency:
+    min: 500
+    max: 2000
   contentType: application/json
   statusCode: "{% if req.params.id > 5 %}400{% else %}200{% endif %}"
   headers:

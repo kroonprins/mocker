@@ -1,13 +1,13 @@
 ---
 name: testRule3
-randomLatency:
-  min: 1000
-  max: 3000
 request:
   path: /hello3/:id
   method: GET
 response:
   templatingEngine: none
+  randomLatency:
+    min: 1000
+    max: 3000
   contentType: application/json
   statusCode: 200
   headers:

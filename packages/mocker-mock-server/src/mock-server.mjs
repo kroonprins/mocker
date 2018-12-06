@@ -2,13 +2,15 @@ import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import bodyParserXml from 'body-parser-xml'
 import cors from 'cors'
-import latency from 'express-delay'
+import timestamp from 'express-timestamp'
+import moment from 'moment-timezone'
 import zlib from 'zlib'
 import { Server } from '@kroonprins/mocker-shared-lib/server.service'
 import { ProjectService } from '@kroonprins/mocker-shared-lib/project.service'
 import { ProjectChangeWatcher } from './project-change-watcher'
 import { TemplatingService } from './templating.service'
 import { MockServerSwaggerUiServer } from './mock-server-swagger-ui'
+import { RandomLatency } from '@kroonprins/mocker-shared-lib/src/latency-model.mjs'
 import { config } from '@kroonprins/mocker-shared-lib/config'
 
 /**
@@ -60,6 +62,7 @@ class MockServer extends Server {
     this.app.use(bodyParser.urlencoded({ extended: true }))
     this.app.use(cors())
     this.app.disable('x-powered-by')
+    this.app.use(timestamp.init)
 
     await this._processRules(this.app, this.project)
 
@@ -115,15 +118,15 @@ class MockServer extends Server {
       const requestCallbacks = []
 
       // Simulate latency
-      if (this._shouldSimulateFixedLatency(projectRule)) {
-        this.logger.debug('Configuring fixed latency on request')
-        requestCallbacks.push(this._configureFixedLatency(projectRule))
-      } else if (this._shouldSimulateRandomLatency(projectRule)) {
-        this.logger.debug('Configuring random latency on request')
-        requestCallbacks.push(this._configureRandomLatency(projectRule))
-      } else {
-        this.logger.debug('No latency configured for request')
-      }
+      // if (this._shouldSimulateFixedLatency(projectRule)) {
+      //   this.logger.debug('Configuring fixed latency on request')
+      //   requestCallbacks.push(this._configureFixedLatency(projectRule))
+      // } else if (this._shouldSimulateRandomLatency(projectRule)) {
+      //   this.logger.debug('Configuring random latency on request')
+      //   requestCallbacks.push(this._configureRandomLatency(projectRule))
+      // } else {
+      //   this.logger.debug('No latency configured for request')
+      // }
 
       // Generate response from project rule
       requestCallbacks.push(async (req, res) => {
@@ -141,23 +144,23 @@ class MockServer extends Server {
     }
   }
 
-  _shouldSimulateFixedLatency (projectRule) {
-    return projectRule.rule.fixedLatency && projectRule.rule.fixedLatency.value
-  }
+  // _shouldSimulateFixedLatency (projectRule) {
+  //   return projectRule.rule.fixedLatency && projectRule.rule.fixedLatency.value
+  // }
 
-  _shouldSimulateRandomLatency (projectRule) {
-    return projectRule.rule.randomLatency && projectRule.rule.randomLatency.max
-  }
+  // _shouldSimulateRandomLatency (projectRule) {
+  //   return projectRule.rule.randomLatency && projectRule.rule.randomLatency.max
+  // }
 
-  _configureFixedLatency (projectRule) {
-    this.logger.debug('Setting fixed latency: %d', projectRule.rule.fixedLatency.value)
-    return latency(projectRule.rule.fixedLatency.value)
-  }
+  // _configureFixedLatency (projectRule) {
+  //   this.logger.debug('Setting fixed latency: %d', projectRule.rule.fixedLatency.value)
+  //   return latency(projectRule.rule.fixedLatency.value)
+  // }
 
-  _configureRandomLatency (projectRule) {
-    this.logger.debug('Setting random latency between %d and %d', projectRule.rule.randomLatency.min, projectRule.rule.randomLatency.max)
-    return latency(projectRule.rule.randomLatency.min || 0, projectRule.rule.randomLatency.max)
-  }
+  // _configureRandomLatency (projectRule) {
+  //   this.logger.debug('Setting random latency between %d and %d', projectRule.rule.randomLatency.min, projectRule.rule.randomLatency.max)
+  //   return latency(projectRule.rule.randomLatency.min || 0, projectRule.rule.randomLatency.max)
+  // }
 
   async _findConditionalResponseValue (ruleConditionalResponse, req, res) {
     const templateEnvironment = {
@@ -207,30 +210,78 @@ class MockServer extends Server {
     this._writeBody(
       res,
       body,
-      this._getEncoding(templatedHeaders)
+      this._getEncoding(templatedHeaders),
+      await this._calculateExpectedLatency(ruleResponse.fixedLatency, ruleResponse.randomLatency, templatingEngine, templateEnvironment),
+      req.timestamp
     )
   }
 
-  _writeBody (res, body, encoding) {
+  async _calculateExpectedLatency (fixedLatency, randomLatency, templatingEngine, templateEnvironment) {
+    let expectedLatency = 0
+    if (fixedLatency) {
+      expectedLatency = Number(await this.templatingService.render(templatingEngine, fixedLatency.value, templateEnvironment))
+      if (isNaN(expectedLatency)) {
+        this.logger.warn('The latency could not be calculated: fixed[%s]', fixedLatency.value)
+        return 0
+      }
+    } else if (randomLatency) {
+      const templatedRandomLatency = new RandomLatency(
+        Number(await this.templatingService.render(templatingEngine, randomLatency.min, templateEnvironment)),
+        Number(await this.templatingService.render(templatingEngine, randomLatency.max, templateEnvironment))
+      )
+      expectedLatency = templatedRandomLatency.generateValue()
+      if (isNaN(expectedLatency)) {
+        this.logger.warn('The latency could not be calculated: random[%s/%s]', randomLatency.min, randomLatency.max)
+        return 0
+      }
+    }
+    return expectedLatency
+  }
+
+  _writeBody (res, body, encoding, expectedDelay, requestTimestamp) {
     if (encoding) {
       this.logger.debug('The response body will be encoded with %s', encoding)
       if (encoding === 'gzip') {
-        zlib.gzip(body, function (_, zipped) {
-          res.end(zipped)
+        zlib.gzip(body, (_, zipped) => {
+          this._endRes(res, zipped, expectedDelay, requestTimestamp)
         })
       } else if (encoding === 'deflate') {
-        zlib.deflate(body, function (_, zipped) {
-          res.end(zipped)
+        zlib.deflate(body, (_, zipped) => {
+          this._endRes(res, zipped, expectedDelay, requestTimestamp)
         })
       } else {
         this.logger.warn('The encoding %s is currently not supported. Sending the response without encoding!')
         res.removeHeader('content-encoding')
-        res.send(body)
+        this._sendRes(res, body, expectedDelay, requestTimestamp)
       }
     } else {
       this.logger.debug('The response body is not encoded')
-      res.send(body)
+      this._sendRes(res, body, expectedDelay, requestTimestamp)
     }
+  }
+
+  _endRes (res, body, expectedDelay, requestTimestamp) {
+    this._delayResponse(() => res.end(body), this._remainingDelay(expectedDelay, requestTimestamp))
+  }
+
+  _sendRes (res, body, expectedDelay, requestTimestamp) {
+    this._delayResponse(() => res.send(body), this._remainingDelay(expectedDelay, requestTimestamp))
+  }
+
+  _delayResponse (action, remainingDelay) {
+    if (remainingDelay > 0) {
+      setTimeout(() => {
+        action()
+      }, remainingDelay)
+    } else {
+      action()
+    }
+  }
+
+  _remainingDelay (expectedDelay, requestTimestamp) {
+    const remainingDelay = expectedDelay - (moment.duration(moment().diff(requestTimestamp)).asSeconds())
+    this.logger.debug(`expected delay: ${expectedDelay}, remaining delay: ${remainingDelay}`)
+    return remainingDelay
   }
 
   _getEncoding (headers) {

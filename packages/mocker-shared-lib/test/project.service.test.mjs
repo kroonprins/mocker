@@ -45,14 +45,15 @@ const test = async () => {
         new Request('/hello2', 'PUT'),
         new Response(
           'nunjucks',
+          new FixedLatency(2000),
+          undefined,
           'application/json',
           200,
           [],
           [],
           '{\n  "respo": "Test rule 2: {{req.body.input}}"\n}\n'
         ),
-        undefined,
-        new FixedLatency(2000)
+        undefined
       )
     ))
 
@@ -64,6 +65,8 @@ const test = async () => {
         new Request('/hello1/:id', 'GET'),
         new Response(
           'nunjucks',
+          undefined,
+          undefined,
           'application/json',
           '{% if req.params.id > 5 %}400{% else %}200{% endif %}',
           [
@@ -86,14 +89,15 @@ const test = async () => {
         new Request('/hello2', 'PUT'),
         new Response(
           'nunjucks',
+          new FixedLatency(2000),
+          undefined,
           'application/json',
           200,
           [],
           [],
           '{\n  "respo": "Test rule 2: {{req.body.input}}"\n}\n'
         ),
-        undefined,
-        new FixedLatency(2000)
+        undefined
       )
     ))
     expect(listProjectRules[2]).to.deep.equal(new ProjectRule(
@@ -102,6 +106,8 @@ const test = async () => {
         new Request('/hello3/:id', 'GET'),
         new Response(
           'none',
+          undefined,
+          new RandomLatency(1000, 3000),
           'application/json',
           200,
           [
@@ -110,9 +116,7 @@ const test = async () => {
           [],
           '{\n  "respo": "Test rule 3: {{req.query.q}} / {{req.params.id}}"\n}\n'
         ),
-        undefined,
-        undefined,
-        new RandomLatency(1000, 3000)
+        undefined
       )
     ))
 
@@ -166,6 +170,8 @@ const test = async () => {
         ),
         new Response(
           'nunjucks',
+          undefined,
+          undefined,
           'application/json',
           '{% if req.params.id > 5 %}400{% else %}200{% endif %}',
           [
@@ -286,6 +292,8 @@ const test = async () => {
         ),
         new Response(
           'none',
+          undefined,
+          undefined,
           'application/json'
         )
       ))

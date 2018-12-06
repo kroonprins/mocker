@@ -22,6 +22,8 @@ const CookieSerializationModel = createModelSchema(Cookie, {
 
 const ResponseSerializationModel = createModelSchema(Response, {
   templatingEngine: primitive(),
+  fixedLatency: object(FixedLatencySerializationModel),
+  randomLatency: object(RandomLatencySerializationModel),
   contentType: primitive(),
   statusCode: primitive(),
   headers: list(object(HeaderSerializationModel)),
@@ -31,6 +33,8 @@ const ResponseSerializationModel = createModelSchema(Response, {
 
 const ConditionalResponseValueSerializationModel = createModelSchema(ConditionalResponseValue, {
   condition: primitive(),
+  fixedLatency: object(FixedLatencySerializationModel),
+  randomLatency: object(RandomLatencySerializationModel),
   contentType: primitive(),
   statusCode: primitive(),
   headers: list(object(HeaderSerializationModel)),
@@ -47,9 +51,7 @@ const RuleSerializationModel = createModelSchema(Rule, {
   name: primitive(),
   request: object(RequestSerializationModel),
   response: object(ResponseSerializationModel),
-  conditionalResponse: object(ConditionalResponseSerializationModel),
-  fixedLatency: object(FixedLatencySerializationModel),
-  randomLatency: object(RandomLatencySerializationModel)
+  conditionalResponse: object(ConditionalResponseSerializationModel)
 })
 
 const LimitedDataRuleSerializationModel = createModelSchema(Rule, {

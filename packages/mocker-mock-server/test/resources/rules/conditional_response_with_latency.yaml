@@ -1,0 +1,36 @@
+---
+name: Conditional response with latency
+request:
+  path: /conditional-with-latency/:id
+  method: GET
+conditionalResponse:
+  templatingEngine: nunjucks
+  response:
+    - condition: "{{req.params.id > 5}}"
+      fixedLatency:
+        value: 2000
+      contentType: application/json
+      statusCode: "200"
+      headers:
+        - name: x-header
+          value: "{{req.query.q}}"
+      body: |
+        {
+          "message": "This request is very good and very fixed"
+        }
+    - condition: "{{req.params.id <= 5 and req.params.id > 1}}"
+      randomLatency:
+        min: 500
+        max: 1500
+      contentType: text/plain
+      statusCode: "200"
+      body: "This request is also good but a bit random"
+    - condition: true
+      fixedLatency:
+        value: "{{ 1 + 9 }}"
+      contentType: application/json
+      statusCode: "200"
+      body: |
+        {
+          "message": "This request is the best and very quick"
+        }
