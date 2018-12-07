@@ -80,6 +80,7 @@ const test = async () => {
       expect(recorded.request.headers.length).to.be.greaterThan(0)
       expect(recorded.response.contentType).to.startsWith('text/html')
       expect(recorded.response.statusCode).to.be.equal(200)
+      expect(recorded.response.latency).to.be.above(1000)
       expect(recorded.response.body).to.be.equal('test1')
       expect(recorded.response.cookies.length).to.be.equal(1)
       expect(recorded.response.cookies[0].name).to.be.equal('koek')

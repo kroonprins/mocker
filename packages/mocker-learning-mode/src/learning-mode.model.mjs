@@ -27,9 +27,10 @@ class ResponseCookie {
 }
 
 class Response {
-  constructor (contentType, statusCode, body = '', headers = [], cookies = []) {
+  constructor (contentType, statusCode, latency, body = '', headers = [], cookies = []) {
     this.contentType = contentType
     this.statusCode = statusCode
+    this.latency = latency
     this.body = body
     this.headers = headers
     this.cookies = cookies

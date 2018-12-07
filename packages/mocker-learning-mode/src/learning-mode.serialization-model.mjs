@@ -32,6 +32,7 @@ const LimitedDataRequestSerializationModel = createModelSchema(Request, {
 const ResponseSerializationModel = createModelSchema(Response, {
   contentType: primitive(),
   statusCode: primitive(),
+  latency: primitive(),
   body: primitive(),
   headers: list(object(NameValuePairSerializationModel)),
   cookies: list(object(ResponseCookieSerializationModel))

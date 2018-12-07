@@ -1,6 +1,8 @@
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import cors from 'cors'
+import timestamp from 'express-timestamp'
+import moment from 'moment-timezone'
 import proxy from 'http-proxy-middleware'
 import tough from 'tough-cookie'
 import { Server } from '@kroonprins/mocker-shared-lib/server.service'
@@ -40,6 +42,7 @@ class LearningModeReverseProxyServer extends Server {
       type: '*/*'
     }))
     this.app.use(cors())
+    this.app.use(timestamp.init)
 
     this.app.use('/', proxy({
       target: this.targetHost,
@@ -132,12 +135,17 @@ class LearningModeReverseProxyServer extends Server {
     const response = new Response(
       contentType,
       res.statusCode,
+      this._calculateElapsed(req),
       responseBody,
       this._mapToNameValuePairList(res.headers, new Set(['content-type', 'set-cookie'])),
       this._parseResponseCookies(res.headers['set-cookie'])
     )
     this.logger.debug(response, 'constructed response for recorded request')
     return new RecordedRequest(undefined, projectName, new Date(), request, response)
+  }
+
+  _calculateElapsed (req) {
+    return moment.duration(moment().diff(req.timestamp)).asMilliseconds()
   }
 }
 

@@ -20,7 +20,9 @@ class TestServer {
     app.get('/test1', async (req, res) => {
       res.cookie('koek', 'njamnjam', { httpOnly: true, secure: true })
       res.header('x-test', 'a')
-      res.send('test1')
+      setTimeout(() => {
+        res.send('test1')
+      }, 1000)
     })
 
     app.post('/test2', async (req, res) => {
