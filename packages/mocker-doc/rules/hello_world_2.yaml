@@ -6,6 +6,9 @@ request:
 response:
   templatingEngine: nunjucks
   contentType: application/json
+  randomLatency:
+    min: 50
+    max: 150
   statusCode: "{% if req.params.id > 5 %}400{% else %}200{% endif %}"
   headers:
     - name: X-positivo

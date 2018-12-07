@@ -1,0 +1,30 @@
+name: swagger post with conditional response with latency
+request:
+  path: /post_conditional_response_with_latency
+  method: POST
+conditionalResponse:
+  templatingEngine: nunjucks
+  response:
+    - condition: "{{req.query.q1 > 5}}"
+      contentType: application/json
+      statusCode: "200"
+      body: "body1"
+    - condition: "{{req.headers.h1 <= 5 and req.body.x > 1}}"
+      contentType: plain/text
+      fixedLatency:
+        value: 500
+      statusCode: "400"
+      headers:
+        - name: x-header
+          value: "{{req.headers['h2']}}"
+      cookies:
+        - name: cookie
+          value: "{{req.headers[\"h3\"]}}"
+      body: "body2 with fixed latency"
+    - condition: true
+      randomLatency:
+        min: 50
+        max: 500
+      contentType: application/json
+      statusCode: "500"
+      body: "body3 with random latency"

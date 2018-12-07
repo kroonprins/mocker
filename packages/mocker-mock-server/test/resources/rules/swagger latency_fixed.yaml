@@ -1,0 +1,11 @@
+name: swagger with fixed latency
+request:
+  path: /fixed_latency
+  method: POST
+response:
+  templatingEngine: none
+  fixedLatency:
+    value: 300
+  contentType: plain/text
+  statusCode: 200
+  body: hello swagger with fixed latency

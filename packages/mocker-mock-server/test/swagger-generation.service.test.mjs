@@ -40,7 +40,7 @@ const test = async () => {
       {
         '200':
         {
-          description: 'A response using the following templating engine: none',
+          description: 'A response using templating engine none',
           headers: {},
           content:
             { 'plain/text': { schema: { type: 'string', example: 'hello swagger for get' } } }
@@ -57,7 +57,7 @@ const test = async () => {
       {
         '200':
         {
-          description: 'A response using the following templating engine: none',
+          description: 'A response using templating engine none',
           headers: {},
           content:
             { 'plain/text': { schema: { type: 'string', example: 'hello swagger for post' } } }
@@ -80,7 +80,7 @@ const test = async () => {
       {
         '200':
         {
-          description: 'A response using the following templating engine: none',
+          description: 'A response using templating engine none',
           headers: {},
           content:
             { 'plain/text': { schema: { type: 'string', example: 'hello swagger for one path parameter' } } }
@@ -121,7 +121,7 @@ const test = async () => {
       {
         '200':
         {
-          description: 'A response using the following templating engine: none',
+          description: 'A response using templating engine none',
           headers: {},
           content:
             { 'plain/text': { schema: { type: 'string', example: 'hello swagger for multiple path parameters' } } }
@@ -138,7 +138,7 @@ const test = async () => {
       {
         '501':
         {
-          description: 'A response using the following templating engine: none',
+          description: 'A response using templating engine none',
           headers: {},
           content:
             { 'plain/text': { schema: { type: 'string', example: 'hello swagger for http/501' } } }
@@ -155,7 +155,7 @@ const test = async () => {
       {
         '{% if req.params.id > 5 %}400{% else %}200{% endif %}':
         {
-          description: 'A response using the following templating engine: nunjucks',
+          description: 'A response using templating engine nunjucks',
           headers: {},
           content:
             { 'plain/text': { schema: { type: 'string', example: 'hello swagger for templated status code' } } }
@@ -184,7 +184,7 @@ const test = async () => {
       {
         '200':
         {
-          description: 'A response using the following templating engine: nunjucks',
+          description: 'A response using templating engine nunjucks',
           headers: {
             'x-header-1': {
               description: 'value = value1'
@@ -226,7 +226,7 @@ const test = async () => {
       {
         '200':
         {
-          description: 'A response using the following templating engine: nunjucks',
+          description: 'A response using templating engine nunjucks',
           headers: {
             'Set-Cookie': {
               description: 'cookie1=value1 (properties={"secure":true,"httpOnly":false}), cookie2={{req.query.q2}} (properties={}), cookie3=value3 (properties={}), cookie4={{req.query.q4}} (properties={"secure":false,"httpOnly":false})'
@@ -283,7 +283,7 @@ const test = async () => {
       {
         '200':
         {
-          description: 'A response using the following templating engine: nunjucks',
+          description: 'A response using templating engine nunjucks',
           headers: {
             'x-header': {
               description: 'value = {{req.query[\'q2\']}}'
@@ -332,7 +332,7 @@ const test = async () => {
       {
         '200':
         {
-          description: 'A response using the following templating engine: nunjucks',
+          description: 'A response using templating engine nunjucks',
           headers: {
             'x-header': {
               description: 'value = {{req.cookies[\'c2\']}}'
@@ -380,7 +380,7 @@ const test = async () => {
       {
         '200':
         {
-          description: 'A response using the following templating engine: nunjucks',
+          description: 'A response using templating engine nunjucks',
           headers: {
             'x-header': {
               description: 'value = {{req.headers[\'h2\']}}'
@@ -415,7 +415,7 @@ const test = async () => {
       {
         '200':
         {
-          description: 'A response using the following templating engine: nunjucks',
+          description: 'A response using templating engine nunjucks',
           headers: {},
           content:
           { 'application/json': { schema: { type: 'string', example: 'hello swagger for input body {{req.body.x}}' } } }
@@ -432,7 +432,7 @@ const test = async () => {
       {
         '{{req.query.q1}}':
         {
-          description: 'A response using the following templating engine: none',
+          description: 'A response using templating engine none',
           headers: {
             'x-header-1': {
               description: 'value = {{req.headers[\'h2\']}}'
@@ -494,14 +494,14 @@ const test = async () => {
       {
         '200, when condition \'{{req.query.q1 > 5}}\' is true':
         {
-          description: 'A response using the following templating engine: nunjucks',
+          description: 'A response using templating engine nunjucks',
           headers: {},
           content:
           { 'application/json': { schema: { type: 'string', example: 'body1' } } }
         },
         '400, when condition \'{{req.headers.h1 <= 5 and req.body.x > 1}}\' is true':
         {
-          description: 'A response using the following templating engine: nunjucks',
+          description: 'A response using templating engine nunjucks',
           headers: {
             'x-header': {
               description: 'value = {{req.headers[\'h2\']}}'
@@ -515,10 +515,117 @@ const test = async () => {
         },
         '500, when condition \'true\' is true':
         {
-          description: 'A response using the following templating engine: nunjucks',
+          description: 'A response using templating engine nunjucks',
           headers: {},
           content:
           { 'application/json': { schema: { type: 'string', example: 'body3' } } }
+        }
+      }
+    })
+
+    expect(openApiDefinition.paths['/post_conditional_response_with_latency']['post']).to.deep.equal({
+      summary: 'swagger post with conditional response with latency',
+      description:
+        'Rule \'swagger post with conditional response with latency\' located at ../rules/swagger conditional_response_with_latency.yaml',
+      parameters: [{
+        in: 'query',
+        name: 'q1',
+        schema: {
+          type: 'string'
+        }
+      }, {
+        in: 'header',
+        name: 'h1',
+        schema: {
+          type: 'string'
+        }
+      }, {
+        in: 'header',
+        name: 'h2',
+        schema: {
+          type: 'string'
+        }
+      }, {
+        in: 'header',
+        name: 'h3',
+        schema: {
+          type: 'string'
+        }
+      }],
+      requestBody: {
+        required: true,
+        content: { 'text/plain': { schema: { type: 'string' } },
+          'application/json': { schema: { type: 'string' } },
+          'application/javascript': { schema: { type: 'string' } },
+          'application/xml': { schema: { type: 'string' } },
+          'text/xml': { schema: { type: 'string' } },
+          'text/html': { schema: { type: 'string' } },
+          'application/x-www-form-urlencoded': { schema: { type: 'string' } }
+        }
+      },
+      responses:
+      {
+        '200, when condition \'{{req.query.q1 > 5}}\' is true':
+        {
+          description: 'A response using templating engine nunjucks',
+          headers: {},
+          content:
+          { 'application/json': { schema: { type: 'string', example: 'body1' } } }
+        },
+        '400, when condition \'{{req.headers.h1 <= 5 and req.body.x > 1}}\' is true':
+        {
+          description: 'A response using templating engine nunjucks with a fixed latency of 500ms',
+          headers: {
+            'x-header': {
+              description: 'value = {{req.headers[\'h2\']}}'
+            },
+            'Set-Cookie': {
+              description: 'cookie={{req.headers["h3"]}} (properties={})'
+            }
+          },
+          content:
+          { 'plain/text': { schema: { type: 'string', example: 'body2 with fixed latency' } } }
+        },
+        '500, when condition \'true\' is true':
+        {
+          description: 'A response using templating engine nunjucks with a random latency between 50ms and 500ms',
+          headers: {},
+          content:
+          { 'application/json': { schema: { type: 'string', example: 'body3 with random latency' } } }
+        }
+      }
+    })
+
+    expect(openApiDefinition.paths['/fixed_latency']['post']).to.deep.equal({
+      summary: 'swagger with fixed latency',
+      description:
+        'Rule \'swagger with fixed latency\' located at ../rules/swagger latency_fixed.yaml',
+      parameters: [],
+      responses:
+      {
+        '200':
+        {
+          description: 'A response using templating engine none with a fixed latency of 300ms',
+          headers: {},
+          content:
+            { 'plain/text': { schema: { type: 'string', example: 'hello swagger with fixed latency' } } }
+        }
+      }
+    })
+
+    expect(openApiDefinition.paths['/random_latency']['post']).to.deep.equal({
+      summary: 'swagger with random latency',
+      description:
+        'Rule \'swagger with random latency\' located at ../rules/swagger latency_random.yaml',
+      parameters: [],
+      responses:
+      {
+        '200':
+        {
+          description: 'A response using templating engine none with a random latency between 300ms and 400ms',
+          headers: {},
+          content:
+            { 'plain/text': { schema: { type: 'string', example: 'hello swagger with random latency' } } }
         }
       }
     })

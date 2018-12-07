@@ -73,7 +73,7 @@ class SwaggerGenerationService {
     }
 
     if (ruleResponse.templatingEngine === 'nunjucks') {
-      const responseAsString = JSON.stringify(ruleResponse).replace(/\\"/g, '"') // replace \" by " because the parses gives unexpected results otherwise
+      const responseAsString = JSON.stringify(ruleResponse).replace(/\\"/g, '"') // replace \" by " because the parser gives unexpected results otherwise
 
       const parsedNodes = parser.parse(responseAsString)
 
@@ -176,12 +176,36 @@ class SwaggerGenerationService {
     }
 
     response[ruleResponse.statusCode] = { // TODO what if statusCode is templated...
-      description: `A response using the following templating engine: ${ruleResponse.templatingEngine}`,
+      description: this._getResponseDescription(ruleResponse),
       headers: this._getHeaders(ruleResponse.headers, ruleResponse.cookies),
       content: content
     }
 
     return response
+  }
+
+  _getResponseDescription (ruleResponse) {
+    const latencyInfo = this._getLatencyDescription(ruleResponse.fixedLatency, ruleResponse.randomLatency)
+    return this._getResponseDescriptionWithLatencyInfo(ruleResponse.templatingEngine, latencyInfo)
+  }
+
+  _getResponseDescriptionForConditionalResponse (ruleConditionalResponse, ruleConditionalResponseValue) {
+    const latencyInfo = this._getLatencyDescription(ruleConditionalResponseValue.fixedLatency, ruleConditionalResponseValue.randomLatency)
+    return this._getResponseDescriptionWithLatencyInfo(ruleConditionalResponse.templatingEngine, latencyInfo)
+  }
+
+  _getLatencyDescription (fixedLatency, randomLatency) {
+    let latencyInfo = ''
+    if (fixedLatency) {
+      latencyInfo = ` with a fixed latency of ${fixedLatency.value}ms`
+    } else if (randomLatency) {
+      latencyInfo = ` with a random latency between ${randomLatency.min}ms and ${randomLatency.max}ms`
+    }
+    return latencyInfo
+  }
+
+  _getResponseDescriptionWithLatencyInfo (templatingEngine, latencyInfo) {
+    return `A response using templating engine ${templatingEngine}${latencyInfo}`
   }
 
   _getResponsesForConditionalResponse (ruleConditionalResponse) {
@@ -197,7 +221,7 @@ class SwaggerGenerationService {
       }
 
       response[`${ruleConditionalResponseValue.statusCode}, when condition '${ruleConditionalResponseValue.condition}' is true`] = {
-        description: `A response using the following templating engine: ${ruleConditionalResponse.templatingEngine}`,
+        description: this._getResponseDescriptionForConditionalResponse(ruleConditionalResponse, ruleConditionalResponseValue),
         headers: this._getHeaders(ruleConditionalResponseValue.headers, ruleConditionalResponseValue.cookies),
         content: content
       }

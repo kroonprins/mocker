@@ -1,0 +1,12 @@
+name: swagger with random latency
+request:
+  path: /random_latency
+  method: POST
+response:
+  templatingEngine: none
+  randomLatency:
+    min: 300
+    max: 400
+  contentType: plain/text
+  statusCode: 200
+  body: hello swagger with random latency

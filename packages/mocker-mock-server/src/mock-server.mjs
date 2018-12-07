@@ -117,17 +117,6 @@ class MockServer extends Server {
 
       const requestCallbacks = []
 
-      // Simulate latency
-      // if (this._shouldSimulateFixedLatency(projectRule)) {
-      //   this.logger.debug('Configuring fixed latency on request')
-      //   requestCallbacks.push(this._configureFixedLatency(projectRule))
-      // } else if (this._shouldSimulateRandomLatency(projectRule)) {
-      //   this.logger.debug('Configuring random latency on request')
-      //   requestCallbacks.push(this._configureRandomLatency(projectRule))
-      // } else {
-      //   this.logger.debug('No latency configured for request')
-      // }
-
       // Generate response from project rule
       requestCallbacks.push(async (req, res) => {
         this.logger.debug('Processing request for path %s', req.path)
@@ -143,24 +132,6 @@ class MockServer extends Server {
       app[ruleRequest.method.toLowerCase()](ruleRequest.path, requestCallbacks)
     }
   }
-
-  // _shouldSimulateFixedLatency (projectRule) {
-  //   return projectRule.rule.fixedLatency && projectRule.rule.fixedLatency.value
-  // }
-
-  // _shouldSimulateRandomLatency (projectRule) {
-  //   return projectRule.rule.randomLatency && projectRule.rule.randomLatency.max
-  // }
-
-  // _configureFixedLatency (projectRule) {
-  //   this.logger.debug('Setting fixed latency: %d', projectRule.rule.fixedLatency.value)
-  //   return latency(projectRule.rule.fixedLatency.value)
-  // }
-
-  // _configureRandomLatency (projectRule) {
-  //   this.logger.debug('Setting random latency between %d and %d', projectRule.rule.randomLatency.min, projectRule.rule.randomLatency.max)
-  //   return latency(projectRule.rule.randomLatency.min || 0, projectRule.rule.randomLatency.max)
-  // }
 
   async _findConditionalResponseValue (ruleConditionalResponse, req, res) {
     const templateEnvironment = {
