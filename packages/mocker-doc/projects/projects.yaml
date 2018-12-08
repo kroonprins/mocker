@@ -1,16 +1,4 @@
 projects:
-  - name: 'Wow, this is amazing!'
+  - name: examples
     rules:
-      - ../rules/hello_world.yaml
-  - name: 'Wow, even more amazing!!'
-    rules:
-      - ../rules/hello_world_2.yaml
-      - ../rules/hello_world.yaml
-  - name: Test echo
-    rules:
-      - ../rules/Test echo/echo get.yaml
-      - ../rules/Test echo/echo post.yaml
-  - name: Test conditional
-    rules:
-      - ../rules/hello_world_2.yaml
-      - ../rules/conditional_response.yaml
+      - ../rules/*.yaml

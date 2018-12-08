@@ -62,6 +62,7 @@ class MockServer extends Server {
     this.app.use(bodyParser.urlencoded({ extended: true }))
     this.app.use(cors())
     this.app.disable('x-powered-by')
+    this.app.disable('etag')
     this.app.use(timestamp.init)
 
     await this._processRules(this.app, this.project)

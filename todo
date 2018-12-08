@@ -65,3 +65,6 @@
 * check jsdoc again after split in modules (jsdoc per module)
 * handle relative paths in start.mjs scripts
 * make config.getProperty return an object to which can be listened for changes so that properties can be updated at runtime from the admin-server (the proxy of config.getInstance could possibly also get extra functionality to listen for update event)
+* make it possible to start the ui without a project file. It will then ask to select one at the start.
+* support multidoc yaml defining multiple rules in one yaml file?
+* make cors headers on mock-server / learning mode configurable and disabled by default

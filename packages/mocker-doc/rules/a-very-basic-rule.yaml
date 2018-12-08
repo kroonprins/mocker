@@ -1,0 +1,9 @@
+name: basic rule
+request:
+  path: /get
+  method: GET
+response:
+  templatingEngine: none
+  contentType: text/plain
+  statusCode: 200
+  body: the response body

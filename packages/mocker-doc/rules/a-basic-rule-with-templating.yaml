@@ -1,0 +1,9 @@
+name: basic rule with templating
+request:
+  path: /get
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: text/plain
+  statusCode: "{{req.query.q}}"
+  body: received a header 'h' with value {{req.headers.h}} and response status code of {{res.statusCode}} is set

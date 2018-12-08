@@ -1,0 +1,92 @@
+= Mocker
+:source-highlighter: highlightjs
+
+Mocker consists of:
+
+* A UI for management
+* A mock server which responds to requests based on rules. Those rules are stored in yaml files.
+* A learning mode reverse proxy server. In learning mode, requests to the real server that the mock server should mock are captured. From the UI these captured requests can be transformed into rules for the mock server.
+* A specific version of the mock server for use in javascript base unit and integration tests.
+
+== Rules
+
+Rules for the mock server are stored in yaml format. One yaml file per rule. A rule specifies the response that the mock server should give for a given request. A request is defined by an HTTP method and a path. For example:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-very-basic-rule.yaml[a-very-basic-rule.yaml]
+[source,YAML]
+----
+name: basic rule
+request:
+  path: /get
+  method: GET
+response:
+  templatingEngine: none
+  contentType: text/plain
+  statusCode: 200
+  body: the response body
+----
+
+Gives as result:
+[source,Shell Session]
+----
+$ curl -i -X GET http://localhost:3000/get
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+Content-Length: 17
+Date: Sat, 08 Dec 2018 21:46:59 GMT
+Connection: keep-alive
+
+the response body
+----
+
+
+No 2 rules for the same request should be created, instead the response can be made dynamic based on the request context using templating. The currently supported template engine is https://mozilla.github.io/nunjucks/[nunjucks]. The templating environment is filled with an object "req" on which all the attributes of the request are present (req.query, req.headers, req.body, req.cookies) and "res" with an object containing the response attributes. These 2 objects are the request and response object of the https://expressjs.com/[express] server, so all possible attributes can be found in the express documentation. For example:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-basic-rule-with-templating.yaml[a-basic-rule-with-templating.yaml]
+[source,YAML]
+----
+name: basic rule with templating
+request:
+  path: /get
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: text/plain
+  statusCode: "{{req.query.q}}"
+  body: received a header 'h' with value {{req.headers.h}} and response status code of {{res.statusCode}} is set
+----
+
+Gives as result:
+[source,Shell Session]
+----
+curl -i -X GET http://localhost206 -H "h: xyz"
+HTTP/1.1 206 Partial Content
+Content-Type: text/plain; charset=utf-8
+Content-Length: 75
+Date: Sat, 08 Dec 2018 22:04:40 GMT
+Connection: keep-alive
+
+received a header 'h' with value xyz and response status code of 206 is set
+----
+
+== Projects
+
+== Mocker UI
+
+=== Start using node
+
+=== Start using docker
+
+== Mock server standalone
+
+=== Start using node
+
+=== Start using docker
+
+== Learning mode standalone
+
+=== Start using node
+
+=== Start using docker
+
+== Use in unit/integration tests
