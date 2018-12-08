@@ -19,10 +19,19 @@ export class RulesService {
   }
 
   retrieveProjectRule(projectName: string, ruleName: string): Observable<ProjectRule> {
-    return this._http.get<ProjectRule>(`${this.apiServerLocation}/api/projects/${projectName}/rules/${ruleName}`);
+    return this._http.get<ProjectRule>(`${this.apiServerLocation}/api/projects/${projectName}/rules/${ruleName}`)
+      .map(projectRule => {
+        projectRule.rule.isConditionalResponse = typeof projectRule.rule.response === 'undefined';
+        return projectRule;
+      });
   }
 
   createProjectRule(projectName: string, projectRule: ProjectRule): Observable<ProjectRule> {
+    if (projectRule.rule.isConditionalResponse) {
+      projectRule.rule.response = undefined;
+    } else {
+      projectRule.rule.conditionalResponse = undefined;
+    }
     return this._http.post<ProjectRule>(`${this.apiServerLocation}/api/projects/${projectName}/rules`, projectRule);
   }
 
@@ -31,6 +40,11 @@ export class RulesService {
   }
 
   updateProjectRule(projectName: string, ruleName: string, updatedProjectRule: ProjectRule): Observable<ProjectRule> {
+    if (updatedProjectRule.rule.isConditionalResponse) {
+      updatedProjectRule.rule.response = undefined;
+    } else {
+      updatedProjectRule.rule.conditionalResponse = undefined;
+    }
     return this._http.put<ProjectRule>(`${this.apiServerLocation}/api/projects/${projectName}/rules/${ruleName}`, updatedProjectRule);
   }
 }

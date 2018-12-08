@@ -16,7 +16,7 @@ import { AdministrationModule } from './administration/administration.module';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { SharedModule } from './shared/shared.module';
 import { AppConfigurationService } from './shared/services/app-configuration.service';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -43,7 +43,8 @@ import { AppConfigurationService } from './shared/services/app-configuration.ser
           vertical: 'auto'
         },
       }
-    })
+    }),
+    FontAwesomeModule
   ],
   providers: [
     {

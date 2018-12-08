@@ -9,7 +9,8 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="ruleName" required [(ngModel)]="projectRule.rule.name" name="name" class="input" [readonly]="isConsult()">
+              <input type="text" id="ruleName" required [(ngModel)]="projectRule.rule.name" name="name" class="input"
+                [readonly]="isConsult()">
             </div>
           </div>
         </div>
@@ -21,14 +22,15 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="location" required [(ngModel)]="projectRule.location" name="location" class="input" [readonly]="isConsult()">
+              <input type="text" id="location" required [(ngModel)]="projectRule.location" name="location" class="input"
+                [readonly]="isConsult()">
             </div>
           </div>
         </div>
       </div>
     </fieldset>
     <fieldset>
-      <legend class="label ">Request</legend>
+      <legend class="label">Request</legend>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label for="method" class="label">Method</label>
@@ -36,7 +38,8 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <app-config-dropdown id="ruleRequestMethod" name="method" configItem="http-methods" [readonly]="isConsult()" [(value)]="projectRule.rule.request.method"></app-config-dropdown>
+              <app-config-dropdown id="ruleRequestMethod" name="method" configItem="http-methods" [readonly]="isConsult()"
+                [(value)]="projectRule.rule.request.method"></app-config-dropdown>
             </div>
           </div>
         </div>
@@ -48,14 +51,33 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="ruleRequestPath" required [(ngModel)]="projectRule.rule.request.path" name="path" class="input" [readonly]="isConsult()">
+              <input type="text" id="ruleRequestPath" required [(ngModel)]="projectRule.rule.request.path" name="path"
+                class="input" [readonly]="isConsult()">
             </div>
           </div>
         </div>
       </div>
     </fieldset>
-    <fieldset>
-      <legend class="label ">Response</legend>
+
+    <fieldset *ngIf="!projectRule.rule.isConditionalResponse">
+      <legend class="label" *ngIf="!isConsult()">
+        <div [ngClass]="{'dropdown': true, 'is-active': responseTypeDropdownActive}">
+          <div class="dropdown-trigger">
+            <button class="button is-white" aria-haspopup="true" aria-controls="dropdown-menu3" (click)="toggleDropdown()">
+              <span class="label">Response</span>
+              <span class="icon is-small">
+                <fa-icon [icon]="faAngleDown" aria-hidden="true"></fa-icon>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+            <div class="dropdown-content">
+              <button (click)="toggleConditionalResponse()" class="button is-white">Conditional response</button>
+            </div>
+          </div>
+        </div>
+      </legend>
+      <legend class="label" *ngIf="isConsult()">Response</legend>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label for="templatingEngine" class="label">Templating</label>
@@ -63,8 +85,8 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <app-config-dropdown id="ruleResponseTemplatingEngine" name="templatingEngine" configItem="templating-types" [readonly]="isConsult()"
-                [(value)]="projectRule.rule.response.templatingEngine"></app-config-dropdown>
+              <app-config-dropdown id="ruleResponseTemplatingEngine" name="templatingEngine" configItem="templating-types"
+                [readonly]="isConsult()" [(value)]="projectRule.rule.response.templatingEngine"></app-config-dropdown>
             </div>
           </div>
         </div>
@@ -77,8 +99,8 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="ruleResponseContentType" required [(ngModel)]="projectRule.rule.response.contentType" name="contentType"
-                class="input" [readonly]="isConsult()">
+              <input type="text" id="ruleResponseContentType" required [(ngModel)]="projectRule.rule.response.contentType"
+                name="contentType" class="input" [readonly]="isConsult()">
             </div>
           </div>
         </div>
@@ -90,14 +112,15 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="text" id="ruleResponseStatusCode" required [(ngModel)]="projectRule.rule.response.statusCode" name="statusCode"
-                class="input" [readonly]="isConsult()">
+              <input type="text" id="ruleResponseStatusCode" required [(ngModel)]="projectRule.rule.response.statusCode"
+                name="statusCode" class="input" [readonly]="isConsult()">
             </div>
           </div>
         </div>
       </div>
       <app-name-value-pairs [nameValuePairs]="projectRule.rule.response.headers" label="Headers" [readonly]="isConsult()"></app-name-value-pairs>
-      <app-cookies [cookies]="projectRule.rule.response.cookies" label="Cookies" [readonly]="isConsult()" isResponseCookie="true"></app-cookies>
+      <app-cookies [cookies]="projectRule.rule.response.cookies" label="Cookies" [readonly]="isConsult()"
+        isResponseCookie="true"></app-cookies>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label for="body" class="label">Body</label>
@@ -105,11 +128,122 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <ngx-monaco-editor id="ruleResponseBody" required class="monaco-code-editor" [options]="monacoEditorOptions" [(ngModel)]="projectRule.rule.response.body"
-                name="body"></ngx-monaco-editor>
+              <ngx-monaco-editor id="ruleResponseBody" required class="monaco-code-editor" [options]="monacoEditorOptions"
+                [(ngModel)]="projectRule.rule.response.body" name="body"></ngx-monaco-editor>
             </div>
           </div>
         </div>
+      </div>
+    </fieldset>
+
+    <fieldset *ngIf="projectRule.rule.isConditionalResponse">
+      <legend class="label" *ngIf="!isConsult()">
+        <div [ngClass]="{'dropdown': true, 'is-active': responseTypeDropdownActive}">
+          <div class="dropdown-trigger">
+            <button class="button is-white" aria-haspopup="true" aria-controls="dropdown-menu3" (click)="toggleDropdown()">
+              <span class="label">Conditional response</span>
+              <span class="icon is-small">
+                <fa-icon [icon]="faAngleDown" aria-hidden="true"></fa-icon>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+            <div class="dropdown-content">
+              <button (click)="toggleConditionalResponse()" class="button is-white">Response</button>
+            </div>
+          </div>
+        </div>
+      </legend>
+      <legend class="label" *ngIf="isConsult()">Conditional response</legend>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="templatingEngineForConditionalResponse" class="label">Templating</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <app-config-dropdown id="templatingEngineForConditionalResponse" name="templatingEngineForConditionalResponse"
+                configItem="templating-types" [readonly]="isConsult()" [(value)]="projectRule.rule.conditionalResponse.templatingEngine"></app-config-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngFor="let conditionalResponseValue of projectRule.rule.conditionalResponse.response; let i = index">
+        <fieldset>
+          <legend *ngIf="conditionalResponseValue.condition !== true" class="label ">Response when condition
+            '{{conditionalResponseValue.condition}}' is true</legend>
+          <legend *ngIf="conditionalResponseValue.condition === true" class="label ">Fallback response when all other
+            conditions fail</legend>
+          <div class="field is-horizontal" *ngIf="!isConsult()">
+            <div class="field-label is-normal">
+              <label for="ruleResponseCondition" class="label">Condition</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input type="text" id="ruleResponseCondition" required [(ngModel)]="conditionalResponseValue.condition"
+                    name="condition-{{i}}" class="input">
+                </div>
+              </div>
+            </div>
+          </div>
+          <app-latency [item]="conditionalResponseValue" label="Latency" [readonly]="isConsult()"></app-latency>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label for="contentType" class="label">Content-Type</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input type="text" id="ruleResponseContentType" required [(ngModel)]="conditionalResponseValue.contentType"
+                    name="contentType-{{i}}" class="input" [readonly]="isConsult()">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label for="statusCode" class="label">Status code</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input type="text" id="ruleResponseStatusCode" required [(ngModel)]="conditionalResponseValue.statusCode"
+                    name="statusCode-{{i}}" class="input" [readonly]="isConsult()">
+                </div>
+              </div>
+            </div>
+          </div>
+          <app-name-value-pairs [nameValuePairs]="conditionalResponseValue.headers" label="Headers" [readonly]="isConsult()"></app-name-value-pairs>
+          <app-cookies [cookies]="conditionalResponseValue.cookies" label="Cookies" [readonly]="isConsult()"
+            isResponseCookie="true"></app-cookies>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label for="body" class="label">Body</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <ngx-monaco-editor id="ruleResponseBody-{{i}}" class="monaco-code-editor" [options]="monacoEditorOptions"
+                    [(ngModel)]="conditionalResponseValue.body" name="body-{{i}}"></ngx-monaco-editor>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-grouped is-grouped-right" *ngIf="!isConsult()">
+            <p class="control">
+              <button (click)="moveConditionalResponseValueDown(i)" class="button is-primary" *ngIf="i < projectRule.rule.conditionalResponse.response.length - 1">Down</button>
+              <button (click)="moveConditionalResponseValueUp(i)" class="button is-primary" *ngIf="i > 0">Up</button>
+              <button (click)="removeConditionalResponseValue(i)" class="button is-primary" *ngIf="projectRule.rule.conditionalResponse.response.length > 1">Remove</button>
+            </p>
+          </div>
+        </fieldset>
+      </div>
+      <div class="field is-grouped is-grouped-right" *ngIf="!isConsult()">
+        <p class="control">
+          <button (click)="addConditionalResponseValue()" class="button is-primary">Add condition</button>
+        </p>
       </div>
     </fieldset>
 

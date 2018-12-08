@@ -1,8 +1,8 @@
 import { Component, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { ActionType } from '../../model/typedef';
 import { RulesService } from '../../services/rules.service';
-import { ProjectRule } from '../../model/project-rule';
-import { ResponseCookie } from '../../../shared/model/cookie';
+import { ProjectRule, ConditionalResponseValue, ConditionalResponse } from '../../model/project-rule';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-rules-manage',
@@ -27,6 +27,8 @@ export class RulesManageComponent implements OnChanges {
   selectedRuleBeforeCreate: ProjectRule;
   ruleNameBeforeUpdate: string;
   monacoEditorOptions: object;
+  responseTypeDropdownActive = false;
+  faAngleDown = faAngleDown;
 
   constructor(private rulesService: RulesService) { }
 
@@ -133,6 +135,43 @@ export class RulesManageComponent implements OnChanges {
       language: 'json',
       readOnly: this.isConsult()
     };
+  }
+
+  private toggleConditionalResponse() {
+    this.toggleDropdown();
+    this.projectRule.rule.isConditionalResponse = !!!this.projectRule.rule.isConditionalResponse;
+    if (this.projectRule.rule.isConditionalResponse) {
+      if (!this.projectRule.rule.conditionalResponse) {
+        this.projectRule.rule.conditionalResponse = new ConditionalResponse();
+      }
+      if (this.projectRule.rule.conditionalResponse.response.length === 0) {
+        this.projectRule.rule.conditionalResponse.response.push(new ConditionalResponseValue());
+      }
+    }
+  }
+
+  private toggleDropdown() {
+    this.responseTypeDropdownActive = !!!this.responseTypeDropdownActive;
+  }
+
+  private addConditionalResponseValue() {
+    this.projectRule.rule.conditionalResponse.response.push(new ConditionalResponseValue());
+  }
+
+  private removeConditionalResponseValue(index: number) {
+    this.projectRule.rule.conditionalResponse.response.splice(index, 1);
+  }
+
+  private moveConditionalResponseValueUp(index: number) {
+    const previousValue = this.projectRule.rule.conditionalResponse.response[index - 1];
+    this.projectRule.rule.conditionalResponse.response[index - 1] = this.projectRule.rule.conditionalResponse.response[index];
+    this.projectRule.rule.conditionalResponse.response[index] = previousValue;
+  }
+
+  private moveConditionalResponseValueDown(index: number) {
+    const previousValue = this.projectRule.rule.conditionalResponse.response[index + 1];
+    this.projectRule.rule.conditionalResponse.response[index + 1] = this.projectRule.rule.conditionalResponse.response[index];
+    this.projectRule.rule.conditionalResponse.response[index] = previousValue;
   }
 
 }

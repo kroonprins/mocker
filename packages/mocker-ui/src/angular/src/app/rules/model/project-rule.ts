@@ -5,7 +5,9 @@ import { FixedLatency, RandomLatency } from '../../shared/model/latency';
 class Rule {
   name: string;
   request: Request;
+  isConditionalResponse = false;
   response: Response;
+  conditionalResponse: ConditionalResponse;
 }
 
 class Request {
@@ -14,7 +16,23 @@ class Request {
 }
 
 class Response {
-  templatingEngine: string; // TODO enum? (enum = type?)
+  templatingEngine: string;
+  fixedLatency: FixedLatency;
+  randomLatency: RandomLatency;
+  contentType: string;
+  statusCode: number;
+  headers: NameValuePair[] = [];
+  cookies: ResponseCookie[] = [];
+  body: string;
+}
+
+class ConditionalResponse {
+  templatingEngine: string;
+  response: ConditionalResponseValue[] = [];
+}
+
+class ConditionalResponseValue {
+  condition: string;
   fixedLatency: FixedLatency;
   randomLatency: RandomLatency;
   contentType: string;
@@ -40,5 +58,5 @@ class ProjectRule {
   }
 }
 
-export { ProjectRule, Rule, Request, Response };
+export { ProjectRule, Rule, Request, Response, ConditionalResponse, ConditionalResponseValue };
 

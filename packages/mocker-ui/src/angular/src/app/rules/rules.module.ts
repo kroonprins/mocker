@@ -7,13 +7,15 @@ import { RulesManageComponent } from './components/manage/rules-manage.component
 import { FormsModule } from '@angular/forms';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { SharedModule } from '../shared/shared.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     MonacoEditorModule,
-    SharedModule
+    SharedModule,
+    FontAwesomeModule
   ],
   exports: [
     RulesComponent, // TODO needs to be exported?

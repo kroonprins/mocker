@@ -138,6 +138,7 @@ class MockServer extends Server {
       req: req,
       res: res
     }
+    // TODO make sure the condition that equals 'true' without templating is evaluated last
     // array find needs module like p-iteration to handle the async
     for (let ruleConditionalResponseValue of ruleConditionalResponse.response) {
       const condition = await this.templatingService.render(ruleConditionalResponse.templatingEngine, ruleConditionalResponseValue.condition, templateEnvironment)
