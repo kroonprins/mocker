@@ -14,6 +14,7 @@ class Request {
 class Response {
   contentType: string;
   statusCode: number;
+  latency: number;
   body: string;
   headers: NameValuePair[];
   cookies: ResponseCookie[];

@@ -26,7 +26,6 @@
           </div>
         </div>
       </div>
-      <app-latency [item]="projectRule.rule" label="Latency" [readonly]="isConsult()"></app-latency>
     </fieldset>
     <fieldset>
       <legend class="label ">Request</legend>
@@ -70,6 +69,7 @@
           </div>
         </div>
       </div>
+      <app-latency [item]="projectRule.rule.response" label="Latency" [readonly]="isConsult()"></app-latency>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label for="contentType" class="label">Content-Type</label>

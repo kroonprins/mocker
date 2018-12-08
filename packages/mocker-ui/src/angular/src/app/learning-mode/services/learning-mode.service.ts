@@ -6,6 +6,7 @@ import { ProjectRule, Rule, Request, Response } from '../../rules/model/project-
 import { ResponseCookie } from '../../shared/model/cookie';
 import { NameValuePair } from '../../shared/model/name-value-pair';
 import { AppConfigurationService } from '../../shared/services/app-configuration.service';
+import { FixedLatency } from '../../shared/model/latency';
 
 @Injectable()
 export class LearningModeService {
@@ -48,6 +49,8 @@ export class LearningModeService {
     const response = new Response();
     response.contentType = recordedRequest.response.contentType;
     response.statusCode = recordedRequest.response.statusCode;
+    response.fixedLatency = new FixedLatency();
+    response.fixedLatency.value = recordedRequest.response.latency;
     response.body = recordedRequest.response.body;
 
     const headers: NameValuePair[] = [];

@@ -6,8 +6,6 @@ class Rule {
   name: string;
   request: Request;
   response: Response;
-  fixedLatency: FixedLatency;
-  randomLatency: RandomLatency;
 }
 
 class Request {
@@ -17,6 +15,8 @@ class Request {
 
 class Response {
   templatingEngine: string; // TODO enum? (enum = type?)
+  fixedLatency: FixedLatency;
+  randomLatency: RandomLatency;
   contentType: string;
   statusCode: number;
   headers: NameValuePair[] = [];
