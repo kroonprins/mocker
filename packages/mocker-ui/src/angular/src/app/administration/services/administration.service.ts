@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppConfigurationService } from '../../shared/services/app-configuration.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/observable/of';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { LogLevels } from '../model/logger';
+import { map } from 'rxjs/operators';
+import { LogLevels, ParentLogger } from '../model/logger';
+import { Observable, forkJoin } from 'rxjs';
 
 @Injectable()
 export class AdministrationService {
@@ -17,25 +15,25 @@ export class AdministrationService {
   }
 
   retrieveCurrentLogLevels(): Observable<LogLevels> {
-    return this._http.get<LogLevels>(`${this.administrationServerLocation}/administration/loglevel`).map(logLevels => {
+    return this._http.get<LogLevels>(`${this.administrationServerLocation}/administration/loglevel`).pipe(map(logLevels => {
       if (!('level' in logLevels.parent)) {
-        logLevels.parent['level'] = undefined;
+        (<ParentLogger>logLevels.parent).level = undefined;
       }
       logLevels.parent.initialLevel = logLevels.parent.level;
       for (const childLogger of logLevels.children) {
         childLogger.initialLevel = childLogger.level;
       }
       return logLevels;
-    });
+    }));
   }
 
   updateLogLevels(logLevels: LogLevels): Observable<void> {
     if (logLevels.parent.level && logLevels.parent.level !== logLevels.parent.initialLevel) {
       return this._http.put(`${this.administrationServerLocation}/administration/loglevel`, {
         level: logLevels.parent.level
-      }).map(response => {
+      }).pipe(map(response => {
         return;
-      });
+      }));
     } else {
       const requests: Observable<Object>[] = [];
       for (const childLogger of logLevels.children) {
@@ -47,9 +45,9 @@ export class AdministrationService {
         }));
       }
       return forkJoin(requests)
-        .map(res => {
+        .pipe(map(res => {
           return;
-        });
+        }));
     }
   }
 

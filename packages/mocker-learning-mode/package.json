@@ -8,7 +8,7 @@
     "test": "mocker-test-runner",
     "version-check": "updates",
     "docker-build": "cross-var docker build -t kroonprins/mocker-learning-mode:latest -t kroonprins/mocker-learning-mode:$npm_package_version .",
-    "docker-test": "docker run kroonprins/mocker-learning-mode npm test",
+    "docker-test": "docker run --rm kroonprins/mocker-learning-mode npm test",
     "docker-push": "docker push kroonprins/mocker-learning-mode"
   },
   "repository": {

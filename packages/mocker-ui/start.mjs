@@ -29,7 +29,7 @@ config
   .registerProperty('api-server.bind-address', ENV.MOCKER_API_SERVER_BIND_ADDRESS || '0.0.0.0')
   .registerProperty('ui-server.port', ENV.MOCKER_UI_SERVER_PORT || 3005)
   .registerProperty('ui-server.bind-address', ENV.MOCKER_UI_SERVER_BIND_ADDRESS || '0.0.0.0')
-  .registerProperty('ui-server.statics-location', ENV.MOCKER_UI_SERVER_STATICS_LOCATION || `${cjs.__dirname}/src/angular/dist`)
+  .registerProperty('ui-server.statics-location', ENV.MOCKER_UI_SERVER_STATICS_LOCATION || `${cjs.__dirname}/src/angular/dist/mocker-angular-ui`)
 
 setDefaultConfig()
 setDefaultConfigMockServer()

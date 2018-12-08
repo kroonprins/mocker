@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/do';
-import 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { AppConfigurationService } from './app-configuration.service';
 
 @Injectable()
@@ -18,11 +17,11 @@ export class ConfigDropdownService {
 
   retrieveConfigItem (configItem: string): Observable<any> {
     if (this.cache.has(configItem)) {
-      return Observable.of(this.cache.get(configItem));
+      return of(this.cache.get(configItem));
     }
-    return this._http.get(`${this.apiServerLocation}/api/config/${configItem}`).do(response => {
+    return this._http.get(`${this.apiServerLocation}/api/config/${configItem}`).pipe(tap(response => {
       this.cache.set(configItem, response);
-    }); // TODO error handling
+    })); // TODO error handling
   }
 
 }

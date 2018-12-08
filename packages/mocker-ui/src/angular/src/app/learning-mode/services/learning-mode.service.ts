@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { RecordedRequest } from '../model/learning-mode';
 import { ProjectRule, Rule, Request, Response } from '../../rules/model/project-rule';
 import { ResponseCookie } from '../../shared/model/cookie';

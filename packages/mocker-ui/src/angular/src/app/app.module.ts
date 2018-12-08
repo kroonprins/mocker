@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { Ng2Webstorage } from 'ngx-webstorage';
+import { NgxWebstorageModule } from 'ngx-webstorage';
 
 import { ProjectsModule } from './projects/projects.module';
 import { RulesModule } from './rules/rules.module';
@@ -32,7 +32,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     RulesModule,
     LearningModeModule,
     AdministrationModule,
-    Ng2Webstorage.forRoot({ prefix: 'mocker' }),
+    NgxWebstorageModule.forRoot({ prefix: 'mocker' }),
     MonacoEditorModule.forRoot({
       defaultOptions: {
         minimap: {

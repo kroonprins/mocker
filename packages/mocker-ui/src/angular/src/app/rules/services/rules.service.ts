@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ProjectRule } from '../model/project-rule';
 import { AppConfigurationService } from '../../shared/services/app-configuration.service';
 
@@ -19,11 +20,11 @@ export class RulesService {
   }
 
   retrieveProjectRule(projectName: string, ruleName: string): Observable<ProjectRule> {
-    return this._http.get<ProjectRule>(`${this.apiServerLocation}/api/projects/${projectName}/rules/${ruleName}`)
-      .map(projectRule => {
+    return this._http.get<ProjectRule>(`${this.apiServerLocation}/api/projects/${projectName}/rules/${ruleName}`).pipe(
+      map(projectRule => {
         projectRule.rule.isConditionalResponse = typeof projectRule.rule.response === 'undefined';
         return projectRule;
-      });
+      }));
   }
 
   createProjectRule(projectName: string, projectRule: ProjectRule): Observable<ProjectRule> {

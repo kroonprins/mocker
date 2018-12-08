@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Project, MockServer, LearningModeServer } from '../model/project';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { LocalStorage } from 'ngx-webstorage';
 import { AppConfigurationService } from '../../shared/services/app-configuration.service';
 
@@ -72,9 +70,9 @@ export class ProjectsService {
   }
 
   listProjects(): Observable<Project[]> {
-    return this._http.get(`${this.apiServerLocation}/api/projects?serverStatus=true`, { observe: 'response' })
-      .map(httpResponseHandler(200))
-      .map(projectList => {
+    return this._http.get(`${this.apiServerLocation}/api/projects?serverStatus=true`, { observe: 'response' }).pipe(
+      map(httpResponseHandler(200))).pipe(
+      map(projectList => {
         return projectList.map((item) => {
           const project = new Project(); // TODO is all this actually necessary?
           project.name = item.name;
@@ -95,26 +93,26 @@ export class ProjectsService {
 
           return project;
         });
-      })
-      .catch(serverErrorHandler);
+      })).pipe(
+      catchError(serverErrorHandler));
   }
 
   createProject(project: Project): Observable<Object> {
-    return this._http.post(`${this.apiServerLocation}/api/projects`, project, { observe: 'response' })
-      .map(httpResponseHandler(201))
-      .catch(serverErrorHandler);
+    return this._http.post(`${this.apiServerLocation}/api/projects`, project, { observe: 'response' }).pipe(
+      map(httpResponseHandler(201))).pipe(
+      catchError(serverErrorHandler));
   }
 
   updateProject(projectName: string, project: Project): Observable<Object> {
-    return this._http.put(`${this.apiServerLocation}/api/projects/${projectName}`, project, { observe: 'response' })
-      .map(httpResponseHandler(200))
-      .catch(serverErrorHandler);
+    return this._http.put(`${this.apiServerLocation}/api/projects/${projectName}`, project, { observe: 'response' }).pipe(
+      map(httpResponseHandler(200))).pipe(
+      catchError(serverErrorHandler));
   }
 
   removeProject(project: Project): Observable<Object> {
-    return this._http.delete(`${this.apiServerLocation}/api/projects/${project.name}`, { observe: 'response' })
-      .map(httpResponseHandler(204))
-      .catch(serverErrorHandler);
+    return this._http.delete(`${this.apiServerLocation}/api/projects/${project.name}`, { observe: 'response' }).pipe(
+      map(httpResponseHandler(204))).pipe(
+      catchError(serverErrorHandler));
   }
 
   selectProject(project: Project): void {
@@ -132,28 +130,28 @@ export class ProjectsService {
 
   startMockServer(project: Project): Observable<Object> {
     return this._http.post(`${this.apiServerLocation}/api/projects/${project.name}/mock-server`,
-      project.mockServer, { observe: 'response' })
-      .map(httpResponseHandler(200))
-      .catch(serverErrorHandler);
+      project.mockServer, { observe: 'response' }).pipe(
+      map(httpResponseHandler(200))).pipe(
+      catchError(serverErrorHandler));
   }
 
   stopMockServer(project: Project): Observable<Object> {
-    return this._http.delete(`${this.apiServerLocation}/api/projects/${project.name}/mock-server`, { observe: 'response' })
-      .map(httpResponseHandler(204))
-      .catch(serverErrorHandler);
+    return this._http.delete(`${this.apiServerLocation}/api/projects/${project.name}/mock-server`, { observe: 'response' }).pipe(
+      map(httpResponseHandler(204))).pipe(
+      catchError(serverErrorHandler));
   }
 
   startLearningModeServer(project: Project): Observable<Object> {
     return this._http.post(`${this.apiServerLocation}/api/projects/${project.name}/learning-mode-server`, project.learningModeServer,
-      { observe: 'response' })
-      .map(httpResponseHandler(200))
-      .catch(serverErrorHandler);
+      { observe: 'response' }).pipe(
+      map(httpResponseHandler(200))).pipe(
+      catchError(serverErrorHandler));
   }
 
   stopLearningModeServer(project: Project): Observable<Object> {
-    return this._http.delete(`${this.apiServerLocation}/api/projects/${project.name}/learning-mode-server`, { observe: 'response' })
-      .map(httpResponseHandler(204))
-      .catch(serverErrorHandler);
+    return this._http.delete(`${this.apiServerLocation}/api/projects/${project.name}/learning-mode-server`, { observe: 'response' }).pipe(
+      map(httpResponseHandler(204))).pipe(
+      catchError(serverErrorHandler));
   }
 
 }
