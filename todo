@@ -68,3 +68,7 @@
 * make it possible to start the ui without a project file. It will then ask to select one at the start.
 * support multidoc yaml defining multiple rules in one yaml file?
 * make cors headers on mock-server / learning mode configurable and disabled by default
+* make it possible to start swagger ui also from mocker ui
+* make latency value with unit possible (eg 500ms, 1s, ...)
+* don't crash mock server when incorrectly formatted rule (annoying when automatic restart fails because rule not complete yet)
+* add extra documentation about using req.body

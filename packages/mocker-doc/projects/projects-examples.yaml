@@ -1,0 +1,15 @@
+projects:
+  - name: all rules in the rules directory
+    rules:
+      - ../rules/*.yaml
+  - name: all rules in the rules directory and subdirectories
+    rules:
+      - ../rules/**/*.yaml
+  - name: a defined list of rules
+    rules:
+      - ../rules/a-very-basic-rule.yaml
+      - ../rules/a-basic-rule-with-templating.yaml
+  - name: the rules containing the word latency or conditional in the file name
+    rules:
+      - ../rules/*latency*
+      - ../rules/*conditional*

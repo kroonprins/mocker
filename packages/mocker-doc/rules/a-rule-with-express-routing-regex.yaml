@@ -1,0 +1,9 @@
+name: path using express routing regex
+request:
+  path: /regex/ab(cd)?e
+  method: GET
+response:
+  templatingEngine: none
+  contentType: text/plain
+  statusCode: 200
+  body: this rule's response

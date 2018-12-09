@@ -1,0 +1,11 @@
+name: random latency
+request:
+  path: /random-latency
+  method: GET
+response:
+  templatingEngine: none
+  contentType: text/plain
+  statusCode: 200
+  randomLatency:
+    min: 500
+    max: 2000

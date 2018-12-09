@@ -1,5 +1,6 @@
 = Mocker
 :source-highlighter: highlightjs
+:toc: left
 
 Mocker consists of:
 
@@ -27,7 +28,7 @@ response:
 ----
 
 Gives as result:
-[source,Shell Session]
+[source,shell]
 ----
 $ curl -i -X GET http://localhost:3000/get
 HTTP/1.1 200 OK
@@ -39,15 +40,16 @@ Connection: keep-alive
 the response body
 ----
 
+=== Templating
 
-No 2 rules for the same request should be created, instead the response can be made dynamic based on the request context using templating. The currently supported template engine is https://mozilla.github.io/nunjucks/[nunjucks]. The templating environment is filled with an object "req" on which all the attributes of the request are present (req.query, req.headers, req.body, req.cookies) and "res" with an object containing the response attributes. These 2 objects are the request and response object of the https://expressjs.com/[express] server, so all possible attributes can be found in the express documentation. For example:
+No 2 rules for the same request should be created, instead the response can be made dynamic based on the request context using templating. The currently supported template engine is https://mozilla.github.io/nunjucks/[nunjucks]. The templating environment is filled with an object "req" on which all the attributes of the request are present (req.query, req.headers, req.body, req.cookies) and "res" with an object containing the response attributes. These 2 objects are the request and response object of the https://expressjs.com/[express] server, so all possible properties can be found in the express documentation (see https://expressjs.com/en/api.html#req[here] for request properties, and https://expressjs.com/en/api.html#res[here] for response properties). For example:
 
 .https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-basic-rule-with-templating.yaml[a-basic-rule-with-templating.yaml]
 [source,YAML]
 ----
 name: basic rule with templating
 request:
-  path: /get
+  path: /templating
   method: GET
 response:
   templatingEngine: nunjucks
@@ -57,9 +59,9 @@ response:
 ----
 
 Gives as result:
-[source,Shell Session]
+[source,shell]
 ----
-curl -i -X GET http://localhost206 -H "h: xyz"
+$ curl -i -X GET http://localhost:3000/templating?q=206 -H "h: xyz"
 HTTP/1.1 206 Partial Content
 Content-Type: text/plain; charset=utf-8
 Content-Length: 75
@@ -69,15 +71,476 @@ Connection: keep-alive
 received a header 'h' with value xyz and response status code of 206 is set
 ----
 
+If no templating is required then templetingEngine should be set to 'none'.
+
+Note: req.body is parsed using express body-parser module. The structure of req.body depends on the input content-type header on the request.
+
+=== Conditional response
+
+Sometimes the complete response should be different based on a condition. Instead of templating every response property with this condition a "conditional response" can be defined in the rule. For example:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-conditional-response.yaml[a-rule-with-conditional-response.yaml]
+[source,YAML]
+----
+name: Conditional response
+request:
+  path: /conditional
+  method: GET
+conditionalResponse:
+  templatingEngine: nunjucks
+  response:
+    - condition: "{{req.query.id == 'id1'}}"
+      contentType: application/json
+      statusCode: "200"
+      body: |
+        {
+          "data": "id1's data"
+        }
+    - condition: "{{req.query.id == 'id2'}}"
+      contentType: application/json
+      statusCode: "200"
+      body: |
+        {
+          "data": "id2's data"
+        }
+    - condition: true
+      contentType: text/plain
+      statusCode: "404"
+      body: The item with id '{{req.query.id}}' does not exist
+----
+
+Gives as result:
+[source,shell]
+----
+$ curl -i -X GET http://localhost:3000/conditional?id=id1
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Length: 27
+Date: Sun, 09 Dec 2018 20:08:47 GMT
+Connection: keep-alive
+
+{
+  "data": "id1's data"
+}
+
+$ curl -i -X GET http://localhost:3000/conditional?id=id2
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Length: 27
+Date: Sun, 09 Dec 2018 20:08:51 GMT
+Connection: keep-alive
+
+{
+  "data": "id2's data"
+}
+
+$ curl -i -X GET http://localhost:3000/conditional?id=id3
+HTTP/1.1 404 Not Found
+Content-Type: text/plain; charset=utf-8
+Content-Length: 37
+Date: Sun, 09 Dec 2018 20:16:42 GMT
+Connection: keep-alive
+
+The item with id 'id3' does not exist
+----
+
+The conditions are evaluated in the order they are defined, so the first match is returned. It is best to always define as last conditional response one that equals 'true' so that there is always at least one matching condition.
+
+Compared with implementing the same with plain templating, this would have been something like:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-conditional-response-with-plain-templating.yaml[a-rule-with-conditional-response-with-plain-templating.yaml]
+[source,YAML]
+----
+name: Conditional response without using conditionalResponse
+request:
+  path: /conditional-without-using-conditionalresponse
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: "{% if req.query.id == 'id1' or req.query.id == 'id2' %}application/json{% else %}text/plain{% endif %}"
+  statusCode: "{% if req.query.id == 'id1' or req.query.id == 'id2' %}200{% else %}404{% endif %}"
+  body: |
+    {%- if req.query.id == 'id1' -%}
+    {
+      "data": "id1's data"
+    }
+    {%- elif req.query.id == 'id2' -%}
+    {
+      "data": "id2's data"
+    }
+    {%- else -%}The item with id '{{req.query.id}}' does not exist{%- endif -%}
+----
+
+Which has a lot of repetition of the if-else and is more difficult to read.
+
+=== Response headers and cookies
+
+Response headers and cookies can be defined. For example:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-response-headers-and-cookies.yaml][a-rule-with-response-headers-and-cookies.yaml]
+[source,YAML]
+----
+name: response headers and cookies
+request:
+  path: /response-headers-and-cookies
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: text/plain
+  statusCode: 200
+  headers:
+    - name: X-header1
+      value: header1
+    - name: X-header2
+      value: header2
+  cookies:
+    - name: cookie1
+      value: value1
+      properties:
+        secure: true
+    - name: cookie2
+      value: value2
+      properties:
+        httpOnly: true
+----
+
+Gives as result:
+[source,shell]
+----
+$ curl -i -X GET http://localhost:3000/response-headers-and-cookies
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+X-header1: header1
+X-header2: header2
+Set-Cookie: cookie1=value1; Path=/; Secure
+Set-Cookie: cookie2=value2; Path=/; HttpOnly
+Content-Length: 0
+Date: Sun, 09 Dec 2018 18:41:38 GMT
+Connection: keep-alive
+----
+
+The possible properties that can be set for cookies are the standard cookie properties. See for example https://expressjs.com/en/api.html#res.cookie[here].
+Templating can also be applied on the name and values of the headers/cookies.
+
+=== Path parameters
+
+Path parameters in the request path can be defined using the express syntax (see https://expressjs.com/en/api.html#app.param[here]).
+For example:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-path-parameter.yaml[a-rule-with-path-parameter.yaml]
+[source,YAML]
+----
+name: with path parameters
+request:
+  path: /path-parameter/:p1/:p2
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: text/plain
+  statusCode: 200
+  body: |
+    parameter p1: {{req.params.p1}}
+    parameter p2: {{req.params.p2}}
+----
+
+Gives as result:
+[source,shell]
+----
+$ curl -i -X GET http://localhost:3000/path-parameter/parameter1/parameter2
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+Content-Length: 50
+Date: Sun, 09 Dec 2018 19:49:27 GMT
+Connection: keep-alive
+
+parameter p1: parameter1
+parameter p2: parameter2
+----
+
+More generally the https://expressjs.com/en/guide/routing.html[express routing] constructs can be used in the request path. For example:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-express-routing-regex.yaml[a-rule-with-express-routing-regex.yaml]
+[source,YAML]
+----
+name: path using express routing regex
+request:
+  path: /regex/ab(cd)?e
+  method: GET
+response:
+  templatingEngine: none
+  contentType: text/plain
+  statusCode: 200
+  body: this rule's response
+----
+
+Gives as result:
+[source,shell]
+----
+$ curl -i -X GET http://localhost:3000/regex/abe
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+Content-Length: 20
+Date: Sun, 09 Dec 2018 19:55:17 GMT
+Connection: keep-alive
+
+this rule's response
+
+$ curl -i -X GET http://localhost:3000/regex/abcde
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+Content-Length: 20
+Date: Sun, 09 Dec 2018 19:55:28 GMT
+Connection: keep-alive
+
+this rule's response
+----
+
+
+=== Latency
+
+A fixed or random latency can be defined. The value of the latency is in milliseconds.
+
+Example fixed latency:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-fixed-latency.yaml[a-rule-with-fixed-latency.yaml]
+[source,YAML]
+----
+name: fixed latency
+request:
+  path: /fixed-latency
+  method: GET
+response:
+  templatingEngine: none
+  contentType: text/plain
+  statusCode: 200
+  fixedLatency:
+    value: 1000
+----
+
+Gives as result:
+[source,shell]
+----
+$ curl -X GET http://localhost:3000/fixed-latency -w "%{time_total}\n"
+1,006
+----
+
+Example random latency:
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-random-latency.yaml[a-rule-with-random-latency.yaml]
+[source,YAML]
+----
+name: random latency
+request:
+  path: /random-latency
+  method: GET
+response:
+  templatingEngine: none
+  contentType: text/plain
+  statusCode: 200
+  randomLatency:
+    min: 500
+    max: 2000
+----
+
+Gives as result:
+[source,shell]
+----
+$ for i in $(seq 1 5); do curl -X GET http://localhost:3000/random-latency -w "%{time_total}\n"; done
+0,670
+1,029
+1,919
+1,348
+1,559
+----
+
+Fixed and random latency should not be defined both in a rule. It is one or the other.
+Templating can be applied to the value of the latency. For example a random latency could also have been written like this:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-templated-latency.yaml[a-rule-with-templated-latency.yaml]
+[source,YAML]
+----
+name: templated latency
+request:
+  path: /templated-latency
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: text/plain
+  statusCode: 200
+  fixedLatency:
+    value: |
+      {% set items = range(500, 2000) %}
+      {{ items | random }}
+----
+
+Gives as result:
+[source,shell]
+----
+$ for i in $(seq 1 5); do curl -X GET http://localhost:3000/templated-latency -w "%{time_total}\n"; done
+1,378
+1,905
+0,667
+1,509
+0,552
+----
+
+=== Nunjucks templating helpers
+
+Nunjucks allows to define custom defined functions and filters that can be used in templates. To add extra functions and/or filters, define a file with .mjs extension exporting a HELPERS object. For example:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/templating-helper/template-helpers.nunjucks.mjs[template-helpers.nunjucks.mjs]
+[source,javascript]
+----
+export const HELPERS = {
+  filters: {
+    appendText: (str, text) => {
+      return str + text
+    }
+  },
+  functions: {
+    double: (num) => {
+      return 2 * num
+    }
+  }
+}
+----
+
+The location of the file should then be given as the environment variable TEMPLATING_HELPERS_NUNJUCKS.
+The functions and filters can then be used in rule definitions. For example:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-templating-helpers.yaml[a-rule-with-templating-helpers.yaml]
+[source,YAML]
+----
+name: using templating helpers
+request:
+  path: /templating-helpers
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: text/plain
+  statusCode: 200
+  body: |
+    result of function double: {{ double(req.query.q1) }}
+    result of filter appendTest: {{ req.query.q2 | appendText('s') }}
+----
+
+Gives as result:
+[source,shell]
+----
+$ curl -i -X GET 'http://localhost:3000/templating-helpers?q1=2&q2=sheep'
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+Content-Length: 65
+Date: Sun, 09 Dec 2018 20:54:54 GMT
+Connection: keep-alive
+
+result of function double: 4
+result of filter appendTest: sheeps
+----
+
+=== Echo server
+
+The mock server can be used as an echo server to inspect all request parameters sent to the mock server. This can for example be useful when testing what headers are added by an api gateway or proxy.
+A special template helper function "echo" has been defined and is available by default. To create an echo service, define a rule using the echo function. For example:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-templating-helpers.yaml[a-rule-with-templating-helpers.yaml]
+[source,YAML]
+----
+name: echo server
+request:
+  path: /echo
+  method: POST
+response:
+  templatingEngine: nunjucks
+  contentType: application/json
+  statusCode: 200
+  body: |
+    {{ echo(req) }}
+----
+
+Gives as result:
+[source,shell]
+----
+$ curl -s -X POST 'http://localhost:3000/echo?q1=query1&q2=query2' -H 'content-type: application/json' -H 'X-h1: header1' -H 'X-h2: header2' -b 'c1=cookie1;c2=cookie2' -d '{ "my": { "input": "body" } }' | jq
+{
+  "method": "POST",
+  "path": "/echo",
+  "fullPath": "/echo?q1=query1&q2=query2",
+  "body": {
+    "my": {
+      "input": "body"
+    }
+  },
+  "params": {
+    "q1": "query1",
+    "q2": "query2"
+  },
+  "headers": {
+    "host": "localhost:3000",
+    "user-agent": "curl/7.47.0",
+    "accept": "*/*",
+    "content-type": "application/json",
+    "x-h1": "header1",
+    "x-h2": "header2",
+    "content-length": "29"
+  },
+  "cookies": {
+    "c1": "cookie1",
+    "c2": "cookie2"
+  }
+}
+----
+
 == Projects
 
+Rules are organized by projects. The projects are listed in a yaml file.
+
+The project file in its simplest form looks like this:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/projects/projects.yaml[projects.yaml]
+[source,YAML]
+----
+projects:
+  - name: examples
+    rules:
+      - ../rules/*.yaml
+----
+
+Each project defines the list of rules that belong to it. Rules can belong to several projects. The rules are reference by the path to the yaml rule file. This path can be an absolute path, or a path relative to the location of the project file. Glob patterns can be used (following the implemantation of the https://www.npmjs.com/package/glob[glob] package).
+
+A more extensive example:
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/projects/projects-examples.yaml[projects-examples.yaml]
+[source,YAML]
+----
+projects:
+  - name: all rules in the rules directory
+    rules:
+      - ../rules/*.yaml
+  - name: all rules in the rules directory and subdirectories
+    rules:
+      - ../rules/**/*.yaml
+  - name: a defined list of rules
+    rules:
+      - ../rules/a-very-basic-rule.yaml
+      - ../rules/a-basic-rule-with-templating.yaml
+  - name: the rules containing the word latency or conditional in the file name
+    rules:
+      - ../rules/*latency*
+      - ../rules/*conditional*
+----
+
+When using mocker a reference to the project file will always have to be given by setting environment variable MOCKER_PROJECTS_FILE. See below for more info on the different ways to use mocker.
+
 == Mocker UI
+
+Mocker UI is a browser-based UI to manage the projects and rules as described above. Instead of manipulating the yaml files manually, they can be managed from the UI. From the UI a mock server can also be started, as well as the learning mode.
 
 === Start using node
 
 === Start using docker
 
 == Mock server standalone
+
+=== Swagger UI
 
 === Start using node
 

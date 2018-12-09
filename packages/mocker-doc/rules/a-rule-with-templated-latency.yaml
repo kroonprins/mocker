@@ -1,0 +1,13 @@
+name: templated latency
+request:
+  path: /templated-latency
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: text/plain
+  statusCode: 200
+  fixedLatency:
+    value: |
+      {% set items = range(500, 2000) %}
+      {{ items | random }}
+

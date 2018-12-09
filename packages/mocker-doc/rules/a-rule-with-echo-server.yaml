@@ -1,4 +1,4 @@
-name: echo post
+name: echo server
 request:
   path: /echo
   method: POST
@@ -6,8 +6,5 @@ response:
   templatingEngine: nunjucks
   contentType: application/json
   statusCode: 200
-  headers:
-    - name: a
-      value: "b {{req.query.q}}"
   body: |
-    { "a": "b {{req.query.q}}" }
+    {{ echo(req) }}

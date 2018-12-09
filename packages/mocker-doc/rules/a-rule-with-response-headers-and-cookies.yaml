@@ -1,0 +1,22 @@
+name: response headers and cookies
+request:
+  path: /response-headers-and-cookies
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: text/plain
+  statusCode: 200
+  headers:
+    - name: X-header1
+      value: header1
+    - name: X-header2
+      value: header2
+  cookies:
+    - name: cookie1
+      value: value1
+      properties:
+        secure: true
+    - name: cookie2
+      value: value2
+      properties:
+        httpOnly: true

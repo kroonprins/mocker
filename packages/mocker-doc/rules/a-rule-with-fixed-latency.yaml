@@ -1,0 +1,10 @@
+name: fixed latency
+request:
+  path: /fixed-latency
+  method: GET
+response:
+  templatingEngine: none
+  contentType: text/plain
+  statusCode: 200
+  fixedLatency:
+    value: 1000
