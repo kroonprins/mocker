@@ -1,6 +1,6 @@
 {
   "name": "@kroonprins/mocker-learning-mode",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Learning mode for mocker",
   "main": "exports.mjs",
   "scripts": {
