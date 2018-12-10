@@ -4,6 +4,7 @@
   "scripts": {
     "start": "packages/mocker-ui/start.mjs",
     "install": "lerna bootstrap",
+    "postinstall": "node build-scripts/post-install.js",
     "test": "lerna run test",
     "lint-check": "eslint packages/*/*.mjs packages/*/src/*.mjs packages/*/test/*.mjs",
     "lint-fix": "eslint packages/*/*.mjs packages/*/src/*.mjs packages/*/test/*.mjs --fix",

@@ -49,5 +49,8 @@
     "cross-var": "^1.1.0",
     "portastic": "^1.0.1",
     "updates": "^5.4.3"
+  },
+  "bin": {
+    "mocker-mock-server": "./start.mjs"
   }
 }

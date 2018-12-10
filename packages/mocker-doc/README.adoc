@@ -5,7 +5,7 @@
 Mocker consists of:
 
 * A UI for management
-* A mock server which responds to requests based on rules. Those rules are stored in yaml files.
+* A mock server which responds to requests based on rules. Those rules are described in yaml files.
 * A learning mode reverse proxy server. In learning mode, requests to the real server that the mock server should mock are captured. From the UI these captured requests can be transformed into rules for the mock server.
 * A specific version of the mock server for use in javascript base unit and integration tests.
 
@@ -28,7 +28,7 @@ response:
 ----
 
 Gives as result:
-[source,shell]
+[source,console]
 ----
 $ curl -i -X GET http://localhost:3000/get
 HTTP/1.1 200 OK
@@ -59,7 +59,7 @@ response:
 ----
 
 Gives as result:
-[source,shell]
+[source,console]
 ----
 $ curl -i -X GET http://localhost:3000/templating?q=206 -H "h: xyz"
 HTTP/1.1 206 Partial Content
@@ -110,7 +110,7 @@ conditionalResponse:
 ----
 
 Gives as result:
-[source,shell]
+[source,console]
 ----
 $ curl -i -X GET http://localhost:3000/conditional?id=id1
 HTTP/1.1 200 OK
@@ -205,7 +205,7 @@ response:
 ----
 
 Gives as result:
-[source,shell]
+[source,console]
 ----
 $ curl -i -X GET http://localhost:3000/response-headers-and-cookies
 HTTP/1.1 200 OK
@@ -244,7 +244,7 @@ response:
 ----
 
 Gives as result:
-[source,shell]
+[source,console]
 ----
 $ curl -i -X GET http://localhost:3000/path-parameter/parameter1/parameter2
 HTTP/1.1 200 OK
@@ -274,7 +274,7 @@ response:
 ----
 
 Gives as result:
-[source,shell]
+[source,console]
 ----
 $ curl -i -X GET http://localhost:3000/regex/abe
 HTTP/1.1 200 OK
@@ -318,13 +318,14 @@ response:
 ----
 
 Gives as result:
-[source,shell]
+[source,console]
 ----
 $ curl -X GET http://localhost:3000/fixed-latency -w "%{time_total}\n"
 1,006
 ----
 
 Example random latency:
+
 .https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-random-latency.yaml[a-rule-with-random-latency.yaml]
 [source,YAML]
 ----
@@ -342,7 +343,7 @@ response:
 ----
 
 Gives as result:
-[source,shell]
+[source,console]
 ----
 $ for i in $(seq 1 5); do curl -X GET http://localhost:3000/random-latency -w "%{time_total}\n"; done
 0,670
@@ -373,7 +374,7 @@ response:
 ----
 
 Gives as result:
-[source,shell]
+[source,console]
 ----
 $ for i in $(seq 1 5); do curl -X GET http://localhost:3000/templated-latency -w "%{time_total}\n"; done
 1,378
@@ -383,6 +384,7 @@ $ for i in $(seq 1 5); do curl -X GET http://localhost:3000/templated-latency -w
 0,552
 ----
 
+[#chapter-templating-helpers]
 === Nunjucks templating helpers
 
 Nunjucks allows to define custom defined functions and filters that can be used in templates. To add extra functions and/or filters, define a file with .mjs extension exporting a HELPERS object. For example:
@@ -424,7 +426,7 @@ response:
 ----
 
 Gives as result:
-[source,shell]
+[source,console]
 ----
 $ curl -i -X GET 'http://localhost:3000/templating-helpers?q1=2&q2=sheep'
 HTTP/1.1 200 OK
@@ -458,7 +460,7 @@ response:
 ----
 
 Gives as result:
-[source,shell]
+[source,console]
 ----
 $ curl -s -X POST 'http://localhost:3000/echo?q1=query1&q2=query2' -H 'content-type: application/json' -H 'X-h1: header1' -H 'X-h2: header2' -b 'c1=cookie1;c2=cookie2' -d '{ "my": { "input": "body" } }' | jq
 {
@@ -490,6 +492,7 @@ $ curl -s -X POST 'http://localhost:3000/echo?q1=query1&q2=query2' -H 'content-t
 }
 ----
 
+[#chapter-projects]
 == Projects
 
 Rules are organized by projects. The projects are listed in a yaml file.
@@ -508,6 +511,7 @@ projects:
 Each project defines the list of rules that belong to it. Rules can belong to several projects. The rules are reference by the path to the yaml rule file. This path can be an absolute path, or a path relative to the location of the project file. Glob patterns can be used (following the implemantation of the https://www.npmjs.com/package/glob[glob] package).
 
 A more extensive example:
+
 .https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/projects/projects-examples.yaml[projects-examples.yaml]
 [source,YAML]
 ----
@@ -533,12 +537,110 @@ When using mocker a reference to the project file will always have to be given b
 == Mocker UI
 
 Mocker UI is a browser-based UI to manage the projects and rules as described above. Instead of manipulating the yaml files manually, they can be managed from the UI. From the UI a mock server can also be started, as well as the learning mode.
+Mocker UI provides:
+* A section to manage projects: create new projects, update the name of a project, delete a projects, start a mock server for the project, and start a learnng mode reverse proxy for a project
+* For a selected project the mock server rules belonging can be managed: create a rule, update a rule, delete a rule, and create a rule from an existing rule.
+* For a selected project the captured requests of the learning mode reverse proxy server can be listed. For a captured request a new rule can be created based on the values of the captured request
+* Administrative actions: manage the log level of the application
 
 === Start using node
+
+Create a new project:
+
+[source,console]
+----
+$ npm init
+----
+
+Install mocker-ui:
+
+[source,console]
+----
+$ npm install @kroonprins/mocker-ui
+----
+
+Add a script to package.json:
+
+[source,json]
+----
+  "scripts": {
+    "start": "mocker-ui"
+  }
+----
+
+Note: on Windows the shortcuts need to be defined as follows instead:
+
+[source,json]
+----
+  "scripts": {
+    "start": "node --experimental-modules .\node_modules\@kroonprins\mocker-ui\start.mjs"
+  }
+----
+
+Set the required environment variables by exporting them on the command line or by creating a .env file like for example this:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-ui/.env[.env]
+[source,properties]
+----
+MOCKER_PROJECTS_FILE=../projects/projects.yaml
+
+TEMPLATING_HELPERS_NUNJUCKS=../templating-helper/template-helpers.nunjucks.mjs
+----
+
+After this Mocker UI can be started by running:
+
+[source,console]
+----
+$ npm start
+----
+
+And then opening "http://localhost:3005" in the browser.
+Starting Mocker UI will start a UI server on port 3005, an API server on port 3004 and an administration server on port 3001. These ports can be changed by setting environment variables (see below).
+
+
+The possible environment variables are:
+
+* *MOCKER_PROJECTS_FILE*: location of the projects file (see xref:chapter-projects[here]).
+* *MOCKER_LEARNING_MODE_DB_LOCATION* (optional): if you want to use the learning mode of the server, then add here the name of the file in which the captured requests should be stored. By default this will be ./data/learning_mode.db
+* *TEMPLATING_HELPERS_NUNJUCKS* (optional): path to javascript file containing nunjucks templating helper functions/filters (see xref:chapter-templating-helpers[here])
+* *MOCKER_RULES_DEFAULT_LOCATION* (optional): set the default location in which the yaml files of the rules will be stored when creating a rule from Mocker UI.
+* *MOCKER_UI_SERVER_PORT* (optional): override the default port (3005) used by the UI server.
+* *MOCKER_UI_SERVER_BIND_ADDRESS* (optional): bind the UI server to a given address instead of localhost.
+* *MOCKER_UI_SERVER_STATICS_LOCATION* (optional): override the location where the UI server statics are located.
+* *MOCKER_ADMINISTRATION_SERVER_PORT* (optional): override the default port (3001) used by the administration server.
+* *MOCKER_ADMINISTRATION_SERVER_BIND_ADDRESS* (optional): bind the administration server to a given address instead of localhost.
+* *MOCKER_API_SERVER_PORT* (optional): override the default port (3004) used by the api server.
+* *MOCKER_API_SERVER_BIND_ADDRESS* (optional): bind the api server to a given address instead of localhost.
+* *MOCKER_LOG_LEVEL* (optional): set the log level (one of 'error', 'warn', 'info', 'debug', or 'trace')
+
+
+If the nunjucks templating helpers require any npm packages then these can be added by installing the packages with npm. The templating helpers use modules so the package must be imported using the import syntax. For example:
+
+[source,console]
+----
+$ npm install cows
+----
+
+And then use it in the templating helpers:
+
+[source,javascript]
+----
+import cows from 'cows'
+
+export const HELPERS = {
+  functions: {
+    printCow: () => {
+      return cows()
+    }
+  }
+}
+----
 
 === Start using docker
 
 == Mock server standalone
+
+A mock server can also be started in standalone mode from the command line.
 
 === Swagger UI
 
@@ -547,6 +649,8 @@ Mocker UI is a browser-based UI to manage the projects and rules as described ab
 === Start using docker
 
 == Learning mode standalone
+
+The learning mode reverse proxy can also be started in standalone mode from the command line.
 
 === Start using node
 

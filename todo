@@ -72,3 +72,4 @@
 * make latency value with unit possible (eg 500ms, 1s, ...)
 * don't crash mock server when incorrectly formatted rule (annoying when automatic restart fails because rule not complete yet)
 * add extra documentation about using req.body
+* mock server / learning mode: admin server with metrics (e.g. number of requests, number of request per rule, ...)
