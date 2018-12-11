@@ -73,3 +73,5 @@
 * don't crash mock server when incorrectly formatted rule (annoying when automatic restart fails because rule not complete yet)
 * add extra documentation about using req.body
 * mock server / learning mode: admin server with metrics (e.g. number of requests, number of request per rule, ...)
+* exclude angular src from npm package?
+* investigate why npm install -g @kroonprins/mocker-ui fails on angular build (possibly related to point above about possibility to only have angular dist folder in npm package)

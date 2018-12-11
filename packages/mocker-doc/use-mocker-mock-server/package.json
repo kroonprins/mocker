@@ -1,0 +1,10 @@
+{
+  "name": "use-mocker-mock-server",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "mocker-mock-server"
+  },
+  "dependencies": {
+    "@kroonprins/mocker-mock-server": "^0.1.2"
+  }
+}

@@ -406,7 +406,7 @@ export const HELPERS = {
 }
 ----
 
-The location of the file should then be given as the environment variable TEMPLATING_HELPERS_NUNJUCKS.
+The location of the file should then be given as the environment variable TEMPLATING_HELPERS_NUNJUCKS. External npm packages can be used in the templating helper file. See the sections on how start mocker for more information.
 The functions and filters can then be used in rule definitions. For example:
 
 .https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-templating-helpers.yaml[a-rule-with-templating-helpers.yaml]
@@ -444,7 +444,7 @@ result of filter appendTest: sheeps
 The mock server can be used as an echo server to inspect all request parameters sent to the mock server. This can for example be useful when testing what headers are added by an api gateway or proxy.
 A special template helper function "echo" has been defined and is available by default. To create an echo service, define a rule using the echo function. For example:
 
-.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-templating-helpers.yaml[a-rule-with-templating-helpers.yaml]
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-echo-server.yaml[a-rule-with-echo-server.yaml]
 [source,YAML]
 ----
 name: echo server
@@ -568,7 +568,7 @@ Add a script to package.json:
   }
 ----
 
-Note: on Windows the shortcuts need to be defined as follows instead:
+Note: on Windows the shortcut need to be defined as follows instead:
 
 [source,json]
 ----
@@ -597,10 +597,24 @@ $ npm start
 And then opening "http://localhost:3005" in the browser.
 Starting Mocker UI will start a UI server on port 3005, an API server on port 3004 and an administration server on port 3001. These ports can be changed by setting environment variables (see below).
 
+Alternatively Mocker UI can also be installed globally:
 
+[source,console]
+----
+$ npm install -g @kroonprins/mocker-ui
+----
+
+And then started as follows:
+
+[source,console]
+----
+$ mocker-ui
+----
+
+[#environment-variables-mocker-ui]
 The possible environment variables are:
 
-* *MOCKER_PROJECTS_FILE*: location of the projects file (see xref:chapter-projects[here]).
+* *MOCKER_PROJECTS_FILE*: location of the projects file (see xref:chapter-projects[here]). If not provided it defaults to location ./projects/projects.yaml
 * *MOCKER_LEARNING_MODE_DB_LOCATION* (optional): if you want to use the learning mode of the server, then add here the name of the file in which the captured requests should be stored. By default this will be ./data/learning_mode.db
 * *TEMPLATING_HELPERS_NUNJUCKS* (optional): path to javascript file containing nunjucks templating helper functions/filters (see xref:chapter-templating-helpers[here])
 * *MOCKER_RULES_DEFAULT_LOCATION* (optional): set the default location in which the yaml files of the rules will be stored when creating a rule from Mocker UI.
@@ -623,6 +637,7 @@ $ npm install cows
 
 And then use it in the templating helpers:
 
+[#nunjucks-templating-helper-with-cows]
 [source,javascript]
 ----
 import cows from 'cows'
@@ -630,21 +645,199 @@ import cows from 'cows'
 export const HELPERS = {
   functions: {
     printCow: () => {
-      return cows()
+      const cowsList = cows()
+      return cowsList[Math.floor((Math.random() * (cowsList.length - 1)))]
     }
   }
 }
+
 ----
 
 === Start using docker
+
+[source,console]
+----
+docker run --rm \
+  -p 3001:3001 -p 3004:3004 -p 8000:3005 -p 8001:8080 \
+  -v $(pwd)/projects:/app/projects \
+  -v $(pwd)/rules:/app/rules \
+  -v $(pwd)/.env:/app/.env \
+  -v $(pwd)/template-helpers.nunjucks.mjs:/app/template-helpers.nunjucks.mjs \
+  kroonprins/mocker-ui:latest \
+  npm start
+----
+
+Ports 3001, 3004 and 3005 must be mapped. The port on which port 3005 maps on the docker host can be chosen freely (port 80002 in the example above). For ports 3004 and 3005 the port must map to the same port on the docker host, but the port can be changed by using the environment variables described xref:environment-variables-mocker-ui[here]. When starting a mock server or the learning mode from Mocker UI then this port must also be mapped. In the example above, from Mocker UI a mock server is started on port 8080 and this is mapped on port 8001 on the docker host.
+
+The projects file and the directory mock server rules must also be mapped into the container via volume mapping. In the example above the projects file is in $(pwd)/projects on the docker host, and the mock server rules are in $(pwd)/rules on the docker host.
+
+The environment variables to configure Mocker UI (see xref:environment-variables-mocker-ui[here]) can be passed as part of the docker run command with the -e option (e.g. docker run -e "TEMPLATING_HELPERS_NUNJUCKS=./template-helpers.nunjucks.mjs" ...) or by putting them in a .env file that is mapped into the container as in the example above.
+
+In case nunjucks templating helpers are used, then the helpers .mjs file should also be mapped in the container as shown in the example above.
+If the nunjucks templating helpers require any npm packages then a new image must be built in which the dependency is installed. For example:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-ui-with-docker/Dockerfile[Dockerfile]
+[source,properties]
+----
+from kroonprins/mocker-ui
+
+RUN npm install cows
+----
+
+And define a template-helpers.nunjucks.mjs that uses the cows package: see xref:nunjucks-templating-helper-with-cows[here].
+
+Then build the image:
+
+[source,console]
+----
+docker build -t mocker-ui-with-cows .
+----
+
+And define a rule using the templating helper (or create if from the UI after starting it):
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-ui-with-docker/rules/rule-using-nunjucks-templating-helper-with-external-package.yaml[rule-using-nunjucks-templating-helper-with-external-package.yaml]
+[source,YAML]
+----
+name: rule using the printCow templating helper
+request:
+  path: /cow
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: text/plain
+  statusCode: 200
+  body: |
+    {{printCow()}}
+----
+
+And run it:
+
+[source,console]
+----
+docker run --rm \
+  -p 3001:3001 -p 3004:3004 -p 8000:3005 -p 8001:8080 \
+  -v $(pwd)/projects:/app/projects \
+  -v $(pwd)/rules:/app/rules \
+  -v $(pwd)/.env:/app/.env \
+  -v $(pwd)/template-helpers.nunjucks.mjs:/app/template-helpers.nunjucks.mjs \
+  mocker-ui-with-cows \
+  npm start
+----
+
+After starting a mock server on port 8080 binding to 0.0.0.0, then the result is:
+[source,console]
+----
+$ curl -X GET http://localhost:8001/cow
+        (__)
+        (oo)
+*+-------\/
+||______||
+  ||----||
+  OO    OO
+ pickup cow
+----
+
 
 == Mock server standalone
 
 A mock server can also be started in standalone mode from the command line.
 
+[#chapter-swagger-ui]
 === Swagger UI
 
+It is possible to start swagger UI next to a mock server. A swagger definition will be generated from the mock server rules. This swagger definition can be consulted from the swagger UI. See chapters below on how to activate the swagger server.
+
 === Start using node
+
+Create a new project:
+
+[source,console]
+----
+$ npm init
+----
+
+Install mocker-mock-server:
+
+[source,console]
+----
+$ npm install @kroonprins/mocker-mock-server
+----
+
+Add a script to package.json:
+
+[source,json]
+----
+  "scripts": {
+    "start": "mocker-mock-server"
+  }
+----
+
+Note: on Windows the shortcut need to be defined as follows instead:
+
+[source,json]
+----
+  "scripts": {
+    "start": "node --experimental-modules .\node_modules\@kroonprins\mocker-mock-server\start.mjs"
+  }
+----
+
+Set the required environment variables by exporting them on the command line or by creating a .env file like for example this:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server/.env[.env]
+[source,properties]
+----
+MOCKER_PROJECTS_FILE=../projects/projects.yaml
+MOCKER_PROJECT=examples
+
+TEMPLATING_HELPERS_NUNJUCKS=../templating-helper/template-helpers.nunjucks.mjs
+----
+
+After this the mock server can be started by running:
+
+[source,console]
+----
+$ npm start
+----
+
+The mock server can then be called on "http://localhost:3000".
+
+Alternatively Mocker mock server can also be installed globally:
+
+[source,console]
+----
+$ npm install -g @kroonprins/mocker-mock-server
+----
+
+And then started as follows:
+
+[source,console]
+----
+$ mocker-mock-server
+----
+
+[#environment-variables-mocker-mock-server]
+The possible environment variables are:
+
+* *MOCKER_PROJECTS_FILE*: location of the projects file (see xref:chapter-projects[here]). If not provided it defaults to location ./projects/projects.yaml
+* *MOCKER_PROJECT* (optional): reference to the name of the project to run the mock server for.
+* *TEMPLATING_HELPERS_NUNJUCKS* (optional): path to javascript file containing nunjucks templating helper functions/filters (see xref:chapter-templating-helpers[here])
+* *MOCKER_MOCK_SERVER_PORT* (optional): override the default port (3000) used by the mock server.
+* *MOCKER_MOCK_SERVER_BIND_ADDRESS* (optional): bind the mock server to a given address instead of localhost.
+* *MOCKER_MOCK_SERVER_WATCH_FOR_FILE_CHANGES* (optional): if set to true, a running mock server will watch the filesystem for changes to project rule files, and automatically restart itself when this happen to load the latest configuration.
+* *MOCKER_MOCK_SERVER_SWAGGER_UI_ENABLED* (optional): enable swagger UI on the mock server (see xref:chapter-swagger-ui[here]).
+* *MOCKER_MOCK_SERVER_SWAGGER_UI_PORT* (optional): override the default port (3006) used by the swagger UI server.
+* *MOCKER_MOCK_SERVER_SWAGGER_UI_BIND_ADDRESS* (optional): bind the swagger UI server to a given address instead of localhost.
+* *MOCKER_LOG_LEVEL* (optional): set the log level (one of 'error', 'warn', 'info', 'debug', or 'trace')
+
+
+If the nunjucks templating helpers require any npm packages then these can be added by installing the packages with npm. The templating helpers use modules so the package must be imported using the import syntax. For example:
+
+[source,console]
+----
+$ npm install cows
+----
+
+And then use it in the templating helpers like was done xref:nunjucks-templating-helper-with-cows[here].
 
 === Start using docker
 
