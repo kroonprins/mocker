@@ -1,0 +1,10 @@
+{
+  "name": "use-mocker-learning-mode",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "mocker-learning-mode"
+  },
+  "dependencies": {
+    "@kroonprins/mocker-learning-mode": "^0.1.2"
+  }
+}

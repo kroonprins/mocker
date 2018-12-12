@@ -1,0 +1,10 @@
+name: rule using the printCow templating helper
+request:
+  path: /cow
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: text/plain
+  statusCode: 200
+  body: |
+    {{printCow()}}

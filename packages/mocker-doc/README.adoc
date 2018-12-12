@@ -635,9 +635,9 @@ If the nunjucks templating helpers require any npm packages then these can be ad
 $ npm install cows
 ----
 
+[#nunjucks-templating-helper-with-cows]
 And then use it in the templating helpers:
 
-[#nunjucks-templating-helper-with-cows]
 [source,javascript]
 ----
 import cows from 'cows'
@@ -657,7 +657,7 @@ export const HELPERS = {
 
 [source,console]
 ----
-docker run --rm \
+$ docker run --rm \
   -p 3001:3001 -p 3004:3004 -p 8000:3005 -p 8001:8080 \
   -v $(pwd)/projects:/app/projects \
   -v $(pwd)/rules:/app/rules \
@@ -667,17 +667,17 @@ docker run --rm \
   npm start
 ----
 
-Ports 3001, 3004 and 3005 must be mapped. The port on which port 3005 maps on the docker host can be chosen freely (port 80002 in the example above). For ports 3004 and 3005 the port must map to the same port on the docker host, but the port can be changed by using the environment variables described xref:environment-variables-mocker-ui[here]. When starting a mock server or the learning mode from Mocker UI then this port must also be mapped. In the example above, from Mocker UI a mock server is started on port 8080 and this is mapped on port 8001 on the docker host.
+Ports 3001, 3004 and 3005 must be mapped. The port on which port 3005 maps on the docker host can be chosen freely (port 8000 in the example above). For ports 3004 and 3005 the port must map to the same port on the docker host, but the port can be changed by using the environment variables described xref:environment-variables-mocker-ui[here]. When starting a mock server or the learning mode from Mocker UI then this port must also be mapped. In the example above, from Mocker UI a mock server is started on port 8080 and this is mapped on port 8001 on the docker host.
 
 The projects file and the directory mock server rules must also be mapped into the container via volume mapping. In the example above the projects file is in $(pwd)/projects on the docker host, and the mock server rules are in $(pwd)/rules on the docker host.
 
-The environment variables to configure Mocker UI (see xref:environment-variables-mocker-ui[here]) can be passed as part of the docker run command with the -e option (e.g. docker run -e "TEMPLATING_HELPERS_NUNJUCKS=./template-helpers.nunjucks.mjs" ...) or by putting them in a .env file that is mapped into the container as in the example above.
+The environment variables to configure Mocker UI (see xref:environment-variables-mocker-ui[here]) can be passed as part of the docker run command with the -e option (e.g. docker run -e "TEMPLATING_HELPERS_NUNJUCKS=./template-helpers.nunjucks.mjs") or by putting them in a .env file that is mapped into the container as in the example above.
 
 In case nunjucks templating helpers are used, then the helpers .mjs file should also be mapped in the container as shown in the example above.
 If the nunjucks templating helpers require any npm packages then a new image must be built in which the dependency is installed. For example:
 
 .https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-ui-with-docker/Dockerfile[Dockerfile]
-[source,properties]
+[source,console]
 ----
 from kroonprins/mocker-ui
 
@@ -690,7 +690,7 @@ Then build the image:
 
 [source,console]
 ----
-docker build -t mocker-ui-with-cows .
+$ docker build -t mocker-ui-with-cows .
 ----
 
 And define a rule using the templating helper (or create if from the UI after starting it):
@@ -714,7 +714,7 @@ And run it:
 
 [source,console]
 ----
-docker run --rm \
+$ docker run --rm \
   -p 3001:3001 -p 3004:3004 -p 8000:3005 -p 8001:8080 \
   -v $(pwd)/projects:/app/projects \
   -v $(pwd)/rules:/app/rules \
@@ -789,7 +789,10 @@ Set the required environment variables by exporting them on the command line or 
 MOCKER_PROJECTS_FILE=../projects/projects.yaml
 MOCKER_PROJECT=examples
 
-TEMPLATING_HELPERS_NUNJUCKS=../templating-helper/template-helpers.nunjucks.mjs
+TEMPLATING_HELPERS_NUNJUCKS=./template-helpers.nunjucks.mjs
+
+MOCKER_MOCK_SERVER_WATCH_FOR_FILE_CHANGES=true
+MOCKER_MOCK_SERVER_SWAGGER_UI_ENABLED=true
 ----
 
 After this the mock server can be started by running:
@@ -799,7 +802,7 @@ After this the mock server can be started by running:
 $ npm start
 ----
 
-The mock server can then be called on "http://localhost:3000".
+The mock server can then be called on "http://localhost:3000". Swagger UI, if activated, can be opened in the browser on http://localhost:3006.
 
 Alternatively Mocker mock server can also be installed globally:
 
@@ -841,12 +844,236 @@ And then use it in the templating helpers like was done xref:nunjucks-templating
 
 === Start using docker
 
+[source,console]
+----
+$ docker run --rm \
+  -p 8000:3000 -p 8001:3006 \
+  -v $(pwd)/projects:/app/projects \
+  -v $(pwd)/rules:/app/rules \
+  -v $(pwd)/.env:/app/.env \
+  -v $(pwd)/template-helpers.nunjucks.mjs:/app/template-helpers.nunjucks.mjs \
+  kroonprins/mocker-mock-server:latest \
+  npm start
+----
+
+Ports 3000 must be mapped, port 3006 only if the Swagger UI is activated. The port on which port 3000 and 3006 map on the docker host can be chosen freely (ports 8000 and 8001 respectively in the example above).
+
+The projects file and the directory mock server rules must also be mapped into the container via volume mapping. In the example above the projects file is in $(pwd)/projects on the docker host, and the mock server rules are in $(pwd)/rules on the docker host.
+
+The environment variables to configure the standalone mock server (see xref:environment-variables-mocker-mock-server[here]) can be passed as part of the docker run command with the -e option (e.g. docker run -e "TEMPLATING_HELPERS_NUNJUCKS=./template-helpers.nunjucks.mjs") or by putting them in a .env file that is mapped into the container as in the example above.
+
+In case nunjucks templating helpers are used, then the helpers .mjs file should also be mapped in the container as shown in the example above.
+If the nunjucks templating helpers require any npm packages then a new image must be built in which the dependency is installed. For example:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-with-docker/Dockerfile[Dockerfile]
+[source,console]
+----
+from kroonprins/mocker-mock-server
+
+RUN npm install cows
+----
+
+And define a template-helpers.nunjucks.mjs that uses the cows package: see xref:nunjucks-templating-helper-with-cows[here].
+
+Then build the image:
+
+[source,console]
+----
+$ docker build -t mocker-mock-server-with-cows .
+----
+
+And define a rule using the templating helper (or create if from the UI after starting it):
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-with-docker/rules/rule-using-nunjucks-templating-helper-with-external-package.yaml[rule-using-nunjucks-templating-helper-with-external-package.yaml]
+[source,YAML]
+----
+name: rule using the printCow templating helper
+request:
+  path: /cow
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: text/plain
+  statusCode: 200
+  body: |
+    {{printCow()}}
+----
+
+And run it:
+
+[source,console]
+----
+$ docker run --rm \
+  -p 8000:3000 -p 8001:3006 \
+  -v $(pwd)/projects:/app/projects \
+  -v $(pwd)/rules:/app/rules \
+  -v $(pwd)/.env:/app/.env \
+  -v $(pwd)/template-helpers.nunjucks.mjs:/app/template-helpers.nunjucks.mjs \
+  mocker-mock-server-with-cows \
+  npm start
+----
+
+The mock server can then be called at http://localhost:8000 and the result is:
+[source,console]
+----
+$ curl -X GET http://localhost:8000/cow
+           (  )
+           (oo)
+  /---*-.---\/
+ / |* . * .||
+*  ||------||
+   ~~      ~~
+
+ Cow w/ cowpox
+----
+
+Opening http://localhost:8001 in a browser will open swagger UI.
+
 == Learning mode standalone
 
 The learning mode reverse proxy can also be started in standalone mode from the command line.
 
 === Start using node
 
+Create a new project:
+
+[source,console]
+----
+$ npm init
+----
+
+Install mocker-learning-mode:
+
+[source,console]
+----
+$ npm install @kroonprins/mocker-learning-mode
+----
+
+Add a script to package.json:
+
+[source,json]
+----
+  "scripts": {
+    "start": "mocker-learning-mode"
+  }
+----
+
+Note: on Windows the shortcut need to be defined as follows instead:
+
+[source,json]
+----
+  "scripts": {
+    "start": "node --experimental-modules .\node_modules\@kroonprins\mocker-learning-mode\start.mjs"
+  }
+----
+
+Set the required environment variables by exporting them on the command line or by creating a .env file like for example this:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-learning-mode/.env[.env]
+[source,properties]
+----
+MOCKER_PROJECTS_FILE=../projects/projects.yaml
+MOCKER_PROJECT=examples
+
+MOCKER_LEARNING_MODE_DB_LOCATION=./captured-requests.db
+MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_TARGET_HOST=http://httpbin.org
+----
+
+After this the mock server can be started by running:
+
+[source,console]
+----
+$ npm start
+----
+
+The mock server can then be called on "http://localhost:3002". The request will be proxied to the host specified by the environment variable MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_TARGET_HOST (http://httpbin.org in the example above) and the request/response will be stored in a file-based database with location specified by the environment variable MOCKER_LEARNING_MODE_DB_LOCATION.
+
+Alternatively Mocker learning mode can also be installed globally:
+
+[source,console]
+----
+$ npm install -g @kroonprins/mocker-learning-mode
+----
+
+And then started as follows:
+
+[source,console]
+----
+$ mocker-learning-mode
+----
+
+[#environment-variables-mocker-learning-mode]
+The possible environment variables are:
+
+* *MOCKER_PROJECTS_FILE*: location of the projects file (see xref:chapter-projects[here]). If not provided it defaults to location ./projects/projects.yaml
+* *MOCKER_PROJECT* (optional): reference to the name of the project to run the mock server for.
+* *MOCKER_LEARNING_MODE_DB_LOCATION* (optional): the name of the file in which the captured requests should be stored. By default this will be ./data/learning_mode.db
+* *MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_PORT* (optional): override the default port (3002) used by the learning mode reverse proxy server.
+* *MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_BIND_ADDRESS* (optional): bind the learning mode reverse proxy server to a given address instead of localhost.
+* *MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_TARGET_HOST*: indicates the downstream server to which the learning mode reverse proxy server should proxy the requests.
+* *MOCKER_LOG_LEVEL* (optional): set the log level (one of 'error', 'warn', 'info', 'debug', or 'trace')
+
+The database with captured requests can then be used in Mocker UI to create rules for a mock server.
+
 === Start using docker
+
+[source,console]
+----
+$ docker run --rm \
+  -p 8000:3002 \
+  -v $(pwd)/projects:/app/projects \
+  -v $(pwd)/.env:/app/.env \
+  -v $(pwd)/data:/app/data \
+  kroonprins/mocker-learning-mode:latest \
+  npm start
+----
+
+Ports 3002 must be mapped. The port on which port it maps on the docker host can be chosen freely (port 8000 in the example above).
+
+The projects file must also be mapped into the container via volume mapping. In the example above the projects file is in $(pwd)/projects on the docker host, and the mock server rules are in $(pwd)/rules on the docker host.
+
+The environment variables to configure the standalone learning mode reverse proxy server (see xref:environment-variables-mocker-learning-mode[here]) can be passed as part of the docker run command with the -e option (e.g. docker run -e "MOCKER_LEARNING_MODE_DB_LOCATION=/app/data/captured-requests.db") or by putting them in a .env file that is mapped into the container as in the example above.
+
+The database with captured request will be written to the file specified by the environment variable MOCKER_LEARNING_MODE_DB_LOCATION inside the container. To get it out of the container, the directory of this file should be mapped on the docker host.
+
+After docker is started requests can be sent to http://localhost:8000 and they will be forwarded to the host specified by environment variable MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_TARGET_HOST. Note that this target host must be reachable from within the container. This can be for example a host on the internet, or another application running in another container reachable thanks to docker-compose.
+
+For example:
+
+With following .env file:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-learning-mode-with-docker/.env[.env]
+[source,properties]
+----
+MOCKER_PROJECT=examples
+
+MOCKER_LEARNING_MODE_DB_LOCATION=/app/data/captured-requests.db
+MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_TARGET_HOST=http://httpbin.org
+----
+
+After starting the learning mode reverse proxy server with the docker command above, requests can be captured:
+
+[source,console]
+----
+$ curl -X GET http://localhost:8000/get
+{
+  "args": {},
+  "headers": {
+    "Accept": "*/*",
+    "Connection": "close",
+    "Host": "httpbin.org",
+    "User-Agent": "curl/7.47.0"
+  },
+  "origin": "213.219.166.27",
+  "url": "http://httpbin.org/get"
+}
+----
+
+And a record will have been written in $(pwd)/data/captured-requests.db:
+[source,console]
+----
+$ wc -l ./data/captured-requests.db
+1 ./data/captured-requests.db
+----
 
 == Use in unit/integration tests
