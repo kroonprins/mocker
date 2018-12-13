@@ -6,6 +6,7 @@ import { MockServer } from './src/mock-server'
 import { config } from '@kroonprins/mocker-shared-lib/config'
 import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
 import { initialize as setDefaultConfigMockServer } from './src/config-default'
+import { AdministrationServer } from './src/administration-server'
 
 dotenv.config()
 const ENV = process.env
@@ -26,11 +27,14 @@ config
   .registerProperty('mock-server-swagger-ui.enabled', ENV.MOCKER_MOCK_SERVER_SWAGGER_UI_ENABLED === 'true' || false)
   .registerProperty('mock-server-swagger-ui.port', ENV.MOCKER_MOCK_SERVER_SWAGGER_UI_PORT || 3006)
   .registerProperty('mock-server-swagger-ui.bind-address', ENV.MOCKER_MOCK_SERVER_SWAGGER_UI_BIND_ADDRESS || '0.0.0.0')
+  .registerProperty('administration-server.port', ENV.MOCKER_MOCK_SERVER_ADMINISTRATION_SERVER_PORT || 3007)
+  .registerProperty('administration-server.bind-address', ENV.MOCKER_MOCK_SERVER_ADMINISTRATION_SERVER_BIND_ADDRESS || '0.0.0.0')
 
 setDefaultConfig()
 setDefaultConfigMockServer()
 
 new MockServer().start()
+new AdministrationServer().start()
 
 process.on('unhandledRejection', error => {
   console.error(error)

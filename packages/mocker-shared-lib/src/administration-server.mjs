@@ -23,17 +23,17 @@ class AdministrationServer extends Server {
   }
 
   async _setup () {
-    const router = express.Router()
+    this.router = express.Router()
     // this.app.use(cookieParser());
     this.app.use(bodyParser.json())
     this.app.use(cors())
 
-    router.get('/loglevel', async (req, res) => {
+    this.router.get('/loglevel', async (req, res) => {
       res.status(200)
       res.send(Logger.getCreatedLoggers())
     })
 
-    router.put('/loglevel/:id', async (req, res) => {
+    this.router.put('/loglevel/:id', async (req, res) => {
       const loggerId = req.params.id
       const newLevel = req.body.level
       const currentLevel = Logger.getLogger(loggerId).getLevel()
@@ -58,7 +58,7 @@ class AdministrationServer extends Server {
       res.send()
     })
 
-    router.put('/loglevel', async (req, res) => {
+    this.router.put('/loglevel', async (req, res) => {
       const newLevel = req.body.level
       const currentLevel = Logger.getGlobalLogLevel()
       this.logger.warn({
@@ -82,7 +82,7 @@ class AdministrationServer extends Server {
       res.send()
     })
 
-    this.app.use('/administration', router)
+    this.app.use('/administration', this.router)
 
     this.app.use(errorHandler({
       logger: this.logger

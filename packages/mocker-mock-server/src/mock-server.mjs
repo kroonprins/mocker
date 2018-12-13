@@ -11,6 +11,7 @@ import { ProjectChangeWatcher } from './project-change-watcher'
 import { TemplatingService } from './templating.service'
 import { MockServerSwaggerUiServer } from './mock-server-swagger-ui'
 import { RandomLatency } from '@kroonprins/mocker-shared-lib/src/latency-model.mjs'
+import { MockServerEventEmitter, MockServerEvents } from './mock-server.events'
 import { config } from '@kroonprins/mocker-shared-lib/config'
 
 /**
@@ -38,6 +39,7 @@ class MockServer extends Server {
     , templatingService = config.getInstance(TemplatingService)
     , watchConfigurationChanges = config.getOptionalProperty('mock-server.watch-for-configuration-changes')
     , enableSwaggerUI = config.getOptionalProperty('mock-server-swagger-ui.enabled')
+    , mockServerEventEmitter = config.getInstance(MockServerEventEmitter)
   ) {
     super(port, bindAddress, 'mock-server')
     this.project = project
@@ -50,6 +52,7 @@ class MockServer extends Server {
     if (this.enableSwaggerUI) {
       this.swaggerUiServer = new MockServerSwaggerUiServer()
     }
+    this.mockServerEventEmitter = mockServerEventEmitter
   }
 
   async _setup () {
@@ -104,6 +107,13 @@ class MockServer extends Server {
       }]
       await this.swaggerUiServer.start()
     }
+
+    this.mockServerEventEmitter.emit(MockServerEvents.SERVER_STARTED, this._createServerStartedEvent())
+  }
+
+  stop () {
+    super.stop()
+    this.mockServerEventEmitter.emit(MockServerEvents.SERVER_STOPPED, this._createServerStoppedEvent())
   }
 
   // Transform the list of rules for the project into endpoints on the mock server.
@@ -128,6 +138,7 @@ class MockServer extends Server {
           // TODO if ! ruleConditionalResponseValue found => 404?
           await this._writeResponse(req, res, ruleConditionalResponseValue, ruleConditionalResponse.templatingEngine)
         }
+        this.mockServerEventEmitter.emit(MockServerEvents.REQUEST_RECEIVED, this._createRequestReceivedEvent(projectRule))
       })
 
       app[ruleRequest.method.toLowerCase()](ruleRequest.path, requestCallbacks)
@@ -259,6 +270,33 @@ class MockServer extends Server {
 
   _getEncoding (headers) {
     return headers['content-encoding']
+  }
+
+  _createServerStartedEvent () {
+    return {
+      timestamp: Date.now(),
+      port: this.port,
+      bindAddres: this.bindAddres,
+      project: this.project,
+      watchConfigurationChanges: this.watchConfigurationChanges,
+      enableSwaggerUI: this.enableSwaggerUI
+    }
+  }
+
+  _createServerStoppedEvent () {
+    return {
+      timestamp: Date.now(),
+      project: this.project
+    }
+  }
+
+  _createRequestReceivedEvent (projectRule) {
+    return {
+      timestamp: Date.now(), // TODO could also use req.timestamp but best then to convert it from momentjs to just a timestamp to avoid dependencies on momentjs everywhere
+      project: this.project,
+      ruleLocation: projectRule.location,
+      ruleName: projectRule.rule.name
+    }
   }
 }
 
