@@ -33,8 +33,8 @@ config
 setDefaultConfig()
 setDefaultConfigMockServer()
 
-new MockServer().start()
 new AdministrationServer().start()
+new MockServer().start()
 
 process.on('unhandledRejection', error => {
   console.error(error)

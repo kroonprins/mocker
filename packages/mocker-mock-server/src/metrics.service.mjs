@@ -52,7 +52,6 @@ class MetricsService {
   }
 
   _handleRequestReceivedEvent (requestReceivedEvent) {
-    this.logger.warn('before: %o', this.metrics)
     const requestsPerRuleForProject = this.metrics.requestsPerRule[requestReceivedEvent.project] || {}
 
     let requestsPerRuleForProjectRule = requestsPerRuleForProject[requestReceivedEvent.ruleLocation] || 0
@@ -61,7 +60,6 @@ class MetricsService {
 
     let totalRequestsForProject = this.metrics.totalRequests[requestReceivedEvent.project] || 0
     this.metrics.totalRequests[requestReceivedEvent.project] = totalRequestsForProject + 1
-    this.logger.warn('after: %o', this.metrics)
   }
 }
 

@@ -619,12 +619,12 @@ The possible environment variables are:
 * *TEMPLATING_HELPERS_NUNJUCKS* (optional): path to javascript file containing nunjucks templating helper functions/filters (see xref:chapter-templating-helpers[here])
 * *MOCKER_RULES_DEFAULT_LOCATION* (optional): set the default location in which the yaml files of the rules will be stored when creating a rule from Mocker UI.
 * *MOCKER_UI_SERVER_PORT* (optional): override the default port (3005) used by the UI server.
-* *MOCKER_UI_SERVER_BIND_ADDRESS* (optional): bind the UI server to a given address instead of localhost.
+* *MOCKER_UI_SERVER_BIND_ADDRESS* (optional): bind the UI server to a given address instead of 0.0.0.0.
 * *MOCKER_UI_SERVER_STATICS_LOCATION* (optional): override the location where the UI server statics are located.
 * *MOCKER_ADMINISTRATION_SERVER_PORT* (optional): override the default port (3001) used by the administration server.
-* *MOCKER_ADMINISTRATION_SERVER_BIND_ADDRESS* (optional): bind the administration server to a given address instead of localhost.
+* *MOCKER_ADMINISTRATION_SERVER_BIND_ADDRESS* (optional): bind the administration server to a given address instead of 0.0.0.0.
 * *MOCKER_API_SERVER_PORT* (optional): override the default port (3004) used by the api server.
-* *MOCKER_API_SERVER_BIND_ADDRESS* (optional): bind the api server to a given address instead of localhost.
+* *MOCKER_API_SERVER_BIND_ADDRESS* (optional): bind the api server to a given address instead of 0.0.0.0.
 * *MOCKER_LOG_LEVEL* (optional): set the log level (one of 'error', 'warn', 'info', 'debug', or 'trace')
 
 
@@ -747,6 +747,131 @@ A mock server can also be started in standalone mode from the command line.
 
 It is possible to start swagger UI next to a mock server. A swagger definition will be generated from the mock server rules. This swagger definition can be consulted from the swagger UI. See chapters below on how to activate the swagger server.
 
+=== Adminstration server
+
+Next to the mock server an administration server will be started. The adminstration will run on a separate port, by default 3007 but can be specified with the environment variable MOCKER_MOCK_SERVER_ADMINISTRATION_SERVER_PORT.
+
+==== Set log level
+
+By default the mock server logs to the console with log level "info". This log level can be changed by calling the adminstration server. Possible log levels are 'error', 'warn', 'info', 'debug', or 'trace'.
+
+To update the log level globally:
+
+[source,console]
+----
+$ curl -i -X PUT http://localhost:3007/administration/loglevel -d '{ "level": "debug" }' -H "Content-Type: application/json"
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Date: Fri, 14 Dec 2018 19:47:30 GMT
+Connection: keep-alive
+Content-Length: 0
+----
+
+It is possible to let the log level revert to its original after a given number of milliseconds:
+
+[source,console]
+----
+$ curl -i -X PUT http://localhost:3007/administration/loglevel -d '{ "level": "debug", "maxAge": "60000" }' -H "Content-Type: application/json"
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Date: Fri, 14 Dec 2018 19:47:30 GMT
+Connection: keep-alive
+Content-Length: 0
+----
+
+Will set the log level to debug and revert to the previous log level after 1 minute.
+
+It is also possible to update the level of only one specific logger. The list of specific loggers can be retrieved from the administration server:
+
+[source,console]
+----
+$ curl -s -X GET http://localhost:3007/administration/loglevel | jq
+{
+  "parent": {},
+  "children": [
+    {
+      "id": "config.service",
+      "level": "info"
+    },
+    ...
+  ]
+}
+----
+
+The loglevel for one of these loglevels can then be updated:
+
+[source,console]
+----
+$ curl -i -X PUT http://localhost:3007/administration/loglevel/config.service -d '{ "level": "debug" }' -H "Content-Type: application/json"
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Date: Fri, 14 Dec 2018 19:55:47 GMT
+Connection: keep-alive
+Content-Length: 0
+----
+
+Also here the "maxAge" can be added to the request body to revert the log level after a given number of milliseconds.
+
+==== Get metrics
+
+Metrics about the number of requests the mock server has handled can be requested from the administration server.
+
+For example, just after the mock server started:
+
+[source,console]
+----
+$ curl -s -X GET http://localhost:3007/administration/metrics  | jq
+{
+  "starts": {
+    "examples": [
+      {
+        "timestamp": 1544815770889,
+        "port": 3000,
+        "project": "examples",
+        "watchConfigurationChanges": false,
+        "enableSwaggerUI": false
+      }
+    ]
+  },
+  "totalRequests": {},
+  "requestsPerRule": {}
+}
+----
+
+The "starts" section in the response lists the times the mock server has started for a given project ("examples" is the project) and with which configuration.
+
+After the mock server has handled some requests:
+
+[source,console]
+----
+$ curl -s -X GET http://localhost:3007/administration/metrics  | jq
+{
+  "starts": {
+    "examples": [
+      {
+        "timestamp": 1544815770889,
+        "port": 3000,
+        "project": "examples",
+        "watchConfigurationChanges": false,
+        "enableSwaggerUI": false
+      }
+    ]
+  },
+  "totalRequests": {
+    "examples": 7
+  },
+  "requestsPerRule": {
+    "examples": {
+      "../rules/a-rule-with-path-parameter.yaml": 4,
+      "../rules/a-very-basic-rule.yaml": 2,
+      "../rules/a-basic-rule-with-templating.yaml": 1
+    }
+  }
+}
+----
+
+The "totalRequest" section is the total requests per project ("examples" is the project). The "requestsPerRule" section gives the breakdown of number of requests per rule.
+
 === Start using node
 
 Create a new project:
@@ -825,11 +950,13 @@ The possible environment variables are:
 * *MOCKER_PROJECT* (optional): reference to the name of the project to run the mock server for.
 * *TEMPLATING_HELPERS_NUNJUCKS* (optional): path to javascript file containing nunjucks templating helper functions/filters (see xref:chapter-templating-helpers[here])
 * *MOCKER_MOCK_SERVER_PORT* (optional): override the default port (3000) used by the mock server.
-* *MOCKER_MOCK_SERVER_BIND_ADDRESS* (optional): bind the mock server to a given address instead of localhost.
+* *MOCKER_MOCK_SERVER_BIND_ADDRESS* (optional): bind the mock server to a given address instead of 0.0.0.0.
 * *MOCKER_MOCK_SERVER_WATCH_FOR_FILE_CHANGES* (optional): if set to true, a running mock server will watch the filesystem for changes to project rule files, and automatically restart itself when this happen to load the latest configuration.
 * *MOCKER_MOCK_SERVER_SWAGGER_UI_ENABLED* (optional): enable swagger UI on the mock server (see xref:chapter-swagger-ui[here]).
 * *MOCKER_MOCK_SERVER_SWAGGER_UI_PORT* (optional): override the default port (3006) used by the swagger UI server.
-* *MOCKER_MOCK_SERVER_SWAGGER_UI_BIND_ADDRESS* (optional): bind the swagger UI server to a given address instead of localhost.
+* *MOCKER_MOCK_SERVER_SWAGGER_UI_BIND_ADDRESS* (optional): bind the swagger UI server to a given address instead of 0.0.0.0.
+* *MOCKER_MOCK_SERVER_ADMINISTRATION_SERVER_PORT* (optional): override the default port (3007) used by the administration server.
+* *MOCKER_MOCK_SERVER_ADMINISTRATION_SERVER_BIND_ADDRESS* (optional): bind the administration server to a given address instead of 0.0.0.0.
 * *MOCKER_LOG_LEVEL* (optional): set the log level (one of 'error', 'warn', 'info', 'debug', or 'trace')
 
 
@@ -847,7 +974,7 @@ And then use it in the templating helpers like was done xref:nunjucks-templating
 [source,console]
 ----
 $ docker run --rm \
-  -p 8000:3000 -p 8001:3006 \
+  -p 8000:3000 -p 8001:3006 -p 8002:3007 \
   -v $(pwd)/projects:/app/projects \
   -v $(pwd)/rules:/app/rules \
   -v $(pwd)/.env:/app/.env \
@@ -856,7 +983,7 @@ $ docker run --rm \
   npm start
 ----
 
-Ports 3000 must be mapped, port 3006 only if the Swagger UI is activated. The port on which port 3000 and 3006 map on the docker host can be chosen freely (ports 8000 and 8001 respectively in the example above).
+Ports 3000 must be mapped, port 3006 only if the Swagger UI is activated, port 3007 only if interested to access the adminstration server. The port on which port 3000, 3006 and 3007 map on the docker host can be chosen freely (ports 8000, 8001 and 8002 respectively in the example above).
 
 The projects file and the directory mock server rules must also be mapped into the container via volume mapping. In the example above the projects file is in $(pwd)/projects on the docker host, and the mock server rules are in $(pwd)/rules on the docker host.
 
@@ -1009,7 +1136,7 @@ The possible environment variables are:
 * *MOCKER_PROJECT* (optional): reference to the name of the project to run the mock server for.
 * *MOCKER_LEARNING_MODE_DB_LOCATION* (optional): the name of the file in which the captured requests should be stored. By default this will be ./data/learning_mode.db
 * *MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_PORT* (optional): override the default port (3002) used by the learning mode reverse proxy server.
-* *MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_BIND_ADDRESS* (optional): bind the learning mode reverse proxy server to a given address instead of localhost.
+* *MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_BIND_ADDRESS* (optional): bind the learning mode reverse proxy server to a given address instead of 0.0.0.0.
 * *MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_TARGET_HOST*: indicates the downstream server to which the learning mode reverse proxy server should proxy the requests.
 * *MOCKER_LOG_LEVEL* (optional): set the log level (one of 'error', 'warn', 'info', 'debug', or 'trace')
 
