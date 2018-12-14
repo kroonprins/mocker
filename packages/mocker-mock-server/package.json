@@ -1,6 +1,6 @@
 {
   "name": "@kroonprins/mocker-mock-server",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Mock server",
   "main": "exports.mjs",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/kroonprins/mocker#readme",
   "dependencies": {
-    "@kroonprins/mocker-shared-lib": "^0.1.1",
+    "@kroonprins/mocker-shared-lib": "^0.1.3",
     "body-parser": "^1.18.3",
     "body-parser-xml": "^1.1.0",
     "chokidar": "^2.0.4",
