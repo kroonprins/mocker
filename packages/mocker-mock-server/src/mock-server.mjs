@@ -30,6 +30,7 @@ class MockServer extends Server {
    * @param {TemplatingService} [templatingService=config.getInstance(TemplatingService)] An instance of TemplatingService.
    * @param {boolean} [watchConfigurationChanges=config.getProperty('mock-server.watch-for-configuration-changes')] If the mock server should restart when a change to the rules has been detected
    * @param {boolean} [enableSwaggerUI=config.getProperty('mock-server-swagger-ui.enabled')] If swagger UI should be started serving the OpenAPI specification of the project rules
+   * @param {MockServerEventEmitter} [mockServerEventEmitter = config.getInstance(MockServerEventEmitter)] An instance of MockServerEventEmitter to emit events for certain server events (start/stop server, handle incoming request).
    * @memberof MockServer
    */
   constructor (port = config.getProperty('mock-server.port')
@@ -107,7 +108,10 @@ class MockServer extends Server {
       }]
       await this.swaggerUiServer.start()
     }
+  }
 
+  async start () {
+    await super.start()
     this.mockServerEventEmitter.emit(MockServerEvents.SERVER_STARTED, this._createServerStartedEvent())
   }
 

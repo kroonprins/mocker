@@ -43,12 +43,8 @@
 * add optional dependency app-config to simplify what needs to be set up in unit tests. In general review dependencies because there is too much unnecessary things to set up in unit tests. Or check if the can be some kind of "mock"-mode.
 * make possible to activate project watch from ui?
 * upgrade dependencies
-* examples to add:
-    * echo
-    * path parameter used in response
 * add unit test for swagger ui handling in mock server
 * make mock server integration in unit tests (with wrapper to verify that it has been called)
-* split into separate libraries
 * make version of mock server in go
 * make version of learning mode with immediate save to rule
 * find test runner that does support modules easily without workarounds
@@ -72,6 +68,7 @@
 * make latency value with unit possible (eg 500ms, 1s, ...)
 * don't crash mock server when incorrectly formatted rule (annoying when automatic restart fails because rule not complete yet)
 * add extra documentation about using req.body
-* mock server / learning mode: admin server with metrics (e.g. number of requests, number of request per rule, ...)
+* admin server mock server / learning mode: integrate into mocker-ui
 * exclude angular src from npm package?
-* investigate why npm install -g @kroonprins/mocker-ui fails on angular build (possibly related to point above about possibility to only have angular dist folder in npm package)
+* investigate why npm install -g @kroonprins/mocker-ui fails on angular build (possibly related to point above about possibility to only have angular dist folder in npm package) + similarly the postinstall fails in docker
+* add more information to the metrics of learning mode (e.g. total requests currently in db file, requests per path, ...)

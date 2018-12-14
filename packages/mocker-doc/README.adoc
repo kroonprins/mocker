@@ -751,6 +751,7 @@ It is possible to start swagger UI next to a mock server. A swagger definition w
 
 Next to the mock server an administration server will be started. The adminstration will run on a separate port, by default 3007 but can be specified with the environment variable MOCKER_MOCK_SERVER_ADMINISTRATION_SERVER_PORT.
 
+[#chapter-administration-server-log-level]
 ==== Set log level
 
 By default the mock server logs to the console with log level "info". This log level can be changed by calling the adminstration server. Possible log levels are 'error', 'warn', 'info', 'debug', or 'trace'.
@@ -1060,6 +1061,63 @@ Opening http://localhost:8001 in a browser will open swagger UI.
 
 The learning mode reverse proxy can also be started in standalone mode from the command line.
 
+=== Adminstration server
+
+Next to the learning mode server an administration server will be started. The adminstration will run on a separate port, by default 3008 but can be specified with the environment variable MOCKER_LEARNING_MODE_SERVER_ADMINISTRATION_SERVER_PORT.
+
+[#chapter-administration-server-log-level]
+==== Set log level
+
+The log levels can be managed through the administration server in the same way as described xref:chapter-administration-server-log-level[here]
+
+==== Get metrics
+
+Similarly as for a standalone mock server, metrics about the number of requests the learning mode server has handled can be requested from the administration server.
+
+For example, just after the learning mode server started:
+
+[source,console]
+----
+$ curl -s -X GET http://localhost:3008/administration/metrics  | jq
+{
+  "starts": {
+    "examples": [
+      {
+        "timestamp": 1544821640233,
+        "port": 3002,
+        "project": "examples"
+      }
+    ]
+  },
+  "totalRequests": {}
+}
+----
+
+The "starts" section in the response lists the times the learning mode server has started for a given project ("examples" is the project) and with which configuration.
+
+After the learning mode server has proxied some requests:
+
+[source,console]
+----
+$ curl -s -X GET http://localhost:3007/administration/metrics  | jq
+{
+  "starts": {
+    "examples": [
+      {
+        "timestamp": 1544821640233,
+        "port": 3002,
+        "project": "examples"
+      }
+    ]
+  },
+  "totalRequests": {
+    "examples": 2
+  }
+}
+----
+
+The "totalRequest" section is the total requests per project ("examples" is the project).
+
 === Start using node
 
 Create a new project:
@@ -1138,6 +1196,8 @@ The possible environment variables are:
 * *MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_PORT* (optional): override the default port (3002) used by the learning mode reverse proxy server.
 * *MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_BIND_ADDRESS* (optional): bind the learning mode reverse proxy server to a given address instead of 0.0.0.0.
 * *MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_TARGET_HOST*: indicates the downstream server to which the learning mode reverse proxy server should proxy the requests.
+* *MOCKER_LEARNING_MODE_SERVER_ADMINISTRATION_SERVER_PORT* (optional): override the default port (3008) used by the administration server.
+* *MOCKER_LEARNING_MODE_SERVER_ADMINISTRATION_SERVER_BIND_ADDRESS* (optional): bind the administration server to a given address instead of 0.0.0.0.
 * *MOCKER_LOG_LEVEL* (optional): set the log level (one of 'error', 'warn', 'info', 'debug', or 'trace')
 
 The database with captured requests can then be used in Mocker UI to create rules for a mock server.
@@ -1147,7 +1207,7 @@ The database with captured requests can then be used in Mocker UI to create rule
 [source,console]
 ----
 $ docker run --rm \
-  -p 8000:3002 \
+  -p 8000:3002 -p 8001:3008 \
   -v $(pwd)/projects:/app/projects \
   -v $(pwd)/.env:/app/.env \
   -v $(pwd)/data:/app/data \
@@ -1155,7 +1215,7 @@ $ docker run --rm \
   npm start
 ----
 
-Ports 3002 must be mapped. The port on which port it maps on the docker host can be chosen freely (port 8000 in the example above).
+Ports 3002 must be mapped, port 3008 only if interested to access the adminstration server. The port on which port it maps on the docker host can be chosen freely (port 8000 and 8001 in the example above).
 
 The projects file must also be mapped into the container via volume mapping. In the example above the projects file is in $(pwd)/projects on the docker host, and the mock server rules are in $(pwd)/rules on the docker host.
 

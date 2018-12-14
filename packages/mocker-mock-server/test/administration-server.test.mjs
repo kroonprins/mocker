@@ -27,23 +27,23 @@ const test = async () => {
     }))
     const mockServerPort1 = availablePorts[0]
     const mockServerPort2 = availablePorts[1]
-    const adminstrationServerPort = availablePorts[2]
+    const administrationServerPort = availablePorts[2]
 
     const mockServer1 = new MockServer(mockServerPort1, 'localhost', 'test_glob')
     const mockServer2 = new MockServer(mockServerPort2, 'localhost', 'test_multiple_glob')
-    const administrationServer = new AdministrationServer(adminstrationServerPort, 'localhost')
+    const administrationServer = new AdministrationServer(administrationServerPort, 'localhost')
     try {
       await administrationServer.start()
       await mockServer1.start()
 
-      const metricsAfterStartUp = await axios.get(`http://localhost:${adminstrationServerPort}/administration/metrics`)
+      const metricsAfterStartUp = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterStartUp.status).to.be.equal(200)
       expect(metricsAfterStartUp.data.starts['test_glob'].length).to.equal(1)
       expect(metricsAfterStartUp.data.starts['test_glob'][0].port).to.equal(mockServerPort1)
 
       await mockServer1.restart()
 
-      const metricsAfterRestart = await axios.get(`http://localhost:${adminstrationServerPort}/administration/metrics`)
+      const metricsAfterRestart = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterRestart.status).to.be.equal(200)
       expect(metricsAfterRestart.data.starts['test_glob'].length).to.equal(2)
       expect(metricsAfterRestart.data.starts['test_glob'][1].port).to.equal(mockServerPort1)
@@ -51,7 +51,7 @@ const test = async () => {
 
       await axios.get(`http://localhost:${mockServerPort1}/hello1/2?q=test`)
 
-      const metricsAfterRequest1 = await axios.get(`http://localhost:${adminstrationServerPort}/administration/metrics`)
+      const metricsAfterRequest1 = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterRequest1.status).to.be.equal(200)
       expect(metricsAfterRequest1.data.starts['test_glob'].length).to.equal(2)
       expect(metricsAfterRequest1.data.totalRequests['test_glob']).to.equal(1)
@@ -59,7 +59,7 @@ const test = async () => {
 
       await axios.get(`http://localhost:${mockServerPort1}/hello1/2?q=test`)
 
-      const metricsAfterRequest2toSameRule = await axios.get(`http://localhost:${adminstrationServerPort}/administration/metrics`)
+      const metricsAfterRequest2toSameRule = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterRequest2toSameRule.status).to.be.equal(200)
       expect(metricsAfterRequest2toSameRule.data.starts['test_glob'].length).to.equal(2)
       expect(metricsAfterRequest2toSameRule.data.totalRequests['test_glob']).to.equal(2)
@@ -69,7 +69,7 @@ const test = async () => {
         input: 'testRule2'
       })
 
-      const metricsAfterRequestToAnotherRule = await axios.get(`http://localhost:${adminstrationServerPort}/administration/metrics`)
+      const metricsAfterRequestToAnotherRule = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterRequestToAnotherRule.status).to.be.equal(200)
       expect(metricsAfterRequestToAnotherRule.data.starts['test_glob'].length).to.equal(2)
       expect(metricsAfterRequestToAnotherRule.data.totalRequests['test_glob']).to.equal(3)
@@ -78,7 +78,7 @@ const test = async () => {
 
       await mockServer2.start()
 
-      const metricsAfterStartMockServerForOtherProject = await axios.get(`http://localhost:${adminstrationServerPort}/administration/metrics`)
+      const metricsAfterStartMockServerForOtherProject = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterStartMockServerForOtherProject.status).to.be.equal(200)
       expect(metricsAfterStartMockServerForOtherProject.data.starts['test_glob'].length).to.equal(2)
       expect(metricsAfterStartMockServerForOtherProject.data.starts['test_multiple_glob'].length).to.equal(1)
@@ -89,7 +89,7 @@ const test = async () => {
       await axios.get(`http://localhost:${mockServerPort1}/hello1/2?q=test`)
       await axios.get(`http://localhost:${mockServerPort2}/hello1/2?q=test`)
 
-      const metricsAfterAfterRequestToMockServerForOtherProject = await axios.get(`http://localhost:${adminstrationServerPort}/administration/metrics`)
+      const metricsAfterAfterRequestToMockServerForOtherProject = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterAfterRequestToMockServerForOtherProject.status).to.be.equal(200)
       expect(metricsAfterAfterRequestToMockServerForOtherProject.data.starts['test_glob'].length).to.equal(2)
       expect(metricsAfterAfterRequestToMockServerForOtherProject.data.starts['test_multiple_glob'].length).to.equal(1)

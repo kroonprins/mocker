@@ -6,6 +6,7 @@ import { LearningModeReverseProxyServer } from './src/learning-mode.reverse-prox
 import { config } from '@kroonprins/mocker-shared-lib/config'
 import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
 import { initialize as setDefaultConfigLearningMode } from './src/config-default'
+import { AdministrationServer } from './src/administration-server'
 
 dotenv.config()
 const ENV = process.env
@@ -29,10 +30,13 @@ config
   .registerProperty('learning-mode.reverse-proxy.port', ENV.MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_PORT || 3002)
   .registerProperty('learning-mode.reverse-proxy.bind-address', ENV.MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_BIND_ADDRESS || '0.0.0.0')
   .registerProperty('learning-mode.reverse-proxy.target-host', ENV.MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_TARGET_HOST)
+  .registerProperty('administration-server.port', ENV.MOCKER_LEARNING_MODE_SERVER_ADMINISTRATION_SERVER_PORT || 3008)
+  .registerProperty('administration-server.bind-address', ENV.MOCKER_LEARNING_MODE_SERVER_ADMINISTRATION_SERVER_BIND_ADDRESS || '0.0.0.0')
 
 setDefaultConfig()
 setDefaultConfigLearningMode()
 
+new AdministrationServer().start()
 new LearningModeReverseProxyServer().start()
 
 process.on('unhandledRejection', error => {

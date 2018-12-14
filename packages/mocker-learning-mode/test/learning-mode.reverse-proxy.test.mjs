@@ -9,6 +9,7 @@ import { LearningModeService } from '../src/learning-mode.service'
 import { LearningModeDbService } from '../src/learning-mode.db.service'
 import { LearningModeDbValidationModel } from '../src/learning-mode.db.validation-model'
 import { AppClassValidationService } from '@kroonprins/mocker-shared-lib/app-class-validation.service'
+import { LearningModeServerEventEmitter } from '../src/learning-mode.server.events'
 import { unlinkAsync } from '@kroonprins/mocker-shared-lib/fs-util'
 import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging'
 import { config } from '@kroonprins/mocker-shared-lib/config'
@@ -42,7 +43,13 @@ const test = async () => {
     const reverseProxyPort = availablePorts[1]
 
     const testServer = new TestServer(testServerPort)
-    const proxyServer = new LearningModeReverseProxyServer(reverseProxyPort, 'localhost', `http://localhost:${testServerPort}`, 'reverseProxyTestProject', learningModeService)
+    const proxyServer = new LearningModeReverseProxyServer(
+      reverseProxyPort,
+      'localhost',
+      `http://localhost:${testServerPort}`,
+      'reverseProxyTestProject',
+      learningModeService,
+      new LearningModeServerEventEmitter())
 
     try {
       Promise.all([

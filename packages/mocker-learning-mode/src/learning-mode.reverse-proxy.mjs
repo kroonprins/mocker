@@ -8,6 +8,7 @@ import tough from 'tough-cookie'
 import { Server } from '@kroonprins/mocker-shared-lib/server.service'
 import { LearningModeService } from './learning-mode.service'
 import { Request, NameValuePair, Response, ResponseCookie, RecordedRequest } from './learning-mode.model'
+import { LearningModeServerEventEmitter, LearningModeServerEvents } from './learning-mode.server.events'
 import { config } from '@kroonprins/mocker-shared-lib/config'
 
 const Cookie = tough.Cookie
@@ -26,13 +27,21 @@ class LearningModeReverseProxyServer extends Server {
    * @param {string} [targetHost=config.getProperty('learning-mode.reverse-proxy.target-host')] The address to which the server should proxy.
    * @param {string} [project=config.getProperty('project')] The project for which the captured requests should be stored.
    * @param {LearningModeService} [learningModeService=config.getInstance(LearningModeService)] An instance of LearningModeService
+   * @param {LearningModeServerEventEmitter} [learningModeServerEventEmitter = config.getInstance(LearningModeServerEventEmitter))] An instance of LearningModeServerEventEmitter to emit events for certain server events (start/stop server, handle incoming request).
    * @memberof LearningModeReverseProxyServer
    */
-  constructor (port = config.getProperty('learning-mode.reverse-proxy.port'), bindAddress = config.getProperty('learning-mode.reverse-proxy.bind-address'), targetHost = config.getProperty('learning-mode.reverse-proxy.target-host'), project = config.getProperty('project'), learningModeService = config.getInstance(LearningModeService)) {
+  constructor (port = config.getProperty('learning-mode.reverse-proxy.port')
+    , bindAddress = config.getProperty('learning-mode.reverse-proxy.bind-address')
+    , targetHost = config.getProperty('learning-mode.reverse-proxy.target-host')
+    , project = config.getProperty('project')
+    , learningModeService = config.getInstance(LearningModeService)
+    , learningModeServerEventEmitter = config.getInstance(LearningModeServerEventEmitter)
+  ) {
     super(port, bindAddress, 'learning-mode.reverse-proxy')
     this.targetHost = targetHost
     this.project = project
     this.learningModeService = learningModeService
+    this.learningModeServerEventEmitter = learningModeServerEventEmitter
   }
 
   async _setup () {
@@ -62,9 +71,20 @@ class LearningModeReverseProxyServer extends Server {
         }).on('end', async () => {
           this.logger.debug('Full body received')
           await this.learningModeService.saveRecordedRequest(this._createRecordedRequest(this.project, req, proxyRes, responseBody))
+          this.learningModeServerEventEmitter.emit(LearningModeServerEvents.REQUEST_RECEIVED, this._createRequestReceivedEvent())
         })
       }
     }))
+  }
+
+  async start () {
+    await super.start()
+    this.learningModeServerEventEmitter.emit(LearningModeServerEvents.SERVER_STARTED, this._createServerStartedEvent())
+  }
+
+  stop () {
+    super.stop()
+    this.learningModeServerEventEmitter.emit(LearningModeServerEvents.SERVER_STOPPED, this._createServerStoppedEvent())
   }
 
   // Map an object to a list of NameValuePair instances. filterProps is a Set that can contain object properties to ignore.
@@ -146,6 +166,29 @@ class LearningModeReverseProxyServer extends Server {
 
   _calculateElapsed (req) {
     return moment.duration(moment().diff(req.timestamp)).asMilliseconds()
+  }
+
+  _createServerStartedEvent () {
+    return {
+      timestamp: Date.now(),
+      port: this.port,
+      bindAddres: this.bindAddres,
+      project: this.project
+    }
+  }
+
+  _createServerStoppedEvent () {
+    return {
+      timestamp: Date.now(),
+      project: this.project
+    }
+  }
+
+  _createRequestReceivedEvent () {
+    return {
+      timestamp: Date.now(),
+      project: this.project
+    }
   }
 }
 
