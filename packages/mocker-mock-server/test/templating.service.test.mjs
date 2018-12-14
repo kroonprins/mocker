@@ -60,7 +60,7 @@ const test = async () => {
     }
 
     config
-      .registerProperty('logging.level.startup', 'debug')
+      .registerProperty('logging.level.startup', 'info')
       .registerType(Logger, PinoLogger)
       .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService(new TestNunjucksTemplatingHelpers()))
 

@@ -13,7 +13,7 @@ const test = async () => {
   const newFile2 = 'test/resources/rules/test_rule_I_wont_be_detected_as_change.yuml'
   try {
     config
-      .registerProperty('logging.level.startup', 'debug')
+      .registerProperty('logging.level.startup', 'info')
       .registerProperty('project.location', './test/resources/projects/tests.yaml')
 
     setDefaultConfig()

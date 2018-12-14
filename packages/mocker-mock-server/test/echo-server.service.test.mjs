@@ -17,7 +17,7 @@ const test = async () => {
     const projectFileLocation = './test/resources/projects/echo_test.yaml'
 
     config
-      .registerProperty('logging.level.startup', 'debug')
+      .registerProperty('logging.level.startup', 'info')
       .registerType(Logger, PinoLogger)
       .registerProperty('project.location', projectFileLocation)
 

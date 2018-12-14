@@ -10,7 +10,7 @@ const expect = chai.expect
 const test = async () => {
   try {
     config
-      .registerProperty('logging.level.startup', 'debug')
+      .registerProperty('logging.level.startup', 'info')
       .registerProperty('project.location', './test/resources/projects/swagger_test.yaml')
 
     setDefaultConfig()

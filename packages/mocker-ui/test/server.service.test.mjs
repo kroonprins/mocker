@@ -39,7 +39,7 @@ class TestServer extends Server {
 
 const test = async () => {
   config
-    .registerProperty('logging.level.startup', 'debug')
+    .registerProperty('logging.level.startup', 'info')
     .registerType(Logger, PinoLogger)
     .registerInstance(ServerValidationModel, new ServerValidationModel())
 

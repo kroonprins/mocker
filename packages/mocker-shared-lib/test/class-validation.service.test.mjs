@@ -16,7 +16,7 @@ class TestClass {
 const test = async () => {
   try {
     config
-      .registerProperty('logging.level.startup', 'debug')
+      .registerProperty('logging.level.startup', 'info')
       .registerType(Logger, PinoLogger)
 
     let classValidationService = new JsonSchemaBasedClassValidationService()

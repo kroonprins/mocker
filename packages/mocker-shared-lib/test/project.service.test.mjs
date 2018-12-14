@@ -20,7 +20,7 @@ const test = async () => {
 
   try {
     config
-      .registerProperty('logging.level.startup', 'debug')
+      .registerProperty('logging.level.startup', 'info')
       .registerType(Logger, PinoLogger)
       .registerProperty('project.location', 'test/resources/projects/tests.yaml')
 

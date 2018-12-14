@@ -16,7 +16,7 @@ const test = async () => {
   const dbFile = './test/tmp/test3.db'
   try {
     config
-      .registerProperty('logging.level.startup', 'debug')
+      .registerProperty('logging.level.startup', 'info')
       .registerType(Logger, PinoLogger)
       .registerInstance(LearningModeDbValidationModel, new LearningModeDbValidationModel())
 

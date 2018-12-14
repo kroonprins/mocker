@@ -16,7 +16,7 @@ const test = async () => {
     const projectFileLocation = './test/resources/projects/tests.yaml'
 
     config
-      .registerProperty('logging.level.startup', 'debug')
+      .registerProperty('logging.level.startup', 'info')
       .registerProperty('project.location', projectFileLocation)
 
     setDefaultConfig()

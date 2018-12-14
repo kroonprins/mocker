@@ -23,7 +23,7 @@ const test = async () => {
 
   try {
     config
-      .registerProperty('logging.level.startup', 'debug')
+      .registerProperty('logging.level.startup', 'info')
       .registerProperty('project.location', projectFileLocation)
       .registerProperty('learning-mode.db.location', testLearningModeDbLocation)
 

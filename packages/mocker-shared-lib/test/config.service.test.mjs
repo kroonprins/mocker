@@ -8,7 +8,7 @@ const expect = chai.expect
 const test = async () => {
   try {
     config
-      .registerProperty('logging.level.startup', 'debug')
+      .registerProperty('logging.level.startup', 'info')
       .registerType(Logger, PinoLogger)
       .registerInstance('NunjucksTemplatingService', {})
 

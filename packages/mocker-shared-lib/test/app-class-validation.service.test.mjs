@@ -16,7 +16,7 @@ const expect = chai.expect
 const test = async () => {
   try {
     config
-      .registerProperty('logging.level.startup', 'debug')
+      .registerProperty('logging.level.startup', 'info')
       .registerType(Logger, PinoLogger)
       .registerInstance(LatencyValidationModel, new LatencyValidationModel())
       .registerInstance(RuleValidationModel, new RuleValidationModel(new ConfigService()))

@@ -11,7 +11,7 @@ const expect = chai.expect
 // could split this up so that not all test run synchronously
 const test = async () => {
   config
-    .registerProperty('logging.level.startup', 'debug')
+    .registerProperty('logging.level.startup', 'info')
     .registerType(Logger, PinoLogger)
 
   const latencyValidationModel = new LatencyValidationModel()
