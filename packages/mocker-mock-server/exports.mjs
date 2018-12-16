@@ -2,11 +2,19 @@ import {
   MockServer
 } from './src/mock-server'
 import {
-  initialize
+  initialize,
+  initializeWithoutMetricsAndSwagger
 } from './src/config-default'
+import {
+  MockServerEventEmitter,
+  MockServerEvents
+} from './src/mock-server.events'
 
 // public exports
 export {
   MockServer,
-  initialize
+  initialize,
+  initializeWithoutMetricsAndSwagger,
+  MockServerEventEmitter,
+  MockServerEvents
 }

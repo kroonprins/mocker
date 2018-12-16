@@ -1,5 +1,6 @@
 import express from 'express'
 import 'express-async-errors'
+import portastic from 'portastic'
 import { FunctionalValidationError } from './error-types'
 import { config } from './config'
 import { Logger } from './logging'
@@ -13,7 +14,8 @@ const ServerStatus = Object.freeze({
   STARTED: 'started',
   STOPPING: 'stopping',
   STOPPED: 'stopped',
-  RESTARTING: 'restarting'
+  RESTARTING: 'restarting',
+  ERROR: 'error'
 })
 
 /**
@@ -57,11 +59,17 @@ class Server {
    * @memberof Server
    */
   async start () {
+    this.port = await this._useRandomPortIfNoPortGiven()
     this.logger.debug('Starting %s on port %s binding on %s', this.loggerId, this.port, this.bindAddress)
     this.status = ServerStatus.STARTING
     this.app.disable('x-powered-by')
 
-    await this._setup()
+    try {
+      await this._setup()
+    } catch (e) {
+      this.status = ServerStatus.ERROR
+      throw e
+    }
 
     return new Promise((resolve, reject) => {
       this.server = this.app.listen(this.port, this.bindAddress, () => {
@@ -69,6 +77,7 @@ class Server {
         this.status = ServerStatus.STARTED
         resolve()
       }).on('error', error => {
+        this.status = ServerStatus.ERROR
         this.logger.error(error, 'Failed to start %s', this.loggerId)
         reject(new FunctionalValidationError(
           `Failed to start server ${this.loggerId}`,
@@ -94,15 +103,19 @@ class Server {
    * @memberof Server
    */
   stop () {
-    this.logger.info('Stopping %s', this.loggerId)
-    this.status = ServerStatus.STOPPING
-    return new Promise((resolve, reject) => {
-      this.server.close(() => {
-        this.logger.info('Stopped %s', this.loggerId)
-        this.status = ServerStatus.STOPPED
-        resolve()
+    if (this.status === ServerStatus.STARTED || this.status === ServerStatus.STARTING || this.status === ServerStatus.RESTARTING) {
+      this.logger.info('Stopping %s', this.loggerId)
+      this.status = ServerStatus.STOPPING
+      return new Promise((resolve, reject) => {
+        this.server.close(() => {
+          this.logger.info('Stopped %s', this.loggerId)
+          this.status = ServerStatus.STOPPED
+          resolve()
+        })
       })
-    })
+    } else {
+      this.logger.warn('Trying to stop a server that is not in the right status: %s', this.status)
+    }
   }
 
   /**
@@ -138,6 +151,17 @@ class Server {
     // TODO: necessary to make it work inside docker container
     const bindAddress = this.bindAddress.replace('0.0.0.0', 'localhost')
     return `http://${bindAddress}:${this.port}`
+  }
+
+  async _useRandomPortIfNoPortGiven () {
+    if (this.port === 0) {
+      this.port = (await portastic.find({
+        min: 8000,
+        max: 8100,
+        retrieve: 1
+      }))[0]
+    }
+    return this.port
   }
 }
 

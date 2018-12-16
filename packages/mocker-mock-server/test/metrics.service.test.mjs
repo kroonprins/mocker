@@ -89,7 +89,9 @@ const test = async () => {
 
     eventEmitter.emit(MockServerEvents.REQUEST_RECEIVED, {
       project: 'test1',
-      ruleLocation: 'location1'
+      projectRule: {
+        location: 'location1'
+      }
     })
 
     expect(metricsService.getMetrics()).to.deep.equal({
@@ -118,7 +120,9 @@ const test = async () => {
 
     eventEmitter.emit(MockServerEvents.REQUEST_RECEIVED, {
       project: 'test1',
-      ruleLocation: 'location1'
+      projectRule: {
+        location: 'location1'
+      }
     })
 
     expect(metricsService.getMetrics()).to.deep.equal({
@@ -147,7 +151,9 @@ const test = async () => {
 
     eventEmitter.emit(MockServerEvents.REQUEST_RECEIVED, {
       project: 'test2',
-      ruleLocation: 'location2'
+      projectRule: {
+        location: 'location2'
+      }
     })
 
     expect(metricsService.getMetrics()).to.deep.equal({
@@ -180,7 +186,9 @@ const test = async () => {
 
     eventEmitter.emit(MockServerEvents.REQUEST_RECEIVED, {
       project: 'test1',
-      ruleLocation: 'location1_1'
+      projectRule: {
+        location: 'location1_1'
+      }
     })
 
     expect(metricsService.getMetrics()).to.deep.equal({

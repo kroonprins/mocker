@@ -46,8 +46,10 @@ class MockServer extends Server {
     this.project = project
     this.projectService = projectService
     this.templatingService = templatingService
-    this.projectChangeWatcher = new ProjectChangeWatcher(this.project)
     this.watchConfigurationChanges = watchConfigurationChanges
+    if (this.watchConfigurationChanges === true) {
+      this.projectChangeWatcher = new ProjectChangeWatcher(this.project)
+    }
     this.configurationWatchChangeDetectedBeingProcessed = false
     this.enableSwaggerUI = enableSwaggerUI
     if (this.enableSwaggerUI) {
@@ -142,7 +144,7 @@ class MockServer extends Server {
           // TODO if ! ruleConditionalResponseValue found => 404?
           await this._writeResponse(req, res, ruleConditionalResponseValue, ruleConditionalResponse.templatingEngine)
         }
-        this.mockServerEventEmitter.emit(MockServerEvents.REQUEST_RECEIVED, this._createRequestReceivedEvent(projectRule))
+        this.mockServerEventEmitter.emit(MockServerEvents.REQUEST_RECEIVED, this._createRequestReceivedEvent(projectRule, req))
       })
 
       app[ruleRequest.method.toLowerCase()](ruleRequest.path, requestCallbacks)
@@ -294,12 +296,12 @@ class MockServer extends Server {
     }
   }
 
-  _createRequestReceivedEvent (projectRule) {
+  _createRequestReceivedEvent (projectRule, req) {
     return {
       timestamp: Date.now(), // TODO could also use req.timestamp but best then to convert it from momentjs to just a timestamp to avoid dependencies on momentjs everywhere
       project: this.project,
-      ruleLocation: projectRule.location,
-      ruleName: projectRule.rule.name
+      projectRule: projectRule,
+      req: req
     }
   }
 }

@@ -1,8 +1,10 @@
 import {
-  initialize
+  initialize,
+  initializeWithoutProjectService
 } from './src/config-default'
 
 // public exports
 export {
-  initialize
+  initialize,
+  initializeWithoutProjectService
 }

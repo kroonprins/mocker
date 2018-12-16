@@ -1,0 +1,30 @@
+{
+  "name": "@kroonprins/mocker-mock-server-test",
+  "version": "0.1.3",
+  "description": "Mock server for use in tests",
+  "main": "exports.mjs",
+  "scripts": {
+    "test": "mocker-test-runner",
+    "version-check": "updates"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kroonprins/mocker.git"
+  },
+  "author": "kroonprins",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kroonprins/mocker/issues"
+  },
+  "homepage": "https://github.com/kroonprins/mocker#readme",
+  "dependencies": {
+    "@kroonprins/mocker-mock-server": "^0.1.3",
+    "@kroonprins/mocker-shared-lib": "^0.1.3",
+    "serializr": "^1.3.0"
+  },
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "chai": "^4.2.0",
+    "updates": "^5.4.3"
+  }
+}

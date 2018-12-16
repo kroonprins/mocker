@@ -10,20 +10,44 @@ import { ProjectService } from './project.service'
 import { Logger, PinoLogger } from './logging'
 import { config } from './config'
 
-const initialize = () => {
+const registerInstance = (id, overrideValues, defaultValueFactory) => {
+  let value
+  if (overrideValues && id in overrideValues) {
+    value = overrideValues[id]
+  } else {
+    value = defaultValueFactory()
+  }
+  config.registerInstance(id, value)
+}
+
+const initialize = (defaultOverride) => {
   config
     .registerDefaultProperty('logging.level.startup', 'info')
     .registerType(Logger, PinoLogger)
-    .registerInstance(ConfigService, new ConfigService())
-    .registerInstance(LatencyValidationModel, new LatencyValidationModel())
-    .registerInstance(RuleValidationModel, new RuleValidationModel())
-    .registerInstance(ProjectValidationModel, new ProjectValidationModel())
-    .registerInstance(ClassValidationService, new AppClassValidationService())
-    .registerInstance(RuleService, new RuleService())
-    .registerInstance(ProjectStore, new InMemoryProjectStore())
-    .registerInstance(ProjectService, new ProjectService())
+
+  registerInstance(ConfigService, defaultOverride, () => new ConfigService())
+  registerInstance(LatencyValidationModel, defaultOverride, () => new LatencyValidationModel())
+  registerInstance(RuleValidationModel, defaultOverride, () => new RuleValidationModel())
+  registerInstance(ProjectValidationModel, defaultOverride, () => new ProjectValidationModel())
+  registerInstance(ClassValidationService, defaultOverride, () => new AppClassValidationService())
+  registerInstance(RuleService, defaultOverride, () => new RuleService())
+  registerInstance(ProjectStore, defaultOverride, () => new InMemoryProjectStore())
+  registerInstance(ProjectService, defaultOverride, () => new ProjectService())
+}
+
+const initializeWithoutProjectService = (defaultOverride) => {
+  config
+    .registerDefaultProperty('logging.level.startup', 'info')
+    .registerType(Logger, PinoLogger)
+
+  registerInstance(ConfigService, defaultOverride, () => new ConfigService())
+  registerInstance(LatencyValidationModel, defaultOverride, () => new LatencyValidationModel())
+  registerInstance(RuleValidationModel, defaultOverride, () => new RuleValidationModel())
+  registerInstance(ClassValidationService, defaultOverride, () => new AppClassValidationService())
+  registerInstance(RuleService, defaultOverride, () => new RuleService())
 }
 
 export {
-  initialize
+  initialize,
+  initializeWithoutProjectService
 }
