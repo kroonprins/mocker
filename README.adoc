@@ -1,1 +1,0 @@
-include::packages/mocker-doc/README.adoc[]
