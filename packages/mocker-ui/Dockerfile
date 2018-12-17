@@ -11,7 +11,7 @@ FROM node:11.2.0-alpine
 WORKDIR /app
 
 COPY . .
-RUN npm install
+RUN npm install --ignore-scripts
 
 COPY --from=0 /app/dist /app/src/angular/dist
 

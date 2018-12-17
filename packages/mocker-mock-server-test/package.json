@@ -17,6 +17,10 @@
     "url": "https://github.com/kroonprins/mocker/issues"
   },
   "homepage": "https://github.com/kroonprins/mocker#readme",
+  "files": [
+    "exports.mjs",
+    "src/**"
+  ],
   "dependencies": {
     "@kroonprins/mocker-mock-server": "^0.1.3",
     "@kroonprins/mocker-shared-lib": "^0.1.3",

@@ -69,7 +69,9 @@
 * don't crash mock server when incorrectly formatted rule (annoying when automatic restart fails because rule not complete yet)
 * add extra documentation about using req.body
 * admin server mock server / learning mode: integrate into mocker-ui
-* exclude angular src from npm package?
-* investigate why npm install -g @kroonprins/mocker-ui fails on angular build (possibly related to point above about possibility to only have angular dist folder in npm package) + similarly the postinstall fails in docker
 * add more information to the metrics of learning mode (e.g. total requests currently in db file, requests per path, ...)
 * see if possible to have different rule providing strategies for mock server next to the project service (so that mocker-mock-server-test no longer needs to create a dummy project service to provide the rules)
+* keep an eye on https://github.com/github/markup/issues/1095 so that README.md can be replaced by an adoc that includes mocker-doc adoc
+* check if angular/dis/assets/monaco can't be made smaller (currently > 7 MB)
+* should use 'npm install --production' in Dockerfile? => smaller image size but then we also need to exclude tests (and can no longer run them in container to test the image...)
+* test that 'npm install @kroonprins/mocker-ui' now works now that postinstall has been replaced by prepare script

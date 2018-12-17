@@ -21,6 +21,11 @@
     "url": "https://github.com/kroonprins/mocker/issues"
   },
   "homepage": "https://github.com/kroonprins/mocker#readme",
+  "files": [
+    "exports.mjs",
+    "start.mjs",
+    "src/**"
+  ],
   "dependencies": {
     "@kroonprins/mocker-shared-lib": "^0.1.3",
     "body-parser": "^1.18.3",
@@ -36,7 +41,7 @@
     "util": "^0.11.1"
   },
   "devDependencies": {
-    "ajv": "^6.6.1",
+    "ajv": "^6.6.2",
     "ajv-async": "^1.0.1",
     "axios": "^0.18.0",
     "chai": "^4.2.0",

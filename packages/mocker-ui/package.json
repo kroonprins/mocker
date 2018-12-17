@@ -4,7 +4,7 @@
   "description": "UI for mocker",
   "main": "exports.mjs",
   "scripts": {
-    "//postinstall": "node build-scripts/post-install.js",
+    "prepare": "node build-scripts/post-install.js",
     "start": "./start.mjs",
     "test": "mocker-test-runner",
     "version-check": "updates",
@@ -22,6 +22,12 @@
     "url": "https://github.com/kroonprins/mocker/issues"
   },
   "homepage": "https://github.com/kroonprins/mocker#readme",
+  "files": [
+    "cjs.js",
+    "start.mjs",
+    "src/*.mjs",
+    "src/angular/dist/**"
+  ],
   "dependencies": {
     "@kroonprins/mocker-learning-mode": "^0.1.3",
     "@kroonprins/mocker-mock-server": "^0.1.3",
@@ -33,7 +39,7 @@
     "serializr": "^1.3.0"
   },
   "devDependencies": {
-    "ajv": "^6.6.1",
+    "ajv": "^6.6.2",
     "ajv-async": "^1.0.1",
     "axios": "^0.18.0",
     "chai": "^4.2.0",
