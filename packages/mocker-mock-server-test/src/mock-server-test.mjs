@@ -51,6 +51,10 @@ class MockServerTest {
     return this.metricsService.for(path, method)
   }
 
+  name (name) {
+    return this.metricsService.name(name)
+  }
+
   _createProjectService (opts) {
     if (opts.ruleLocation) {
       const locations = Array.isArray(opts.ruleLocation) ? opts.ruleLocation : [opts.ruleLocation]

@@ -21,6 +21,11 @@ class MetricsService {
     return metricsByPathAndMethod
   }
 
+  name (name) {
+    const metricsByRuleName = this.metrics.metricsByRuleName[name] || Metrics.empty()
+    return metricsByRuleName
+  }
+
   _initialMetrics () {
     return {
       globalMetrics: GlobalMetrics.empty(),
@@ -39,15 +44,16 @@ class MetricsService {
   }
 
   _handleRequestReceivedEvent (requestReceivedEvent) {
-    this._updateGlobalMetrics(requestReceivedEvent)
+    this._updateGlobalMetrics()
     this._updateMetricsByPathAndMethod(requestReceivedEvent)
+    this._updateMetricsByRuleName(requestReceivedEvent)
   }
 
   _getPathAndMethodKey (path, method) {
     return `${path}##${method}`
   }
 
-  _updateGlobalMetrics (requestReceivedEvent) {
+  _updateGlobalMetrics () {
     this.metrics.globalMetrics = new GlobalMetrics(this.metrics.globalMetrics.invocations() + 1)
   }
 
@@ -58,6 +64,22 @@ class MetricsService {
     this.metrics.metricsByPathAndMethod[pathAndMethodKey] = new Metrics(
       metricsByPathAndMethod.invocations() + 1,
       [...metricsByPathAndMethod._requests, {
+        timestamp: requestReceivedEvent.timestamp,
+        projectRule: requestReceivedEvent.projectRule,
+        req: requestReceivedEvent.req
+      }]
+    )
+  }
+
+  _updateMetricsByRuleName (requestReceivedEvent) {
+    const name = requestReceivedEvent.projectRule.rule.name
+    if (!name) {
+      return
+    }
+    let metricsByRuleName = this.metrics.metricsByRuleName[name] || Metrics.empty()
+    this.metrics.metricsByRuleName[name] = new Metrics(
+      metricsByRuleName.invocations() + 1,
+      [...metricsByRuleName._requests, {
         timestamp: requestReceivedEvent.timestamp,
         projectRule: requestReceivedEvent.projectRule,
         req: requestReceivedEvent.req

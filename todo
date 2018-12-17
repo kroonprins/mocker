@@ -22,7 +22,6 @@
 * make possible that mock server logs traffic in a db
 * try alternatives for monaco code editor (ace/codemirror)
 * improve reverse proxy unit tests (e.g. didn't catch that output headers weren't saved with a previous bug)
-* componentize much more in ui
 * handle xml input body on mock server => either use body-parser-xml (but xml to json is always tricky with arrays) or have the text bodyparser handle the "*/xml" content type and add an xpath template helper function
 * put this todo list as github todos in github project
 * add ability to mock server to proxy requests to the real server if no rule defined
@@ -62,7 +61,7 @@
 * handle relative paths in start.mjs scripts
 * make config.getProperty return an object to which can be listened for changes so that properties can be updated at runtime from the admin-server (the proxy of config.getInstance could possibly also get extra functionality to listen for update event)
 * make it possible to start the ui without a project file. It will then ask to select one at the start.
-* support multidoc yaml defining multiple rules in one yaml file?
+* support multidoc yaml defining multiple rules in one yaml file? (be careful because rule location is sometimes used as unique key)
 * make cors headers on mock-server / learning mode configurable and disabled by default
 * make it possible to start swagger ui also from mocker ui
 * make latency value with unit possible (eg 500ms, 1s, ...)
@@ -75,3 +74,4 @@
 * check if angular/dis/assets/monaco can't be made smaller (currently > 7 MB)
 * should use 'npm install --production' in Dockerfile? => smaller image size but then we also need to exclude tests (and can no longer run them in container to test the image...)
 * test that 'npm install @kroonprins/mocker-ui' now works now that postinstall has been replaced by prepare script
+* add extension points to mock server? (e.g something to execute when every request comes in, before writing response, ...)

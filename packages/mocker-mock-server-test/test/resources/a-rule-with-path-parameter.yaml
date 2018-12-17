@@ -1,0 +1,11 @@
+name: with path parameters
+request:
+  path: /path-parameter/:p1/:p2
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: text/plain
+  statusCode: 200
+  body: |
+    parameter p1: {{req.params.p1}}
+    parameter p2: {{req.params.p2}}
