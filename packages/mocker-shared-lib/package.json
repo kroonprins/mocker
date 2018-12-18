@@ -4,7 +4,7 @@
   "description": "Shared functionality for mocker",
   "main": "",
   "scripts": {
-    "test": "./src/test-runner.mjs",
+    "test": "node --experimental-modules ./src/test-runner.mjs",
     "version-check": "updates"
   },
   "repository": {
@@ -47,6 +47,6 @@
     "updates": "^5.4.3"
   },
   "bin": {
-    "mocker-test-runner": "./src/test-runner.mjs"
+    "mocker-test-runner": "node --experimental-modules ./src/test-runner.mjs"
   }
 }

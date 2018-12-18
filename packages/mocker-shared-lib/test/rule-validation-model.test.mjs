@@ -69,7 +69,7 @@ const test = async () => {
   expect(await jsonSchemaValidator.validate('Response', new Response(null, null, null, 'x'))).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('Response', new Response('x', null, null, 'x'))).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('Response', new Response('nunjucks', null, null, 'x'))).to.be.equal(true)
-  expect(await jsonSchemaValidator.validate('Response', new Response('nunjucks', null, null, null))).to.be.equal(false)
+  expect(await jsonSchemaValidator.validate('Response', new Response('nunjucks', null, null, null))).to.be.equal(true)
   expect(await jsonSchemaValidator.validate('Response', new Response('nunjucks', null, null, 'x', [ '200' ]))).to.be.equal(false)
   expect(await jsonSchemaValidator.validate('Response', new Response('nunjucks', null, null, 'x', 500))).to.be.equal(true)
   expect(await jsonSchemaValidator.validate('Response', new Response('nunjucks', null, null, 'x', 500, [ 'header' ]))).to.be.equal(false)

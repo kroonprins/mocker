@@ -59,7 +59,7 @@ class RuleValidationModel extends ValidationModel {
             'type': 'string'
           },
           'value': {
-            'type': ['string', 'integer', 'null']
+            'type': ['string', 'number', 'null']
           },
           'properties': {
             'type': 'object',
@@ -126,7 +126,7 @@ class RuleValidationModel extends ValidationModel {
             }, { 'type': 'null' }]
           },
           'contentType': {
-            'type': 'string' // TODO get list of values from function?
+            'type': [ 'string', 'null' ] // TODO get list of values from function?
           },
           'statusCode': {
             'type': [ 'integer', 'string' ] // TODO get list of all allowed?
@@ -148,7 +148,7 @@ class RuleValidationModel extends ValidationModel {
           }
         },
         'required': [
-          'templatingEngine', 'contentType', 'statusCode' // TODO is content-type mandatory response header in http spec?
+          'templatingEngine', 'statusCode'
         ]
         // 'additionalProperties': false
       },

@@ -15,8 +15,8 @@ class RuleService {
     this.logger.debug('Read rule %s with encoding %s', fileName, encoding)
     const fileContent = await readFileAsync(fileName, encoding)
     this.logger.debug(fileContent, 'Rule file content for %s', fileName)
-    const rule = yaml.safeLoad(fileContent)
     try {
+      const rule = yaml.safeLoad(fileContent)
       return deserialize(RuleSerializationModel, rule)
     } catch (e) {
       this.logger.error(e, `Could not parse rule for file ${fileName}`)

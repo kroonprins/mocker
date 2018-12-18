@@ -5,13 +5,13 @@ class Request {
   }
 
   set path (path) {
-    this._path = path ? path.trim() : null
+    this._path = path ? String(path).trim() : null
   }
   get path () {
     return this._path
   }
   set method (method) {
-    this._method = method ? method.trim().toUpperCase() : null
+    this._method = method ? String(method).trim().toUpperCase() : null
   }
   get method () {
     return this._method
@@ -25,13 +25,13 @@ class Header {
   }
 
   set name (name) {
-    this._name = name ? name.trim() : null
+    this._name = name ? String(name).trim() : null
   }
   get name () {
     return this._name
   }
   set value (value) {
-    this._value = value ? value.trim() : null
+    this._value = value ? String(value).trim() : null
   }
   get value () {
     return this._value
@@ -46,13 +46,13 @@ class Cookie {
   }
 
   set name (name) {
-    this._name = name ? name.trim() : null
+    this._name = name ? String(name).trim() : null
   }
   get name () {
     return this._name
   }
   set value (value) {
-    this._value = value ? value.trim() : null
+    this._value = value ? String(value).trim() : null
   }
   get value () {
     return this._value
@@ -96,7 +96,7 @@ class Response {
     return this._randomLatency
   }
   set contentType (contentType) {
-    this._contentType = contentType ? contentType.trim() : null
+    this._contentType = contentType ? String(contentType).trim() : null
   }
   get contentType () {
     return this._contentType
@@ -178,7 +178,7 @@ class ConditionalResponseValue {
     return this._randomLatency
   }
   set contentType (contentType) {
-    this._contentType = contentType ? contentType.trim() : null
+    this._contentType = contentType ? String(contentType).trim() : null
   }
   get contentType () {
     return this._contentType
@@ -218,7 +218,7 @@ class Rule {
   }
 
   set name (name) {
-    this._name = name ? name.trim() : null
+    this._name = name ? String(name).trim() : null
   }
   get name () {
     return this._name

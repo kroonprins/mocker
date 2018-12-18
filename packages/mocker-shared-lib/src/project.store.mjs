@@ -70,11 +70,15 @@ class InMemoryProjectStore extends ProjectStore {
           this.logger.debug(`Rule location: ${ruleFileLocation}`)
           rulePromises.push(this.ruleService.readRule(ruleFile).then((rule) => {
             return new ProjectRule(ruleFileLocation, rule)
+          }).catch(e => {
+            this.logger.warn('Skipping rule \'%s\' because unable to parse it', ruleFileLocation)
           }))
         }
       }
 
-      const newProject = new Project(project.name, await Promise.all(rulePromises))
+      const newProject = new Project(project.name, await Promise.all(rulePromises).then(values => {
+        return values.filter(value => value)
+      }))
       await this._validateProject(newProject)
       this._setProject(newProject)
     }
