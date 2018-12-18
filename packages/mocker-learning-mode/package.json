@@ -1,6 +1,6 @@
 {
   "name": "@kroonprins/mocker-learning-mode",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Learning mode for mocker",
   "main": "exports.mjs",
   "scripts": {
@@ -27,7 +27,7 @@
     "src/**"
   ],
   "dependencies": {
-    "@kroonprins/mocker-shared-lib": "^0.1.3",
+    "@kroonprins/mocker-shared-lib": "^0.1.4",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
