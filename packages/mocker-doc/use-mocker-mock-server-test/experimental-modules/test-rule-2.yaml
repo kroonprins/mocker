@@ -1,0 +1,9 @@
+name: test rule 2
+request:
+  method: POST
+  path: /test2/:p2
+response:
+  templatingEngine: none
+  statusCode: 200
+  contentType: text/plain
+  body: rule 2

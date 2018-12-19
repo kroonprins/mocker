@@ -1264,3 +1264,191 @@ $ wc -l ./data/captured-requests.db
 ----
 
 == Use in unit/integration tests
+
+The package @kroonprins/mocker-mock-server-test can be used to start a mock server during automated tests (unit/integration/E2E). Expectations about how the mock server was called during the test can be verified.
+
+This can be useful to test a services that executes one or more HTTP calls to other services. This other service will be mocked by the mock server during the test. After the test has called the service under test, it can be verified that the service called the other services as expected by asking the mock server what requests it received with which request attributes.
+
+=== ES6 modules
+
+Mocker has been written with ES6 modules. ES6 modules are still experimental (only available if node is run with the --experimental-modules flag) meaning that support of common test runners for ES6 modules is close to non-existent. However, for the time being, tests written with ES6 modules can use the mock server as follows.
+
+Install @kroonprins/mocker-mock-server-test in your project:
+
+[source,console]
+----
+$ npm install --save-dev @kroonprins/mocker-mock-server-test
+----
+
+Create a test that (usually indirectly) calls the mock server. For example, where the mock server is called directly, to keep the example short:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/experimental-modules/test-by-file.mjs[test-by-file.mjs]
+[source,javascript]
+----
+import axios from 'axios'
+import chai from 'chai'
+import { MockServer } from '@kroonprins/mocker-mock-server-test'
+
+const expect = chai.expect
+
+const test = async () => {
+  const mockServer = new MockServer({
+    port: 0,
+    ruleLocation: [ 'test-rule-1.yaml', 'test-rule-2.yaml' ]
+  })
+
+  try {
+    await mockServer.start()
+
+    const response = await axios.post(`http://localhost:${mockServer.port}/test1/parameter1?query1=q1&query2=q2`, 'inputBody', {
+      headers: {
+        'Content-Type': 'text/plain',
+        'X-test1': 'h1',
+        'X-test2': 'h2',
+        'Cookie': 'cookie1=c1; cookie2=c2'
+      }
+    })
+    expect(response.status).to.equal(200)
+
+    expect(mockServer.global().invocations()).to.equal(1)
+    expect(mockServer.for('/test1/:p1', 'POST').invocations()).to.equal(1)
+    expect(mockServer.for('/test2/:p2', 'POST').invocations()).to.equal(0)
+    expect(mockServer.for('/test1/:p1', 'POST').ruleName()).to.equal('test rule 1')
+    expect(mockServer.for('/test1/:p1', 'POST').ruleLocation()).to.equal('test-rule-1.yaml')
+    expect(mockServer.for('/test1/:p1', 'POST').path()).to.equal('/test1/parameter1')
+    expect(mockServer.for('/test1/:p1', 'POST').fullPath()).to.equal('/test1/parameter1?query1=q1&query2=q2')
+    expect(mockServer.for('/test1/:p1', 'POST').header('X-test1')).to.equal('h1')
+    expect(mockServer.for('/test1/:p1', 'POST').header('X-test2')).to.equal('h2')
+    expect(mockServer.for('/test1/:p1', 'POST').header('X-test3')).to.equal(undefined)
+    expect(mockServer.for('/test1/:p1', 'POST').cookie('cookie1')).to.equal('c1')
+    expect(mockServer.for('/test1/:p1', 'POST').cookie('cookie2')).to.equal('c2')
+    expect(mockServer.for('/test1/:p1', 'POST').cookie('cookie3')).to.equal(undefined)
+    expect(mockServer.for('/test1/:p1', 'POST').query('query1')).to.equal('q1')
+    expect(mockServer.for('/test1/:p1', 'POST').query('query2')).to.equal('q2')
+    expect(mockServer.for('/test1/:p1', 'POST').query('query3')).to.equal(undefined)
+    expect(mockServer.for('/test1/:p1', 'POST').body()).to.equal('inputBody')
+
+    expect(mockServer.name('test rule 1').invocations()).to.equal(1)
+    expect(mockServer.name('test rule 2').invocations()).to.equal(0)
+  } finally {
+    await mockServer.stop()
+  }
+}
+
+test()
+----
+
+Step by step:
+
+First import the test mock server using ES6 modules import syntax:
+
+[source,javascript]
+----
+import { MockServer } from '@kroonprins/mocker-mock-server-test'
+----
+
+Configure and start the mock server:
+
+[source,javascript]
+----
+const mockServer = new MockServer({
+  port: 0,
+  ruleLocation: [ 'test-rule-1.yaml', 'test-rule-2.yaml' ]
+})
+
+await mockServer.start()
+----
+
+The configuration options are:
+
+* *port*: a specific port, or if 0 is given then a random free port will be selected. If a random port is chosen, then the selected port is accessible as mockServer.port _after_ the server has started
+* *ruleLocation*: the rule(s) for the mock server can be provided in different ways. The first is by referencing a yaml file with the rule. The path to the file should be either an absolute path or a path relative to where the test will be run from. The value can be either a list or just one value, and glob patterns are allowed. So the following are all valid:
+** ruleLocation: [ 'test-rule-1.yaml', 'test-rule-2.yaml' ]
+** ruleLocation: 'test-rule-1.yaml'
+** ruleLocation: '\**/*.yaml'
+** ruleLocation: [ 'test-rule-1*.yaml', 'test-rule-2*.yaml' ]
+* *rule*: the other way is to put the parsed yaml directly as an object, or a list of objects. For example:
++
+[source,javascript]
+----
+const mockServer = new MockServer({
+  port: 0,
+  rule: [ {
+    name: 'test rule 1',
+    request: {
+      method: 'POST',
+      path: '/test1'
+    },
+    response: {
+      templatingEngine: 'none',
+      statusCode: 200,
+      contentType: 'text/plain',
+      body: 'rule 1'
+    }
+  }, {
+    name: 'test rule 2',
+    request: {
+      method: 'POST',
+      path: '/test2'
+    },
+    response: {
+      templatingEngine: 'none',
+      statusCode: 200,
+      contentType: 'text/plain',
+      body: 'rule 2'
+    }
+  } ]
+})
+----
++
+Also here it can be either a list or a single value.
+
+After a request to the server has happened, expectations can be verified:
+
+[source,javascript]
+----
+// Verify the global number of requests is as expected.
+expect(mockServer.global().invocations()).to.equal(1)
+
+// Verify the number requests to a specific rule is as expected.
+// The .for(path, method) refers to the path and method as defined in the rule.
+expect(mockServer.for('/test1/:p1', 'POST').invocations()).to.equal(1)
+expect(mockServer.for('/test2/:p2', 'POST').invocations()).to.equal(0)
+
+// Verify that the expected rule was called.
+expect(mockServer.for('/test1/:p1', 'POST').ruleName()).to.equal('test rule 1')
+expect(mockServer.for('/test1/:p1', 'POST').ruleLocation()).to.equal('test-rule-1.yaml')
+
+// Verify the path and full path that was received
+expect(mockServer.for('/test1/:p1', 'POST').path()).to.equal('/test1/parameter1')
+expect(mockServer.for('/test1/:p1', 'POST').fullPath()).to.equal('/test1/parameter1?query1=q1&query2=q2')
+
+// Verify that certain headers were received
+expect(mockServer.for('/test1/:p1', 'POST').header('X-test1')).to.equal('h1')
+expect(mockServer.for('/test1/:p1', 'POST').header('X-test2')).to.equal('h2')
+expect(mockServer.for('/test1/:p1', 'POST').header('X-test3')).to.equal(undefined)
+
+// Verify that certain headers were received
+expect(mockServer.for('/test1/:p1', 'POST').cookie('cookie1')).to.equal('c1')
+expect(mockServer.for('/test1/:p1', 'POST').cookie('cookie2')).to.equal('c2')
+expect(mockServer.for('/test1/:p1', 'POST').cookie('cookie3')).to.equal(undefined)
+
+// Verify that certain query parameters were received
+expect(mockServer.for('/test1/:p1', 'POST').query('query1')).to.equal('q1')
+expect(mockServer.for('/test1/:p1', 'POST').query('query2')).to.equal('q2')
+expect(mockServer.for('/test1/:p1', 'POST').query('query3')).to.equal(undefined)
+
+// Verify that the received body is as expected
+expect(mockServer.for('/test1/:p1', 'POST').body()).to.equal('inputBody')
+
+// Rules can also be referred to by name instead of path and method.
+// In this case the .name(name) is used instead of .for(path, method).
+expect(mockServer.name('test rule 1').invocations()).to.equal(1)
+expect(mockServer.name('test rule 2').invocations()).to.equal(0)
+----
+
+=== CommonJS
+
+Using ES6 code from CommonJS code is possible with the dynamic import statement. As dynamic import is async this is less straightforward as using require() to import another CommonJS dependency.
+
+=== Typescript

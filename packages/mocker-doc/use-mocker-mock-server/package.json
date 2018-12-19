@@ -5,6 +5,6 @@
     "start": "mocker-mock-server"
   },
   "dependencies": {
-    "@kroonprins/mocker-mock-server": "^0.1.2"
+    "@kroonprins/mocker-mock-server": "^0.1.4"
   }
 }

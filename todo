@@ -74,3 +74,5 @@
 * should use 'npm install --production' in Dockerfile? => smaller image size but then we also need to exclude tests (and can no longer run them in container to test the image...)
 * test that 'npm install @kroonprins/mocker-ui' now works now that postinstall has been replaced by prepare script
 * add extension points to mock server? (e.g something to execute when every request comes in, before writing response, ...)
+* test-runner for windows failure + possible to put back prepare instead of prepublish in package.json mocker-ui?
+* failing unit tests on windows: portastic apparently not correctly identifying ports as in-use + others
