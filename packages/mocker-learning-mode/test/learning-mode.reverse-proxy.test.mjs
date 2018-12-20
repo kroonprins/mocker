@@ -34,9 +34,10 @@ const test = async () => {
     )
     let learningModeService = new LearningModeService(learningModeDbService)
 
+    const minimumPort = Math.floor((Math.random() * 50000) + 8000)
     const availablePorts = (await portastic.find({
-      min: 30000,
-      max: 40000,
+      min: minimumPort,
+      max: minimumPort + 15,
       retrieve: 2
     }))
     const testServerPort = availablePorts[0]
@@ -163,7 +164,11 @@ const test = async () => {
     }
   } finally {
     config.reset()
-    await unlinkAsync(dbFile)
+    try {
+      await unlinkAsync(dbFile)
+    } catch (e) {
+      console.log(`Failed to delete file ${dbFile}`)
+    }
   }
 }
 

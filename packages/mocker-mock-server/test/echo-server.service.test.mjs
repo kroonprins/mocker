@@ -24,9 +24,10 @@ const test = async () => {
     setDefaultConfig()
     setDefaultConfigMockServer()
 
+    const minimumPort = Math.floor((Math.random() * 50000) + 8000)
     const availablePort = (await portastic.find({
-      min: 40000,
-      max: 50000,
+      min: minimumPort,
+      max: minimumPort + 10,
       retrieve: 1
     }))[0]
 

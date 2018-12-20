@@ -2,6 +2,7 @@ import chai from 'chai'
 import chaiExclude from 'chai-exclude'
 import portastic from 'portastic'
 import axios from 'axios'
+import path from 'path'
 import { ApiServer } from '../src/api-server'
 import { LearningModeService, RecordedRequest, initialize as setDefaultLearningModeConfig } from '@kroonprins/mocker-learning-mode'
 import { LearningModeServerTypes } from '@kroonprins/mocker-shared-lib/server.service'
@@ -34,9 +35,10 @@ const test = async () => {
 
     const learningModeService = config.getInstance(LearningModeService)
 
+    const minimumPort = Math.floor((Math.random() * 50000) + 8000)
     const availablePorts = (await portastic.find({
-      min: 20000,
-      max: 30000,
+      min: minimumPort,
+      max: minimumPort + 20,
       retrieve: 3
     }))
 
@@ -201,21 +203,21 @@ const test = async () => {
       const rules = await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules`)
       expect(rules.status).to.be.equal(200)
       expect(rules.data).to.deep.equal([{
-        location: '../rules/test_rule_1.yaml',
+        location: path.normalize('../rules/test_rule_1.yaml'),
         rule: {
           name: 'testRule1',
           request: { path: '/hello1/:id', method: 'GET' }
         }
       },
       {
-        location: '../rules/test_rule_2.yaml',
+        location: path.normalize('../rules/test_rule_2.yaml'),
         rule: {
           name: 'testRule2',
           request: { path: '/hello2', method: 'PUT' }
         }
       },
       {
-        location: '../rules/test_rule_3.yaml',
+        location: path.normalize('../rules/test_rule_3.yaml'),
         rule: {
           name: 'testRule3',
           request: { path: '/hello3/:id', method: 'GET' }
@@ -243,7 +245,7 @@ const test = async () => {
       const rule = await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules/testRule1`)
       expect(rule.status).to.be.equal(200)
       expect(rule.data).to.deep.equal({
-        location: '../rules/test_rule_1.yaml',
+        location: path.normalize('../rules/test_rule_1.yaml'),
         rule: {
           name: 'testRule1',
           request: { path: '/hello1/:id', method: 'GET' },
@@ -365,21 +367,21 @@ const test = async () => {
       const rulesAfterNewRule = await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules`)
       expect(rulesAfterNewRule.status).to.be.equal(200)
       expect(rulesAfterNewRule.data).to.deep.equal([{
-        location: '../rules/test_rule_1.yaml',
+        location: path.normalize('../rules/test_rule_1.yaml'),
         rule: {
           name: 'testRule1',
           request: { path: '/hello1/:id', method: 'GET' }
         }
       },
       {
-        location: '../rules/test_rule_2.yaml',
+        location: path.normalize('../rules/test_rule_2.yaml'),
         rule: {
           name: 'testRule2',
           request: { path: '/hello2', method: 'PUT' }
         }
       },
       {
-        location: '../rules/test_rule_3.yaml',
+        location: path.normalize('../rules/test_rule_3.yaml'),
         rule: {
           name: 'testRule3',
           request: { path: '/hello3/:id', method: 'GET' }
@@ -630,21 +632,21 @@ const test = async () => {
       const rulesAfterUpdatedRule = await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules`)
       expect(rulesAfterUpdatedRule.status).to.be.equal(200)
       expect(rulesAfterUpdatedRule.data).to.deep.equal([{
-        location: '../rules/test_rule_1.yaml',
+        location: path.normalize('../rules/test_rule_1.yaml'),
         rule: {
           name: 'testRule1',
           request: { path: '/hello1/:id', method: 'GET' }
         }
       },
       {
-        location: '../rules/test_rule_2.yaml',
+        location: path.normalize('../rules/test_rule_2.yaml'),
         rule: {
           name: 'testRule2',
           request: { path: '/hello2', method: 'PUT' }
         }
       },
       {
-        location: '../rules/test_rule_3.yaml',
+        location: path.normalize('../rules/test_rule_3.yaml'),
         rule: {
           name: 'testRule3',
           request: { path: '/hello3/:id', method: 'GET' }
@@ -703,21 +705,21 @@ const test = async () => {
       const rulesAfterRemovedRule = await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules`)
       expect(rulesAfterRemovedRule.status).to.be.equal(200)
       expect(rulesAfterRemovedRule.data).to.deep.equal([{
-        location: '../rules/test_rule_1.yaml',
+        location: path.normalize('../rules/test_rule_1.yaml'),
         rule: {
           name: 'testRule1',
           request: { path: '/hello1/:id', method: 'GET' }
         }
       },
       {
-        location: '../rules/test_rule_2.yaml',
+        location: path.normalize('../rules/test_rule_2.yaml'),
         rule: {
           name: 'testRule2',
           request: { path: '/hello2', method: 'PUT' }
         }
       },
       {
-        location: '../rules/test_rule_3.yaml',
+        location: path.normalize('../rules/test_rule_3.yaml'),
         rule: {
           name: 'testRule3',
           request: { path: '/hello3/:id', method: 'GET' }
@@ -917,7 +919,7 @@ const test = async () => {
           name: 'test_glob',
           mockServer: {},
           learningModeServer: {
-            port: 20002,
+            port: availablePorts[2],
             bindAddress: 'localhost',
             status: 'started',
             type: LearningModeServerTypes.REVERSE_PROXY,
@@ -1017,7 +1019,11 @@ const test = async () => {
       console.log(`Problem removing file ${testLearningModeDbLocation}`, e)
     }
 
-    await moveFileAsync(projectFileLocationBackup, projectFileLocation)
+    try {
+      await moveFileAsync(projectFileLocationBackup, projectFileLocation)
+    } catch (e) {
+      console.log(`Problem moving file ${projectFileLocationBackup} to ${projectFileLocation}`, e)
+    }
   }
 }
 

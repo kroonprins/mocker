@@ -1,4 +1,5 @@
 import chai from 'chai'
+import path from 'path'
 import { initialize as setDefaultConfig } from '../src/config-default'
 import { FixedLatency, RandomLatency } from '../src/latency-model.mjs'
 import { Project, ProjectRule } from '../src/project-model'
@@ -40,7 +41,7 @@ const test = async () => {
       'test_one_file_does_not_exist'])
     expect(allProjects['test_glob'].rules.length).to.be.equal(3)
     expect(allProjects['test_glob'].rules[1]).to.deep.equal(new ProjectRule(
-      '../rules/test_rule_2.yaml', new Rule(
+      path.normalize('../rules/test_rule_2.yaml'), new Rule(
         'testRule2',
         new Request('/hello2', 'PUT'),
         new Response(
@@ -60,7 +61,7 @@ const test = async () => {
     const listProjectRules = await projectService.listProjectRules('test_glob', true)
     expect(listProjectRules.length).to.be.equal(3)
     expect(listProjectRules[0]).to.deep.equal(new ProjectRule(
-      '../rules/test_rule_1.yaml', new Rule(
+      path.normalize('../rules/test_rule_1.yaml'), new Rule(
         'testRule1',
         new Request('/hello1/:id', 'GET'),
         new Response(
@@ -84,7 +85,7 @@ const test = async () => {
       )
     ))
     expect(listProjectRules[1]).to.deep.equal(new ProjectRule(
-      '../rules/test_rule_2.yaml', new Rule(
+      path.normalize('../rules/test_rule_2.yaml'), new Rule(
         'testRule2',
         new Request('/hello2', 'PUT'),
         new Response(
@@ -101,7 +102,7 @@ const test = async () => {
       )
     ))
     expect(listProjectRules[2]).to.deep.equal(new ProjectRule(
-      '../rules/test_rule_3.yaml', new Rule(
+      path.normalize('../rules/test_rule_3.yaml'), new Rule(
         'testRule3',
         new Request('/hello3/:id', 'GET'),
         new Response(
@@ -161,7 +162,7 @@ const test = async () => {
 
     const retrieveProjectRule = await projectService.retrieveProjectRule('test_glob', 'testRule1')
     expect(retrieveProjectRule).to.deep.equal(new ProjectRule(
-      '../rules/test_rule_1.yaml',
+      path.normalize('../rules/test_rule_1.yaml'),
       new Rule(
         'testRule1',
         new Request(

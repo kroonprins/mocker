@@ -1,4 +1,5 @@
 import chai from 'chai'
+import path from 'path'
 import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
 import { initialize as setDefaultConfigMockServer } from '../src/config-default'
 import { ProjectService } from '@kroonprins/mocker-shared-lib/project.service'
@@ -34,7 +35,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/get']['get']).to.deep.equal({
       summary: 'swagger get without templating',
       description:
-        'Rule \'swagger get without templating\' located at ../rules/swagger get.yaml',
+        'Rule \'swagger get without templating\' located at ' + path.normalize('../rules/swagger get.yaml'),
       parameters: [],
       responses:
       {
@@ -51,7 +52,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/post']['post']).to.deep.equal({
       summary: 'swagger post without templating',
       description:
-        'Rule \'swagger post without templating\' located at ../rules/swagger post.yaml',
+        'Rule \'swagger post without templating\' located at ' + path.normalize('../rules/swagger post.yaml'),
       parameters: [],
       responses:
       {
@@ -68,7 +69,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/get/{pathParam}']['get']).to.deep.equal({
       summary: 'swagger get with one path parameter',
       description:
-        'Rule \'swagger get with one path parameter\' located at ../rules/swagger one_path_parameter.yaml',
+        'Rule \'swagger get with one path parameter\' located at ' + path.normalize('../rules/swagger one_path_parameter.yaml'),
       parameters: [{
         in: 'path',
         name: 'pathParam',
@@ -91,7 +92,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/get/{pathParam1}/yo/{pathParam2}/yu/{3}/{4}']['get']).to.deep.equal({
       summary: 'swagger get with multiple path parameters',
       description:
-        'Rule \'swagger get with multiple path parameters\' located at ../rules/swagger multiple_path_parameters.yaml',
+        'Rule \'swagger get with multiple path parameters\' located at ' + path.normalize('../rules/swagger multiple_path_parameters.yaml'),
       parameters: [{
         in: 'path',
         name: 'pathParam1',
@@ -132,7 +133,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/get501']['get']).to.deep.equal({
       summary: 'swagger get with 501 status code',
       description:
-        'Rule \'swagger get with 501 status code\' located at ../rules/swagger statusCode.yaml',
+        'Rule \'swagger get with 501 status code\' located at ' + path.normalize('../rules/swagger statusCode.yaml'),
       parameters: [],
       responses:
       {
@@ -149,7 +150,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/getTemplatedStatusCode']['get']).to.deep.equal({
       summary: 'swagger get with templated status code',
       description:
-        'Rule \'swagger get with templated status code\' located at ../rules/swagger templated_statusCode.yaml',
+        'Rule \'swagger get with templated status code\' located at ' + path.normalize('../rules/swagger templated_statusCode.yaml'),
       parameters: [],
       responses:
       {
@@ -166,7 +167,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/get_response_headers']['get']).to.deep.equal({
       summary: 'swagger get with response headers',
       description:
-        'Rule \'swagger get with response headers\' located at ../rules/swagger response_headers.yaml',
+        'Rule \'swagger get with response headers\' located at ' + path.normalize('../rules/swagger response_headers.yaml'),
       parameters: [{
         in: 'query',
         name: 'q2',
@@ -208,7 +209,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/get_response_cookies']['get']).to.deep.equal({
       summary: 'swagger get with response cookies',
       description:
-        'Rule \'swagger get with response cookies\' located at ../rules/swagger response_cookies.yaml',
+        'Rule \'swagger get with response cookies\' located at ' + path.normalize('../rules/swagger response_cookies.yaml'),
       parameters: [{
         in: 'query',
         name: 'q2',
@@ -241,7 +242,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/get_with_input_query_parameters']['get']).to.deep.equal({
       summary: 'swagger get with input query parameters',
       description:
-        'Rule \'swagger get with input query parameters\' located at ../rules/swagger input_query_parameters.yaml',
+        'Rule \'swagger get with input query parameters\' located at ' + path.normalize('../rules/swagger input_query_parameters.yaml'),
       parameters: [{
         in: 'query',
         name: 'q1',
@@ -302,7 +303,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/get_with_input_cookie_parameters']['get']).to.deep.equal({
       summary: 'swagger get with input cookie parameters',
       description:
-        'Rule \'swagger get with input cookie parameters\' located at ../rules/swagger input_cookie_parameters.yaml',
+        'Rule \'swagger get with input cookie parameters\' located at ' + path.normalize('../rules/swagger input_cookie_parameters.yaml'),
       parameters: [{
         in: 'cookie',
         name: 'c1',
@@ -350,7 +351,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/get_with_input_header_parameters']['get']).to.deep.equal({
       summary: 'swagger get with input header parameters',
       description:
-        'Rule \'swagger get with input header parameters\' located at ../rules/swagger input_header_parameters.yaml',
+        'Rule \'swagger get with input header parameters\' located at ' + path.normalize('../rules/swagger input_header_parameters.yaml'),
       parameters: [{
         in: 'header',
         name: 'h1',
@@ -398,7 +399,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/post_with_input_body']['post']).to.deep.equal({
       summary: 'swagger post with input body',
       description:
-        'Rule \'swagger post with input body\' located at ../rules/swagger input_body.yaml',
+        'Rule \'swagger post with input body\' located at ' + path.normalize('../rules/swagger input_body.yaml'),
       parameters: [],
       requestBody: {
         required: true,
@@ -426,7 +427,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/post_with_input_but_no_nunjucks']['post']).to.deep.equal({
       summary: 'swagger post with input but no nunjucks',
       description:
-        'Rule \'swagger post with input but no nunjucks\' located at ../rules/swagger input_no_nunjucks.yaml',
+        'Rule \'swagger post with input but no nunjucks\' located at ' + path.normalize('../rules/swagger input_no_nunjucks.yaml'),
       parameters: [],
       responses:
       {
@@ -453,7 +454,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/post_conditional_response']['post']).to.deep.equal({
       summary: 'swagger post with conditional response',
       description:
-        'Rule \'swagger post with conditional response\' located at ../rules/swagger conditional_response.yaml',
+        'Rule \'swagger post with conditional response\' located at ' + path.normalize('../rules/swagger conditional_response.yaml'),
       parameters: [{
         in: 'query',
         name: 'q1',
@@ -526,7 +527,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/post_conditional_response_with_latency']['post']).to.deep.equal({
       summary: 'swagger post with conditional response with latency',
       description:
-        'Rule \'swagger post with conditional response with latency\' located at ../rules/swagger conditional_response_with_latency.yaml',
+        'Rule \'swagger post with conditional response with latency\' located at ' + path.normalize('../rules/swagger conditional_response_with_latency.yaml'),
       parameters: [{
         in: 'query',
         name: 'q1',
@@ -599,7 +600,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/fixed_latency']['post']).to.deep.equal({
       summary: 'swagger with fixed latency',
       description:
-        'Rule \'swagger with fixed latency\' located at ../rules/swagger latency_fixed.yaml',
+        'Rule \'swagger with fixed latency\' located at ' + path.normalize('../rules/swagger latency_fixed.yaml'),
       parameters: [],
       responses:
       {
@@ -616,7 +617,7 @@ const test = async () => {
     expect(openApiDefinition.paths['/random_latency']['post']).to.deep.equal({
       summary: 'swagger with random latency',
       description:
-        'Rule \'swagger with random latency\' located at ../rules/swagger latency_random.yaml',
+        'Rule \'swagger with random latency\' located at ' + path.normalize('../rules/swagger latency_random.yaml'),
       parameters: [],
       responses:
       {

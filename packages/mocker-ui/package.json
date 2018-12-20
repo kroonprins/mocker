@@ -4,7 +4,7 @@
   "description": "UI for mocker",
   "main": "exports.mjs",
   "scripts": {
-    "prepublish": "node build-scripts/post-install.js",
+    "prepublishOnly": "node build-scripts/post-install.js",
     "start": "./start.mjs",
     "test": "mocker-test-runner",
     "version-check": "updates",

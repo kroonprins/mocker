@@ -155,9 +155,12 @@ class Server {
 
   async _useRandomPortIfNoPortGiven () {
     if (this.port === 0) {
+      // randomize minimum port to avoid that the same port is chosen when 2 servers request a port around the
+      // same time and there is some time before they actually start using the port
+      const minimumPort = Math.floor((Math.random() * 50000) + 8000)
       this.port = (await portastic.find({
-        min: 8000,
-        max: 8100,
+        min: minimumPort,
+        max: minimumPort + 10,
         retrieve: 1
       }))[0]
     }

@@ -11,6 +11,7 @@ import { unlinkAsync } from '@kroonprins/mocker-shared-lib/fs-util'
 import { AdministrationServer } from '../src/administration-server'
 import { LearningModeServerEventEmitter } from '../src/learning-mode.server.events'
 import { MetricsService } from '../src/metrics.service'
+import { wait } from '@kroonprins/mocker-shared-lib/util'
 import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging'
 import { config } from '@kroonprins/mocker-shared-lib/config'
 
@@ -34,9 +35,10 @@ const test = async () => {
     const eventEmitter = new LearningModeServerEventEmitter()
     const metricsService = new MetricsService(eventEmitter)
 
+    const minimumPort = Math.floor((Math.random() * 50000) + 8000)
     const availablePorts = (await portastic.find({
-      min: 30000,
-      max: 40000,
+      min: minimumPort,
+      max: minimumPort + 20,
       retrieve: 3
     }))
     const testServerPort = availablePorts[0]
@@ -59,6 +61,7 @@ const test = async () => {
       ])
 
       const metricsAfterStartUp = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
+
       expect(metricsAfterStartUp.status).to.be.equal(200)
       expect(metricsAfterStartUp.data.starts['adminstrationServerTestProject'].length).to.equal(1)
       expect(metricsAfterStartUp.data.starts['adminstrationServerTestProject'][0].port).to.equal(reverseProxyPort)
@@ -72,6 +75,7 @@ const test = async () => {
       expect(metricsAfterRestart.data.starts['adminstrationServerTestProject'][1].timestamp).to.be.above(metricsAfterRestart.data.starts['adminstrationServerTestProject'][0].timestamp)
 
       await axios.get(`http://localhost:${reverseProxyPort}/test1`)
+      await wait(500)
 
       const metricsAfterRequest1 = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterRequest1.status).to.be.equal(200)
@@ -79,6 +83,7 @@ const test = async () => {
       expect(metricsAfterRequest1.data.totalRequests['adminstrationServerTestProject']).to.equal(1)
 
       await axios.get(`http://localhost:${reverseProxyPort}/test1`)
+      await wait(500)
 
       const metricsAfterRequest2 = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterRequest2.status).to.be.equal(200)

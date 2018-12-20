@@ -1,9 +1,11 @@
 import chai from 'chai'
+import chaiString from 'chai-string'
 import { RuleService } from '../src/rule.service'
 import { Logger, PinoLogger } from '../src/logging'
 import { config } from '../src/config'
 
 const expect = chai.expect
+chai.use(chaiString)
 
 // could split this up so that not all test run synchronously
 const test = async () => {
@@ -18,7 +20,7 @@ const test = async () => {
     try {
       await ruleService.readRule('nope')
     } catch (e) {
-      expect(e.message).to.be.equal('ENOENT: no such file or directory, open \'nope\'')
+      expect(e.message).to.startsWith('ENOENT: no such file or directory')
       exceptionThrownBecauseFileDoesNotExist = true
     }
     expect(exceptionThrownBecauseFileDoesNotExist).to.be.equal(true)
