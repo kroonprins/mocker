@@ -25,7 +25,8 @@
     "exports.mjs",
     "src/**",
     "cjs/exports.js",
-    "cjs/src/**"
+    "cjs/src/**",
+    "types.d.ts"
   ],
   "dependencies": {
     "@babel/polyfill": "^7.2.3",
