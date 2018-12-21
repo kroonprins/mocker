@@ -1,0 +1,17 @@
+{
+  "name": "use-mocker-mock-server-test-with-typescript",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "mocha -r ts-node/register test.ts"
+  },
+  "devDependencies": {
+    "@kroonprins/mocker-mock-server-test": "^0.1.5",
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
+    "axios": "^0.18.0",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
+  }
+}

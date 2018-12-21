@@ -3,6 +3,7 @@
   "version": "0.1.5",
   "description": "Mock server for use in tests",
   "main": "exports.mjs",
+  "types": "types.d.ts",
   "scripts": {
     "prepare": "npm run create-cjs",
     "test": "mocker-test-runner",

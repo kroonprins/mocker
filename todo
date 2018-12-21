@@ -79,3 +79,4 @@
 * investigate https://github.com/rollup/rollup as alternative to babel workarounds
 * make it possible to pass templating helpers to test mock server
 * the babel workaround scripts don't run on windows
+* check if code coverage can be added (istanbul, nyc, ...)

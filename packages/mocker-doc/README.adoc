@@ -1269,6 +1269,7 @@ The package @kroonprins/mocker-mock-server-test can be used to start a mock serv
 
 This can be useful to test a services that executes one or more HTTP calls to other services. This other service will be mocked by the mock server during the test. After the test has called the service under test, it can be verified that the service called the other services as expected by asking the mock server what requests it received with which request attributes.
 
+[#chapter-test-mock-server-es6]
 === ES6 modules
 
 Mocker has been written with ES6 modules. ES6 modules are still experimental (only available if node is run with the --experimental-modules flag) meaning that support of common test runners for ES6 modules is close to non-existent. However, for the time being, tests written with ES6 modules can use the mock server as follows.
@@ -1449,6 +1450,101 @@ expect(mockServer.name('test rule 2').invocations()).to.equal(0)
 
 === CommonJS
 
-Using ES6 code from CommonJS code is possible with the dynamic import statement. As dynamic import is async this is less straightforward as using require() to import another CommonJS dependency.
+Using ES6 code from CommonJS code is possible with the dynamic import statement. As dynamic import is async this is less straightforward as using require() to import another CommonJS dependency. Even still in the well known test runners using a dynamic import seems to result in errors. Therefor a CommonJS compatible version of the test mocker is also made available, while waiting for ES6 modules to lose its experimental status in node. To use it with for example the mocha test runner:
 
-=== Typescript
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/commonjs/test.js[test.js]
+[source,javascript]
+----
+const expect = require('chai').expect
+const axios = require('axios')
+const MockServer = require('@kroonprins/mocker-mock-server-test/cjs/exports').MockServer
+
+let mockServer
+
+before(async function () {
+  mockServer = new MockServer({
+    port: 0,
+    rule: {
+      request: {
+        method: 'GET',
+        path: '/test'
+      },
+      response: {
+        templatingEngine: 'none',
+        statusCode: 200,
+        contentType: 'text/plain',
+        body: 'response body'
+      }
+    }
+  })
+  await mockServer.start()
+})
+
+describe('A test requiring a mock server', function () {
+  it('should expect the rule to get one invocation', async function () {
+    await axios.get(`http://localhost:${mockServer.port}/test`)
+
+    expect(mockServer.for('/test', 'GET').invocations()).to.equal(1)
+  })
+})
+
+after(function () {
+  mockServer.stop()
+})
+----
+
+Here it is important to use the import the cjs specific version `@kroonprins/mocker-mock-server-test/cjs/exports`. See https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/commonjs[here] for the full sample, which can be run with `npm test`.
+
+All configuration options and methods available on the test mock server are the same as given in xref:chapter-test-mock-server-es6[this chapter].
+
+=== TypeScript
+
+With TypeScript there are similar issues to use the ES6 modules directly because TypeScript currently does not compile yet to mjs (https://github.com/Microsoft/typescript/issues/18442) also awaiting ES6 to lose its experimental status in node. So in the meantime it is also needed to use the CommonJS version of the test mock server. Typings have been added for easy use in TypeScript.
+. To use it with for example the mocha test runner:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/typescript/test.ts[test.ts]
+[source,typescript]
+----
+import { expect } from 'chai'
+import 'mocha'
+import axios from 'axios'
+import { MockServer } from '@kroonprins/mocker-mock-server-test/cjs/exports'
+
+let mockServer: MockServer
+
+before(async function () {
+  mockServer = new MockServer({
+    port: 0,
+    rule: {
+      request: {
+        method: 'GET',
+        path: '/test'
+      },
+      response: {
+        templatingEngine: 'none',
+        statusCode: 200,
+        contentType: 'text/plain',
+        body: 'response body'
+      }
+    }
+  })
+  await mockServer.start()
+})
+
+describe('A TypeScript test requiring a mock server', function () {
+  it('should expect the rule to get one invocation', async function () {
+    await axios.get(`http://localhost:${mockServer.port}/test`)
+
+    expect(mockServer.for('/test', 'GET').invocations()).to.equal(1)
+  })
+})
+
+after(function () {
+  mockServer.stop()
+})
+----
+
+Here it is important to use the import the cjs specific version `@kroonprins/mocker-mock-server-test/cjs/exports`. See https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/typescript[here] for the full sample, which can be run with `npm test`.
+
+All configuration options and methods available on the test mock server are the same as given in xref:chapter-test-mock-server-es6[this chapter].
+

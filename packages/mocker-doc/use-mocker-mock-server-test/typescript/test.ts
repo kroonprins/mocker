@@ -1,8 +1,9 @@
-const expect = require('chai').expect
-const axios = require('axios')
-const MockServer = require('@kroonprins/mocker-mock-server-test/cjs/exports').MockServer
+import { expect } from 'chai'
+import 'mocha'
+import axios from 'axios'
+import { MockServer } from '@kroonprins/mocker-mock-server-test/cjs/exports'
 
-let mockServer
+let mockServer: MockServer
 
 before(async function () {
   mockServer = new MockServer({
@@ -23,7 +24,7 @@ before(async function () {
   await mockServer.start()
 })
 
-describe('A test requiring a mock server', function () {
+describe('A TypeScript test requiring a mock server', function () {
   it('should expect the rule to get one invocation', async function () {
     await axios.get(`http://localhost:${mockServer.port}/test`)
 
