@@ -10,7 +10,7 @@ import { ProjectService } from '@kroonprins/mocker-shared-lib/project.service'
 import { ProjectChangeWatcher } from './project-change-watcher'
 import { TemplatingService } from './templating.service'
 import { MockServerSwaggerUiServer } from './mock-server-swagger-ui'
-import { RandomLatency } from '@kroonprins/mocker-shared-lib/src/latency-model.mjs'
+import { RandomLatency } from '@kroonprins/mocker-shared-lib/src/latency-model'
 import { MockServerEventEmitter, MockServerEvents } from './mock-server.events'
 import { config } from '@kroonprins/mocker-shared-lib/config'
 

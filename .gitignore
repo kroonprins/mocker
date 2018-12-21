@@ -2,3 +2,4 @@ node_modules/
 generated-jsdoc/
 data/
 tmp/
+cjs/

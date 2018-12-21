@@ -1,4 +1,4 @@
-import { FunctionalValidationError, TechnicalValidationError, TechnicalError } from './error-types.mjs'
+import { FunctionalValidationError, TechnicalValidationError, TechnicalError } from './error-types'
 import uuidv4 from 'uuid/v4'
 
 /**

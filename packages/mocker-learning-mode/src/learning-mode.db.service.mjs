@@ -6,7 +6,7 @@ import { ClassValidationService } from '@kroonprins/mocker-shared-lib/class-vali
 import { TechnicalValidationError } from '@kroonprins/mocker-shared-lib/error-types'
 import { Logger } from '@kroonprins/mocker-shared-lib/logging'
 import { config } from '@kroonprins/mocker-shared-lib/config'
-import { QueryOpts } from './learning-mode.db.model.mjs'
+import { QueryOpts } from './learning-mode.db.model'
 
 const { deserialize, serialize } = { ...serializr }
 

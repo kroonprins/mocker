@@ -4,7 +4,10 @@
   "description": "Shared functionality for mocker",
   "main": "",
   "scripts": {
+    "prepare": "npm run create-cjs",
     "test": "node --experimental-modules ./src/test-runner.mjs",
+    "create-cjs": "./babel.sh",
+    "test-cjs": "node ./cjs/src/test-runner.js",
     "version-check": "updates"
   },
   "repository": {
@@ -19,9 +22,12 @@
   "homepage": "https://github.com/kroonprins/mocker#readme",
   "files": [
     "*.mjs",
-    "src/**"
+    "src/**",
+    "cjs/*.js",
+    "cjs/src/**"
   ],
   "dependencies": {
+    "@babel/polyfill": "^7.2.3",
     "ajv": "^6.6.2",
     "ajv-async": "^1.0.1",
     "chai-string": "^1.5.0",
@@ -42,12 +48,17 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
     "axios": "^0.18.0",
+    "babel-plugin-dynamic-import-node": "^2.2.0",
     "chai": "^4.2.0",
     "chai-exclude": "^1.0.12",
     "updates": "^5.4.3"
   },
   "bin": {
-    "mocker-test-runner": "./src/test-runner.mjs"
+    "mocker-test-runner": "./src/test-runner.mjs",
+    "mocker-test-runner-cjs": "./cjs/src/test-runner.js"
   }
 }

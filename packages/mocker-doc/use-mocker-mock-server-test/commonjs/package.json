@@ -1,0 +1,13 @@
+{
+  "name": "use-mocker-mock-server-test-with-commonjs",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha"
+  },
+  "devDependencies": {
+    "@kroonprins/mocker-mock-server-test": "^0.1.4",
+    "axios": "^0.18.0",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0"
+  }
+}

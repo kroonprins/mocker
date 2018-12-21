@@ -1,7 +1,7 @@
 import chai from 'chai'
 import path from 'path'
 import { initialize as setDefaultConfig } from '../src/config-default'
-import { FixedLatency, RandomLatency } from '../src/latency-model.mjs'
+import { FixedLatency, RandomLatency } from '../src/latency-model'
 import { Project, ProjectRule } from '../src/project-model'
 import { Rule, Request, Response, Header, Cookie } from '../src/rule-model'
 import { ProjectService } from '../src/project.service'

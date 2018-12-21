@@ -6,7 +6,7 @@ import express from 'express'
 import 'express-async-errors'
 import { PinoLogger } from '../src/logging'
 import errorHandler from '../src/express-error-handling-middleware.json'
-import { FunctionalValidationError, TechnicalValidationError, TechnicalError } from '../src/error-types.mjs'
+import { FunctionalValidationError, TechnicalValidationError, TechnicalError } from '../src/error-types'
 
 const expect = chai.expect
 chai.use(chaiExclude)

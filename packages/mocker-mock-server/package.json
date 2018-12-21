@@ -4,8 +4,11 @@
   "description": "Mock server",
   "main": "exports.mjs",
   "scripts": {
+    "prepare": "npm run create-cjs",
     "start": "./start.mjs",
     "test": "mocker-test-runner",
+    "create-cjs": "./babel.sh",
+    "test-cjs": "mocker-test-runner-cjs",
     "version-check": "updates",
     "docker-build": "cross-var docker build -t kroonprins/mocker-mock-server:latest -t kroonprins/mocker-mock-server:$npm_package_version .",
     "docker-test": "docker run --rm kroonprins/mocker-mock-server npm test",
@@ -24,9 +27,12 @@
   "files": [
     "exports.mjs",
     "start.mjs",
-    "src/**"
+    "src/**",
+    "cjs/exports.js",
+    "cjs/src/**"
   ],
   "dependencies": {
+    "@babel/polyfill": "^7.2.3",
     "@kroonprins/mocker-shared-lib": "^0.1.4",
     "body-parser": "^1.18.3",
     "body-parser-xml": "^1.1.0",
@@ -47,7 +53,11 @@
     "zlib": "^1.0.5"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
     "axios": "^0.18.0",
+    "babel-plugin-dynamic-import-node": "^2.2.0",
     "chai": "^4.2.0",
     "chai-exclude": "^1.0.12",
     "chai-string": "^1.5.0",

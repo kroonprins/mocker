@@ -5,8 +5,8 @@ import axios from 'axios'
 import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging'
 import { config } from '@kroonprins/mocker-shared-lib/config'
 import { UiServer } from '../src/ui-server'
-import { ApiServer } from '../src/api-server.mjs'
-import { AdministrationServer } from '@kroonprins/mocker-shared-lib/administration-server.mjs'
+import { ApiServer } from '../src/api-server'
+import { AdministrationServer } from '@kroonprins/mocker-shared-lib/administration-server'
 
 const expect = chai.expect
 chai.use(chaiExclude)

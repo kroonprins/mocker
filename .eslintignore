@@ -1,3 +1,4 @@
 # TODO: temporarily disabled because eslint does not support yet dynamic imports
 packages/mocker-mock-server/src/templating-helpers.nunjucks.mjs
 packages/mocker-shared-lib/src/test-runner.mjs
+packages/*/cjs/**

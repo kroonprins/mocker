@@ -4,7 +4,10 @@
   "description": "Mock server for use in tests",
   "main": "exports.mjs",
   "scripts": {
+    "prepare": "npm run create-cjs",
     "test": "mocker-test-runner",
+    "create-cjs": "./babel.sh",
+    "test-cjs": "mocker-test-runner-cjs",
     "version-check": "updates"
   },
   "repository": {
@@ -19,15 +22,22 @@
   "homepage": "https://github.com/kroonprins/mocker#readme",
   "files": [
     "exports.mjs",
-    "src/**"
+    "src/**",
+    "cjs/exports.js",
+    "cjs/src/**"
   ],
   "dependencies": {
+    "@babel/polyfill": "^7.2.3",
     "@kroonprins/mocker-mock-server": "^0.1.4",
     "@kroonprins/mocker-shared-lib": "^0.1.4",
     "serializr": "^1.3.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
     "axios": "^0.18.0",
+    "babel-plugin-dynamic-import-node": "^2.2.0",
     "chai": "^4.2.0",
     "updates": "^5.4.3"
   }
