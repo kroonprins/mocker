@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "packages/mocker-ui/start.mjs",
-    "install": "lerna bootstrap",
+    "install": "lerna exec npm install && lerna bootstrap",
     "postinstall": "node build-scripts/post-install.js",
     "test": "lerna run test && lerna run test-cjs",
     "lint-check": "eslint packages/*/*.mjs packages/*/src/*.mjs packages/*/test/*.mjs",
