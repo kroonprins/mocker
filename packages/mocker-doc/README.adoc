@@ -177,7 +177,7 @@ Which has a lot of repetition of the if-else and is more difficult to read.
 
 Response headers and cookies can be defined. For example:
 
-.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-response-headers-and-cookies.yaml][a-rule-with-response-headers-and-cookies.yaml]
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-response-headers-and-cookies.yaml[a-rule-with-response-headers-and-cookies.yaml]
 [source,YAML]
 ----
 name: response headers and cookies
@@ -693,7 +693,7 @@ Then build the image:
 $ docker build -t mocker-ui-with-cows .
 ----
 
-And define a rule using the templating helper (or create if from the UI after starting it):
+And define a rule using the templating helper (or create it from the UI):
 
 .https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-ui-with-docker/rules/rule-using-nunjucks-templating-helper-with-external-package.yaml[rule-using-nunjucks-templating-helper-with-external-package.yaml]
 [source,YAML]
@@ -1500,7 +1500,8 @@ All configuration options and methods available on the test mock server are the 
 === TypeScript
 
 With TypeScript there are similar issues to use the ES6 modules directly because TypeScript currently does not compile yet to mjs (https://github.com/Microsoft/typescript/issues/18442) also awaiting ES6 to lose its experimental status in node. So in the meantime it is also needed to use the CommonJS version of the test mock server. Typings have been added for easy use in TypeScript.
-. To use it with for example the mocha test runner:
+
+To use it with for example the mocha test runner:
 
 .https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/typescript/test.ts[test.ts]
 [source,typescript]

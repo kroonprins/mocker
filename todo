@@ -14,7 +14,6 @@
 * split api server
 * add class validation on learning mode model
 * add sorting options on api
-* unit test timeout on windows + npm test not running on windows + ln not possible on windows for npm install
 * use guard to disable routing to rules/learning mode if no project selected?
 * try reactive forms
 * problem body parsing in reverse proxy on windows
@@ -34,21 +33,16 @@
 * remove .eslinteginore once possible
 * bin section of package.json not working on windows because it requires shebang to be #!/usr/bin/env node (which doesn't work because --experimental-modules flag must be set)
 * improve ProjectChangeWatcher to reinitialize when the project files changes (in case the watch list must be updated)
-* put hierarchy in lib folder
 * to check: npm install fails if angular cli not installed globally?
 * add more testing on file watching + improve code around restarting logic (for example, does restarting the mock server correctly handle the watcher?)
 * investigate yaml autocomplete
 * create mock server rules from a swagger definition
 * add optional dependency app-config to simplify what needs to be set up in unit tests. In general review dependencies because there is too much unnecessary things to set up in unit tests. Or check if the can be some kind of "mock"-mode.
 * make possible to activate project watch from ui?
-* upgrade dependencies
 * add unit test for swagger ui handling in mock server
-* make mock server integration in unit tests (with wrapper to verify that it has been called)
 * make version of mock server in go
 * make version of learning mode with immediate save to rule
 * find test runner that does support modules easily without workarounds
-* create a default-config in the shared libs setting up default instances so that other modules (and unit tests) only need to overwrite if ever needed
-* check if dependency on nunjuckstemplatingservice can't be optional in templating services so that unit tests have to register less if nunjucks not needed
 * check project change watcher overlap with project store, meaning also that there are a lot of dependencies in mock-server that are already in shared libs
 * check if possible to do something about logging results of test-runner not always printed last
 * integrate swagger in admin-server?
@@ -72,7 +66,6 @@
 * keep an eye on https://github.com/github/markup/issues/1095 so that README.md can be replaced by an adoc that includes mocker-doc adoc
 * check if angular/dis/assets/monaco can't be made smaller (currently > 7 MB)
 * should use 'npm install --production' in Dockerfile? => smaller image size but then we also need to exclude tests (and can no longer run them in container to test the image...)
-* test that 'npm install @kroonprins/mocker-ui' now works now that postinstall has been replaced by prepare script
 * add extension points to mock server? (e.g something to execute when every request comes in, before writing response, ...)
 * test-runner for windows failure + possible to put back prepare instead of prepublish in package.json mocker-ui?
 * failing unit tests on windows: portastic apparently not correctly identifying ports as in-use + others

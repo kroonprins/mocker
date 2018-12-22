@@ -4,8 +4,9 @@ A mock server with learning mode.
 
 See [here](https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/README.adoc) on how to use.
 
-Mock server that responds to requests based on rules defined in yaml format. In these rules the response can be made dynamic based on the use of a templating engine.
-Rules for the server can be created in different ways:
-* use the user interface to create the rules manually
-* use the learning mode to capture real requests to the server that is to be mocked. Based on these captured requests, rules can be created from the user interface
-* edit the yaml files manually
+Mocker consists of:
+
+* A UI for management
+* A mock server which responds to requests based on rules. Those rules are described in yaml files.
+* A learning mode reverse proxy server. In learning mode, requests to the real server that the mock server should mock are captured. From the UI these captured requests can be transformed into rules for the mock server.
+* A specific version of the mock server for use in javascript base unit and integration tests.
