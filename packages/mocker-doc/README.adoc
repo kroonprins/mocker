@@ -7,7 +7,7 @@ Mocker consists of:
 * A UI for management
 * A mock server which responds to requests based on rules. Those rules are described in yaml files.
 * A learning mode reverse proxy server. In learning mode, requests to the real server that the mock server should mock are captured. From the UI these captured requests can be transformed into rules for the mock server.
-* A specific version of the mock server for use in javascript base unit and integration tests.
+* A specific version of the mock server for use in javascript-based unit and integration tests.
 
 == Rules
 
