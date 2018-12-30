@@ -472,7 +472,7 @@ In the example above there are 2 files:
 [source,JSON]
 ----
 {
-  "path1": "{{req.path}}"
+  "file1": "response from file 1 for request to {{req.path}}"
 }
 ----
 
@@ -482,11 +482,11 @@ and
 [source,JSON]
 ----
 {
-  "path2": "{{req.path}}"
+  "file2": "response from file 2 for request to {{req.path}}"
 }
 ----
 
-Inside the include files it is possible to use templating.
+Inside the included files it is possible to use templating.
 
 Gives as result:
 
