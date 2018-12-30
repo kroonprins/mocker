@@ -1,10 +1,13 @@
 import fs from 'fs'
 import path from 'path'
+import memoize from 'mem'
 import cjs from './mjs_workaround/cjs'
 import { createModulePath } from '@kroonprins/mocker-shared-lib/dynamic-module-import-helper'
 import { EchoServerService } from './echo-server.service'
 import { Logger } from '@kroonprins/mocker-shared-lib/logging'
 import { config } from '@kroonprins/mocker-shared-lib/config'
+
+const readFile = memoize(fs.readFileSync) // sync because templating helpers in nunjucks are sync
 
 class NunjucksTemplatingHelpers {
   constructor(userDefinedHelperLocations = config.getOptionalProperty('templating.helpers.nunjucks'), echoServerService = config.getOptionalInstance(EchoServerService)) {
@@ -36,6 +39,14 @@ class NunjucksTemplatingHelpers {
         // In template: {{writeText("x")}}
         echo: (req) => {
           return this.echoServerService.createResponseFromExpressRequest(req)
+        },
+        file: function (path, encoding = 'utf8') { // using function instead of => because nunjucks will bind the templating context to "this.ctx"
+          try {
+            return config.getInstance('NunjucksTemplatingService')._renderSync(readFile(path, { encoding: encoding }), this.ctx)
+          } catch (e) {
+            console.error(e)
+            return ""
+          }
         }
       }
     }

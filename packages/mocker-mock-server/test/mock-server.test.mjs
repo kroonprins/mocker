@@ -219,6 +219,19 @@ const test = async () => {
     } finally {
       await mockServerForConditionalResponseTest.stop()
     }
+
+    const mockServerForBodyFromFileTest = new MockServer(availablePort, 'localhost', 'test_body_from_file')
+    try {
+      await mockServerForBodyFromFileTest.start()
+
+      const response = await axios.get(`http://localhost:${availablePort}/body-from-file`)
+      expect(response.status).to.be.equal(200)
+      expect(response.data).to.deep.equal({
+        test: '/body-from-file'
+      })
+    } finally {
+      await mockServerForBodyFromFileTest.stop()
+    }
   } finally {
     config.reset()
   }

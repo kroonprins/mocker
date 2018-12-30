@@ -1,0 +1,14 @@
+name: a rule with body from file
+request:
+  path: /body-from-file
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: application/json
+  statusCode: 200
+  body: |
+    {%- if req.query.id == 'id1' -%}
+      {{ file('../rules/a-rule-with-body-from-file-body-1.json') }}
+    {%- else -%}
+      {{ file('../rules/a-rule-with-body-from-file-body-2.json') }}
+    {%- endif -%}

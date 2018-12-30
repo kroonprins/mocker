@@ -73,3 +73,6 @@
 * make it possible to pass templating helpers to test mock server
 * the babel workaround scripts don't run on windows
 * check if code coverage can be added (istanbul, nyc, ...)
+* add mustache and twig as templating engines
+* check what happens when the same query parameter is given multiple times when using req.query in templating
+* allow to set the encoding of rule/project files by environment variable

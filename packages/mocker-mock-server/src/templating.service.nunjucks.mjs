@@ -15,11 +15,6 @@ class NunjucksTemplatingService {
     return nunjucks.compile(str, this.nunjucksEnvironment)
   }
   async render (str, context) {
-    this.logger.debug(context, 'Render template for %s', str)
-    if (!str) {
-      return str
-    }
-
     if (!this.haveHelpersBeenLoaded) {
       this.haveHelpersBeenLoaded = true // TODO this is probably not entirely correct
       this.logger.debug('Loading the helper functions and filters')
@@ -27,6 +22,20 @@ class NunjucksTemplatingService {
       this.nunjucksEnvironment = this._enrichEnvironmentWithHelperFilters(new nunjucks.Environment(null, { autoescape: false }), helpers['filters'])
       this.hasHelperFunctions = 'functions' in helpers && Object.keys(helpers['functions']).length > 0
       this.helperFunctions = helpers['functions']
+    }
+
+    return this._renderSync(str, context)
+  }
+
+  _renderSync (str, context) {
+    if (!this.haveHelpersBeenLoaded) {
+      this.logger.warn('_renderSync can only be called if the helpers have already been loaded')
+      return str
+    }
+
+    this.logger.debug(context, 'Render template for %s', str)
+    if (!str) {
+      return str
     }
 
     if (typeof str !== 'string') {
@@ -37,6 +46,7 @@ class NunjucksTemplatingService {
     const contextWithHelperFunctions = this._enrichContextWithHelperFunctions(context)
     return template.render(contextWithHelperFunctions)
   }
+
   _enrichContextWithHelperFunctions (context) {
     if (!this.hasHelperFunctions) {
       return context

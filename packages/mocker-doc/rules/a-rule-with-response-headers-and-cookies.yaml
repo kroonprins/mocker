@@ -3,7 +3,7 @@ request:
   path: /response-headers-and-cookies
   method: GET
 response:
-  templatingEngine: nunjucks
+  templatingEngine: none
   contentType: text/plain
   statusCode: 200
   headers:

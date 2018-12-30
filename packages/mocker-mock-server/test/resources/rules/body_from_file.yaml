@@ -1,0 +1,10 @@
+name: body from file
+request:
+  path: /body-from-file
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: application/json
+  statusCode: 200
+  body: |
+    {{ file('./test/resources/body_from_file.json') }}

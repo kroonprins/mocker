@@ -13,3 +13,6 @@ projects:
   - name: test_conditional_response
     rules:
       - ../rules/conditional_response*.yaml
+  - name: test_body_from_file
+    rules:
+      - ../rules/body_from_file.yaml

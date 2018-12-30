@@ -91,21 +91,21 @@ conditionalResponse:
   response:
     - condition: "{{req.query.id == 'id1'}}"
       contentType: application/json
-      statusCode: "200"
+      statusCode: 200
       body: |
         {
           "data": "id1's data"
         }
     - condition: "{{req.query.id == 'id2'}}"
       contentType: application/json
-      statusCode: "200"
+      statusCode: 200
       body: |
         {
           "data": "id2's data"
         }
     - condition: true
       contentType: text/plain
-      statusCode: "404"
+      statusCode: 404
       body: The item with id '{{req.query.id}}' does not exist
 ----
 
@@ -185,7 +185,7 @@ request:
   path: /response-headers-and-cookies
   method: GET
 response:
-  templatingEngine: nunjucks
+  templatingEngine: none
   contentType: text/plain
   statusCode: 200
   headers:
@@ -437,6 +437,87 @@ Connection: keep-alive
 
 result of function double: 4
 result of filter appendTest: sheeps
+----
+
+=== Include files in rules
+
+When working with large response bodies it can keep the rule file easier to read by including the response body from a separate file. For this purpose a special template helper function "file" has been defined and is available by default. For example:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-body-from-file.yaml[a-rule-with-body-from-file.yaml]
+[source,YAML]
+----
+name: a rule with body from file
+request:
+  path: /body-from-file
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: application/json
+  statusCode: 200
+  body: |
+    {%- if req.query.id == 'id1' -%}
+      {{ file('../rules/a-rule-with-body-from-file-body-1.json') }}
+    {%- else -%}
+      {{ file('../rules/a-rule-with-body-from-file-body-2.json') }}
+    {%- endif -%}
+----
+
+The arguments to the file function are:
+* path: the path to the file. This is either an absolute path or a path relative to where the mock server is started from.
+* encoding (optional, 'utf8' by default): the file encoding.
+
+In the example above there are 2 files:
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-body-from-file-body-1.json[a-rule-with-body-from-file-body-1.json]
+[source,JSON]
+----
+{
+  "path1": "{{req.path}}"
+}
+----
+
+and
+
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/rules/a-rule-with-body-from-file-body-2.json[a-rule-with-body-from-file-body-2.json]
+[source,JSON]
+----
+{
+  "path2": "{{req.path}}"
+}
+----
+
+Inside the include files it is possible to use templating.
+
+Gives as result:
+
+[source,console]
+----
+$ curl -i -X GET 'http://localhost:3000/body-from-file?id=id1'
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Length: 33
+Date: Sun, 30 Dec 2018 22:00:46 GMT
+Connection: keep-alive
+
+{
+  "file1": "response from file 1 for request to /body-from-file"
+}
+----
+
+and
+
+[source,console]
+----
+$ curl -i -X GET 'http://localhost:3000/body-from-file'
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Length: 33
+Date: Sun, 30 Dec 2018 22:01:33 GMT
+Connection: keep-alive
+
+{
+  "file2": "response from file 2 for request to /body-from-file"
+}
 ----
 
 === Echo server

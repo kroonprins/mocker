@@ -175,7 +175,7 @@ class MockServer extends Server {
     // TODO nunjucks render is sync so no advantage in gathering the promises and do a Promise.all, but other templating engines might be different
     const contentType = await this.templatingService.render(templatingEngine, ruleResponse.contentType, templateEnvironment)
     if (contentType) { // note: if there is a body and no content-type is given, express will guess a content type by itself (and guess wrong), so no content type only works correctly if there is no body
-      res.type(await this.templatingService.render(templatingEngine, ruleResponse.contentType, templateEnvironment))
+      res.type(contentType)
     }
     res.status(await this.templatingService.render(templatingEngine, ruleResponse.statusCode, templateEnvironment))
     const templatedHeaders = {}

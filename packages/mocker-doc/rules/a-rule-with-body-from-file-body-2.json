@@ -1,0 +1,3 @@
+{
+  "file2": "response from file 2 for request to {{req.path}}"
+}

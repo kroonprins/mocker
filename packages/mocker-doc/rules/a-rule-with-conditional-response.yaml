@@ -8,19 +8,19 @@ conditionalResponse:
   response:
     - condition: "{{req.query.id == 'id1'}}"
       contentType: application/json
-      statusCode: "200"
+      statusCode: 200
       body: |
         {
           "data": "id1's data"
         }
     - condition: "{{req.query.id == 'id2'}}"
       contentType: application/json
-      statusCode: "200"
+      statusCode: 200
       body: |
         {
           "data": "id2's data"
         }
     - condition: true
       contentType: text/plain
-      statusCode: "404"
+      statusCode: 404
       body: The item with id '{{req.query.id}}' does not exist
