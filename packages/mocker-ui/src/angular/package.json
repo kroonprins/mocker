@@ -52,6 +52,6 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "~3.1.6",
-    "updates": "^5.4.3"
+    "updates": "^6.0.3"
   }
 }

@@ -11,7 +11,7 @@
     "ui": "packages/mocker-ui/start.mjs",
     "mock-server": "packages/mocker-mock-server/start.mjs",
     "learning-mode": "packages/mocker-learning-mode/start.mjs",
-    "version-check": "lerna run version-check",
+    "version-check": "updates && lerna run version-check",
     "docker-build-local-mock-server": "docker build -t mocker-local-mock-server -f Dockerfile.local.mock-server .",
     "docker-build-local-learning-mode": "docker build -t mocker-local-learning-mode -f Dockerfile.local.learning-mode .",
     "docker-build-local-ui": "docker build -t mocker-local-ui -f Dockerfile.local.ui .",
@@ -30,14 +30,14 @@
   },
   "devDependencies": {
     "cross-var": "^1.1.0",
-    "eslint": "^5.9.0",
+    "eslint": "^5.11.1",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-node": "^8.0.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "lerna": "^3.4.3",
-    "updates": "^5.3.0"
+    "lerna": "^3.8.0",
+    "updates": "^6.0.3"
   },
   "dependencies": {}
 }

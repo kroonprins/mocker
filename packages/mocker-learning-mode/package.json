@@ -51,7 +51,7 @@
     "express": "^4.16.4",
     "express-async-errors": "^3.1.1",
     "portastic": "^1.0.1",
-    "updates": "^5.4.3"
+    "updates": "^6.0.3"
   },
   "bin": {
     "mocker-learning-mode": "./start.mjs"
