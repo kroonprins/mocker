@@ -11,6 +11,9 @@ class WrappedProxy {
     this.target = target
     this.proxy = new Proxy(this.target, new Proxy({}, {
       get: (_, property) => {
+        if (this.target === EMPTY_PROXY) {
+          throw new Error(`Trying to access ${property} on empty proxy object, meaning that no instance has been registered`)
+        }
         return (...args) => Reflect[property].apply(null, [this.target, ...args.slice(1)])
       }
     }))
@@ -24,6 +27,8 @@ class WrappedProxy {
     return this.proxy
   }
 }
+
+const EMPTY_PROXY = {}
 
 /**
  * Extremely basic DI container.
@@ -169,13 +174,12 @@ class AppConfig {
    * Retrieve a registered instance.
    *
    * @param {any} id id of the registered instance.
-   * @returns the instance.
-   * @throws {AppConfigurationError} if nothing is registered for the given id.
+   * @returns the instance. If no instance has been registered then an empty proxy is returned (which will be updated with an instance if it is registered later)
    * @memberof AppConfig
    */
   getInstance (id) {
     if (!(id in this.instanceContainer)) {
-      throw new AppConfigurationError(`No instance has been registered for '${typeof id === 'string' ? id : id.name}'`)
+      this.registerInstance(id, EMPTY_PROXY)
     }
     return this.instanceContainer[id].unwrap()
   }
@@ -184,16 +188,12 @@ class AppConfig {
    * Retrieve a registered instance. Returns undefined if the instance has not been registered.
    *
    * @param {any} id id of the registered instance.
-   * @returns the instance. Undefined if no instance has been registered.
+   * @returns the instance. If no instance has been registered then an empty proxy is returned (which will be updated with an instance if it is registered later)
    * @memberof AppConfig
    */
   getOptionalInstance (id) {
-    if (id in this.instanceContainer) {
-      return this.instanceContainer[id].unwrap()
-    } else {
-      // TODO can we log warning?
-      return undefined
-    }
+    // now that getInstance returns an empty proxy object there is no longer a differnce between getOptionalInstance and getInstance
+    return this.getInstance(id)
   }
 
   /**
@@ -206,6 +206,7 @@ class AppConfig {
     return Object.values(this.instanceContainer)
       .map(wrappedProxy => wrappedProxy.target)
       .filter(instance => instance instanceof type)
+      // TODO filter empty proxy objects?
   }
 
   /**

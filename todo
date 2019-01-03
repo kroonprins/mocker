@@ -76,3 +76,5 @@
 * add mustache and twig as templating engines
 * check what happens when the same query parameter is given multiple times when using req.query in templating
 * allow to set the encoding of rule/project files by environment variable
+* add rule and project to templating context; would also allow to have the file helper method make the path relative to rule location
+* git submodules alternative to lerna?

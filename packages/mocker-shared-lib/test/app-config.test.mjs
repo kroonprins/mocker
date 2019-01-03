@@ -67,7 +67,16 @@ const test = () => {
   config.unregisterInstance(TestInstance)
 
   // expect an exception when trying to retrieve instance for a class that isn't registered
-  expect(() => config.getInstance(TestInstance)).to.throw('No instance has been registered for \'TestInstance\'')
+  const unregisteredInstance = config.getInstance(TestInstance)
+  // expect(unregisteredInstance.test).to.throw('Trying to access test on empty proxy object, meaning that no instance has been registered')
+  let hasThrown = false
+  try {
+    console.log(unregisteredInstance.test)
+  } catch (e) {
+    hasThrown = true
+    expect(e.message).to.equal('Trying to access get on empty proxy object, meaning that no instance has been registered')
+  }
+  expect(hasThrown).to.equal(true)
 
   // register by name
   config.registerInstance('name', instance)

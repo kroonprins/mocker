@@ -10,10 +10,11 @@ import { config } from '@kroonprins/mocker-shared-lib/config'
 const readFile = memoize(fs.readFileSync) // sync because templating helpers in nunjucks are sync
 
 class NunjucksTemplatingHelpers {
-  constructor(userDefinedHelperLocations = config.getOptionalProperty('templating.helpers.nunjucks'), echoServerService = config.getOptionalInstance(EchoServerService)) {
+  constructor(userDefinedHelperLocations = config.getOptionalProperty('templating.helpers.nunjucks'), echoServerService = config.getOptionalInstance(EchoServerService), nunjucksTemplatingService = config.getInstance('NunjucksTemplatingService')) {
     this.logger = config.getClassInstance(Logger, { id: 'templating-helpers.nunjucks' })
     this.userDefinedHelperLocations = userDefinedHelperLocations
     this.echoServerService = echoServerService
+    this.nunjucksTemplatingService = nunjucksTemplatingService
 
     this.DEFAULT_HELPERS = {
       filters: {
@@ -42,7 +43,7 @@ class NunjucksTemplatingHelpers {
         },
         file: function (path, encoding = 'utf8') { // using function instead of => because nunjucks will bind the templating context to "this.ctx"
           try {
-            return config.getInstance('NunjucksTemplatingService')._renderSync(readFile(path, { encoding: encoding }), this.ctx)
+            return nunjucksTemplatingService._renderSync(readFile(path, { encoding: encoding }), this.ctx)
           } catch (e) {
             console.error(e)
             return ""

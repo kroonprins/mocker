@@ -2,7 +2,7 @@ import { Logger } from '@kroonprins/mocker-shared-lib/logging'
 import { config } from '@kroonprins/mocker-shared-lib/config'
 
 class TemplatingService {
-  constructor () {
+  constructor (nunjucks = config.getInstance('NunjucksTemplatingService')) {
     this.logger = config.getClassInstance(Logger, { id: 'templating-service' })
     this.TEMPLATING_ENGINES = {
       none: {
@@ -13,7 +13,7 @@ class TemplatingService {
         }
       },
       nunjucks: {
-        service: config.getInstance('NunjucksTemplatingService')
+        service: nunjucks
       }
     }
   }

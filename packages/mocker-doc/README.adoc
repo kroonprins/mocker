@@ -40,6 +40,8 @@ Connection: keep-alive
 the response body
 ----
 
+yaml is used for easy readability and so that the rules can be versioned in a VCS.
+
 === Templating
 
 No 2 rules for the same request should be created, instead the response can be made dynamic based on the request context using templating. The currently supported template engine is https://mozilla.github.io/nunjucks/[nunjucks]. The templating environment is filled with an object "req" on which all the attributes of the request are present (req.query, req.headers, req.body, req.cookies) and "res" with an object containing the response attributes. These 2 objects are the request and response object of the https://expressjs.com/[express] server, so all possible properties can be found in the express documentation (see https://expressjs.com/en/api.html#req[here] for request properties, and https://expressjs.com/en/api.html#res[here] for response properties). For example:
@@ -463,6 +465,7 @@ response:
 ----
 
 The arguments to the file function are:
+
 * path: the path to the file. This is either an absolute path or a path relative to where the mock server is started from.
 * encoding (optional, 'utf8' by default): the file encoding.
 
