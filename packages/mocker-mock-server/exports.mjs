@@ -9,6 +9,15 @@ import {
   MockServerEventEmitter,
   MockServerEvents
 } from './src/mock-server.events'
+import {
+  TemplatingService
+} from './src/templating.service'
+import {
+  NunjucksTemplatingService
+} from './src/templating.service.nunjucks'
+import {
+  NunjucksTemplatingHelpers
+} from './src/templating-helpers.nunjucks'
 
 // public exports
 export {
@@ -16,5 +25,8 @@ export {
   initialize,
   initializeWithoutMetricsAndSwagger,
   MockServerEventEmitter,
-  MockServerEvents
+  MockServerEvents,
+  TemplatingService,
+  NunjucksTemplatingService,
+  NunjucksTemplatingHelpers
 }

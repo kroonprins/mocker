@@ -10,11 +10,11 @@ import { config } from '@kroonprins/mocker-shared-lib/config'
 const readFile = memoize(fs.readFileSync) // sync because templating helpers in nunjucks are sync
 
 class NunjucksTemplatingHelpers {
-  constructor(userDefinedHelperLocations = config.getOptionalProperty('templating.helpers.nunjucks'), echoServerService = config.getOptionalInstance(EchoServerService), nunjucksTemplatingService = config.getInstance('NunjucksTemplatingService')) {
+  constructor(userDefinedHelperLocations = config.getOptionalProperty('templating.helpers.nunjucks'), nunjucksTemplatingService = config.getInstance('NunjucksTemplatingService'), echoServerService = config.getOptionalInstance(EchoServerService)) {
     this.logger = config.getClassInstance(Logger, { id: 'templating-helpers.nunjucks' })
     this.userDefinedHelperLocations = userDefinedHelperLocations
-    this.echoServerService = echoServerService
     this.nunjucksTemplatingService = nunjucksTemplatingService
+    this.echoServerService = echoServerService
 
     this.DEFAULT_HELPERS = {
       filters: {

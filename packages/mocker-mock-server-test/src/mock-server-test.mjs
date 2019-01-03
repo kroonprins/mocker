@@ -1,4 +1,9 @@
-import { MockServer, initializeWithoutMetricsAndSwagger as setDefaultConfigMockServer, MockServerEventEmitter } from '@kroonprins/mocker-mock-server'
+import { MockServer,
+  initializeWithoutMetricsAndSwagger as setDefaultConfigMockServer,
+  MockServerEventEmitter,
+  TemplatingService,
+  NunjucksTemplatingService,
+  NunjucksTemplatingHelpers } from '@kroonprins/mocker-mock-server'
 import { initializeWithoutProjectService as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
 import { ProjectService } from './project.service'
 import { MetricsService } from './metrics.service'
@@ -18,6 +23,7 @@ class MockServerTest {
 
   async start () {
     const projectService = await this._createProjectService(this.opts)
+    const templatingService = this._createTemplatingService(this.opts)
 
     const mockServerEventEmitter = new MockServerEventEmitter()
     this.mockServer = new MockServer(
@@ -25,7 +31,7 @@ class MockServerTest {
       '0.0.0.0',
       'mockServerTest',
       projectService,
-      undefined, // use TemplatingService from config
+      templatingService,
       false,
       false,
       mockServerEventEmitter
@@ -66,6 +72,27 @@ class MockServerTest {
       this.logger.error('To start the mock server either a \'ruleLocation\' or a \'rule\' must be given')
       throw new Error('Failed to start mock server')
     }
+  }
+
+  _createTemplatingService (opts) {
+    if (opts.nunjucksTemplatingHelpersFile) {
+      return this._createTemplatingServiceWithHelpersFromFile(opts.nunjucksTemplatingHelpersFile)
+    } else if (opts.nunjukcsTemplatingHelpers) {
+      return this._createTemplatingServiceWithHelpers(opts.nunjukcsTemplatingHelpers)
+    } else {
+      return undefined // the default templating service can be used from config
+    }
+  }
+
+  _createTemplatingServiceWithHelpersFromFile (file) {
+    const nunjucksTemplatingHelpers = new NunjucksTemplatingHelpers(file)
+    const nunjucksTemplatingService = new NunjucksTemplatingService(nunjucksTemplatingHelpers)
+    nunjucksTemplatingHelpers.nunjucksTemplatingService = nunjucksTemplatingService
+    return new TemplatingService(nunjucksTemplatingService)
+  }
+
+  _createTemplatingServiceWithHelpers (helpers) {
+    // TODO
   }
 }
 

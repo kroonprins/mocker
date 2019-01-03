@@ -1,0 +1,11 @@
+name: using templating helpers
+request:
+  path: /templating-helpers
+  method: GET
+response:
+  templatingEngine: nunjucks
+  contentType: text/plain
+  statusCode: 200
+  body: |
+    result of function double: {{ double(req.query.q1) }}
+    result of filter appendTest: {{ req.query.q2 | appendText('s') }}
