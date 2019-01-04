@@ -10,9 +10,14 @@ import { config } from '@kroonprins/mocker-shared-lib/config'
 const readFile = memoize(fs.readFileSync) // sync because templating helpers in nunjucks are sync
 
 class NunjucksTemplatingHelpers {
-  constructor(userDefinedHelperLocations = config.getOptionalProperty('templating.helpers.nunjucks'), nunjucksTemplatingService = config.getInstance('NunjucksTemplatingService'), echoServerService = config.getOptionalInstance(EchoServerService)) {
+  constructor(userDefinedHelperLocations = config.getOptionalProperty('templating.helpers.nunjucks')
+      , extraHelpers = {}
+      , nunjucksTemplatingService = config.getInstance('NunjucksTemplatingService')
+      , echoServerService = config.getOptionalInstance(EchoServerService)
+  ) {
     this.logger = config.getClassInstance(Logger, { id: 'templating-helpers.nunjucks' })
     this.userDefinedHelperLocations = userDefinedHelperLocations
+    this.extraHelpers = extraHelpers
     this.nunjucksTemplatingService = nunjucksTemplatingService
     this.echoServerService = echoServerService
 
@@ -61,6 +66,12 @@ class NunjucksTemplatingHelpers {
       this.logger.info('Loading user defined nunjucks templating helpers')
       await this._loadUserDefinedHelperLocations()
     }
+
+    if (this.extraHelpers) {
+      this.logger.info('Loading extra nunjucks templating helpers')
+      this._addExtraHelpers()
+    }
+
     return this
   }
 
@@ -90,6 +101,11 @@ class NunjucksTemplatingHelpers {
     }
 
     return Promise.all(dynamicImportPromises)
+  }
+
+  _addExtraHelpers() {
+      Object.assign(this.filters, this.extraHelpers.filters)
+      Object.assign(this.functions, this.extraHelpers.functions)
   }
 }
 

@@ -75,24 +75,18 @@ class MockServerTest {
   }
 
   _createTemplatingService (opts) {
-    if (opts.nunjucksTemplatingHelpersFile) {
-      return this._createTemplatingServiceWithHelpersFromFile(opts.nunjucksTemplatingHelpersFile)
-    } else if (opts.nunjukcsTemplatingHelpers) {
-      return this._createTemplatingServiceWithHelpers(opts.nunjukcsTemplatingHelpers)
+    if (opts.nunjucksTemplatingHelpersFile || opts.nunjucksTemplatingHelpers) {
+      return this._createTemplatingServiceWithHelpers(opts.nunjucksTemplatingHelpersFile, opts.nunjucksTemplatingHelpers)
     } else {
       return undefined // the default templating service can be used from config
     }
   }
 
-  _createTemplatingServiceWithHelpersFromFile (file) {
-    const nunjucksTemplatingHelpers = new NunjucksTemplatingHelpers(file)
+  _createTemplatingServiceWithHelpers (file, extraHelpers) {
+    const nunjucksTemplatingHelpers = new NunjucksTemplatingHelpers(file, extraHelpers)
     const nunjucksTemplatingService = new NunjucksTemplatingService(nunjucksTemplatingHelpers)
     nunjucksTemplatingHelpers.nunjucksTemplatingService = nunjucksTemplatingService
     return new TemplatingService(nunjucksTemplatingService)
-  }
-
-  _createTemplatingServiceWithHelpers (helpers) {
-    // TODO
   }
 }
 

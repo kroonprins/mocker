@@ -59,10 +59,17 @@ declare module "@kroonprins/mocker-mock-server-test/cjs/exports" {
     response?: Response
     ConditionalResponse?: ConditionalResponse
   }
+
+  export interface NunjucksTemplatingHelpersFile {
+    filters?: object,
+    functions?: object
+  }
   export interface MockServerOpts {
     port: number
     ruleLocation?: string | string[],
-    rule?: Rule | Rule[]
+    rule?: Rule | Rule[],
+    nunjucksTemplatingHelpersFile?: string,
+    nunjucksTemplatingHelpers?: NunjucksTemplatingHelpersFile
   }
 
   export interface GlobalMetrics {

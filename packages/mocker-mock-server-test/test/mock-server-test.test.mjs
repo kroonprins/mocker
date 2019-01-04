@@ -48,7 +48,19 @@ const test = async () => {
     const mockServerWithTemplatingHelpersFromFile = new MockServer({
       port: 0,
       ruleLocation: './test/resources/a-rule-with-extra-template-helpers-nunjucks.yaml',
-      nunjucksTemplatingHelpersFile: './test/resources/extra-template-helpers.nunjucks.mjs'
+      nunjucksTemplatingHelpersFile: './test/resources/extra-template-helpers.nunjucks.mjs',
+      nunjucksTemplatingHelpers: {
+        filters: {
+          appendText2: (str, text) => {
+            return '2 ' + str + text
+          }
+        },
+        functions: {
+          double2: (num) => {
+            return 2 * 2 * num
+          }
+        }
+      }
     })
 
     try {
@@ -154,7 +166,7 @@ const test = async () => {
       // test nunjucks templating helpers from file
       const responseTemplatingHelpersFromFile = await axios.get(`http://localhost:${mockServerWithTemplatingHelpersFromFile.port}/templating-helpers?q1=2&q2=sheep`)
       expect(responseTemplatingHelpersFromFile.status).to.equal(200)
-      expect(responseTemplatingHelpersFromFile.data).to.equal('result of function double: 4\nresult of filter appendTest: sheeps\n')
+      expect(responseTemplatingHelpersFromFile.data).to.equal('result of function double: 4\nresult of filter appendTest: sheeps\nresult of function double2: 8\nresult of filter appendTest2: 2 sheeps\n')
     } finally {
       await mockServerWithRuleLocation.stop()
       await mockServerWithRuleObject.stop()

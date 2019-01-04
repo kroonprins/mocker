@@ -14,3 +14,5 @@ sed -i 's/_serializr\.default/_serializr/g' cjs/**/*.js
 sed -i 's#@kroonprins/mocker-shared-lib/#@kroonprins/mocker-shared-lib/cjs/#g' cjs/**/*js
 sed -i 's#@kroonprins/mocker-mock-server#@kroonprins/mocker-mock-server/cjs/exports#g' cjs/**/*js
 sed -i 's#./test/resources/extra-template-helpers.nunjucks.mjs#./cjs/test/resources/extra-template-helpers.nunjucks.js#g' cjs/**/*.js
+
+cp types.d.ts cjs/exports.d.ts

@@ -9,3 +9,5 @@ response:
   body: |
     result of function double: {{ double(req.query.q1) }}
     result of filter appendTest: {{ req.query.q2 | appendText('s') }}
+    result of function double2: {{ double2(req.query.q1) }}
+    result of filter appendTest2: {{ req.query.q2 | appendText2('s') }}

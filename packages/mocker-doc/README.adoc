@@ -1487,6 +1487,27 @@ const mockServer = new MockServer({
 ----
 +
 Also here it can be either a list or a single value.
+* *nunjucksTemplatingHelpersFile*: path to a .mjs file containing extra nunjucks templating helpers. See xref:chapter-templating-helpers[here] for more information about extra helpers. If the templating helpers require any extra npm libraries then they can be installed and used in the templating helpers.
+* *nunjucksTemplatingHelpers*: the extra nunjucks templating helpers can also be given directly. For example:
++
+[source,javascript]
+----
+const mockServer = new MockServer({
+  ...,
+  nunjukcsTemplatingHelpers: {
+    filters: {
+      appendText: (str, text) => {
+        return str + text
+      }
+    },
+    functions: {
+      double: (num) => {
+        return 2 * num
+      }
+    }
+  }
+})
+----
 
 After a request to the server has happened, expectations can be verified:
 
@@ -1554,12 +1575,13 @@ before(async function () {
         path: '/test'
       },
       response: {
-        templatingEngine: 'none',
+        templatingEngine: 'nunjucks',
         statusCode: 200,
         contentType: 'text/plain',
-        body: 'response body'
+        body: '{{"response " | appendText("body")}}'
       }
-    }
+    },
+    nunjucksTemplatingHelpersFile: 'templating-helper-cjs.js'
   })
   await mockServer.start()
 })
@@ -1578,6 +1600,24 @@ after(function () {
 ----
 
 Here it is important to use the import the cjs specific version `@kroonprins/mocker-mock-server-test/cjs/exports`. See https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/commonjs[here] for the full sample, which can be run with `npm test`.
+
+If the configuration nunjucksTemplatingHelpersFile is used, then this should be a .js file instead of .mjs. Something like for example this:
+.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/commonjs/templating-helper-cjs.js[templating-helper-cjs.js]
+[source,javascript]
+----
+exports.HELPERS = {
+  filters: {
+    appendText: (str, text) => {
+      return str + text
+    }
+  },
+  functions: {
+    double: num => {
+      return 2 * num
+    }
+  }
+}
+----
 
 All configuration options and methods available on the test mock server are the same as given in xref:chapter-test-mock-server-es6[this chapter].
 
@@ -1630,6 +1670,8 @@ after(function () {
 ----
 
 Here it is important to use the import the cjs specific version `@kroonprins/mocker-mock-server-test/cjs/exports`. See https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/typescript[here] for the full sample, which can be run with `npm test`.
+
+Nunjucks templating helpers can be added in the same way as for commonjs. Note that when using configuration option nunjucksTemplatingHelpersFile that this must be a commonjs file and not a typescript file.
 
 All configuration options and methods available on the test mock server are the same as given in xref:chapter-test-mock-server-es6[this chapter].
 

@@ -13,12 +13,13 @@ before(async function () {
         path: '/test'
       },
       response: {
-        templatingEngine: 'none',
+        templatingEngine: 'nunjucks',
         statusCode: 200,
         contentType: 'text/plain',
-        body: 'response body'
+        body: '{{"response " | appendText("body")}}'
       }
-    }
+    },
+    nunjucksTemplatingHelpersFile: 'templating-helper-cjs.js'
   })
   await mockServer.start()
 })
