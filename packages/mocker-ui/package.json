@@ -1,6 +1,6 @@
 {
   "name": "@kroonprins/mocker-ui",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "UI for mocker",
   "main": "exports.mjs",
   "scripts": {
@@ -29,9 +29,9 @@
     "src/angular/dist/**"
   ],
   "dependencies": {
-    "@kroonprins/mocker-learning-mode": "^0.1.7",
-    "@kroonprins/mocker-mock-server": "^0.1.7",
-    "@kroonprins/mocker-shared-lib": "^0.1.7",
+    "@kroonprins/mocker-learning-mode": "^0.1.8",
+    "@kroonprins/mocker-mock-server": "^0.1.8",
+    "@kroonprins/mocker-shared-lib": "^0.1.8",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
