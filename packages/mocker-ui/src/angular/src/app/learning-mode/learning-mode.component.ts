@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RecordedRequest } from './model/learning-mode';
 import { RecordedRequestsListComponent } from './components/list/recorded-requests-list.component';
-import { SimpleChange } from '@angular/core/src/change_detection/change_detection_util';
 
 @Component({
   selector: 'app-learning-mode',
@@ -15,7 +14,7 @@ export class LearningModeComponent implements OnInit {
   selectedRecordedRequest: RecordedRequest;
   selectedRecordedRequestId: string;
 
-  @ViewChild(RecordedRequestsListComponent)
+  @ViewChild(RecordedRequestsListComponent, { static: true })
   listComponent: RecordedRequestsListComponent;
 
   constructor(private route: ActivatedRoute) { }

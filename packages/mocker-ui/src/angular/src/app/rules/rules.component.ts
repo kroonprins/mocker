@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ParamMap } from '@angular/router/src/shared';
 import { ProjectRule } from './model/project-rule';
 import { ActionType } from './model/typedef';
 import { RulesListComponent } from './components/list/rules-list.component';
@@ -17,7 +16,7 @@ export class RulesComponent implements OnInit {
   selectedRuleAction: ActionType = 'none';
   selectedRuleName: string;
 
-  @ViewChild(RulesListComponent)
+  @ViewChild(RulesListComponent, { static: true })
   listComponent: RulesListComponent;
 
   constructor(private route: ActivatedRoute) { }
