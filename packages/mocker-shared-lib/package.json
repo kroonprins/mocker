@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "prepare": "npm run create-cjs",
-    "test": "node --experimental-modules ./src/test-runner.mjs",
+    "test": "node --experimental-modules --es-module-specifier-resolution=node ./src/test-runner.mjs",
     "create-cjs": "./babel.sh",
     "test-cjs": "node ./cjs/src/test-runner.js",
     "version-check": "updates"

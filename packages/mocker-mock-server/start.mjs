@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-':' // ; exec "$(command -v nodejs || command -v node)" "--experimental-modules" "$0" "$@"
+':' // ; exec "$(command -v nodejs || command -v node)" "--experimental-modules" "--es-module-specifier-resolution=node" "$0" "$@"
 
 import dotenv from 'dotenv'
 import { MockServer } from './src/mock-server'

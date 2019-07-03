@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-':' // ; exec "$(command -v nodejs || command -v node)" "--experimental-modules" "$0" "$@"
+':' // ; exec "$(command -v nodejs || command -v node)" "--experimental-modules" "--es-module-specifier-resolution=node" "$0" "$@"
 
 // Temporary workaround because it does not seem possible to use test frameworks like mocha/ava/... with modules
 

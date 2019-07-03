@@ -657,7 +657,7 @@ Note: on Windows the shortcut need to be defined as follows instead:
 [source,json]
 ----
   "scripts": {
-    "start": "node --experimental-modules .\node_modules\@kroonprins\mocker-ui\start.mjs"
+    "start": "node --experimental-modules --es-module-specifier-resolution=node .\node_modules\@kroonprins\mocker-ui\start.mjs"
   }
 ----
 
@@ -987,7 +987,7 @@ Note: on Windows the shortcut need to be defined as follows instead:
 [source,json]
 ----
   "scripts": {
-    "start": "node --experimental-modules .\node_modules\@kroonprins\mocker-mock-server\start.mjs"
+    "start": "node --experimental-modules --es-module-specifier-resolution=node .\node_modules\@kroonprins\mocker-mock-server\start.mjs"
   }
 ----
 
@@ -1232,7 +1232,7 @@ Note: on Windows the shortcut need to be defined as follows instead:
 [source,json]
 ----
   "scripts": {
-    "start": "node --experimental-modules .\node_modules\@kroonprins\mocker-learning-mode\start.mjs"
+    "start": "node --experimental-modules --es-module-specifier-resolution=node .\node_modules\@kroonprins\mocker-learning-mode\start.mjs"
   }
 ----
 
