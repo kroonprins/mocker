@@ -4,9 +4,9 @@ import portastic from 'portastic'
 import axios from 'axios'
 import express from 'express'
 import 'express-async-errors'
-import { PinoLogger } from '../src/logging'
-import errorHandler from '../src/express-error-handling-middleware.json'
-import { FunctionalValidationError, TechnicalValidationError, TechnicalError } from '../src/error-types'
+import { PinoLogger } from '../src/logging.mjs'
+import errorHandler from '../src/express-error-handling-middleware.json.mjs'
+import { FunctionalValidationError, TechnicalValidationError, TechnicalError } from '../src/error-types.mjs'
 
 const expect = chai.expect
 chai.use(chaiExclude)

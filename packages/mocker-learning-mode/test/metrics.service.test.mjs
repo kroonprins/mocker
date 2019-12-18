@@ -1,8 +1,8 @@
 import chai from 'chai'
-import { LearningModeServerEventEmitter, LearningModeServerEvents } from '../src/learning-mode.server.events'
-import { MetricsService } from '../src/metrics.service'
-import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { LearningModeServerEventEmitter, LearningModeServerEvents } from '../src/learning-mode.server.events.mjs'
+import { MetricsService } from '../src/metrics.service.mjs'
 
 const expect = chai.expect
 

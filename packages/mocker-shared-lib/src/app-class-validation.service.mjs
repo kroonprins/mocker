@@ -1,6 +1,6 @@
-import { JsonSchemaBasedClassValidationService } from './class-validation.service'
-import { Logger } from './logging'
-import { config } from './config'
+import { JsonSchemaBasedClassValidationService } from './class-validation.service.mjs'
+import { Logger } from './logging.mjs'
+import { config } from './config.mjs'
 
 /**
  * All validation models should inherit from this one so that their schemas will automatically be registered.

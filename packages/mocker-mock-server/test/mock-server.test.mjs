@@ -2,10 +2,10 @@ import chai from 'chai'
 import chaiString from 'chai-string'
 import portastic from 'portastic'
 import axios from 'axios'
-import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
-import { initialize as setDefaultConfigMockServer } from '../src/config-default'
-import { MockServer } from '../src/mock-server'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { initialize as setDefaultConfigMockServer } from '../src/config-default.mjs'
+import { MockServer } from '../src/mock-server.mjs'
 
 const expect = chai.expect
 chai.use(chaiString)

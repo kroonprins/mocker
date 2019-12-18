@@ -1,9 +1,9 @@
 import express from 'express'
 import path from 'path'
-import { Server } from '@kroonprins/mocker-shared-lib/server.service'
-import { ApiServer } from './api-server'
-import { AdministrationServer } from '@kroonprins/mocker-shared-lib/administration-server'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { Server } from '@kroonprins/mocker-shared-lib/server.service.mjs'
+import { AdministrationServer } from '@kroonprins/mocker-shared-lib/administration-server.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { ApiServer } from './api-server.mjs'
 
 /**
  * Server serving the UI statics. Also exposes an endpoint "/config" so that the UI can retrieve some basic configuration like e.g. the location of the API server.

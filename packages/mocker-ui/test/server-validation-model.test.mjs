@@ -1,10 +1,10 @@
 import chai from 'chai'
 import Ajv from 'ajv'
 import ajvAsync from 'ajv-async'
-import { MockServer, LearningModeServer } from '../src/server-model'
-import { Server } from '@kroonprins/mocker-shared-lib/server-model'
-import { ServerValidationModel } from '../src/server-validation-model'
-import { ServerStatus, LearningModeServerTypes } from '@kroonprins/mocker-shared-lib/server.service'
+import { Server } from '@kroonprins/mocker-shared-lib/server-model.mjs'
+import { ServerStatus, LearningModeServerTypes } from '@kroonprins/mocker-shared-lib/server.service.mjs'
+import { MockServer, LearningModeServer } from '../src/server-model.mjs'
+import { ServerValidationModel } from '../src/server-validation-model.mjs'
 
 const expect = chai.expect
 

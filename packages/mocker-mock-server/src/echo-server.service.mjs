@@ -1,8 +1,8 @@
 import serializr from 'serializr'
-import { Request } from './echo-server.model'
-import { RequestSerializationModel } from './echo-server.serialization-model'
-import { Logger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { Logger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { Request } from './echo-server.model.mjs'
+import { RequestSerializationModel } from './echo-server.serialization-model.mjs'
 
 const serialize = serializr.serialize
 

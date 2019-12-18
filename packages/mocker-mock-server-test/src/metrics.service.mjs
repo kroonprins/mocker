@@ -1,7 +1,7 @@
 import { MockServerEventEmitter, MockServerEvents } from '@kroonprins/mocker-mock-server'
-import { Metrics, GlobalMetrics } from './metrics-model'
-import { Logger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { Logger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { Metrics, GlobalMetrics } from './metrics-model.mjs'
 
 class MetricsService {
   constructor (mockServerEventEmitter = config.getInstance(MockServerEventEmitter)) {

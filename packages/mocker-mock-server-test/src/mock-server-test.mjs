@@ -4,11 +4,11 @@ import { MockServer,
   TemplatingService,
   NunjucksTemplatingService,
   NunjucksTemplatingHelpers } from '@kroonprins/mocker-mock-server'
-import { initializeWithoutProjectService as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
-import { ProjectService } from './project.service'
-import { MetricsService } from './metrics.service'
-import { Logger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { initializeWithoutProjectService as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default.mjs'
+import { Logger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { ProjectService } from './project.service.mjs'
+import { MetricsService } from './metrics.service.mjs'
 
 setDefaultConfig()
 setDefaultConfigMockServer()

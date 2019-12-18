@@ -3,12 +3,12 @@ import chokidar from 'chokidar'
 import EventEmitter from 'events'
 import path from 'path'
 import serializr from 'serializr'
-import { readFileAsync } from '@kroonprins/mocker-shared-lib/fs-util'
-import { ClassValidationService } from '@kroonprins/mocker-shared-lib/class-validation.service'
-import { ProjectsFile } from '@kroonprins/mocker-shared-lib/project-model'
-import { ProjectsFileSerializationModel } from '@kroonprins/mocker-shared-lib/project-serialization-model'
-import { Logger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { readFileAsync } from '@kroonprins/mocker-shared-lib/fs-util.mjs'
+import { ClassValidationService } from '@kroonprins/mocker-shared-lib/class-validation.service.mjs'
+import { ProjectsFile } from '@kroonprins/mocker-shared-lib/project-model.mjs'
+import { ProjectsFileSerializationModel } from '@kroonprins/mocker-shared-lib/project-serialization-model.mjs'
+import { Logger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
 
 const deserialize = serializr.deserialize
 

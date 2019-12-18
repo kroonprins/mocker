@@ -3,7 +3,7 @@ import {
   ProjectFile,
   Project,
   ProjectRule
-} from './src/project-model'
+} from './src/project-model.mjs'
 
 // public exports
 export {

@@ -1,7 +1,7 @@
 import nunjucks from 'nunjucks'
-import { ProjectService } from '@kroonprins/mocker-shared-lib/project.service'
-import { Logger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { ProjectService } from '@kroonprins/mocker-shared-lib/project.service.mjs'
+import { Logger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
 
 const parser = nunjucks.parser
 const nodes = nunjucks.nodes

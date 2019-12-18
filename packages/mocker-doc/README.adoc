@@ -657,7 +657,7 @@ Note: on Windows the shortcut need to be defined as follows instead:
 [source,json]
 ----
   "scripts": {
-    "start": "node --experimental-modules --es-module-specifier-resolution=node .\node_modules\@kroonprins\mocker-ui\start.mjs"
+    "start": "node --es-module-specifier-resolution=node .\node_modules\@kroonprins\mocker-ui\start.mjs"
   }
 ----
 
@@ -693,6 +693,11 @@ And then started as follows:
 [source,console]
 ----
 $ mocker-ui
+----
+
+Or, using npx:
+----
+$ npx @kroonprins/mocker-ui
 ----
 
 [#environment-variables-mocker-ui]
@@ -987,7 +992,7 @@ Note: on Windows the shortcut need to be defined as follows instead:
 [source,json]
 ----
   "scripts": {
-    "start": "node --experimental-modules --es-module-specifier-resolution=node .\node_modules\@kroonprins\mocker-mock-server\start.mjs"
+    "start": "node --es-module-specifier-resolution=node .\node_modules\@kroonprins\mocker-mock-server\start.mjs"
   }
 ----
 
@@ -1026,6 +1031,11 @@ And then started as follows:
 [source,console]
 ----
 $ mocker-mock-server
+----
+
+Or, using npx:
+----
+$ npx @kroonprins/mocker-mock-server
 ----
 
 [#environment-variables-mocker-mock-server]
@@ -1232,7 +1242,7 @@ Note: on Windows the shortcut need to be defined as follows instead:
 [source,json]
 ----
   "scripts": {
-    "start": "node --experimental-modules --es-module-specifier-resolution=node .\node_modules\@kroonprins\mocker-learning-mode\start.mjs"
+    "start": "node --es-module-specifier-resolution=node .\node_modules\@kroonprins\mocker-learning-mode\start.mjs"
   }
 ----
 
@@ -1269,6 +1279,11 @@ And then started as follows:
 [source,console]
 ----
 $ mocker-learning-mode
+----
+
+Or, using npx:
+----
+$ npx @kroonprins/mocker-learning-mode
 ----
 
 [#environment-variables-mocker-learning-mode]

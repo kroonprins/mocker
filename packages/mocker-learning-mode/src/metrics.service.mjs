@@ -1,6 +1,6 @@
-import { LearningModeServerEventEmitter, LearningModeServerEvents } from './learning-mode.server.events'
-import { Logger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { Logger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { LearningModeServerEventEmitter, LearningModeServerEvents } from './learning-mode.server.events.mjs'
 
 class MetricsService {
   constructor (learningModeServerEventEmitter = config.getInstance(LearningModeServerEventEmitter)) {

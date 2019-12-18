@@ -1,6 +1,6 @@
-import { AdministrationServer as BaseAdministrationServer } from '@kroonprins/mocker-shared-lib/administration-server'
-import { MetricsService } from './metrics.service'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { AdministrationServer as BaseAdministrationServer } from '@kroonprins/mocker-shared-lib/administration-server.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { MetricsService } from './metrics.service.mjs'
 
 /**
  * Server exposing service endpoints to execute administrative tasks for a mock server.

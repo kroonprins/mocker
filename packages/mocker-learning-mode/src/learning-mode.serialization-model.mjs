@@ -1,5 +1,5 @@
 import serializr from 'serializr'
-import { Request, NameValuePair, Response, ResponseCookie, RecordedRequest } from './learning-mode.model'
+import { Request, NameValuePair, Response, ResponseCookie, RecordedRequest } from './learning-mode.model.mjs'
 
 const { createModelSchema, primitive, identifier, date, alias, list, object, map } = { ...serializr }
 

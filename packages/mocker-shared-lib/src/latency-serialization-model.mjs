@@ -1,5 +1,5 @@
 import serializr from 'serializr'
-import { FixedLatency, RandomLatency } from './latency-model'
+import { FixedLatency, RandomLatency } from './latency-model.mjs'
 
 const { createModelSchema, primitive } = { ...serializr }
 

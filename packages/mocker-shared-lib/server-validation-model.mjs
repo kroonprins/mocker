@@ -1,6 +1,6 @@
 import {
   BaseServerValidationModel
-} from './src/server-validation-model'
+} from './src/server-validation-model.mjs'
 
 export {
   BaseServerValidationModel

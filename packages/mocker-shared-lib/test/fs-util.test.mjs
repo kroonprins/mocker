@@ -1,5 +1,5 @@
 import chai from 'chai'
-import { overwriteFile, readFileAsync, rimrafAsync } from '../src/fs-util'
+import { overwriteFile, readFileAsync, rimrafAsync } from '../src/fs-util.mjs'
 
 const expect = chai.expect
 

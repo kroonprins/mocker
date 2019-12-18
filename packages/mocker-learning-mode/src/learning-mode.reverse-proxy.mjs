@@ -5,11 +5,11 @@ import timestamp from 'express-timestamp'
 import moment from 'moment-timezone'
 import proxy from 'http-proxy-middleware'
 import tough from 'tough-cookie'
-import { Server } from '@kroonprins/mocker-shared-lib/server.service'
-import { LearningModeService } from './learning-mode.service'
-import { Request, NameValuePair, Response, ResponseCookie, RecordedRequest } from './learning-mode.model'
-import { LearningModeServerEventEmitter, LearningModeServerEvents } from './learning-mode.server.events'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { Server } from '@kroonprins/mocker-shared-lib/server.service.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { LearningModeService } from './learning-mode.service.mjs'
+import { Request, NameValuePair, Response, ResponseCookie, RecordedRequest } from './learning-mode.model.mjs'
+import { LearningModeServerEventEmitter, LearningModeServerEvents } from './learning-mode.server.events.mjs'
 
 const Cookie = tough.Cookie
 

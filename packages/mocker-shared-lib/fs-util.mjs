@@ -7,7 +7,7 @@ import {
   globAsync,
   overwriteFile,
   FileOperationQueue
-} from './src/fs-util'
+} from './src/fs-util.mjs'
 
 // public exports
 export {

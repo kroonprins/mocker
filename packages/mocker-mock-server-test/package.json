@@ -24,7 +24,7 @@
   "files": [
     "exports.mjs",
     "src/**",
-    "cjs/exports.js",
+    "cjs/exports.cjs",
     "cjs/exports.d.ts",
     "cjs/src/**",
     "types.d.ts"

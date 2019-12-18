@@ -1,7 +1,7 @@
-import { BaseServerValidationModel } from '@kroonprins/mocker-shared-lib/server-validation-model'
-import { Server } from '@kroonprins/mocker-shared-lib/server-model'
-import { MockServer, LearningModeServer } from './server-model'
-import { LearningModeServerTypes } from '@kroonprins/mocker-shared-lib/server.service'
+import { BaseServerValidationModel } from '@kroonprins/mocker-shared-lib/server-validation-model.mjs'
+import { Server } from '@kroonprins/mocker-shared-lib/server-model.mjs'
+import { LearningModeServerTypes } from '@kroonprins/mocker-shared-lib/server.service.mjs'
+import { MockServer, LearningModeServer } from './server-model.mjs'
 
 class ServerValidationModel extends BaseServerValidationModel {
   constructor () {

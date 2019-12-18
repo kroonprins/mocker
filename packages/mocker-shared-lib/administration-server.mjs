@@ -1,6 +1,6 @@
 import {
   AdministrationServer
-} from './src/administration-server'
+} from './src/administration-server.mjs'
 
 // public exports
 export {

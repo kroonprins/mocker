@@ -1,12 +1,12 @@
 
-import { EchoServerService } from './echo-server.service'
-import { NunjucksTemplatingHelpers } from './templating-helpers.nunjucks'
-import { NunjucksTemplatingService } from './templating.service.nunjucks'
-import { TemplatingService } from './templating.service'
-import { SwaggerGenerationService } from './swagger-generation.service'
-import { MockServerEventEmitter } from './mock-server.events'
-import { MetricsService } from './metrics.service'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { EchoServerService } from './echo-server.service.mjs'
+import { NunjucksTemplatingHelpers } from './templating-helpers.nunjucks.mjs'
+import { NunjucksTemplatingService } from './templating.service.nunjucks.mjs'
+import { TemplatingService } from './templating.service.mjs'
+import { SwaggerGenerationService } from './swagger-generation.service.mjs'
+import { MockServerEventEmitter } from './mock-server.events.mjs'
+import { MetricsService } from './metrics.service.mjs'
 
 const registerInstance = (id, overrideValues, defaultValueFactory) => {
   let value

@@ -1,8 +1,8 @@
 import chai from 'chai'
 import axios from 'axios'
-import { MockServer } from '../src/mock-server-test'
-import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { MockServer } from '../src/mock-server-test.mjs'
 
 const expect = chai.expect
 

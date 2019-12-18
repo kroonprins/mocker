@@ -1,11 +1,11 @@
 import fs from 'fs'
 import path from 'path'
 import memoize from 'mem'
-import cjs from './mjs_workaround/cjs'
-import { createModulePath } from '@kroonprins/mocker-shared-lib/dynamic-module-import-helper'
-import { EchoServerService } from './echo-server.service'
-import { Logger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { createModulePath } from '@kroonprins/mocker-shared-lib/dynamic-module-import-helper.mjs'
+import { Logger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import cjs from './mjs_workaround/cjs.js'
+import { EchoServerService } from './echo-server.service.mjs'
 
 const readFile = memoize(fs.readFileSync) // sync because templating helpers in nunjucks are sync
 

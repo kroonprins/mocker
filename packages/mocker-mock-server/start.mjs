@@ -1,12 +1,11 @@
-#!/usr/bin/env sh
-':' // ; exec "$(command -v nodejs || command -v node)" "--experimental-modules" "--es-module-specifier-resolution=node" "$0" "$@"
+#!/usr/bin/env node
 
 import dotenv from 'dotenv'
-import { MockServer } from './src/mock-server'
-import { config } from '@kroonprins/mocker-shared-lib/config'
-import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
-import { initialize as setDefaultConfigMockServer } from './src/config-default'
-import { AdministrationServer } from './src/administration-server'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default.mjs'
+import { MockServer } from './src/mock-server.mjs'
+import { initialize as setDefaultConfigMockServer } from './src/config-default.mjs'
+import { AdministrationServer } from './src/administration-server.mjs'
 
 dotenv.config()
 const ENV = process.env

@@ -1,5 +1,5 @@
-import { ValidationModel } from '@kroonprins/mocker-shared-lib/app-class-validation.service'
-import { QueryOpts } from './learning-mode.db.model'
+import { ValidationModel } from '@kroonprins/mocker-shared-lib/app-class-validation.service.mjs'
+import { QueryOpts } from './learning-mode.db.model.mjs'
 
 class LearningModeDbValidationModel extends ValidationModel {
   constructor () {

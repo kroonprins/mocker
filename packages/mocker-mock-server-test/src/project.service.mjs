@@ -1,10 +1,10 @@
 import serializr from 'serializr'
-import { RuleService } from '@kroonprins/mocker-shared-lib/rule.service'
-import { ProjectRule } from '@kroonprins/mocker-shared-lib/project-model'
-import { RuleSerializationModel } from '@kroonprins/mocker-shared-lib/rule-serialization-model'
-import { globAsync } from '@kroonprins/mocker-shared-lib/fs-util'
-import { Logger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { RuleService } from '@kroonprins/mocker-shared-lib/rule.service.mjs'
+import { ProjectRule } from '@kroonprins/mocker-shared-lib/project-model.mjs'
+import { RuleSerializationModel } from '@kroonprins/mocker-shared-lib/rule-serialization-model.mjs'
+import { globAsync } from '@kroonprins/mocker-shared-lib/fs-util.mjs'
+import { Logger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
 
 const deserialize = serializr.deserialize
 

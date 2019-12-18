@@ -1,8 +1,8 @@
-import { ClassValidationService } from '@kroonprins/mocker-shared-lib/class-validation.service'
-import { AppClassValidationService } from '@kroonprins/mocker-shared-lib/app-class-validation.service'
-import { ServerValidationModel } from './server-validation-model'
-import { ServerService, ServerStore, InMemoryServerStore } from './server.service'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { ClassValidationService } from '@kroonprins/mocker-shared-lib/class-validation.service.mjs'
+import { AppClassValidationService } from '@kroonprins/mocker-shared-lib/app-class-validation.service.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { ServerValidationModel } from './server-validation-model.mjs'
+import { ServerService, ServerStore, InMemoryServerStore } from './server.service.mjs'
 
 const initialize = () => {
   config

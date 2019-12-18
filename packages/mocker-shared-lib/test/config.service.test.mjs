@@ -1,7 +1,7 @@
 import chai from 'chai'
-import { ConfigService } from '../src/config.service'
-import { Logger, PinoLogger } from '../src/logging'
-import { config } from '../src/config'
+import { ConfigService } from '../src/config.service.mjs'
+import { Logger, PinoLogger } from '../src/logging.mjs'
+import { config } from '../src/config.mjs'
 
 const expect = chai.expect
 

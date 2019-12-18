@@ -1,6 +1,6 @@
 import {
   Server
-} from './src/server-model'
+} from './src/server-model.mjs'
 
 // public exports
 export {

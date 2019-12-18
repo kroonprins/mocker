@@ -1,16 +1,15 @@
-#!/usr/bin/env sh
-':' // ; exec "$(command -v nodejs || command -v node)" "--experimental-modules" "--es-module-specifier-resolution=node" "$0" "$@"
+#!/usr/bin/env node
 
 import dotenv from 'dotenv'
-import { AdministrationServer } from '@kroonprins/mocker-shared-lib/administration-server'
-import { ApiServer } from './src/api-server'
-import { UiServer } from './src/ui-server'
-import { config } from '@kroonprins/mocker-shared-lib/config'
-import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
 import { initialize as setDefaultConfigMockServer } from '@kroonprins/mocker-mock-server'
 import { initialize as setDefaultConfigLearningMode } from '@kroonprins/mocker-learning-mode'
-import { initialize as setDefaultConfigUI } from './src/config-default'
-import cjs from './cjs.js'
+import { AdministrationServer } from '@kroonprins/mocker-shared-lib/administration-server.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default.mjs'
+import { ApiServer } from './src/api-server.mjs'
+import { UiServer } from './src/ui-server.mjs'
+import { initialize as setDefaultConfigUI } from './src/config-default.mjs'
+import cjs from './cjs.js/index.js.js'
 
 dotenv.config()
 const ENV = process.env

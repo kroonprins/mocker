@@ -1,6 +1,6 @@
-import { LearningModeDbService } from './learning-mode.db.service'
-import { Logger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { Logger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { LearningModeDbService } from './learning-mode.db.service.mjs'
 
 class LearningModeService {
   constructor (learningModeDbService = config.getInstance(LearningModeDbService)) {

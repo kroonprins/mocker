@@ -1,6 +1,6 @@
 import {
   MockServer
-} from './src/mock-server-test'
+} from './src/mock-server-test.mjs'
 
 export {
   MockServer

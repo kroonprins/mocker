@@ -1,5 +1,5 @@
-import { FunctionalValidationError, TechnicalValidationError, TechnicalError } from './error-types'
-import uuidv4 from 'uuid/v4'
+import uuidv4 from 'uuid/v4.js'
+import { FunctionalValidationError, TechnicalValidationError, TechnicalError } from './error-types.mjs'
 
 /**
  * Re-usable error handling that can be used on express app that exposes services returning json. Based on the error type a different response is given:

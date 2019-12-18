@@ -7,7 +7,7 @@ import {
   ConditionalResponseSerializationModel,
   ConditionalResponseValueSerializationModel,
   LimitedDataRuleSerializationModel
-} from './src/rule-serialization-model'
+} from './src/rule-serialization-model.mjs'
 
 // public exports
 export {

@@ -2,9 +2,9 @@ import chai from 'chai'
 import chaiExclude from 'chai-exclude'
 import portastic from 'portastic'
 import axios from 'axios'
-import { Logger, PinoLogger } from '../src/logging'
-import { config } from '../src/config'
-import { AdministrationServer } from '../src/administration-server'
+import { Logger, PinoLogger } from '../src/logging.mjs'
+import { config } from '../src/config.mjs'
+import { AdministrationServer } from '../src/administration-server.mjs'
 
 const expect = chai.expect
 chai.use(chaiExclude)

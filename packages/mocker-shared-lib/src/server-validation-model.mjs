@@ -1,6 +1,6 @@
-import { ValidationModel } from './app-class-validation.service'
-import { Server } from './server-model'
-import { ServerStatus } from './server.service'
+import { ValidationModel } from './app-class-validation.service.mjs'
+import { Server } from './server-model.mjs'
+import { ServerStatus } from './server.service.mjs'
 
 class BaseServerValidationModel extends ValidationModel {
   constructor () {

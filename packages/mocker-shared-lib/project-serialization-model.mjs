@@ -5,7 +5,7 @@ import {
   LimitedDataProjectSerializationModel,
   ProjectRuleSerializationModel,
   LimitedDataProjectRuleSerializationModel
-} from './src/project-serialization-model'
+} from './src/project-serialization-model.mjs'
 
 // public exports
 export {

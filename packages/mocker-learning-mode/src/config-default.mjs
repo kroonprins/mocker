@@ -1,11 +1,11 @@
-import { ClassValidationService } from '@kroonprins/mocker-shared-lib/class-validation.service'
-import { AppClassValidationService } from '@kroonprins/mocker-shared-lib/app-class-validation.service'
-import { LearningModeDbValidationModel } from './learning-mode.db.validation-model'
-import { LearningModeDbService } from './learning-mode.db.service'
-import { LearningModeService } from './learning-mode.service'
-import { LearningModeServerEventEmitter } from './learning-mode.server.events'
-import { MetricsService } from './metrics.service'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { ClassValidationService } from '@kroonprins/mocker-shared-lib/class-validation.service.mjs'
+import { AppClassValidationService } from '@kroonprins/mocker-shared-lib/app-class-validation.service.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { LearningModeDbValidationModel } from './learning-mode.db.validation-model.mjs'
+import { LearningModeDbService } from './learning-mode.db.service.mjs'
+import { LearningModeService } from './learning-mode.service.mjs'
+import { LearningModeServerEventEmitter } from './learning-mode.server.events.mjs'
+import { MetricsService } from './metrics.service.mjs'
 
 const initialize = () => {
   config

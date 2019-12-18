@@ -1,7 +1,7 @@
 import chai from 'chai'
-import { QueryOpts } from '../src/learning-mode.db.model'
-import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { QueryOpts } from '../src/learning-mode.db.model.mjs'
 
 const expect = chai.expect
 

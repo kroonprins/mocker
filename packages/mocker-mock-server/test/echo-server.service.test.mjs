@@ -2,11 +2,11 @@ import chai from 'chai'
 import chaiExclude from 'chai-exclude'
 import portastic from 'portastic'
 import axios from 'axios'
-import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
-import { initialize as setDefaultConfigMockServer } from '../src/config-default'
-import { MockServer } from '../src/mock-server'
-import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default.mjs'
+import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { initialize as setDefaultConfigMockServer } from '../src/config-default.mjs'
+import { MockServer } from '../src/mock-server.mjs'
 
 const expect = chai.expect
 chai.use(chaiExclude)

@@ -1,6 +1,6 @@
 import {
   config
-} from './src/config'
+} from './src/config.mjs'
 
 // public exports
 export {

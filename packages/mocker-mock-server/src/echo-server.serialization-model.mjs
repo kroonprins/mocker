@@ -1,5 +1,5 @@
 import serializr from 'serializr'
-import { Request } from './echo-server.model'
+import { Request } from './echo-server.model.mjs'
 
 const { createModelSchema, primitive, map, raw } = { ...serializr }
 

@@ -1,7 +1,7 @@
 import swaggerUi from 'swagger-ui-express'
-import { Server } from '@kroonprins/mocker-shared-lib/server.service'
-import { SwaggerGenerationService } from './swagger-generation.service'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { Server } from '@kroonprins/mocker-shared-lib/server.service.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { SwaggerGenerationService } from './swagger-generation.service.mjs'
 
 /**
  * Server for serving swagger ui for the mock server of a project

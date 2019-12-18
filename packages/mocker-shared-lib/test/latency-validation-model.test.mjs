@@ -1,10 +1,10 @@
 import chai from 'chai'
 import Ajv from 'ajv'
 import ajvAsync from 'ajv-async'
-import { FixedLatency, RandomLatency } from '../src/latency-model'
-import { LatencyValidationModel } from '../src/latency-validation-model'
-import { Logger, PinoLogger } from '../src/logging'
-import { config } from '../src/config'
+import { FixedLatency, RandomLatency } from '../src/latency-model.mjs'
+import { LatencyValidationModel } from '../src/latency-validation-model.mjs'
+import { Logger, PinoLogger } from '../src/logging.mjs'
+import { config } from '../src/config.mjs'
 
 const expect = chai.expect
 

@@ -1,14 +1,13 @@
-#!/usr/bin/env sh
-':' // ; exec "$(command -v nodejs || command -v node)" "--experimental-modules" "--es-module-specifier-resolution=node" "$0" "$@"
+#!/usr/bin/env node
 
 // Temporary workaround because it does not seem possible to use test frameworks like mocha/ava/... with modules
 
-import { globAsync } from './fs-util'
 import path from 'path'
 import columnify from 'columnify'
 import colors from 'colors'
-import cjs from './mjs_workaround/cjs'
-import { createModulePath } from './dynamic-module-import-helper'
+import { globAsync } from './fs-util.mjs'
+import cjs from './mjs_workaround/cjs.js'
+import { createModulePath } from './dynamic-module-import-helper.mjs'
 
 const filterArgs = process.argv.slice(2)
 let filters = []

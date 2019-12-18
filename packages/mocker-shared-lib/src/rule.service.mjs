@@ -1,9 +1,9 @@
 import yaml from 'js-yaml'
 import serializr from 'serializr'
-import { RuleSerializationModel } from './rule-serialization-model'
-import { readFileAsync } from './fs-util'
-import { Logger } from './logging'
-import { config } from './config'
+import { RuleSerializationModel } from './rule-serialization-model.mjs'
+import { readFileAsync } from './fs-util.mjs'
+import { Logger } from './logging.mjs'
+import { config } from './config.mjs'
 
 const deserialize = serializr.deserialize
 

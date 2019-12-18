@@ -1,7 +1,7 @@
 import serializr from 'serializr'
-import { LearningModeServerTypes } from '@kroonprins/mocker-shared-lib/server.service'
-import { MockServer, LearningModeServer } from './server-model'
 import { LearningModeReverseProxyServer, LearningModeForwardProxyServer } from '@kroonprins/mocker-learning-mode'
+import { LearningModeServerTypes } from '@kroonprins/mocker-shared-lib/server.service.mjs'
+import { MockServer, LearningModeServer } from './server-model.mjs'
 
 const { createModelSchema, primitive, custom, SKIP } = { ...serializr }
 

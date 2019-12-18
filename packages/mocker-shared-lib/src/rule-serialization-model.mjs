@@ -1,6 +1,6 @@
 import serializr from 'serializr'
-import { Rule, Request, Response, ConditionalResponse, ConditionalResponseValue, Header, Cookie } from './rule-model'
-import { FixedLatencySerializationModel, RandomLatencySerializationModel } from './latency-serialization-model'
+import { Rule, Request, Response, ConditionalResponse, ConditionalResponseValue, Header, Cookie } from './rule-model.mjs'
+import { FixedLatencySerializationModel, RandomLatencySerializationModel } from './latency-serialization-model.mjs'
 
 const { createModelSchema, primitive, list, object, map } = { ...serializr }
 

@@ -1,6 +1,6 @@
 import serializr from 'serializr'
-import { ClassValidationService } from '@kroonprins/mocker-shared-lib/class-validation.service'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { ClassValidationService } from '@kroonprins/mocker-shared-lib/class-validation.service.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
 
 const serialize = serializr.serialize
 

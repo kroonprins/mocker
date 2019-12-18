@@ -1,8 +1,8 @@
-import { ValidationModel } from './app-class-validation.service'
-import { ProjectsFile, ProjectFile, Project, ProjectRule } from './project-model'
-import { RuleValidationModel } from './rule-validation-model'
-import { Rule } from './rule-model'
-import { config } from './config'
+import { ValidationModel } from './app-class-validation.service.mjs'
+import { ProjectsFile, ProjectFile, Project, ProjectRule } from './project-model.mjs'
+import { RuleValidationModel } from './rule-validation-model.mjs'
+import { Rule } from './rule-model.mjs'
+import { config } from './config.mjs'
 
 class ProjectValidationModel extends ValidationModel {
   constructor (ruleValidationModel = config.getInstance(RuleValidationModel)) {

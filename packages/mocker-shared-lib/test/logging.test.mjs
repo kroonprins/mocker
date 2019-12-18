@@ -1,7 +1,7 @@
 import chai from 'chai'
-import { config } from '../src/config'
-import { Logger, PinoLogger } from '../src/logging'
-import { FunctionalValidationError } from '../src/error-types'
+import { config } from '../src/config.mjs'
+import { Logger, PinoLogger } from '../src/logging.mjs'
+import { FunctionalValidationError } from '../src/error-types.mjs'
 
 const expect = chai.expect
 

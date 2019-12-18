@@ -1,6 +1,6 @@
 import pino from 'pino'
-import { config } from './config'
-import { FunctionalValidationError } from './error-types'
+import { config } from './config.mjs'
+import { FunctionalValidationError } from './error-types.mjs'
 
 const SUPPORTED_LEVELS = [ 'error', 'warn', 'info', 'debug', 'trace' ]
 const SUPPORTED_LEVELS_SET = new Set(SUPPORTED_LEVELS)

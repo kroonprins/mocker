@@ -1,13 +1,13 @@
 import chai from 'chai'
 import Ajv from 'ajv'
 import ajvAsync from 'ajv-async'
-import { ConfigService } from '../src/config.service'
-import { Request, Header, Cookie, Response, ConditionalResponse, ConditionalResponseValue, Rule } from '../src/rule-model'
-import { RuleValidationModel } from '../src/rule-validation-model'
-import { LatencyValidationModel } from '../src/latency-validation-model'
-import { FixedLatency, RandomLatency } from '../src/latency-model'
-import { Logger, PinoLogger } from '../src/logging'
-import { config } from '../src/config'
+import { ConfigService } from '../src/config.service.mjs'
+import { Request, Header, Cookie, Response, ConditionalResponse, ConditionalResponseValue, Rule } from '../src/rule-model.mjs'
+import { RuleValidationModel } from '../src/rule-validation-model.mjs'
+import { LatencyValidationModel } from '../src/latency-validation-model.mjs'
+import { FixedLatency, RandomLatency } from '../src/latency-model.mjs'
+import { Logger, PinoLogger } from '../src/logging.mjs'
+import { config } from '../src/config.mjs'
 
 const expect = chai.expect
 

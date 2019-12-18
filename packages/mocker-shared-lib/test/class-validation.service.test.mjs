@@ -1,7 +1,7 @@
 import chai from 'chai'
-import { ClassValidationError, JsonSchemaBasedClassValidationService } from '../src/class-validation.service'
-import { Logger, PinoLogger } from '../src/logging'
-import { config } from '../src/config'
+import { ClassValidationError, JsonSchemaBasedClassValidationService } from '../src/class-validation.service.mjs'
+import { Logger, PinoLogger } from '../src/logging.mjs'
+import { config } from '../src/config.mjs'
 
 const expect = chai.expect
 

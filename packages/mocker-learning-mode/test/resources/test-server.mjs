@@ -1,8 +1,7 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import 'express-async-errors'
-
-import { PinoLogger } from '@kroonprins/mocker-shared-lib/logging'
+import { PinoLogger } from '@kroonprins/mocker-shared-lib/logging.mjs'
 
 class TestServer {
   constructor (port) {

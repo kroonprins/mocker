@@ -1,11 +1,11 @@
 import chai from 'chai'
-import { ServerValidationModel } from '../src/server-validation-model'
-import { Server, LearningModeServerTypes } from '@kroonprins/mocker-shared-lib/server.service'
-import { ServerService, InMemoryServerStore } from '../src/server.service'
-import { MockServer, LearningModeServer } from '../src/server-model'
-import { AppClassValidationService } from '@kroonprins/mocker-shared-lib/app-class-validation.service'
-import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { Server, LearningModeServerTypes } from '@kroonprins/mocker-shared-lib/server.service.mjs'
+import { AppClassValidationService } from '@kroonprins/mocker-shared-lib/app-class-validation.service.mjs'
+import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { ServerValidationModel } from '../src/server-validation-model.mjs'
+import { ServerService, InMemoryServerStore } from '../src/server.service.mjs'
+import { MockServer, LearningModeServer } from '../src/server-model.mjs'
 
 const expect = chai.expect
 

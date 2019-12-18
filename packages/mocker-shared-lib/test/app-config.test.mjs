@@ -1,5 +1,5 @@
 import chai from 'chai'
-import { AppConfig } from '../src/app-config'
+import { AppConfig } from '../src/app-config.mjs'
 
 const expect = chai.expect
 

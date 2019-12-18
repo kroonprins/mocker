@@ -77,3 +77,5 @@
 * allow to set the encoding of rule/project files by environment variable
 * add rule and project to templating context; would also allow to have the file helper method make the path relative to rule location
 * git submodules alternative to lerna?
+* https://github.com/hapijs/joi instead of json schema validation?
+* bazel instead of lerna?

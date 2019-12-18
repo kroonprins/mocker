@@ -1,5 +1,5 @@
-import { ValidationModel } from './app-class-validation.service'
-import { FixedLatency, RandomLatency } from './latency-model'
+import { ValidationModel } from './app-class-validation.service.mjs'
+import { FixedLatency, RandomLatency } from './latency-model.mjs'
 
 class LatencyValidationModel extends ValidationModel {
   constructor () {

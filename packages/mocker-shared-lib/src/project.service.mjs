@@ -1,6 +1,6 @@
-import { ProjectStore } from './project.store'
-import { Logger } from './logging'
-import { config } from './config'
+import { ProjectStore } from './project.store.mjs'
+import { Logger } from './logging.mjs'
+import { config } from './config.mjs'
 
 class ProjectService {
   constructor (projectStore = config.getInstance(ProjectStore)) {

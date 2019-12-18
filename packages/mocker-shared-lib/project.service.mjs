@@ -1,6 +1,6 @@
 import {
   ProjectService
-} from './src/project.service'
+} from './src/project.service.mjs'
 
 // public exports
 export {

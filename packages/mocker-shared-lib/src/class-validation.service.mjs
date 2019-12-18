@@ -1,9 +1,9 @@
 import Ajv from 'ajv'
 import ajvAsync from 'ajv-async'
-import uuidv4 from 'uuid/v4'
-import { Logger } from './logging'
-import { config } from './config'
-import { TechnicalValidationError } from './error-types'
+import uuidv4 from 'uuid/v4.js'
+import { Logger } from './logging.mjs'
+import { config } from './config.mjs'
+import { TechnicalValidationError } from './error-types.mjs'
 
 /**
  * Error thrown when class instance validation fails. It will contain more information for the reason of the validation failure in the exception data.

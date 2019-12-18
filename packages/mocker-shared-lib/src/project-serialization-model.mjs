@@ -1,6 +1,6 @@
 import serializr from 'serializr'
-import { RuleSerializationModel, LimitedDataRuleSerializationModel } from './rule-serialization-model'
-import { ProjectsFile, ProjectFile, Project, ProjectRule } from './project-model'
+import { RuleSerializationModel, LimitedDataRuleSerializationModel } from './rule-serialization-model.mjs'
+import { ProjectsFile, ProjectFile, Project, ProjectRule } from './project-model.mjs'
 
 const { createModelSchema, primitive, list, object } = { ...serializr }
 

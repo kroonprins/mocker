@@ -1,10 +1,10 @@
 import chai from 'chai'
 import path from 'path'
-import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
-import { initialize as setDefaultConfigMockServer } from '../src/config-default'
-import { ProjectService } from '@kroonprins/mocker-shared-lib/project.service'
-import { SwaggerGenerationService } from '../src/swagger-generation.service'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default.mjs'
+import { ProjectService } from '@kroonprins/mocker-shared-lib/project.service.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { initialize as setDefaultConfigMockServer } from '../src/config-default.mjs'
+import { SwaggerGenerationService } from '../src/swagger-generation.service.mjs'
 const expect = chai.expect
 
 // could split this up so that not all test run synchronously

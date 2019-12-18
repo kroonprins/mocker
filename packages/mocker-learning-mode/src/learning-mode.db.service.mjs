@@ -1,12 +1,12 @@
 import NeDbDatastore from 'nedb'
 import util from 'util'
 import serializr from 'serializr'
-import { RecordedRequestSerializationModel } from './learning-mode.serialization-model'
-import { ClassValidationService } from '@kroonprins/mocker-shared-lib/class-validation.service'
-import { TechnicalValidationError } from '@kroonprins/mocker-shared-lib/error-types'
-import { Logger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
-import { QueryOpts } from './learning-mode.db.model'
+import { ClassValidationService } from '@kroonprins/mocker-shared-lib/class-validation.service.mjs'
+import { TechnicalValidationError } from '@kroonprins/mocker-shared-lib/error-types.mjs'
+import { Logger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { RecordedRequestSerializationModel } from './learning-mode.serialization-model.mjs'
+import { QueryOpts } from './learning-mode.db.model.mjs'
 
 const { deserialize, serialize } = { ...serializr }
 

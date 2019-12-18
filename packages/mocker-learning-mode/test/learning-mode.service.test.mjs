@@ -1,13 +1,13 @@
 import chai from 'chai'
-import { RecordedRequest } from '../src/learning-mode.model'
-import { QueryOpts } from '../src/learning-mode.db.model'
-import { LearningModeDbValidationModel } from '../src/learning-mode.db.validation-model'
-import { LearningModeDbService } from '../src/learning-mode.db.service'
-import { LearningModeService } from '../src/learning-mode.service'
-import { AppClassValidationService } from '@kroonprins/mocker-shared-lib/app-class-validation.service'
-import { unlinkAsync } from '@kroonprins/mocker-shared-lib/fs-util'
-import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { AppClassValidationService } from '@kroonprins/mocker-shared-lib/app-class-validation.service.mjs'
+import { unlinkAsync } from '@kroonprins/mocker-shared-lib/fs-util.mjs'
+import { Logger, PinoLogger } from '@kroonprins/mocker-shared-lib/logging.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { RecordedRequest } from '../src/learning-mode.model.mjs'
+import { QueryOpts } from '../src/learning-mode.db.model.mjs'
+import { LearningModeDbValidationModel } from '../src/learning-mode.db.validation-model.mjs'
+import { LearningModeDbService } from '../src/learning-mode.db.service.mjs'
+import { LearningModeService } from '../src/learning-mode.service.mjs'
 
 const expect = chai.expect
 

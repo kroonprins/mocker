@@ -1,5 +1,5 @@
-import { Server } from '@kroonprins/mocker-shared-lib/server.service'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { Server } from '@kroonprins/mocker-shared-lib/server.service.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
 
 /**
  * Forward proxy to capture requests for learning mode.

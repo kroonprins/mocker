@@ -2,10 +2,10 @@ import express from 'express'
 // import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import { Server } from './server.service'
-import { config } from './config'
-import { Logger } from './logging'
-import errorHandler from './express-error-handling-middleware.json'
+import { Server } from './server.service.mjs'
+import { config } from './config.mjs'
+import { Logger } from './logging.mjs'
+import errorHandler from './express-error-handling-middleware.json.mjs'
 
 /**
  * Server exposing service endpoints to execute administrative tasks.

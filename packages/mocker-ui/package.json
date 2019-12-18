@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/kroonprins/mocker#readme",
   "files": [
-    "cjs.js",
+    "cjs.cjs",
     "start.mjs",
     "src/*.mjs",
     "src/angular/dist/**"

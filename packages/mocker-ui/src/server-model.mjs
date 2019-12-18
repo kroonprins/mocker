@@ -1,4 +1,4 @@
-import { Server } from '@kroonprins/mocker-shared-lib/server-model'
+import { Server } from '@kroonprins/mocker-shared-lib/server-model.mjs'
 
 class MockServer extends Server {}
 

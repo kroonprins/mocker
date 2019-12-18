@@ -1,7 +1,7 @@
-import { TechnicalValidationError } from './error-types'
-import { LearningModeServerTypes } from './server.service'
-import { Logger } from './logging'
-import { config } from './config'
+import { TechnicalValidationError } from './error-types.mjs'
+import { LearningModeServerTypes } from './server.service.mjs'
+import { Logger } from './logging.mjs'
+import { config } from './config.mjs'
 
 /**
  * Service for retrieve various configuration items.

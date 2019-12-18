@@ -1,9 +1,9 @@
 import express from 'express'
 import 'express-async-errors'
 import portastic from 'portastic'
-import { FunctionalValidationError } from './error-types'
-import { config } from './config'
-import { Logger } from './logging'
+import { FunctionalValidationError } from './error-types.mjs'
+import { config } from './config.mjs'
+import { Logger } from './logging.mjs'
 
 /**
  * Enum of server statuses

@@ -1,8 +1,8 @@
 import chai from 'chai'
 import chaiString from 'chai-string'
-import { RuleService } from '../src/rule.service'
-import { Logger, PinoLogger } from '../src/logging'
-import { config } from '../src/config'
+import { RuleService } from '../src/rule.service.mjs'
+import { Logger, PinoLogger } from '../src/logging.mjs'
+import { config } from '../src/config.mjs'
 
 const expect = chai.expect
 chai.use(chaiString)

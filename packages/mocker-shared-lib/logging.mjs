@@ -1,7 +1,7 @@
 import {
   Logger,
   PinoLogger
-} from './src/logging'
+} from './src/logging.mjs'
 
 // public exports
 export {

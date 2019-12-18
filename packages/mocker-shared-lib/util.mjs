@@ -1,6 +1,6 @@
 import {
   wait
-} from './src/util'
+} from './src/util.mjs'
 
 // public exports
 export {

@@ -5,9 +5,9 @@
   "main": "",
   "scripts": {
     "prepare": "npm run create-cjs",
-    "test": "node --experimental-modules --es-module-specifier-resolution=node ./src/test-runner.mjs",
+    "test": "node --es-module-specifier-resolution=node ./src/test-runner.mjs",
     "create-cjs": "./babel.sh",
-    "test-cjs": "node ./cjs/src/test-runner.js",
+    "test-cjs": "node ./cjs/src/test-runner.cjs",
     "version-check": "updates"
   },
   "repository": {
@@ -59,6 +59,6 @@
   },
   "bin": {
     "mocker-test-runner": "./src/test-runner.mjs",
-    "mocker-test-runner-cjs": "./cjs/src/test-runner.js"
+    "mocker-test-runner-cjs": "./cjs/src/test-runner.cjs"
   }
 }

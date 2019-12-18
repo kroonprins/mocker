@@ -1,8 +1,8 @@
 import chai from 'chai'
 import Ajv from 'ajv'
 import ajvAsync from 'ajv-async'
-import { QueryOpts } from '../src/learning-mode.db.model'
-import { LearningModeDbValidationModel } from '../src/learning-mode.db.validation-model'
+import { QueryOpts } from '../src/learning-mode.db.model.mjs'
+import { LearningModeDbValidationModel } from '../src/learning-mode.db.validation-model.mjs'
 
 const expect = chai.expect
 

@@ -1,6 +1,6 @@
 import {
   RuleService
-} from './src/rule.service'
+} from './src/rule.service.mjs'
 
 // public exports
 export {

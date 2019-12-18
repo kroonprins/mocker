@@ -1,9 +1,9 @@
-import { ValidationModel } from './app-class-validation.service'
-import { Request, Header, Cookie, Response, ConditionalResponse, ConditionalResponseValue, Rule } from './rule-model'
-import { ConfigService } from './config.service'
-import { LatencyValidationModel } from './latency-validation-model'
-import { FixedLatency, RandomLatency } from './latency-model'
-import { config } from './config'
+import { ValidationModel } from './app-class-validation.service.mjs'
+import { Request, Header, Cookie, Response, ConditionalResponse, ConditionalResponseValue, Rule } from './rule-model.mjs'
+import { ConfigService } from './config.service.mjs'
+import { LatencyValidationModel } from './latency-validation-model.mjs'
+import { FixedLatency, RandomLatency } from './latency-model.mjs'
+import { config } from './config.mjs'
 
 class RuleValidationModel extends ValidationModel {
   constructor (configService = config.getInstance(ConfigService), latencyValidationModel = config.getInstance(LatencyValidationModel)) {

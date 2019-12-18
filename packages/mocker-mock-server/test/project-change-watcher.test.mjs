@@ -1,9 +1,9 @@
 import chai from 'chai'
-import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default'
-import { ProjectChangeWatcher } from '../src/project-change-watcher'
-import { overwriteFile, unlinkAsync } from '@kroonprins/mocker-shared-lib/fs-util'
-import { wait } from '@kroonprins/mocker-shared-lib/util'
-import { config } from '@kroonprins/mocker-shared-lib/config'
+import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default.mjs'
+import { overwriteFile, unlinkAsync } from '@kroonprins/mocker-shared-lib/fs-util.mjs'
+import { wait } from '@kroonprins/mocker-shared-lib/util.mjs'
+import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
+import { ProjectChangeWatcher } from '../src/project-change-watcher.mjs'
 const expect = chai.expect
 
 // could split this up so that not all test run synchronously
