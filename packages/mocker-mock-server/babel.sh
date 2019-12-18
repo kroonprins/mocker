@@ -16,7 +16,6 @@ done
 
 sed -i 's/\.mjs/.cjs/g' cjs/*.cjs
 sed -i 's/\.mjs/.cjs/g' cjs/**/*.cjs
-sed -i 's/cjs\.js/cjs.cjs/g' cjs/**/*.cjs
 sed -i 's/_serializr\.default/_serializr/g' cjs/**/*.cjs
 sed -i 's#@kroonprins/mocker-shared-lib/#@kroonprins/mocker-shared-lib/cjs/#g' cjs/**/*.cjs
 sed -i 's#./test/resources/extra-template-helpers.nunjucks.cjs#./cjs/test/resources/extra-template-helpers.nunjucks.cjs#g' cjs/**/*.cjs

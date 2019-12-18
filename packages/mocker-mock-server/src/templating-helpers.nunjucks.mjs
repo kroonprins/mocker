@@ -1,10 +1,10 @@
 import fs from 'fs'
-import path from 'path'
 import memoize from 'mem'
+import { fileURLToPath } from 'url';
+import { resolve, dirname } from 'path';
 import { createModulePath } from '@kroonprins/mocker-shared-lib/dynamic-module-import-helper.mjs'
 import { Logger } from '@kroonprins/mocker-shared-lib/logging.mjs'
 import { config } from '@kroonprins/mocker-shared-lib/config.mjs'
-import cjs from './mjs_workaround/cjs.js'
 import { EchoServerService } from './echo-server.service.mjs'
 
 const readFile = memoize(fs.readFileSync) // sync because templating helpers in nunjucks are sync
@@ -90,11 +90,11 @@ class NunjucksTemplatingHelpers {
         continue
       }
 
-      const resolvedLocation = path.resolve(location)
+      const resolvedLocation = resolve(location)
       this.logger.debug('Resolved location: %s', resolvedLocation)
 
       dynamicImportPromises.push(
-        import(createModulePath(resolvedLocation, cjs.__dirname)).then(module => {
+        import(createModulePath(resolvedLocation, dirname(fileURLToPath(import.meta.url)))).then(module => {
           Object.assign(this.filters, module.HELPERS.filters)
           Object.assign(this.functions, module.HELPERS.functions)
         }))

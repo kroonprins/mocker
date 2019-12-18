@@ -16,6 +16,5 @@ done
 
 sed -i 's/\.mjs/.cjs/g' cjs/*.cjs
 sed -i 's/\.mjs/.cjs/g' cjs/**/*.cjs
-sed -i 's/cjs\.js/cjs.cjs/g' cjs/**/*.cjs
 sed -i 's/_serializr\.default/_serializr/g' cjs/**/*.cjs
 sed -i 's#./test/\*\*/\*.test.cjs#./cjs/test/**/*.test.cjs#g' cjs/src/test-runner.cjs

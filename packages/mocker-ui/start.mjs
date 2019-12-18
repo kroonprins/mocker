@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 import dotenv from 'dotenv'
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import { initialize as setDefaultConfigMockServer } from '@kroonprins/mocker-mock-server'
 import { initialize as setDefaultConfigLearningMode } from '@kroonprins/mocker-learning-mode'
 import { AdministrationServer } from '@kroonprins/mocker-shared-lib/administration-server.mjs'
@@ -9,7 +11,6 @@ import { initialize as setDefaultConfig } from '@kroonprins/mocker-shared-lib/co
 import { ApiServer } from './src/api-server.mjs'
 import { UiServer } from './src/ui-server.mjs'
 import { initialize as setDefaultConfigUI } from './src/config-default.mjs'
-import cjs from './cjs.js/index.js.js'
 
 dotenv.config()
 const ENV = process.env
@@ -28,7 +29,7 @@ config
   .registerProperty('api-server.bind-address', ENV.MOCKER_API_SERVER_BIND_ADDRESS || '0.0.0.0')
   .registerProperty('ui-server.port', ENV.MOCKER_UI_SERVER_PORT || 3005)
   .registerProperty('ui-server.bind-address', ENV.MOCKER_UI_SERVER_BIND_ADDRESS || '0.0.0.0')
-  .registerProperty('ui-server.statics-location', ENV.MOCKER_UI_SERVER_STATICS_LOCATION || `${cjs.__dirname}/src/angular/dist/mocker-angular-ui`)
+  .registerProperty('ui-server.statics-location', ENV.MOCKER_UI_SERVER_STATICS_LOCATION || `${dirname(fileURLToPath(import.meta.url))}/src/angular/dist/mocker-angular-ui`)
 
 setDefaultConfig()
 setDefaultConfigMockServer()

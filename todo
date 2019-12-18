@@ -79,3 +79,4 @@
 * git submodules alternative to lerna?
 * https://github.com/hapijs/joi instead of json schema validation?
 * bazel instead of lerna?
+* use https://github.com/typicode/husky for the git hooks

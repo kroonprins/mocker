@@ -2,11 +2,11 @@
 
 // Temporary workaround because it does not seem possible to use test frameworks like mocha/ava/... with modules
 
-import path from 'path'
 import columnify from 'columnify'
 import colors from 'colors'
+import { fileURLToPath } from 'url';
+import { resolve, relative, basename, dirname } from 'path';
 import { globAsync } from './fs-util.mjs'
-import cjs from './mjs_workaround/cjs.js'
 import { createModulePath } from './dynamic-module-import-helper.mjs'
 
 const filterArgs = process.argv.slice(2)
@@ -18,7 +18,7 @@ const DO_FILTER = filters.length > 0
 const FILTER_REGEX = new RegExp(filters.join('|'))
 
 const findTests = async () => {
-  return (await globAsync('./test/**/*.test.mjs')).map(testFile => path.resolve(testFile))
+  return (await globAsync('./test/**/*.test.mjs')).map(testFile => resolve(testFile))
 }
 
 class TestResult {
@@ -33,7 +33,7 @@ class TestResult {
   }
   set fileName (fileName) {
     this._fileName = fileName
-    this.relativePath = path.relative('', this._fileName)
+    this.relativePath = relative('', this._fileName)
   }
 }
 
@@ -74,7 +74,7 @@ const skipTest = (testFile) => {
   if(!DO_FILTER) {
     return false
   }
-  return !path.basename(testFile).match(FILTER_REGEX)
+  return !basename(testFile).match(FILTER_REGEX)
 }
 
 (async () => {
@@ -96,7 +96,7 @@ const skipTest = (testFile) => {
     }
 
     try {
-      const testModule = await import(createModulePath(testFile, cjs.__dirname))
+      const testModule = await import(createModulePath(testFile, dirname(fileURLToPath(import.meta.url))))
       await testModule.test()
     } catch (e) {
       testResult.failure = e
