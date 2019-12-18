@@ -1,9 +1,11 @@
-import { MockServer,
+import {
+  MockServer,
   initializeWithoutMetricsAndSwagger as setDefaultConfigMockServer,
   MockServerEventEmitter,
   TemplatingService,
   NunjucksTemplatingService,
-  NunjucksTemplatingHelpers } from '@kroonprins/mocker-mock-server'
+  NunjucksTemplatingHelpers
+} from '@kroonprins/mocker-mock-server'
 import { initializeWithoutProjectService as setDefaultConfig } from '@kroonprins/mocker-shared-lib/config-default.mjs'
 import { Logger } from '@kroonprins/mocker-shared-lib/logging.mjs'
 import { config } from '@kroonprins/mocker-shared-lib/config.mjs'

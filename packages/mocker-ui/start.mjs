@@ -19,7 +19,7 @@ config
   .registerProperty('project', ENV.MOCKER_PROJECT)
   .registerProperty('project.location', ENV.MOCKER_PROJECTS_FILE || './projects/projects.yaml')
   .registerProperty('rule.default.location', ENV.MOCKER_RULES_DEFAULT_LOCATION)
-  .registerProperty('learning-mode.db.location', ENV.MOCKER_LEARNING_MODE_DB_LOCATION || `./data/learning_mode.db`)
+  .registerProperty('learning-mode.db.location', ENV.MOCKER_LEARNING_MODE_DB_LOCATION || './data/learning_mode.db')
   .registerProperty('mock-server.watch-for-configuration-changes', ENV.MOCKER_MOCK_SERVER_WATCH_FOR_FILE_CHANGES === 'true' || false)
   .registerProperty('templating.helpers.nunjucks', ENV.TEMPLATING_HELPERS_NUNJUCKS)
   .registerProperty('administration-server.port', ENV.MOCKER_ADMINISTRATION_SERVER_PORT || 3001)

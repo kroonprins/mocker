@@ -25,7 +25,7 @@ config
   .registerProperty('project', ENV.MOCKER_PROJECT)
   .registerProperty('project.location', ENV.MOCKER_PROJECTS_FILE || './projects/projects.yaml')
   .registerProperty('rule.default.location', ENV.MOCKER_RULES_DEFAULT_LOCATION)
-  .registerProperty('learning-mode.db.location', ENV.MOCKER_LEARNING_MODE_DB_LOCATION || `./data/learning_mode.db`)
+  .registerProperty('learning-mode.db.location', ENV.MOCKER_LEARNING_MODE_DB_LOCATION || './data/learning_mode.db')
   .registerProperty('learning-mode.reverse-proxy.port', ENV.MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_PORT || 3002)
   .registerProperty('learning-mode.reverse-proxy.bind-address', ENV.MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_BIND_ADDRESS || '0.0.0.0')
   .registerProperty('learning-mode.reverse-proxy.target-host', ENV.MOCKER_LEARNING_MODE_REVERSE_PROXY_SERVER_TARGET_HOST)

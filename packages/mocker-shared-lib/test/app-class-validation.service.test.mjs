@@ -22,7 +22,7 @@ const test = async () => {
       .registerInstance(RuleValidationModel, new RuleValidationModel(new ConfigService()))
       .registerInstance(ProjectValidationModel, new ProjectValidationModel())
 
-    let appClassValidationService = new AppClassValidationService()
+    const appClassValidationService = new AppClassValidationService()
 
     const valid = await appClassValidationService.validate(ProjectFile, new ProjectFile('x', ['y']))
     expect(valid).to.be.equal(true)

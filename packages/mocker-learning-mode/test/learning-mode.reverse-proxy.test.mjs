@@ -28,11 +28,11 @@ const test = async () => {
       .registerType(Logger, PinoLogger)
       .registerInstance(LearningModeDbValidationModel, new LearningModeDbValidationModel())
 
-    let learningModeDbService = new LearningModeDbService(
+    const learningModeDbService = new LearningModeDbService(
       dbFile,
       new AppClassValidationService()
     )
-    let learningModeService = new LearningModeService(learningModeDbService)
+    const learningModeService = new LearningModeService(learningModeDbService)
 
     const minimumPort = Math.floor((Math.random() * 50000) + 8000)
     const availablePorts = (await portastic.find({

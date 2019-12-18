@@ -32,14 +32,14 @@ const test = async () => {
       title: 'test_swagger'
     })
 
-    expect(openApiDefinition.paths['/get']['get']).to.deep.equal({
+    expect(openApiDefinition.paths['/get'].get).to.deep.equal({
       summary: 'swagger get without templating',
       description:
         'Rule \'swagger get without templating\' located at ' + path.normalize('../rules/swagger get.yaml'),
       parameters: [],
       responses:
       {
-        '200':
+        200:
         {
           description: 'A response using templating engine none',
           headers: {},
@@ -49,14 +49,14 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/post']['post']).to.deep.equal({
+    expect(openApiDefinition.paths['/post'].post).to.deep.equal({
       summary: 'swagger post without templating',
       description:
         'Rule \'swagger post without templating\' located at ' + path.normalize('../rules/swagger post.yaml'),
       parameters: [],
       responses:
       {
-        '200':
+        200:
         {
           description: 'A response using templating engine none',
           headers: {},
@@ -66,7 +66,7 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/get/{pathParam}']['get']).to.deep.equal({
+    expect(openApiDefinition.paths['/get/{pathParam}'].get).to.deep.equal({
       summary: 'swagger get with one path parameter',
       description:
         'Rule \'swagger get with one path parameter\' located at ' + path.normalize('../rules/swagger one_path_parameter.yaml'),
@@ -79,7 +79,7 @@ const test = async () => {
       }],
       responses:
       {
-        '200':
+        200:
         {
           description: 'A response using templating engine none',
           headers: {},
@@ -89,7 +89,7 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/get/{pathParam1}/yo/{pathParam2}/yu/{3}/{4}']['get']).to.deep.equal({
+    expect(openApiDefinition.paths['/get/{pathParam1}/yo/{pathParam2}/yu/{3}/{4}'].get).to.deep.equal({
       summary: 'swagger get with multiple path parameters',
       description:
         'Rule \'swagger get with multiple path parameters\' located at ' + path.normalize('../rules/swagger multiple_path_parameters.yaml'),
@@ -120,7 +120,7 @@ const test = async () => {
       }],
       responses:
       {
-        '200':
+        200:
         {
           description: 'A response using templating engine none',
           headers: {},
@@ -130,14 +130,14 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/get501']['get']).to.deep.equal({
+    expect(openApiDefinition.paths['/get501'].get).to.deep.equal({
       summary: 'swagger get with 501 status code',
       description:
         'Rule \'swagger get with 501 status code\' located at ' + path.normalize('../rules/swagger statusCode.yaml'),
       parameters: [],
       responses:
       {
-        '501':
+        501:
         {
           description: 'A response using templating engine none',
           headers: {},
@@ -147,7 +147,7 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/getTemplatedStatusCode']['get']).to.deep.equal({
+    expect(openApiDefinition.paths['/getTemplatedStatusCode'].get).to.deep.equal({
       summary: 'swagger get with templated status code',
       description:
         'Rule \'swagger get with templated status code\' located at ' + path.normalize('../rules/swagger templated_statusCode.yaml'),
@@ -164,7 +164,7 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/get_response_headers']['get']).to.deep.equal({
+    expect(openApiDefinition.paths['/get_response_headers'].get).to.deep.equal({
       summary: 'swagger get with response headers',
       description:
         'Rule \'swagger get with response headers\' located at ' + path.normalize('../rules/swagger response_headers.yaml'),
@@ -183,7 +183,7 @@ const test = async () => {
       }],
       responses:
       {
-        '200':
+        200:
         {
           description: 'A response using templating engine nunjucks',
           headers: {
@@ -206,7 +206,7 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/get_response_cookies']['get']).to.deep.equal({
+    expect(openApiDefinition.paths['/get_response_cookies'].get).to.deep.equal({
       summary: 'swagger get with response cookies',
       description:
         'Rule \'swagger get with response cookies\' located at ' + path.normalize('../rules/swagger response_cookies.yaml'),
@@ -225,7 +225,7 @@ const test = async () => {
       }],
       responses:
       {
-        '200':
+        200:
         {
           description: 'A response using templating engine nunjucks',
           headers: {
@@ -239,7 +239,7 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/get_with_input_query_parameters']['get']).to.deep.equal({
+    expect(openApiDefinition.paths['/get_with_input_query_parameters'].get).to.deep.equal({
       summary: 'swagger get with input query parameters',
       description:
         'Rule \'swagger get with input query parameters\' located at ' + path.normalize('../rules/swagger input_query_parameters.yaml'),
@@ -282,7 +282,7 @@ const test = async () => {
       }],
       responses:
       {
-        '200':
+        200:
         {
           description: 'A response using templating engine nunjucks',
           headers: {
@@ -294,13 +294,15 @@ const test = async () => {
             }
           },
           content:
-            { '{% if req.query.q1 + req.query.q7 > aFunc(req.query.q5) - req.query.q8 %}application/json{% else %}{{req.query.q6 | filter}}{% endif %}':
-              { schema: { type: 'string', example: 'hello swagger for input query parameters {{aFunc(req.query.q4)}}' } } }
+            {
+              '{% if req.query.q1 + req.query.q7 > aFunc(req.query.q5) - req.query.q8 %}application/json{% else %}{{req.query.q6 | filter}}{% endif %}':
+              { schema: { type: 'string', example: 'hello swagger for input query parameters {{aFunc(req.query.q4)}}' } }
+            }
         }
       }
     })
 
-    expect(openApiDefinition.paths['/get_with_input_cookie_parameters']['get']).to.deep.equal({
+    expect(openApiDefinition.paths['/get_with_input_cookie_parameters'].get).to.deep.equal({
       summary: 'swagger get with input cookie parameters',
       description:
         'Rule \'swagger get with input cookie parameters\' located at ' + path.normalize('../rules/swagger input_cookie_parameters.yaml'),
@@ -331,7 +333,7 @@ const test = async () => {
       }],
       responses:
       {
-        '200':
+        200:
         {
           description: 'A response using templating engine nunjucks',
           headers: {
@@ -348,7 +350,7 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/get_with_input_header_parameters']['get']).to.deep.equal({
+    expect(openApiDefinition.paths['/get_with_input_header_parameters'].get).to.deep.equal({
       summary: 'swagger get with input header parameters',
       description:
         'Rule \'swagger get with input header parameters\' located at ' + path.normalize('../rules/swagger input_header_parameters.yaml'),
@@ -379,7 +381,7 @@ const test = async () => {
       }],
       responses:
       {
-        '200':
+        200:
         {
           description: 'A response using templating engine nunjucks',
           headers: {
@@ -396,14 +398,15 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/post_with_input_body']['post']).to.deep.equal({
+    expect(openApiDefinition.paths['/post_with_input_body'].post).to.deep.equal({
       summary: 'swagger post with input body',
       description:
         'Rule \'swagger post with input body\' located at ' + path.normalize('../rules/swagger input_body.yaml'),
       parameters: [],
       requestBody: {
         required: true,
-        content: { 'text/plain': { schema: { type: 'string' } },
+        content: {
+          'text/plain': { schema: { type: 'string' } },
           'application/json': { schema: { type: 'string' } },
           'application/javascript': { schema: { type: 'string' } },
           'application/xml': { schema: { type: 'string' } },
@@ -414,7 +417,7 @@ const test = async () => {
       },
       responses:
       {
-        '200':
+        200:
         {
           description: 'A response using templating engine nunjucks',
           headers: {},
@@ -424,7 +427,7 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/post_with_input_but_no_nunjucks']['post']).to.deep.equal({
+    expect(openApiDefinition.paths['/post_with_input_but_no_nunjucks'].post).to.deep.equal({
       summary: 'swagger post with input but no nunjucks',
       description:
         'Rule \'swagger post with input but no nunjucks\' located at ' + path.normalize('../rules/swagger input_no_nunjucks.yaml'),
@@ -451,7 +454,7 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/post_conditional_response']['post']).to.deep.equal({
+    expect(openApiDefinition.paths['/post_conditional_response'].post).to.deep.equal({
       summary: 'swagger post with conditional response',
       description:
         'Rule \'swagger post with conditional response\' located at ' + path.normalize('../rules/swagger conditional_response.yaml'),
@@ -482,7 +485,8 @@ const test = async () => {
       }],
       requestBody: {
         required: true,
-        content: { 'text/plain': { schema: { type: 'string' } },
+        content: {
+          'text/plain': { schema: { type: 'string' } },
           'application/json': { schema: { type: 'string' } },
           'application/javascript': { schema: { type: 'string' } },
           'application/xml': { schema: { type: 'string' } },
@@ -524,7 +528,7 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/post_conditional_response_with_latency']['post']).to.deep.equal({
+    expect(openApiDefinition.paths['/post_conditional_response_with_latency'].post).to.deep.equal({
       summary: 'swagger post with conditional response with latency',
       description:
         'Rule \'swagger post with conditional response with latency\' located at ' + path.normalize('../rules/swagger conditional_response_with_latency.yaml'),
@@ -555,7 +559,8 @@ const test = async () => {
       }],
       requestBody: {
         required: true,
-        content: { 'text/plain': { schema: { type: 'string' } },
+        content: {
+          'text/plain': { schema: { type: 'string' } },
           'application/json': { schema: { type: 'string' } },
           'application/javascript': { schema: { type: 'string' } },
           'application/xml': { schema: { type: 'string' } },
@@ -597,14 +602,14 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/fixed_latency']['post']).to.deep.equal({
+    expect(openApiDefinition.paths['/fixed_latency'].post).to.deep.equal({
       summary: 'swagger with fixed latency',
       description:
         'Rule \'swagger with fixed latency\' located at ' + path.normalize('../rules/swagger latency_fixed.yaml'),
       parameters: [],
       responses:
       {
-        '200':
+        200:
         {
           description: 'A response using templating engine none with a fixed latency of 300ms',
           headers: {},
@@ -614,14 +619,14 @@ const test = async () => {
       }
     })
 
-    expect(openApiDefinition.paths['/random_latency']['post']).to.deep.equal({
+    expect(openApiDefinition.paths['/random_latency'].post).to.deep.equal({
       summary: 'swagger with random latency',
       description:
         'Rule \'swagger with random latency\' located at ' + path.normalize('../rules/swagger latency_random.yaml'),
       parameters: [],
       responses:
       {
-        '200':
+        200:
         {
           description: 'A response using templating engine none with a random latency between 300ms and 400ms',
           headers: {},

@@ -52,7 +52,7 @@ class JsonSchemaBasedClassValidationService extends ClassValidationService {
     } else {
       if ('$id' in schema) {
         // if schema contains a $id property this is used as unique identifier
-        schemaId = schema['$id']
+        schemaId = schema.$id
       } else {
         // otherwise a unique id is generated
         this.logger.warn(schema, 'This schema does not define a $id')

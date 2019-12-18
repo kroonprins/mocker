@@ -19,23 +19,23 @@ const test = async () => {
       .registerProperty('logging.level.startup', 'info')
       .registerType(Logger, PinoLogger)
 
-    let classValidationService = new JsonSchemaBasedClassValidationService()
+    const classValidationService = new JsonSchemaBasedClassValidationService()
       .registerSchema(TestClass, {
-        '$id': 'uri://blabla',
-        'type': 'object',
-        'properties': {
-          'a': {
-            'type': 'integer'
+        $id: 'uri://blabla',
+        type: 'object',
+        properties: {
+          a: {
+            type: 'integer'
           },
-          'b': {
-            'type': 'string',
-            'maxLength': 2
+          b: {
+            type: 'string',
+            maxLength: 2
           }
         },
-        'required': [
+        required: [
           'a'
         ],
-        'additionalProperties': false
+        additionalProperties: false
       })
 
     let exceptionThrownBecauseRequiredPropertyNotSet = false
@@ -61,19 +61,19 @@ const test = async () => {
 
     classValidationService
       .registerSchema(TestClass, {
-        'type': 'object',
-        'properties': {
-          'a': {
-            'type': 'string'
+        type: 'object',
+        properties: {
+          a: {
+            type: 'string'
           },
-          'b': {
-            'type': 'integer'
+          b: {
+            type: 'integer'
           }
         },
-        'required': [
+        required: [
           'a'
         ],
-        'additionalProperties': false
+        additionalProperties: false
       })
 
     const validAfterNewSchema = await classValidationService.validate(TestClass, new TestClass('1'))

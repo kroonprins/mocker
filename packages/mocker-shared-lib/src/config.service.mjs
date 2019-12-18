@@ -33,10 +33,10 @@ class ConfigService {
         return Logger.getSupportedLogLevels()
       },
       'latency-types': () => {
-        return [ 'fixed', 'random' ]
+        return ['fixed', 'random']
       },
       'config-items': () => {
-        return [ ...new Set(Object.keys(this.MAPPING_SYNC), Object.keys(this.MAPPING_ASYNC)) ]
+        return [...new Set(Object.keys(this.MAPPING_SYNC), Object.keys(this.MAPPING_ASYNC))]
       }
     }
     this.MAPPING_ASYNC = {

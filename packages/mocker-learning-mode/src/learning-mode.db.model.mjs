@@ -15,7 +15,7 @@ class QueryOpts {
     let sortQuery
     if (query.sort && typeof query.sort === 'string') {
       sortQuery = {}
-      for (let prop of query.sort.split(',')) {
+      for (const prop of query.sort.split(',')) {
         if (!prop) {
           continue
         }

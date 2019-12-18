@@ -70,6 +70,7 @@ class FileOperationQueue {
       await unlinkAsync(location)
     })
   }
+
   _pushAndExecute (action) {
     return new Promise((resolve, reject) => {
       try {
@@ -81,6 +82,7 @@ class FileOperationQueue {
       }
     })
   }
+
   async _execute () {
     if (this.queue.length === 0) {
       return

@@ -11,6 +11,7 @@ class RuleService {
   constructor () {
     this.logger = config.getClassInstance(Logger, { id: 'rule-service' })
   }
+
   async readRule (fileName, encoding = 'utf8') {
     this.logger.debug('Read rule %s with encoding %s', fileName, encoding)
     const fileContent = await readFileAsync(fileName, encoding)

@@ -30,18 +30,18 @@
     "types.d.ts"
   ],
   "dependencies": {
-    "@babel/polyfill": "^7.4.4",
+    "@babel/polyfill": "^7.7.0",
     "@kroonprins/mocker-mock-server": "^0.1.9",
     "@kroonprins/mocker-shared-lib": "^0.1.9",
-    "serializr": "^1.5.1"
+    "serializr": "^1.5.4"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/plugin-transform-modules-commonjs": "^7.4.4",
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.7.5",
     "axios": "^0.19.0",
     "babel-plugin-dynamic-import-node": "^2.3.0",
     "chai": "^4.2.0",
-    "updates": "^8.2.0"
+    "updates": "^9.3.3"
   }
 }

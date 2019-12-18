@@ -32,7 +32,7 @@ class EchoServerService {
     }
 
     const res = {}
-    for (let prop of Object.keys(obj)) {
+    for (const prop of Object.keys(obj)) {
       if (filterProps && filterProps.has(prop)) {
         continue
       }

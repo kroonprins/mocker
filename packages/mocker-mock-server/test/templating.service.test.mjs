@@ -64,7 +64,7 @@ const test = async () => {
       .registerType(Logger, PinoLogger)
       .registerInstance('NunjucksTemplatingService', new NunjucksTemplatingService(new TestNunjucksTemplatingHelpers()))
 
-    let templatingService = new TemplatingService()
+    const templatingService = new TemplatingService()
 
     const templatingEngines = await templatingService.listEngines()
     expect(templatingEngines.length).to.be.equal(2)

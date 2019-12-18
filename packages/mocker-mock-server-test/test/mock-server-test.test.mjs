@@ -20,27 +20,27 @@ const test = async () => {
     const mockServerWithRuleObject = new MockServer({
       port: 0,
       rule: [{
-        'name': 'basic rule',
-        'request': {
-          'path': '/path-parameter/:p1/:p2',
-          'method': 'GET'
+        name: 'basic rule',
+        request: {
+          path: '/path-parameter/:p1/:p2',
+          method: 'GET'
         },
-        'response': {
-          'templatingEngine': 'none',
-          'contentType': 'text/plain',
-          'statusCode': 200,
-          'body': 'the response body'
+        response: {
+          templatingEngine: 'none',
+          contentType: 'text/plain',
+          statusCode: 200,
+          body: 'the response body'
         }
       }, {
-        'request': {
-          'path': '/post',
-          'method': 'POST'
+        request: {
+          path: '/post',
+          method: 'POST'
         },
-        'response': {
-          'templatingEngine': 'none',
-          'contentType': 'text/plain',
-          'statusCode': 200,
-          'body': 'the post response body'
+        response: {
+          templatingEngine: 'none',
+          contentType: 'text/plain',
+          statusCode: 200,
+          body: 'the post response body'
         }
       }]
     })
@@ -73,7 +73,7 @@ const test = async () => {
       const response = await axios.get(`http://localhost:${mockServerWithRuleLocation.port}/path-parameter/parameter1/parameter2?q1=query1&q2=query2`, {
         headers: {
           'X-test': 'test',
-          'Cookie': 'c1=cookie1; c2=cookie2'
+          Cookie: 'c1=cookie1; c2=cookie2'
         }
       })
       expect(response.status).to.equal(200)
@@ -100,7 +100,7 @@ const test = async () => {
       const response2 = await axios.get(`http://localhost:${mockServerWithRuleObject.port}/path-parameter/parameter1/parameter2?q1=query1&q2=query2`, {
         headers: {
           'X-test': 'test',
-          'Cookie': 'c1=cookie1; c2=cookie2'
+          Cookie: 'c1=cookie1; c2=cookie2'
         }
       })
       expect(response2.status).to.equal(200)
@@ -126,41 +126,41 @@ const test = async () => {
 
       const request3 = axios.post(`http://localhost:${mockServerWithRuleLocation.port}/echo`,
         {
-          'test': 'succeeded'
+          test: 'succeeded'
         },
         {
           headers: {
             'X-test': 'test',
-            'Cookie': 'c1=cookie1;c2=cookie2'
+            Cookie: 'c1=cookie1;c2=cookie2'
           }
         })
 
       const request4 = axios.post(`http://localhost:${mockServerWithRuleObject.port}/post`,
         {
-          'test': 'succeeded'
+          test: 'succeeded'
         },
         {
           headers: {
             'X-test': 'test',
-            'Cookie': 'c1=cookie1;c2=cookie2'
+            Cookie: 'c1=cookie1;c2=cookie2'
           }
         })
 
-      const [ response3, response4 ] = await Promise.all([ request3, request4 ])
+      const [response3, response4] = await Promise.all([request3, request4])
 
       expect(response3.status).be.equal(200)
       expect(mockServerWithRuleLocation.for('/path-parameter/:p1/:p2', 'GET').invocations()).to.equal(1)
       expect(mockServerWithRuleLocation.for('/echo', 'POST').invocations()).to.equal(1)
       expect(mockServerWithRuleLocation.name('echo server').invocations()).to.equal(1)
       expect(mockServerWithRuleLocation.for('/echo', 'POST').body()).to.deep.equal({
-        'test': 'succeeded'
+        test: 'succeeded'
       })
 
       expect(response4.status).be.equal(200)
       expect(mockServerWithRuleObject.for('/path-parameter/:p1/:p2', 'GET').invocations()).to.equal(1)
       expect(mockServerWithRuleObject.for('/post', 'POST').invocations()).to.equal(1)
       expect(mockServerWithRuleObject.for('/post', 'POST').body()).to.deep.equal({
-        'test': 'succeeded'
+        test: 'succeeded'
       })
 
       // test nunjucks templating helpers from file

@@ -11,6 +11,7 @@ class SwaggerGenerationService {
     this.projectService = projectService
     this.logger = config.getClassInstance(Logger, { id: 'swagger-generation.service' })
   }
+
   async generate (projectName, servers) {
     const project = await this.projectService.retrieveProject(projectName)
     this.logger.debug('project {}', project.rules)
@@ -29,7 +30,7 @@ class SwaggerGenerationService {
   _getPaths (rules) {
     const paths = {}
 
-    for (let projectRule of rules) {
+    for (const projectRule of rules) {
       this.logger.debug(projectRule, 'Process rule')
       const ruleRequest = projectRule.rule.request
       const ruleResponse = projectRule.rule.response
@@ -53,7 +54,7 @@ class SwaggerGenerationService {
 
       const requestBody = this._getOpenApiRequestBody(referencesToRequestInRuleResponse)
       if (requestBody) {
-        method['requestBody'] = requestBody
+        method.requestBody = requestBody
       }
 
       path[openApiMethod] = method
@@ -65,7 +66,7 @@ class SwaggerGenerationService {
   }
 
   _getReferencesToRequestInRuleResponse (ruleResponse) {
-    let result = {
+    const result = {
       query: new Set(),
       cookies: new Set(),
       headers: new Set(),
@@ -132,14 +133,14 @@ class SwaggerGenerationService {
 
   _getOpenApiRequestBody (referencesToRequestInRuleResponse) {
     let requestBody
-    const matches = referencesToRequestInRuleResponse['body']
+    const matches = referencesToRequestInRuleResponse.body
     if (matches.size > 0) {
       requestBody = {
         required: true,
         content: {}
       }
 
-      const contentTypes = [ 'text/plain', 'application/json', 'application/javascript', 'application/xml', 'text/xml', 'text/html', 'application/x-www-form-urlencoded' ]
+      const contentTypes = ['text/plain', 'application/json', 'application/javascript', 'application/xml', 'text/xml', 'text/html', 'application/x-www-form-urlencoded']
 
       contentTypes.forEach(contentType => {
         requestBody.content[contentType] = {
@@ -211,7 +212,7 @@ class SwaggerGenerationService {
   _getResponsesForConditionalResponse (ruleConditionalResponse) {
     const response = {}
 
-    for (let ruleConditionalResponseValue of ruleConditionalResponse.response) {
+    for (const ruleConditionalResponseValue of ruleConditionalResponse.response) {
       const content = {}
       content[ruleConditionalResponseValue.contentType] = {
         schema: {
@@ -233,7 +234,7 @@ class SwaggerGenerationService {
   _getHeaders (ruleHeaders, ruleCookies) {
     const headers = {}
 
-    for (let ruleHeader of ruleHeaders) {
+    for (const ruleHeader of ruleHeaders) {
       headers[ruleHeader.name] = {
         description: `value = ${ruleHeader.value}`
       }
@@ -257,7 +258,7 @@ class SwaggerGenerationService {
     let colonFound = false
     let currentParam = []
     for (let i = 0; i < path.length; i++) {
-      let char = path.charAt(i)
+      const char = path.charAt(i)
       if (char === ':') {
         colonFound = true
         continue
@@ -276,8 +277,8 @@ class SwaggerGenerationService {
       res.parameters.push(currentParam.join(''))
     }
 
-    for (let parameter of res.parameters) {
-      let regex = new RegExp(`:(${parameter})`, 'g')
+    for (const parameter of res.parameters) {
+      const regex = new RegExp(`:(${parameter})`, 'g')
       res.openApiPath = res.openApiPath.replace(regex, '{$1}')
     }
 

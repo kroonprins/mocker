@@ -20,8 +20,8 @@ const test = async () => {
       .registerType(Logger, PinoLogger)
       .registerInstance(LearningModeDbValidationModel, new LearningModeDbValidationModel())
 
-    let learningModeDbService = new LearningModeDbService(dbFile, new AppClassValidationService())
-    let learningModeService = new LearningModeService(learningModeDbService)
+    const learningModeDbService = new LearningModeDbService(dbFile, new AppClassValidationService())
+    const learningModeService = new LearningModeService(learningModeDbService)
 
     const checkEmptyDb = await learningModeService.findRecordedRequests('project_learningModeService')
     expect(checkEmptyDb.length).to.be.equal(0)
@@ -61,7 +61,7 @@ const test = async () => {
     const retrievedResultAfterInsert = await learningModeService.findRecordedRequests('project_learningModeService')
     expect(retrievedResultAfterInsert.length).to.be.equal(2)
 
-    const numRemovedAfterRemoveRecorededRequest = await learningModeService.removeRecordedRequest(null, savedRequest3['id'])
+    const numRemovedAfterRemoveRecorededRequest = await learningModeService.removeRecordedRequest(null, savedRequest3.id)
     expect(numRemovedAfterRemoveRecorededRequest).to.be.equal(1)
     const retrievedResultRemoveRecorededRequest = await learningModeService.findRecordedRequests('project_learningModeService')
     expect(retrievedResultRemoveRecorededRequest.length).to.be.equal(1)

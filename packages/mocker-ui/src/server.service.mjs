@@ -59,9 +59,11 @@ class InMemoryServerStore extends ServerStore {
     this.serverStore[serverId] = server
     return serverId
   }
+
   async removeStoredServer (serverId) {
     delete this.serverStore[serverId]
   }
+
   async getStoredServer (serverId) {
     return this.serverStore[serverId]
   }
@@ -158,7 +160,7 @@ class ServerService {
   async enrichProjectList (projects, serverTypes, idCalculation) {
     return Promise.all(projects.map(async project => {
       const retrievedServerPromises = []
-      for (let serverType of serverTypes) {
+      for (const serverType of serverTypes) {
         retrievedServerPromises.push(this.retrieveServer(idCalculation(project, serverType.type)))
       }
       const retrievedServers = await Promise.all(retrievedServerPromises)

@@ -14,7 +14,7 @@ const test = async () => {
       .registerProperty('logging.level.startup', 'info')
       .registerType(Logger, PinoLogger)
 
-    let ruleService = new RuleService()
+    const ruleService = new RuleService()
 
     let exceptionThrownBecauseFileDoesNotExist = false
     try {

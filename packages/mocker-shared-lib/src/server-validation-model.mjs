@@ -6,27 +6,27 @@ class BaseServerValidationModel extends ValidationModel {
   constructor () {
     super()
     this[Server] = {
-      '$id': 'uri://mocker/server/ServerValidationModel',
-      'Server': {
-        'type': 'object',
-        'properties': {
-          'port': {
-            'type': 'integer',
-            'minimum': 1,
-            'maximum': 65535
+      $id: 'uri://mocker/server/ServerValidationModel',
+      Server: {
+        type: 'object',
+        properties: {
+          port: {
+            type: 'integer',
+            minimum: 1,
+            maximum: 65535
           },
-          'bindAddress': {
-            'type': 'string'
+          bindAddress: {
+            type: 'string'
           },
-          'status': {
-            'enum': Object.values(ServerStatus)
+          status: {
+            enum: Object.values(ServerStatus)
           }
         },
-        'required': [
+        required: [
           'port'
         ]
       },
-      '$ref': '#/Server'
+      $ref: '#/Server'
     }
   }
 }

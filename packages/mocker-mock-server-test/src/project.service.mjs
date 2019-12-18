@@ -16,9 +16,9 @@ class ProjectService {
 
   static async fromRuleLocations (locations) {
     const projectRules = []
-    for (let location of locations) {
+    for (const location of locations) {
       const ruleFiles = await globAsync(location)
-      for (let ruleFile of ruleFiles) {
+      for (const ruleFile of ruleFiles) {
         const rule = await config.getInstance(RuleService).readRule(ruleFile)
         projectRules.push(new ProjectRule(location, rule))
       }

@@ -41,34 +41,34 @@ const test = async () => {
 
       const metricsAfterStartUp = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterStartUp.status).to.be.equal(200)
-      expect(metricsAfterStartUp.data.starts['test_glob'].length).to.equal(1)
-      expect(metricsAfterStartUp.data.starts['test_glob'][0].port).to.equal(mockServerPort1)
+      expect(metricsAfterStartUp.data.starts.test_glob.length).to.equal(1)
+      expect(metricsAfterStartUp.data.starts.test_glob[0].port).to.equal(mockServerPort1)
 
       await mockServer1.restart()
 
       const metricsAfterRestart = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterRestart.status).to.be.equal(200)
-      expect(metricsAfterRestart.data.starts['test_glob'].length).to.equal(2)
-      expect(metricsAfterRestart.data.starts['test_glob'][1].port).to.equal(mockServerPort1)
-      expect(metricsAfterRestart.data.starts['test_glob'][1].timestamp).to.be.above(metricsAfterRestart.data.starts['test_glob'][0].timestamp)
+      expect(metricsAfterRestart.data.starts.test_glob.length).to.equal(2)
+      expect(metricsAfterRestart.data.starts.test_glob[1].port).to.equal(mockServerPort1)
+      expect(metricsAfterRestart.data.starts.test_glob[1].timestamp).to.be.above(metricsAfterRestart.data.starts.test_glob[0].timestamp)
 
       await axios.get(`http://localhost:${mockServerPort1}/hello1/2?q=test`)
       await wait(500)
 
       const metricsAfterRequest1 = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterRequest1.status).to.be.equal(200)
-      expect(metricsAfterRequest1.data.starts['test_glob'].length).to.equal(2)
-      expect(metricsAfterRequest1.data.totalRequests['test_glob']).to.equal(1)
-      expect(metricsAfterRequest1.data.requestsPerRule['test_glob'][path.normalize('../rules/test_rule_1.yaml')]).to.equal(1)
+      expect(metricsAfterRequest1.data.starts.test_glob.length).to.equal(2)
+      expect(metricsAfterRequest1.data.totalRequests.test_glob).to.equal(1)
+      expect(metricsAfterRequest1.data.requestsPerRule.test_glob[path.normalize('../rules/test_rule_1.yaml')]).to.equal(1)
 
       await axios.get(`http://localhost:${mockServerPort1}/hello1/2?q=test`)
       await wait(500)
 
       const metricsAfterRequest2toSameRule = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterRequest2toSameRule.status).to.be.equal(200)
-      expect(metricsAfterRequest2toSameRule.data.starts['test_glob'].length).to.equal(2)
-      expect(metricsAfterRequest2toSameRule.data.totalRequests['test_glob']).to.equal(2)
-      expect(metricsAfterRequest2toSameRule.data.requestsPerRule['test_glob'][path.normalize('../rules/test_rule_1.yaml')]).to.equal(2)
+      expect(metricsAfterRequest2toSameRule.data.starts.test_glob.length).to.equal(2)
+      expect(metricsAfterRequest2toSameRule.data.totalRequests.test_glob).to.equal(2)
+      expect(metricsAfterRequest2toSameRule.data.requestsPerRule.test_glob[path.normalize('../rules/test_rule_1.yaml')]).to.equal(2)
 
       await axios.put(`http://localhost:${mockServerPort1}/hello2`, {
         input: 'testRule2'
@@ -77,20 +77,20 @@ const test = async () => {
 
       const metricsAfterRequestToAnotherRule = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterRequestToAnotherRule.status).to.be.equal(200)
-      expect(metricsAfterRequestToAnotherRule.data.starts['test_glob'].length).to.equal(2)
-      expect(metricsAfterRequestToAnotherRule.data.totalRequests['test_glob']).to.equal(3)
-      expect(metricsAfterRequestToAnotherRule.data.requestsPerRule['test_glob'][path.normalize('../rules/test_rule_1.yaml')]).to.equal(2)
-      expect(metricsAfterRequestToAnotherRule.data.requestsPerRule['test_glob'][path.normalize('../rules/test_rule_2.yaml')]).to.equal(1)
+      expect(metricsAfterRequestToAnotherRule.data.starts.test_glob.length).to.equal(2)
+      expect(metricsAfterRequestToAnotherRule.data.totalRequests.test_glob).to.equal(3)
+      expect(metricsAfterRequestToAnotherRule.data.requestsPerRule.test_glob[path.normalize('../rules/test_rule_1.yaml')]).to.equal(2)
+      expect(metricsAfterRequestToAnotherRule.data.requestsPerRule.test_glob[path.normalize('../rules/test_rule_2.yaml')]).to.equal(1)
 
       await mockServer2.start()
 
       const metricsAfterStartMockServerForOtherProject = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterStartMockServerForOtherProject.status).to.be.equal(200)
-      expect(metricsAfterStartMockServerForOtherProject.data.starts['test_glob'].length).to.equal(2)
-      expect(metricsAfterStartMockServerForOtherProject.data.starts['test_multiple_glob'].length).to.equal(1)
-      expect(metricsAfterStartMockServerForOtherProject.data.totalRequests['test_glob']).to.equal(3)
-      expect(metricsAfterStartMockServerForOtherProject.data.requestsPerRule['test_glob'][path.normalize('../rules/test_rule_1.yaml')]).to.equal(2)
-      expect(metricsAfterStartMockServerForOtherProject.data.requestsPerRule['test_glob'][path.normalize('../rules/test_rule_2.yaml')]).to.equal(1)
+      expect(metricsAfterStartMockServerForOtherProject.data.starts.test_glob.length).to.equal(2)
+      expect(metricsAfterStartMockServerForOtherProject.data.starts.test_multiple_glob.length).to.equal(1)
+      expect(metricsAfterStartMockServerForOtherProject.data.totalRequests.test_glob).to.equal(3)
+      expect(metricsAfterStartMockServerForOtherProject.data.requestsPerRule.test_glob[path.normalize('../rules/test_rule_1.yaml')]).to.equal(2)
+      expect(metricsAfterStartMockServerForOtherProject.data.requestsPerRule.test_glob[path.normalize('../rules/test_rule_2.yaml')]).to.equal(1)
 
       await axios.get(`http://localhost:${mockServerPort1}/hello1/2?q=test`)
       await axios.get(`http://localhost:${mockServerPort2}/hello1/2?q=test`)
@@ -98,13 +98,13 @@ const test = async () => {
 
       const metricsAfterAfterRequestToMockServerForOtherProject = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterAfterRequestToMockServerForOtherProject.status).to.be.equal(200)
-      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.starts['test_glob'].length).to.equal(2)
-      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.starts['test_multiple_glob'].length).to.equal(1)
-      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.totalRequests['test_glob']).to.equal(4)
-      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.totalRequests['test_multiple_glob']).to.equal(1)
-      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.requestsPerRule['test_glob'][path.normalize('../rules/test_rule_1.yaml')]).to.equal(3)
-      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.requestsPerRule['test_glob'][path.normalize('../rules/test_rule_2.yaml')]).to.equal(1)
-      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.requestsPerRule['test_multiple_glob'][path.normalize('../rules/test_rule_1.yaml')]).to.equal(1)
+      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.starts.test_glob.length).to.equal(2)
+      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.starts.test_multiple_glob.length).to.equal(1)
+      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.totalRequests.test_glob).to.equal(4)
+      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.totalRequests.test_multiple_glob).to.equal(1)
+      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.requestsPerRule.test_glob[path.normalize('../rules/test_rule_1.yaml')]).to.equal(3)
+      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.requestsPerRule.test_glob[path.normalize('../rules/test_rule_2.yaml')]).to.equal(1)
+      expect(metricsAfterAfterRequestToMockServerForOtherProject.data.requestsPerRule.test_multiple_glob[path.normalize('../rules/test_rule_1.yaml')]).to.equal(1)
     } finally {
       await mockServer1.stop()
       await mockServer2.stop()

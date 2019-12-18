@@ -60,7 +60,7 @@ class MetricsService {
   _updateMetricsByPathAndMethod (requestReceivedEvent) {
     const ruleRequest = requestReceivedEvent.projectRule.rule.request
     const pathAndMethodKey = this._getPathAndMethodKey(ruleRequest.path, ruleRequest.method)
-    let metricsByPathAndMethod = this.metrics.metricsByPathAndMethod[pathAndMethodKey] || Metrics.empty()
+    const metricsByPathAndMethod = this.metrics.metricsByPathAndMethod[pathAndMethodKey] || Metrics.empty()
     this.metrics.metricsByPathAndMethod[pathAndMethodKey] = new Metrics(
       metricsByPathAndMethod.invocations() + 1,
       [...metricsByPathAndMethod._requests, {
@@ -76,7 +76,7 @@ class MetricsService {
     if (!name) {
       return
     }
-    let metricsByRuleName = this.metrics.metricsByRuleName[name] || Metrics.empty()
+    const metricsByRuleName = this.metrics.metricsByRuleName[name] || Metrics.empty()
     this.metrics.metricsByRuleName[name] = new Metrics(
       metricsByRuleName.invocations() + 1,
       [...metricsByRuleName._requests, {

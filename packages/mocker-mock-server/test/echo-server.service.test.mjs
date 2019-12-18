@@ -40,7 +40,7 @@ const test = async () => {
           'X-test': 'value1',
           'X-other': 'value2',
           'user-agent': 'axios',
-          'accept': 'application/json'
+          accept: 'application/json'
         }
       })
       expect(responseSimpleGet.status).to.be.equal(200)
@@ -63,8 +63,8 @@ const test = async () => {
           'X-test': 'value1',
           'X-other': 'value2',
           'user-agent': 'axios',
-          'accept': 'application/json',
-          'Cookie': 'cookie1=value1; cookie2=value2'
+          accept: 'application/json',
+          Cookie: 'cookie1=value1; cookie2=value2'
         }
       })
       expect(responseGetWithParametersAndCookies.status).to.be.equal(200)
@@ -83,18 +83,18 @@ const test = async () => {
       expect(responseGetWithParametersAndCookies.data.cookies).to.be.deep.equal({ cookie1: 'value1', cookie2: 'value2' })
 
       const responsePost = await axios.post(`http://localhost:${availablePort}/echo`, {
-        'a': 'b',
-        'c': {
-          'd': 'e',
-          'f': [ 'h', 'i', 'j' ]
+        a: 'b',
+        c: {
+          d: 'e',
+          f: ['h', 'i', 'j']
         }
       }, {
         headers: {
           'X-test': 'value1',
           'X-other': 'value2',
           'user-agent': 'axios',
-          'accept': 'application/json',
-          'Cookie': 'cookie1=value1; cookie2=value2',
+          accept: 'application/json',
+          Cookie: 'cookie1=value1; cookie2=value2',
           'content-type': 'application/json'
         }
       })
@@ -103,10 +103,10 @@ const test = async () => {
       expect(responsePost.data.path).to.be.equal('/echo')
       expect(responsePost.data.fullPath).to.be.equal('/echo')
       expect(responsePost.data.body).to.be.deep.equal({
-        'a': 'b',
-        'c': {
-          'd': 'e',
-          'f': [ 'h', 'i', 'j' ]
+        a: 'b',
+        c: {
+          d: 'e',
+          f: ['h', 'i', 'j']
         }
       })
       expect(responsePost.data.params).to.be.deep.equal({})
@@ -125,8 +125,8 @@ const test = async () => {
           'X-test': 'value1',
           'X-other': 'value2',
           'user-agent': 'axios',
-          'accept': 'application/json',
-          'Cookie': 'cookie1=value1; cookie2=value2',
+          accept: 'application/json',
+          Cookie: 'cookie1=value1; cookie2=value2',
           'content-type': 'text/plain'
         }
       })
@@ -151,8 +151,8 @@ const test = async () => {
           'X-test': 'value1',
           'X-other': 'value2',
           'user-agent': 'axios',
-          'accept': 'application/json',
-          'Cookie': 'cookie1=value1; cookie2=value2',
+          accept: 'application/json',
+          Cookie: 'cookie1=value1; cookie2=value2',
           'content-type': 'application/xml'
         }
       })

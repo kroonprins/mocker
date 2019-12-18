@@ -31,6 +31,7 @@ class InMemoryProjectStore extends ProjectStore {
 
     this.initialize()
   }
+
   async _loadProjectsFile () {
     this.logger.debug('Load projects from yaml file in location %s', this.location)
     const rawFileContent = await readFileAsync(this.location)
@@ -47,13 +48,13 @@ class InMemoryProjectStore extends ProjectStore {
     this.logger.debug(projectsFile, 'Parsed projectsFile')
 
     // TODO should also be possible to avoid waiting at the end of every loop iteration
-    for (let project of projectsFile.projects) {
+    for (const project of projectsFile.projects) {
       const rulePromises = []
       // TODO avoid reading same file multiple times
       // 2 possible cases:
       //  * for one project the same rule is in the list (e.g. 2 globs returning same file)
       //  * multiple projects can refer to the same rule
-      for (let ruleFilePattern of project.rules) {
+      for (const ruleFilePattern of project.rules) {
         // if pattern is an absolute path then it can be used as such. If it is a relative path then this is relative to the projects file location so then the pattern must be updated accordingly otherwise the system would consider it relative to the location where the program was started.
         const isAbsolutePath = ruleFilePattern === path.resolve(ruleFilePattern)
         this.logger.debug(`The rule file pattern ${ruleFilePattern} is considered an absolute path: ${isAbsolutePath}`)
@@ -65,7 +66,7 @@ class InMemoryProjectStore extends ProjectStore {
         if (ruleFiles.length === 0) {
           this.logger.warn(`No rule files match the pattern ${ruleFilePattern}`)
         }
-        for (let ruleFile of ruleFiles) {
+        for (const ruleFile of ruleFiles) {
           const ruleFileLocation = isAbsolutePath ? ruleFile : path.relative(this.projectFileDirectory, ruleFile)
           this.logger.debug(`Rule location: ${ruleFileLocation}`)
           rulePromises.push(this.ruleService.readRule(ruleFile).then((rule) => {
@@ -83,6 +84,7 @@ class InMemoryProjectStore extends ProjectStore {
       this._setProject(newProject)
     }
   }
+
   async initialize () {
     this.logger.debug('Initializing project store from disk')
     this.isLoading = this._loadProjectsFile().catch(e => {
@@ -91,20 +93,24 @@ class InMemoryProjectStore extends ProjectStore {
     })
     return this.isLoading
   }
+
   async reInitialize () {
     return this.initialize()
   }
+
   async listProjects () {
     this.logger.debug("Retrieving all projects from InMemoryProjects store configured with location '%s'", this.location)
     await this.isLoading
     return this._getProjects()
   }
+
   async retrieveProject (projectName) {
     this.logger.debug("Retrieving project with name '%s' from InMemoryProjects store configured with location '%s'", projectName, this.location)
     await this.isLoading
     this._checkProjectExists(projectName)
     return this._getProject(projectName)
   }
+
   async createNewProject (projectName) {
     await this.isLoading
     this._checkProjectNotExists(projectName)
@@ -115,6 +121,7 @@ class InMemoryProjectStore extends ProjectStore {
     this._syncProjectsFileToFileSystem()
     return project
   }
+
   async updateProject (projectName, updatedProject) { // only updates the name of the project!
     await this.isLoading
     await this._validateProject(updatedProject)
@@ -127,6 +134,7 @@ class InMemoryProjectStore extends ProjectStore {
     this._syncProjectsFileToFileSystem()
     return updatedProject
   }
+
   async removeProject (projectName) {
     await this.isLoading
     this._checkProjectExists(projectName)
@@ -134,6 +142,7 @@ class InMemoryProjectStore extends ProjectStore {
     this._deleteProject(projectName)
     return this._syncProjectsFileToFileSystem()
   }
+
   async retrieveProjectRule (projectName, ruleName) {
     this.logger.debug("Retrieving project rule with name '%s' for project '%' from InMemoryProjects store configured with location '%s'", ruleName, projectName, this.location)
     await this.isLoading
@@ -146,6 +155,7 @@ class InMemoryProjectStore extends ProjectStore {
     })
     return projectRule
   }
+
   async createProjectRule (projectName, projectRule) {
     await this.isLoading
     this._completeProjectRule(projectName, projectRule)
@@ -163,6 +173,7 @@ class InMemoryProjectStore extends ProjectStore {
     ])
     return projectRule
   }
+
   async updateProjectRule (projectName, originalRuleName, updatedProjectRule) {
     await this.isLoading
     this._completeProjectRule(projectName, updatedProjectRule)
@@ -197,6 +208,7 @@ class InMemoryProjectStore extends ProjectStore {
     await Promise.all(promises)
     return updatedProjectRule
   }
+
   async removeProjectRule (projectName, ruleName) {
     await this.isLoading
     this._checkProjectExists(projectName)
@@ -206,6 +218,7 @@ class InMemoryProjectStore extends ProjectStore {
 
     return this._syncProjectsFileToFileSystem()
   }
+
   async _syncProjectsFileToFileSystem () {
     const projectsFile = new ProjectsFile(Object.values(this._getProjects()).map((project) => {
       return new ProjectFile(project.name, project.rules.map((projectRule) => {
@@ -216,32 +229,41 @@ class InMemoryProjectStore extends ProjectStore {
     const dumpedProjectsFile = yaml.safeDump(serializedProjectsFile, { skipInvalid: true })
     return this.fileOperationQueue.add(this.location, dumpedProjectsFile)
   }
+
   async _syncRuleFileToFileSystem (projectRule) {
     const serializedRule = serialize(RuleSerializationModel, projectRule.rule)
     const dumpedRule = yaml.safeDump(serializedRule, { skipInvalid: true })
     return this.fileOperationQueue.add(this._getProjectRuleResolvedLocation(projectRule), dumpedRule)
   }
+
   _getProjects () {
     return this.storedProjects
   }
+
   _getProject (projectName) {
     return this.storedProjects[projectName]
   }
+
   _setProject (project) {
     this.storedProjects[project.name] = project
   }
+
   _deleteProject (projectName) {
     return delete this.storedProjects[projectName]
   }
+
   async _validateProjectsFile (projectsFile) {
     await this.classValidator.validate(ProjectsFile, projectsFile)
   }
+
   async _validateProject (project) {
     await this.classValidator.validate(Project, project)
   }
+
   async _validateProjectRule (projectRule) {
     await this.classValidator.validate(ProjectRule, projectRule)
   }
+
   _completeProjectRule (projectName, projectRule) { // TODO move logic somewhere else?
     if (!projectRule.location && projectRule.rule && projectRule.rule.name) {
       if (this.defaultRuleLocation) {
@@ -251,6 +273,7 @@ class InMemoryProjectStore extends ProjectStore {
       }
     }
   }
+
   _checkProjectExists (projectName) {
     if (!(projectName in this.storedProjects)) {
       throw new TechnicalValidationError(
@@ -262,6 +285,7 @@ class InMemoryProjectStore extends ProjectStore {
       )
     }
   }
+
   _checkProjectNotExists (projectName) {
     if (projectName in this.storedProjects) {
       throw new FunctionalValidationError(
@@ -273,6 +297,7 @@ class InMemoryProjectStore extends ProjectStore {
       )
     }
   }
+
   _checkUpdateProjectNotExists (projectName, updatedProject) {
     if (projectName !== updatedProject.name && this._getProject(updatedProject.name)) {
       throw new FunctionalValidationError(
@@ -284,13 +309,15 @@ class InMemoryProjectStore extends ProjectStore {
       )
     }
   }
+
   _getProjectRule (projectName, ruleName) {
     return this._getProject(projectName).rules.find((projectRule) => {
       return projectRule.rule.name === ruleName
     })
   }
+
   _updateProjectRule (originalRuleLocation, updatedProjectRule) {
-    for (let project of Object.values(this._getProjects())) {
+    for (const project of Object.values(this._getProjects())) {
       const indexOriginalRule = project.rules.findIndex((projectRule) => {
         return projectRule.location === originalRuleLocation
       })
@@ -299,6 +326,7 @@ class InMemoryProjectStore extends ProjectStore {
       }
     }
   }
+
   _removeProjectRule (projectName, ruleName) {
     const project = this._getProject(projectName)
     const indexOriginalRule = project.rules.findIndex((projectRule) => {
@@ -307,22 +335,26 @@ class InMemoryProjectStore extends ProjectStore {
     this._deleteProjectRule(projectName, project.rules[indexOriginalRule])
     project.rules.splice(indexOriginalRule, 1)
   }
+
   _deleteProjectRules (projectName) {
     const project = this._getProject(projectName)
-    for (let projectRule of project.rules) {
+    for (const projectRule of project.rules) {
       this._deleteProjectRule(projectName, projectRule)
     }
   }
+
   _deleteProjectRule (projectName, projectRule) {
     if (!this._isProjectRuleUsedByOtherProject(projectName, projectRule)) {
       this._removeProjectRuleFile(projectRule)
     }
   }
+
   _checkProjectRuleNotExists (projectName, projectRule) {
     this._checkProjectRuleNameNotExists(projectName, projectRule)
     this._checkProjectRuleLocationNotExists(projectName, projectRule)
     this._checkProjectRuleMethodAndPathNotExists(projectName, projectRule)
   }
+
   _checkProjectRuleNameNotExists (projectName, projectRule) {
     const nameExists = this._getProject(projectName).rules.some((aProjectRule) => {
       return aProjectRule.rule.name === projectRule.rule.name
@@ -338,6 +370,7 @@ class InMemoryProjectStore extends ProjectStore {
       )
     }
   }
+
   _checkProjectRuleLocationNotExists (projectName, projectRule) {
     const projectRuleLocation = path.normalize(projectRule.location)
     const locationExists = this._getProject(projectName).rules.some((aProjectRule) => {
@@ -354,6 +387,7 @@ class InMemoryProjectStore extends ProjectStore {
       )
     }
   }
+
   _checkProjectRuleMethodAndPathNotExists (projectName, projectRule) {
     const methodAndPathExist = this._getProject(projectName).rules.some((aProjectRule) => {
       const rule = aProjectRule.rule
@@ -371,6 +405,7 @@ class InMemoryProjectStore extends ProjectStore {
       )
     }
   }
+
   _checkProjectRuleExists (projectName, ruleName) {
     const exists = this._getProject(projectName).rules.some((projectRule) => {
       return projectRule.rule.name === ruleName
@@ -386,6 +421,7 @@ class InMemoryProjectStore extends ProjectStore {
       )
     }
   }
+
   _isProjectRuleUsedByOtherProject (projectName, projectRule) {
     return Object.values(this._getProjects()).some((project) => {
       if (project.name === projectName) {
@@ -399,6 +435,7 @@ class InMemoryProjectStore extends ProjectStore {
       }
     })
   }
+
   async _removeProjectRuleFile (projectRule) {
     try {
       this.fileOperationQueue.remove(this._getProjectRuleResolvedLocation(projectRule))
@@ -406,6 +443,7 @@ class InMemoryProjectStore extends ProjectStore {
       this.logger.error(e, "An error occurred when trying to delete file '%s'", projectRule.location)
     }
   }
+
   _getProjectRuleResolvedLocation (projectRule) {
     // if project rule location is relative then it is relative to projects file location => need to get the real path relative to where the program is running from
     const isLocationAbsolute = projectRule.location === path.resolve(projectRule.location)

@@ -23,7 +23,7 @@ const test = async () => {
 
     expect(metricsService.getMetrics()).to.deep.equal({
       starts: {
-        'test1': [{
+        test1: [{
           project: 'test1',
           someProp: 'someValue1'
         }]
@@ -36,7 +36,7 @@ const test = async () => {
 
     expect(metricsService.getMetrics()).to.deep.equal({
       starts: {
-        'test1': [{
+        test1: [{
           project: 'test1',
           someProp: 'someValue1'
         }]
@@ -52,7 +52,7 @@ const test = async () => {
 
     expect(metricsService.getMetrics()).to.deep.equal({
       starts: {
-        'test1': [{
+        test1: [{
           project: 'test1',
           someProp: 'someValue1'
         }, {
@@ -71,14 +71,14 @@ const test = async () => {
 
     expect(metricsService.getMetrics()).to.deep.equal({
       starts: {
-        'test1': [{
+        test1: [{
           project: 'test1',
           someProp: 'someValue1'
         }, {
           project: 'test1',
           someProp: 'someValue2'
         }],
-        'test2': [{
+        test2: [{
           project: 'test2',
           someProp: 'otherValue'
         }]
@@ -96,24 +96,24 @@ const test = async () => {
 
     expect(metricsService.getMetrics()).to.deep.equal({
       starts: {
-        'test1': [{
+        test1: [{
           project: 'test1',
           someProp: 'someValue1'
         }, {
           project: 'test1',
           someProp: 'someValue2'
         }],
-        'test2': [{
+        test2: [{
           project: 'test2',
           someProp: 'otherValue'
         }]
       },
       totalRequests: {
-        'test1': 1
+        test1: 1
       },
       requestsPerRule: {
-        'test1': {
-          'location1': 1
+        test1: {
+          location1: 1
         }
       }
     })
@@ -127,24 +127,24 @@ const test = async () => {
 
     expect(metricsService.getMetrics()).to.deep.equal({
       starts: {
-        'test1': [{
+        test1: [{
           project: 'test1',
           someProp: 'someValue1'
         }, {
           project: 'test1',
           someProp: 'someValue2'
         }],
-        'test2': [{
+        test2: [{
           project: 'test2',
           someProp: 'otherValue'
         }]
       },
       totalRequests: {
-        'test1': 2
+        test1: 2
       },
       requestsPerRule: {
-        'test1': {
-          'location1': 2
+        test1: {
+          location1: 2
         }
       }
     })
@@ -158,28 +158,28 @@ const test = async () => {
 
     expect(metricsService.getMetrics()).to.deep.equal({
       starts: {
-        'test1': [{
+        test1: [{
           project: 'test1',
           someProp: 'someValue1'
         }, {
           project: 'test1',
           someProp: 'someValue2'
         }],
-        'test2': [{
+        test2: [{
           project: 'test2',
           someProp: 'otherValue'
         }]
       },
       totalRequests: {
-        'test1': 2,
-        'test2': 1
+        test1: 2,
+        test2: 1
       },
       requestsPerRule: {
-        'test1': {
-          'location1': 2
+        test1: {
+          location1: 2
         },
-        'test2': {
-          'location2': 1
+        test2: {
+          location2: 1
         }
       }
     })
@@ -193,29 +193,29 @@ const test = async () => {
 
     expect(metricsService.getMetrics()).to.deep.equal({
       starts: {
-        'test1': [{
+        test1: [{
           project: 'test1',
           someProp: 'someValue1'
         }, {
           project: 'test1',
           someProp: 'someValue2'
         }],
-        'test2': [{
+        test2: [{
           project: 'test2',
           someProp: 'otherValue'
         }]
       },
       totalRequests: {
-        'test1': 3,
-        'test2': 1
+        test1: 3,
+        test2: 1
       },
       requestsPerRule: {
-        'test1': {
-          'location1': 2,
-          'location1_1': 1
+        test1: {
+          location1: 2,
+          location1_1: 1
         },
-        'test2': {
-          'location2': 1
+        test2: {
+          location2: 1
         }
       }
     })

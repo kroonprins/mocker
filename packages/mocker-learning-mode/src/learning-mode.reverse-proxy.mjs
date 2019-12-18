@@ -95,7 +95,7 @@ class LearningModeReverseProxyServer extends Server {
     }
 
     const res = []
-    for (let prop of Object.keys(obj)) {
+    for (const prop of Object.keys(obj)) {
       if (filterProps && filterProps.has(prop)) {
         continue
       }
@@ -120,7 +120,7 @@ class LearningModeReverseProxyServer extends Server {
     }
 
     return cookies.map((cookie) => {
-      let properties = {}
+      const properties = {}
       // if(cookie.domain) properties.domain = cookie.domain;
       if (cookie.expires && cookie.expires instanceof Date) properties.expires = cookie.expires.toISOString()
       if (cookie.httpOnly) properties.httpOnly = cookie.httpOnly

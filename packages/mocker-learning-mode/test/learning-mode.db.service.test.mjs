@@ -20,7 +20,7 @@ const test = async () => {
       .registerType(Logger, PinoLogger)
       .registerInstance(LearningModeDbValidationModel, new LearningModeDbValidationModel())
 
-    let learningModeDbService = new LearningModeDbService(
+    const learningModeDbService = new LearningModeDbService(
       dbFile,
       new AppClassValidationService())
 

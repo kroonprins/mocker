@@ -2,7 +2,7 @@ import pino from 'pino'
 import { config } from './config.mjs'
 import { FunctionalValidationError } from './error-types.mjs'
 
-const SUPPORTED_LEVELS = [ 'error', 'warn', 'info', 'debug', 'trace' ]
+const SUPPORTED_LEVELS = ['error', 'warn', 'info', 'debug', 'trace']
 const SUPPORTED_LEVELS_SET = new Set(SUPPORTED_LEVELS)
 
 const BASE_LOGGER_ID = '#base#'
@@ -34,8 +34,8 @@ class Logger {
   }
 
   _createLoggerId (opts) {
-    if (opts && opts['id']) {
-      return opts['id']
+    if (opts && opts.id) {
+      return opts.id
     } else {
       return BASE_LOGGER_ID
     }
@@ -47,8 +47,8 @@ class Logger {
 
   _createLevel (opts) {
     let level
-    if (opts && opts['level']) {
-      level = opts['level']
+    if (opts && opts.level) {
+      level = opts.level
     } else {
       level = config.getProperty('logging.level.startup')
     }
@@ -200,7 +200,7 @@ class Logger {
       parent: {},
       children: []
     }
-    for (let logger of Object.values(CREATED_LOGGERS)) {
+    for (const logger of Object.values(CREATED_LOGGERS)) {
       if (logger.id === BASE_LOGGER_ID) {
         result.parent = {
           level: logger._level
@@ -238,7 +238,7 @@ class Logger {
    */
   static updateGlobalLogLevel (level) {
     Logger._checkValidLevel(level)
-    for (let logger of Object.values(CREATED_LOGGERS)) {
+    for (const logger of Object.values(CREATED_LOGGERS)) {
       logger.setLevel(level)
     }
   }

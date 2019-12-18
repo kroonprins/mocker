@@ -54,11 +54,11 @@ class MetricsService {
   _handleRequestReceivedEvent (requestReceivedEvent) {
     const requestsPerRuleForProject = this.metrics.requestsPerRule[requestReceivedEvent.project] || {}
 
-    let requestsPerRuleForProjectRule = requestsPerRuleForProject[requestReceivedEvent.projectRule.location] || 0
+    const requestsPerRuleForProjectRule = requestsPerRuleForProject[requestReceivedEvent.projectRule.location] || 0
     requestsPerRuleForProject[requestReceivedEvent.projectRule.location] = requestsPerRuleForProjectRule + 1
     this.metrics.requestsPerRule[requestReceivedEvent.project] = requestsPerRuleForProject
 
-    let totalRequestsForProject = this.metrics.totalRequests[requestReceivedEvent.project] || 0
+    const totalRequestsForProject = this.metrics.totalRequests[requestReceivedEvent.project] || 0
     this.metrics.totalRequests[requestReceivedEvent.project] = totalRequestsForProject + 1
   }
 }

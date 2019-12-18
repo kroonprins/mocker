@@ -26,8 +26,8 @@ const createDummyProjectRule = (id, method) => {
     rule: {
       name: 'name' + id,
       request: {
-        'path': '/test' + id,
-        'method': method
+        path: '/test' + id,
+        method: method
       }
     }
   }

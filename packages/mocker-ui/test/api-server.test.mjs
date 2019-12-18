@@ -67,7 +67,7 @@ const test = async () => {
       expect(createdProject.data).to.deep.equal({
         name: 'newProject'
       })
-      expect(createdProject.headers['location']).to.be.equal('/api/projects/newProject/rules')
+      expect(createdProject.headers.location).to.be.equal('/api/projects/newProject/rules')
 
       let exceptionThrownBecauseProjectNameEmpty = false
       try {
@@ -362,7 +362,7 @@ const test = async () => {
           }
         }
       })
-      expect(createdRule.headers['location']).to.be.equal('/api/projects/test_glob/rules/createdTestRule')
+      expect(createdRule.headers.location).to.be.equal('/api/projects/test_glob/rules/createdTestRule')
 
       const rulesAfterNewRule = await axios.get(`http://localhost:${availablePort}/api/projects/test_glob/rules`)
       expect(rulesAfterNewRule.status).to.be.equal(200)
@@ -773,7 +773,7 @@ const test = async () => {
       expect(recordedRequestsLimited.data.length).to.be.equal(1)
       expect(recordedRequestsLimited.data[0]).excluding('_id').to.deep.equal({ timestamp: timestamp2.getTime() })
 
-      const id = recordedRequestsSorted.data[1]['_id']
+      const id = recordedRequestsSorted.data[1]._id
       const recordedRequest = await axios.get(`http://localhost:${availablePort}/api/learning-mode/test_project/recorded-requests/${id}`)
       expect(recordedRequest.status).to.be.equal(200)
       expect(recordedRequest.data).excluding('_id').to.deep.equal({ project: 'test_project', timestamp: timestamp1.getTime() })

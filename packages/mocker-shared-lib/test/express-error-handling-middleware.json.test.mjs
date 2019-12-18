@@ -47,6 +47,7 @@ class ErrorTestServer {
       })
     })
   }
+
   stop () {
     this.logger.debug('Request to stop the error test server')
     if (this.server != null) {

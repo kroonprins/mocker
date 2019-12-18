@@ -26,11 +26,11 @@ const test = async () => {
       .registerType(Logger, PinoLogger)
       .registerInstance(LearningModeDbValidationModel, new LearningModeDbValidationModel())
 
-    let learningModeDbService = new LearningModeDbService(
+    const learningModeDbService = new LearningModeDbService(
       dbFile,
       new AppClassValidationService()
     )
-    let learningModeService = new LearningModeService(learningModeDbService)
+    const learningModeService = new LearningModeService(learningModeDbService)
 
     const eventEmitter = new LearningModeServerEventEmitter()
     const metricsService = new MetricsService(eventEmitter)
@@ -63,32 +63,32 @@ const test = async () => {
       const metricsAfterStartUp = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
 
       expect(metricsAfterStartUp.status).to.be.equal(200)
-      expect(metricsAfterStartUp.data.starts['adminstrationServerTestProject'].length).to.equal(1)
-      expect(metricsAfterStartUp.data.starts['adminstrationServerTestProject'][0].port).to.equal(reverseProxyPort)
+      expect(metricsAfterStartUp.data.starts.adminstrationServerTestProject.length).to.equal(1)
+      expect(metricsAfterStartUp.data.starts.adminstrationServerTestProject[0].port).to.equal(reverseProxyPort)
 
       await proxyServer.restart()
 
       const metricsAfterRestart = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterRestart.status).to.be.equal(200)
-      expect(metricsAfterRestart.data.starts['adminstrationServerTestProject'].length).to.equal(2)
-      expect(metricsAfterRestart.data.starts['adminstrationServerTestProject'][1].port).to.equal(reverseProxyPort)
-      expect(metricsAfterRestart.data.starts['adminstrationServerTestProject'][1].timestamp).to.be.above(metricsAfterRestart.data.starts['adminstrationServerTestProject'][0].timestamp)
+      expect(metricsAfterRestart.data.starts.adminstrationServerTestProject.length).to.equal(2)
+      expect(metricsAfterRestart.data.starts.adminstrationServerTestProject[1].port).to.equal(reverseProxyPort)
+      expect(metricsAfterRestart.data.starts.adminstrationServerTestProject[1].timestamp).to.be.above(metricsAfterRestart.data.starts.adminstrationServerTestProject[0].timestamp)
 
       await axios.get(`http://localhost:${reverseProxyPort}/test1`)
       await wait(500)
 
       const metricsAfterRequest1 = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterRequest1.status).to.be.equal(200)
-      expect(metricsAfterRequest1.data.starts['adminstrationServerTestProject'].length).to.equal(2)
-      expect(metricsAfterRequest1.data.totalRequests['adminstrationServerTestProject']).to.equal(1)
+      expect(metricsAfterRequest1.data.starts.adminstrationServerTestProject.length).to.equal(2)
+      expect(metricsAfterRequest1.data.totalRequests.adminstrationServerTestProject).to.equal(1)
 
       await axios.get(`http://localhost:${reverseProxyPort}/test1`)
       await wait(500)
 
       const metricsAfterRequest2 = await axios.get(`http://localhost:${administrationServerPort}/administration/metrics`)
       expect(metricsAfterRequest2.status).to.be.equal(200)
-      expect(metricsAfterRequest2.data.starts['adminstrationServerTestProject'].length).to.equal(2)
-      expect(metricsAfterRequest2.data.totalRequests['adminstrationServerTestProject']).to.equal(2)
+      expect(metricsAfterRequest2.data.starts.adminstrationServerTestProject.length).to.equal(2)
+      expect(metricsAfterRequest2.data.totalRequests.adminstrationServerTestProject).to.equal(2)
     } finally {
       Promise.all([
         await proxyServer.stop(),

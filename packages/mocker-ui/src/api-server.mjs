@@ -137,10 +137,10 @@ class ApiServer extends Server {
       let serverType, args
       if (req.body.type === LearningModeServerTypes.REVERSE_PROXY) {
         serverType = LearningModeReverseProxyServer
-        args = [ req.body.targetHost, projectName ]
+        args = [req.body.targetHost, projectName]
       } else if (req.body.type === LearningModeServerTypes.FORWARD_PROXY) {
         serverType = LearningModeForwardProxyServer
-        args = [ projectName ]
+        args = [projectName]
       } else {
         // TODO error
       }
@@ -239,48 +239,63 @@ class ApiServer extends Server {
   _getListProjectsUri () {
     return `${CONTEXT_ROOT}/${PROJECTS_RESOURCE}`
   }
+
   _getCreateProjectsUri () {
     return `${CONTEXT_ROOT}/${PROJECTS_RESOURCE}`
   }
+
   _getUpdateProjectsUri (projectId) {
     return `${CONTEXT_ROOT}/${PROJECTS_RESOURCE}/${projectId}`
   }
+
   _getRemoveProjectsUri (projectId) {
     return `${CONTEXT_ROOT}/${PROJECTS_RESOURCE}/${projectId}`
   }
+
   _getListProjectRulesUri (projectId) {
     return `${CONTEXT_ROOT}/${PROJECTS_RESOURCE}/${projectId}/${RULES_RESOURCE}`
   }
+
   _getRetrieveProjectRulesUri (projectId, ruleId) {
     return `${CONTEXT_ROOT}/${PROJECTS_RESOURCE}/${projectId}/${RULES_RESOURCE}/${ruleId}`
   }
+
   _getCreateProjectRulesUri (projectId) {
     return `${CONTEXT_ROOT}/${PROJECTS_RESOURCE}/${projectId}/${RULES_RESOURCE}`
   }
+
   _getUpdateProjectRulesUri (projectId, ruleId) {
     return `${CONTEXT_ROOT}/${PROJECTS_RESOURCE}/${projectId}/${RULES_RESOURCE}/${ruleId}`
   }
+
   _getRemoveProjectRulesUri (projectId, ruleId) {
     return `${CONTEXT_ROOT}/${PROJECTS_RESOURCE}/${projectId}/${RULES_RESOURCE}/${ruleId}`
   }
+
   _getMockServerForProjectUri (projectId, ruleId) {
     return `${CONTEXT_ROOT}/${PROJECTS_RESOURCE}/${projectId}/${MOCK_SERVER_RESOURCE}`
   }
+
   _getLearningModeServerForProjectUri (projectId, ruleId) {
     return `${CONTEXT_ROOT}/${PROJECTS_RESOURCE}/${projectId}/${LEARNING_MODE_SERVER_RESOURCE}`
   }
+
   _getListLearningModeRecordedRequestsUri (projectId) {
     return `${CONTEXT_ROOT}${LEARNING_MODE_ROOT}/${projectId}/${RECORDED_REQUESTS_RESOURCE}`
   }
+
   _getRetrieveLearningModeRecordedRequestUri (projectId, recordedRequestId) {
     return `${CONTEXT_ROOT}${LEARNING_MODE_ROOT}/${projectId}/${RECORDED_REQUESTS_RESOURCE}/${recordedRequestId}`
   }
+
   _getRemoveLearningModeRecordedRequestUri (projectId, recordedRequestId) {
     return `${CONTEXT_ROOT}${LEARNING_MODE_ROOT}/${projectId}/${RECORDED_REQUESTS_RESOURCE}/${recordedRequestId}`
   }
+
   _getRemoveAllLearningModeRecordedRequestsUri (projectId) {
     return `${CONTEXT_ROOT}${LEARNING_MODE_ROOT}/${projectId}/${RECORDED_REQUESTS_RESOURCE}`
   }
+
   _getConfigItemUri () {
     return `${CONTEXT_ROOT}/${CONFIG_RESOURCE}/${CONFIG_ITEM_MATCHER}`
   }

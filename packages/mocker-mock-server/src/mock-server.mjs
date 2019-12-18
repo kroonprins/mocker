@@ -126,7 +126,7 @@ class MockServer extends Server {
   async _processRules (app, project) {
     // TODO handle unknown project
     const rules = await this.projectService.listProjectRules(project)
-    for (let projectRule of rules) {
+    for (const projectRule of rules) {
       this.logger.debug(projectRule, 'Process rule')
       const ruleRequest = projectRule.rule.request
       const ruleResponse = projectRule.rule.response
@@ -158,7 +158,7 @@ class MockServer extends Server {
     }
     // TODO make sure the condition that equals 'true' without templating is evaluated last
     // array find needs module like p-iteration to handle the async
-    for (let ruleConditionalResponseValue of ruleConditionalResponse.response) {
+    for (const ruleConditionalResponseValue of ruleConditionalResponse.response) {
       const condition = await this.templatingService.render(ruleConditionalResponse.templatingEngine, ruleConditionalResponseValue.condition, templateEnvironment)
       if (condition === 'true') {
         return ruleConditionalResponseValue
@@ -179,13 +179,13 @@ class MockServer extends Server {
     }
     res.status(await this.templatingService.render(templatingEngine, ruleResponse.statusCode, templateEnvironment))
     const templatedHeaders = {}
-    for (let header of ruleResponse.headers) {
+    for (const header of ruleResponse.headers) {
       const name = await this.templatingService.render(templatingEngine, header.name, templateEnvironment)
       const value = await this.templatingService.render(templatingEngine, header.value, templateEnvironment)
       templatedHeaders[name] = value
       res.header(name, value)
     }
-    for (let cookie of ruleResponse.cookies) {
+    for (const cookie of ruleResponse.cookies) {
       const templatedProperties = {}
       for (const [key, value] of Object.entries(cookie.properties)) {
         templatedProperties[await this.templatingService.render(templatingEngine, key, templateEnvironment)] =

@@ -5,61 +5,61 @@ class LatencyValidationModel extends ValidationModel {
   constructor () {
     super()
     this[FixedLatency] = {
-      '$id': 'uri://mocker/latency/FixedLatencyValidationModel',
-      'FixedLatency': {
-        'type': 'object',
-        'properties': {
-          'value': {
-            'anyOf': [
+      $id: 'uri://mocker/latency/FixedLatencyValidationModel',
+      FixedLatency: {
+        type: 'object',
+        properties: {
+          value: {
+            anyOf: [
               {
-                'type': 'number',
-                'minimum': 0
+                type: 'number',
+                minimum: 0
               }, {
-                'type': 'string'
+                type: 'string'
               }
             ]
           }
         },
-        'required': [
+        required: [
           'value'
         ],
-        'additionalProperties': false
+        additionalProperties: false
       },
-      '$ref': '#/FixedLatency'
+      $ref: '#/FixedLatency'
     }
 
     this[RandomLatency] = {
-      '$id': 'uri://mocker/latency/RandomLatencyValidationModel',
-      'RandomLatency': {
-        'type': 'object',
-        'properties': {
-          'min': {
-            'anyOf': [
+      $id: 'uri://mocker/latency/RandomLatencyValidationModel',
+      RandomLatency: {
+        type: 'object',
+        properties: {
+          min: {
+            anyOf: [
               {
-                'type': 'number',
-                'minimum': 0
+                type: 'number',
+                minimum: 0
               }, {
-                'type': 'string'
+                type: 'string'
               }
             ]
           },
-          'max': {
-            'anyOf': [
+          max: {
+            anyOf: [
               {
-                'type': 'number',
-                'minimum': 1
+                type: 'number',
+                minimum: 1
               }, {
-                'type': 'string'
+                type: 'string'
               }
             ]
           }
         },
-        'required': [
+        required: [
           'max'
         ],
-        'additionalProperties': false
+        additionalProperties: false
       },
-      '$ref': '#/RandomLatency'
+      $ref: '#/RandomLatency'
     }
   }
 }

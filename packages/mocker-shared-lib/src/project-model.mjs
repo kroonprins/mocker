@@ -6,6 +6,7 @@ class ProjectsFile {
   set projects (projects) {
     this._projects = projects
   }
+
   get projects () {
     return this._projects
   }
@@ -20,12 +21,15 @@ class ProjectFile {
   set name (name) {
     this._name = name ? name.trim() : null
   }
+
   get name () {
     return this._name
   }
+
   set rules (rules) {
     this._rules = rules
   }
+
   get rules () {
     return this._rules
   }
@@ -40,12 +44,15 @@ class Project {
   set name (name) {
     this._name = name ? name.trim() : null
   }
+
   get name () {
     return this._name
   }
+
   set rules (rules) {
     this._rules = rules
   }
+
   get rules () {
     return this._rules
   }
@@ -60,12 +67,15 @@ class ProjectRule {
   set location (location) {
     this._location = location ? location.trim() : null
   }
+
   get location () {
     return this._location
   }
+
   set rule (rule) {
     this._rule = rule
   }
+
   get rule () {
     return this._rule
   }

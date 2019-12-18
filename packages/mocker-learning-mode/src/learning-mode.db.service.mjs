@@ -25,9 +25,11 @@ class PromiseBasedNeDbDatastore {
     this.db.findAsync = util.promisify(this.db.find)
     this.db.removeAsync = util.promisify(this.db.remove)
   }
+
   insert (doc) {
     return this.db.insertAsync(doc)
   }
+
   find (query, opts) {
     if (opts) {
       return this._findWithOptions(query, opts)
@@ -35,9 +37,11 @@ class PromiseBasedNeDbDatastore {
       return this.db.findAsync(query)
     }
   }
+
   remove (query, options) {
     return this.db.removeAsync(query, options)
   }
+
   _findWithOptions (query, opts) {
     return new Promise((resolve, reject) => {
       let cursor = this.db.find(query)

@@ -126,7 +126,7 @@ const test = async () => {
         code: 'invalid log id',
         data: {
           id: 'nope',
-          knownIds: [ 'test-logger', 'administration-server' ]
+          knownIds: ['test-logger', 'administration-server']
         }
       })
     } finally {

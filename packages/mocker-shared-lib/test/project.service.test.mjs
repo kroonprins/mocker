@@ -39,8 +39,8 @@ const test = async () => {
       'test_glob_no_match',
       'test_file_does_not_exist',
       'test_one_file_does_not_exist'])
-    expect(allProjects['test_glob'].rules.length).to.be.equal(3)
-    expect(allProjects['test_glob'].rules[1]).to.deep.equal(new ProjectRule(
+    expect(allProjects.test_glob.rules.length).to.be.equal(3)
+    expect(allProjects.test_glob.rules[1]).to.deep.equal(new ProjectRule(
       path.normalize('../rules/test_rule_2.yaml'), new Rule(
         'testRule2',
         new Request('/hello2', 'PUT'),

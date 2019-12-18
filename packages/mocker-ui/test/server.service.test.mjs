@@ -26,6 +26,7 @@ class TestServer extends Server {
       reject(this.status)
     })
   }
+
   stop () {
     return new Promise(resolve => {
       this.status = 'stopped'

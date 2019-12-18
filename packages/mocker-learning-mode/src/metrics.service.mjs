@@ -51,7 +51,7 @@ class MetricsService {
   }
 
   _handleRequestReceivedEvent (requestReceivedEvent) {
-    let totalRequestsForProject = this.metrics.totalRequests[requestReceivedEvent.project] || 0
+    const totalRequestsForProject = this.metrics.totalRequests[requestReceivedEvent.project] || 0
     this.metrics.totalRequests[requestReceivedEvent.project] = totalRequestsForProject + 1
   }
 }
