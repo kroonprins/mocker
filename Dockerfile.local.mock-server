@@ -1,4 +1,4 @@
-FROM node:12.5.0-alpine
+FROM node:13.4.0-alpine
 
 WORKDIR /app
 COPY . .
@@ -6,7 +6,7 @@ COPY . .
 RUN npm install -g lerna
 RUN lerna bootstrap
 
-FROM node:12.5.0-alpine
+FROM node:13.4.0-alpine
 
 WORKDIR /app
 # dependencies
