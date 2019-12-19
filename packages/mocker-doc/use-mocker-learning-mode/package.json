@@ -5,6 +5,6 @@
     "start": "mocker-learning-mode"
   },
   "dependencies": {
-    "@kroonprins/mocker-learning-mode": "^0.1.9"
+    "@kroonprins/mocker-learning-mode": "^0.1.10"
   }
 }

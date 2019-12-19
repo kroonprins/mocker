@@ -5,6 +5,6 @@
     "start": "mocker-ui"
   },
   "dependencies": {
-    "@kroonprins/mocker-ui": "^0.1.9"
+    "@kroonprins/mocker-ui": "^0.1.10"
   }
 }

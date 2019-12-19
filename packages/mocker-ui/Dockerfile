@@ -3,8 +3,7 @@ FROM node:13.4.0-alpine
 WORKDIR /app
 COPY ./src/angular .
 
-RUN npm install
-RUN npm run build-prod
+RUN npm install && npm run build-prod
 
 FROM node:13.4.0-alpine
 

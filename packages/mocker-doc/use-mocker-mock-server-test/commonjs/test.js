@@ -1,6 +1,6 @@
 const expect = require('chai').expect
 const axios = require('axios')
-const MockServer = require('@kroonprins/mocker-mock-server-test/cjs/exports').MockServer
+const MockServer = require('@kroonprins/mocker-mock-server-test/cjs/exports.cjs').MockServer
 
 let mockServer
 

@@ -28,7 +28,7 @@
     "exports.mjs",
     "start.mjs",
     "src/**",
-    "cjs/exports.js",
+    "cjs/exports.cjs",
     "cjs/src/**"
   ],
   "dependencies": {

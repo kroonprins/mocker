@@ -2,7 +2,7 @@
   "name": "use-mocker-mock-server-test-with-experimental-modules",
   "version": "1.0.0",
   "devDependencies": {
-    "@kroonprins/mocker-mock-server-test": "^0.1.9",
+    "@kroonprins/mocker-mock-server-test": "^0.1.10",
     "axios": "^0.19.0",
     "chai": "^4.2.0"
   }

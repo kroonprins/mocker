@@ -652,14 +652,6 @@ Add a script to package.json:
   }
 ----
 
-Note: on Windows the shortcut need to be defined as follows instead:
-
-[source,json]
-----
-  "scripts": {
-    "start": "node --es-module-specifier-resolution=node .\node_modules\@kroonprins\mocker-ui\start.mjs"
-  }
-----
 
 Set the required environment variables by exporting them on the command line or by creating a .env file like for example this:
 
@@ -987,14 +979,6 @@ Add a script to package.json:
   }
 ----
 
-Note: on Windows the shortcut need to be defined as follows instead:
-
-[source,json]
-----
-  "scripts": {
-    "start": "node --es-module-specifier-resolution=node .\node_modules\@kroonprins\mocker-mock-server\start.mjs"
-  }
-----
 
 Set the required environment variables by exporting them on the command line or by creating a .env file like for example this:
 
@@ -1237,14 +1221,6 @@ Add a script to package.json:
   }
 ----
 
-Note: on Windows the shortcut need to be defined as follows instead:
-
-[source,json]
-----
-  "scripts": {
-    "start": "node --es-module-specifier-resolution=node .\node_modules\@kroonprins\mocker-learning-mode\start.mjs"
-  }
-----
 
 Set the required environment variables by exporting them on the command line or by creating a .env file like for example this:
 
@@ -1371,7 +1347,7 @@ This can be useful to test a services that executes one or more HTTP calls to ot
 [#chapter-test-mock-server-es6]
 === ES6 modules
 
-Mocker has been written with ES6 modules. ES6 modules are still experimental (only available if node is run with the --experimental-modules flag) meaning that support of common test runners for ES6 modules is close to non-existent. However, for the time being, tests written with ES6 modules can use the mock server as follows.
+Mocker has been written with ES6 modules. ES6 modules are still experimental meaning that support of common test runners for ES6 modules is limited. However, for the time being, tests written with ES6 modules can use the mock server as follows.
 
 Install @kroonprins/mocker-mock-server-test in your project:
 
@@ -1577,7 +1553,7 @@ Using ES6 code from CommonJS code is possible with the dynamic import statement.
 ----
 const expect = require('chai').expect
 const axios = require('axios')
-const MockServer = require('@kroonprins/mocker-mock-server-test/cjs/exports').MockServer
+const MockServer = require('@kroonprins/mocker-mock-server-test/cjs/exports.cjs').MockServer
 
 let mockServer
 
@@ -1614,10 +1590,10 @@ after(function () {
 })
 ----
 
-Here it is important to use the import the cjs specific version `@kroonprins/mocker-mock-server-test/cjs/exports`. See https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/commonjs[here] for the full sample, which can be run with `npm test`.
+Here it is important to use the import the cjs specific version `@kroonprins/mocker-mock-server-test/cjs/exports.cjs`. See https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/commonjs[here] for the full sample, which can be run with `npm test`.
 
 If the configuration nunjucksTemplatingHelpersFile is used, then this should be a .js file instead of .mjs. Something like for example this:
-.https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/commonjs/templating-helper-cjs.js[templating-helper-cjs.js]
+https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/commonjs/templating-helper-cjs.js[templating-helper-cjs.js]
 [source,javascript]
 ----
 exports.HELPERS = {
@@ -1648,7 +1624,7 @@ To use it with for example the mocha test runner:
 import { expect } from 'chai'
 import 'mocha'
 import axios from 'axios'
-import { MockServer } from '@kroonprins/mocker-mock-server-test/cjs/exports'
+import { MockServer } from '@kroonprins/mocker-mock-server-test/cjs/exports.cjs'
 
 let mockServer: MockServer
 
@@ -1684,7 +1660,7 @@ after(function () {
 })
 ----
 
-Here it is important to use the import the cjs specific version `@kroonprins/mocker-mock-server-test/cjs/exports`. See https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/typescript[here] for the full sample, which can be run with `npm test`.
+Here it is important to use the import the cjs specific version `@kroonprins/mocker-mock-server-test/cjs/exports.cjs`. See https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/typescript[here] for the full sample, which can be run with `npm test`.
 
 Nunjucks templating helpers can be added in the same way as for commonjs. Note that when using configuration option nunjucksTemplatingHelpersFile that this must be a commonjs file and not a typescript file.
 

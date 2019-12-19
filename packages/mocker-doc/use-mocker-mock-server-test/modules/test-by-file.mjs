@@ -7,31 +7,7 @@ const expect = chai.expect
 const test = async () => {
   const mockServer = new MockServer({
     port: 0,
-    rule: [ {
-      name: 'test rule 1',
-      request: {
-        method: 'POST',
-        path: '/test1/:p1'
-      },
-      response: {
-        templatingEngine: 'none',
-        statusCode: 200,
-        contentType: 'text/plain',
-        body: 'rule 1'
-      }
-    }, {
-      name: 'test rule 2',
-      request: {
-        method: 'POST',
-        path: '/test2/:p2'
-      },
-      response: {
-        templatingEngine: 'none',
-        statusCode: 200,
-        contentType: 'text/plain',
-        body: 'rule 2'
-      }
-    } ]
+    ruleLocation: ['test-rule-1.yaml', 'test-rule-2.yaml']
   })
 
   try {
@@ -42,7 +18,7 @@ const test = async () => {
         'Content-Type': 'text/plain',
         'X-test1': 'h1',
         'X-test2': 'h2',
-        'Cookie': 'cookie1=c1; cookie2=c2'
+        Cookie: 'cookie1=c1; cookie2=c2'
       }
     })
     expect(response.status).to.equal(200)
@@ -51,7 +27,7 @@ const test = async () => {
     expect(mockServer.for('/test1/:p1', 'POST').invocations()).to.equal(1)
     expect(mockServer.for('/test2/:p2', 'POST').invocations()).to.equal(0)
     expect(mockServer.for('/test1/:p1', 'POST').ruleName()).to.equal('test rule 1')
-    expect(mockServer.for('/test1/:p1', 'POST').ruleLocation()).to.equal(null)
+    expect(mockServer.for('/test1/:p1', 'POST').ruleLocation()).to.equal('test-rule-1.yaml')
     expect(mockServer.for('/test1/:p1', 'POST').path()).to.equal('/test1/parameter1')
     expect(mockServer.for('/test1/:p1', 'POST').fullPath()).to.equal('/test1/parameter1?query1=q1&query2=q2')
     expect(mockServer.for('/test1/:p1', 'POST').header('X-test1')).to.equal('h1')
