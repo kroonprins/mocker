@@ -1,6 +1,6 @@
 {
   "name": "@kroonprins/mocker-mock-server-test",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Mock server for use in tests",
   "main": "exports.mjs",
   "types": "types.d.ts",
@@ -31,8 +31,8 @@
   ],
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
-    "@kroonprins/mocker-mock-server": "^0.1.9",
-    "@kroonprins/mocker-shared-lib": "^0.1.9",
+    "@kroonprins/mocker-mock-server": "^0.1.10",
+    "@kroonprins/mocker-shared-lib": "^0.1.10",
     "serializr": "^1.5.4"
   },
   "devDependencies": {
