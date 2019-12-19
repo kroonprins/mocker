@@ -1,6 +1,6 @@
 {
   "name": "@kroonprins/mocker-mock-server",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Mock server",
   "main": "exports.mjs",
   "scripts": {
@@ -33,7 +33,7 @@
   ],
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
-    "@kroonprins/mocker-shared-lib": "^0.1.10",
+    "@kroonprins/mocker-shared-lib": "^0.1.11",
     "body-parser": "^1.19.0",
     "body-parser-xml": "^1.1.0",
     "chokidar": "^3.3.1",
