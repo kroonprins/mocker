@@ -5,7 +5,7 @@
     "test": "mocha"
   },
   "devDependencies": {
-    "@kroonprins/mocker-mock-server-test": "^0.1.14",
+    "@kroonprins/mocker-mock-server-test": "^0.1.15",
     "axios": "^0.19.0",
     "chai": "^4.2.0",
     "mocha": "^6.2.2"
