@@ -54,7 +54,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.7.5",
     "axios": "^0.19.0",
     "babel-plugin-dynamic-import-node": "^2.3.0",
-    "babel-plugin-transform-import-meta": "^1.0.0",
+    "babel-plugin-transform-import-meta": "^1.0.1",
     "chai": "^4.2.0",
     "chai-exclude": "^2.0.2",
     "updates": "^9.3.3"
