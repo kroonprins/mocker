@@ -1624,7 +1624,7 @@ To use it with for example the mocha test runner:
 import { expect } from 'chai'
 import 'mocha'
 import axios from 'axios'
-import { MockServer } from '@kroonprins/mocker-mock-server-test/cjs/exports.cjs'
+import { MockServer } from '@kroonprins/mocker-mock-server-test/cjs/exports'
 
 let mockServer: MockServer
 
@@ -1660,7 +1660,7 @@ after(function () {
 })
 ----
 
-Here it is important to use the import the cjs specific version `@kroonprins/mocker-mock-server-test/cjs/exports.cjs`. See https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/typescript[here] for the full sample, which can be run with `npm test`.
+Here it is important to use the import the cjs specific version `@kroonprins/mocker-mock-server-test/cjs/exports`. See https://github.com/kroonprins/mocker/blob/master/packages/mocker-doc/use-mocker-mock-server-test/typescript[here] for the full sample, which can be run with `npm test`.
 
 Nunjucks templating helpers can be added in the same way as for commonjs. Note that when using configuration option nunjucksTemplatingHelpersFile that this must be a commonjs file and not a typescript file.
 
