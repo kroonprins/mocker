@@ -13,6 +13,7 @@ done
 ls -1 *.mjs | while read line; do
   ./node_modules/.bin/babel $line --out-file cjs/${line%%.mjs}.cjs;
 done
+cp cjs/exports.cjs cjs/exports.js
 
 sed -i 's/\.mjs/.cjs/g' cjs/*.cjs
 sed -i 's/\.mjs/.cjs/g' cjs/**/*.cjs
