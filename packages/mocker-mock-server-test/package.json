@@ -40,7 +40,7 @@
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
     "@babel/plugin-transform-modules-commonjs": "^7.7.5",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-plugin-dynamic-import-node": "^2.3.0",
     "chai": "^4.2.0",
     "updates": "^9.3.3"
